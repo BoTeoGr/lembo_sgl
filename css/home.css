@@ -1,0 +1,594 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quicksand:wght@300..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+	--green-50: #edf7e8;
+	--green-100: #dbefb9;
+	--green-200: #c9e8b9;
+	--green-300: #b7e0a2;
+	--green-400: #a5d88b;
+	--green-500: #93d074;
+	--green-600: #81c85d;
+	--green-700: #6fc046;
+	--green-800: #5dd12e;
+	--green-900: #4bbd17;
+	--green-950: #39a900;
+
+	--secondary-green: #007832;
+	--secondary-blue: #50e5f9;
+	--warning: #fdc300;
+	--expired: #ef4443;
+
+	--white: #ffffff;
+	--black: #000000;
+
+	--gray-100: #313131;
+	--gray-80: #626262;
+	--gray-60: #949494;
+	--gray-40: #c5c5c5;
+	--gray-20: #f6f6f6;
+}
+
+body {
+	font-family: "Inter", sans-serif;
+	background-color: var(--green-200);
+	width: 100%;
+	height: 100%;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: "Work Sans", serif;
+}
+
+.nav {
+	background-color: var(--white);
+	padding: 0.3rem 1rem;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.nav__user-image {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 9999px;
+	margin-left: 1rem;
+	object-fit: cover;
+}
+
+.nav__right-content {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.nav__list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	gap: 1.5rem;
+	align-items: center;
+}
+
+.nav__item {
+	position: relative;
+}
+
+.nav__link {
+	text-decoration: none;
+	color: var(--gray-80);
+	display: flex;
+	align-items: center;
+}
+
+.nav__link--selected {
+	color: var(--black);
+	font-weight: 600;
+}
+
+.nav__icon {
+	font-size: 1.3rem;
+}
+
+.material-symbols-outlined {
+	font-variation-settings: "wght" 400;
+	user-select: none;
+}
+
+.nav__dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #ffffff;
+	border: 1px solid var(--gray-40);
+	border-radius: 6px;
+	z-index: 1;
+	min-width: 11.25rem;
+}
+
+.nav__dropdown-side-menu {
+	display: none;
+	flex-direction: column;
+	gap: 0.3rem;
+	z-index: 1;
+	padding: 0.8rem;
+	border-radius: 6px;
+	background-color: #ffffff;
+	border: 1px solid var(--gray-40);
+	position: absolute;
+	right: 2rem;
+}
+
+.nav__dropdown-side-menu a {
+	font-size: 0.9rem;
+	font-weight: 500;
+	text-decoration: none;
+	color: var(--black);
+}
+
+.nav__dropdown-side-menu hr {
+	border: 0.5px solid var(--gray-40);
+	width: 100%;
+}
+
+.nav__dropdown-content a {
+	padding: 0.625rem;
+	font-size: 0.9rem;
+	color: var(--black);
+}
+
+.nav__item--dropdown:hover .nav__dropdown-content {
+	display: block;
+}
+
+.nav__dropdown-content a:hover {
+	background-color: #f0f0f0;
+}
+
+.main {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 1rem;
+	padding-top: 1.5rem;
+}
+
+.main__section {
+	display: flex;
+	justify-content: space-between;
+}
+
+.cards-container {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1rem;
+	width: 100%;
+	margin-right: 1rem;
+}
+
+.card {
+	background-color: var(--white);
+	padding: 1rem;
+	border-radius: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.card__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.card__title {
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+.card__icon {
+	color: var(--green-950);
+}
+
+.card__value {
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+
+.card__footer {
+	font-size: 0.9rem;
+	color: var(--green-950);
+}
+
+.card__button {
+	background-color: var(--green-950);
+	color: var(--white);
+	padding: 0.6rem 1rem;
+	width: 9rem;
+	border: none;
+	border-radius: 0.2rem;
+	cursor: pointer;
+	transition: background-color 0.5s ease;
+	user-select: none;
+}
+
+.card__button a {
+	color: var(--white);
+	font-weight: 500;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.card__button a span {
+	font-size: 1rem;
+}
+
+.card__button:hover {
+	background-color: var(--green-800);
+}
+
+.widget {
+	background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 100%);
+	border-radius: 1.5rem;
+	padding: 2rem;
+	width: 20rem;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	user-select: none;
+}
+
+.widget__main-weather {
+	display: flex;
+	align-items: center;
+	margin-bottom: 4rem;
+}
+
+.widget__weather-icon {
+	position: relative;
+	width: 5.625rem;
+	height: 5.625rem;
+}
+
+.widget__sun {
+	position: absolute;
+	top: 0.625rem;
+	left: 0.625rem;
+	color: #ffd700;
+	font-size: 4.375rem;
+	filter: drop-shadow(0 0 0.5rem rgba(255, 215, 0, 0.4));
+}
+
+.widget__cloud {
+	position: absolute;
+	top: 1.25rem;
+	left: 1.25rem;
+	color: #fff;
+	font-size: 4.375rem;
+	filter: drop-shadow(0 0 0.25rem rgba(255, 255, 255, 0.4));
+}
+
+.widget__temperature {
+	margin-left: 1.25rem;
+}
+
+.widget__temp-value {
+	font-size: 3rem;
+	font-weight: 500;
+	color: #1e3c72;
+	line-height: 1;
+}
+
+.widget__condition {
+	color: #1e3c72;
+	opacity: 0.8;
+	font-size: 1rem;
+	margin-top: 1rem;
+}
+
+.widget__stats {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+	text-align: center;
+}
+
+.widget__stat-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: #1e3c72;
+}
+
+.widget__stat-icon {
+	font-size: 1.5rem;
+	margin-bottom: 0.25rem;
+	opacity: 0.8;
+}
+
+.widget__stat-value {
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+.widget__stat-label {
+	font-size: 0.75rem;
+	opacity: 0.7;
+}
+
+.info-container {
+	display: grid;
+	display: flex;
+	gap: 1rem;
+}
+
+.cultives-info {
+	background-color: var(--white);
+	padding: 1rem;
+	flex: 1;
+	border-radius: 0.5rem;
+	height: 35vh;
+}
+
+.cultives-info__table {
+	margin-top: 1rem;
+	width: 100%;
+	overflow-y: auto;
+	white-space: nowrap;
+}
+
+.cultives-info__th,
+.cultives-info__td {
+	text-align: left;
+	padding: 0.5rem;
+}
+
+.cultives-info__th {
+	background-color: var(--green-700);
+	color: var(--white);
+}
+
+.cultives-info__tr:nth-child(even) {
+	background-color: var(--green-100);
+}
+
+.finances-info {
+	background-color: var(--white);
+	padding: 1rem;
+	border-radius: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	height: 35vh;
+	flex: 0.8;
+}
+
+.finances-info__title {
+	text-wrap: nowrap;
+}
+
+.finances-info__row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	text-wrap: wrap;
+}
+
+.finances-info__aside {
+	display: flex;
+	text-wrap: nowrap;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.finances-info__subtitle {
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+.finances-info__value {
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+
+.finances-info__value--positive, .finances-info__positive {
+	color: var(--green-950);
+}
+
+.finances-info__value--negative, .finances-info__negative {
+	color: var(--expired);
+}
+
+.finances-info__versus {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.finances-info__versus p {
+	font-size: 0.9rem;
+	color: var(--gray-80);
+}
+
+.todo-list {
+	background-color: var(--white);
+	padding: 1rem;
+	flex: 0.5;
+	border-radius: 0.5rem;
+	height: 35vh;
+}
+
+.todo-list__title {
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+
+.todo-list__checkbox {
+	width: 1.1rem;
+	height: 1.1rem;
+	accent-color: var(--green-950);
+	cursor: pointer;
+}
+
+.todo-list__ul {
+	list-style: none;
+	margin-top: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.todo-list__li {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.footer {
+	background-color: var(--white);
+	width: 100%;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.footer__text {
+	font-size: 0.9rem;
+	color: var(--green-950);
+	font-weight: 500;
+}
+
+.footer__icons {
+	display: flex;
+	gap: 1.5rem;
+}
+
+
+@media (max-width: 768px) {
+	.main {
+		padding: 0rem;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
+	}
+
+	.cards-container {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+		width: 100%;
+	}
+
+	.main__section--first-row {
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.widget {
+		width: 100%;
+		display: flex;
+	}
+
+	.widget__main-weather {
+		display: flex;
+		align-items: center;
+		margin-bottom: 1rem;
+	}
+
+	.widget__weather-icon {
+		position: relative;
+		width: 6rem;
+		height: 6rem;
+	}
+
+	.widget__sun {
+		position: absolute;
+		top: 0.625rem;
+		left: 0.625rem;
+		color: #ffd700;
+		font-size: 5rem;
+		filter: drop-shadow(0 0 0.5rem rgba(255, 215, 0, 0.4));
+	}
+
+	.widget__cloud {
+		position: absolute;
+		top: 1.25rem;
+		left: 1.25rem;
+		color: #fff;
+		font-size: 5rem;
+		filter: drop-shadow(0 0 0.25rem rgba(255, 255, 255, 0.4));
+	}
+
+	.widget__temperature {
+		margin-left: 1.1rem;
+	}
+
+	.widget__temp-value {
+		font-size: 3.1rem;
+		font-weight: 500;
+		color: #1e3c72;
+		line-height: 1;
+	}
+
+	.widget__condition {
+		color: #1e3c72;
+		opacity: 0.8;
+		font-size: 1rem;
+		margin-top: 1rem;
+		display: flex;
+	}
+
+	.widget__condition p::after {
+		content: "-";
+	}
+
+	.widget__condition br {
+		display: none;
+	}
+
+	.widget__stats {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+		text-align: center;
+		align-content: center;
+		margin-left: 1rem;
+	}
+
+	.footer {
+		flex-direction: column;
+		gap: 1rem;
+		bottom: 0;
+	}
+
+	.cultives-info {
+		display: none;
+	}
+
+	.nav__right-content {
+		display: none;
+	}
+}
+
+@media (max-width: 480px) {
+	.widget {
+		display: none;
+	}
+
+	.cards-container {
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		gap: 1rem;
+		width: 100%;
+	}
+
+	.info-container {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+}

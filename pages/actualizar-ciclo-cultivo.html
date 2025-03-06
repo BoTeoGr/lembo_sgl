@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Ciclo de cultivo</title>
+    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="sena-logo">
+            <h1>Actualización ciclo de cultivo</h1>
+            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="sgal-logo">
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <div class="back-link">
+                <a href="visualizar-ciclo-cultivo.html" class="volver">← Volver</a>
+            </div>
+
+            <h2>Actualización del ciclo de cultivo</h2>
+
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" placeholder="Ingrese nombre del ciclo de cultivo" title="Ingrese nombre del ciclo de cultivo" value="Ciclo de Cultivo de Tomate">
+                    </div>
+                    <div class="form-group">
+                        <label for="id">ID del ciclo de cultivo</label>
+                        <input type="text" id="id" placeholder="Ingrese el identificador del ciclo de cultivo" title="Ingrese el identificador del ciclo de cultivo" value="CT-2023-001" disabled>
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" placeholder="Ingrese descripción del ciclo de cultivo" class="txt-area-full">Ciclo de cultivo de tomate en invernadero, con enfoque en producción sostenible.</textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="periodo-inicio">Periodo - Inicio</label>
+                        <input type="date" id="periodo-inicio" value="2023-01-15">
+                    </div>
+                    <div class="form-group">
+                        <label for="periodo-final">Periodo - Final</label>
+                        <input type="date" id="periodo-final" value="2023-06-15">
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label for="novedades">Novedades</label>
+                    <textarea id="novedades" placeholder="Ingrese novedades del ciclo de cultivo" class="txt-area-full">Se han implementado nuevas técnicas de riego y fertilización.</textarea>
+                </div>
+                <div class="form-group full-width">
+                    <div class="status-container">
+                        <div class="status-item">
+                            <input type="radio" name="estado-habilitado" value="habilitado" checked> Habilitado
+                        </div>
+                        <div class="status-item">
+                            <input type="radio" name="estado-habilitado" value="deshabilitado"> Deshabilitado
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="submit-button" onclick="window.location.href='listar-ciclo-cultivo.html';">Actualizar ciclo de cultivo</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

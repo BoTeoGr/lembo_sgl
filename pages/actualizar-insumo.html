@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar insumo</title>
+    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="sena-logo">
+            <h1>Actualizar insumo</h1>
+            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="sgal-logo">
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <div class="back-link">
+                <a href="visualizacion-insumo.html" class="volver">← Volver</a>
+            </div>
+
+            <h2>Actualización del insumo</h2>
+
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" value="Fertilizante NPK" placeholder="Ingrese nombre del insumo">
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo de insumo</label>
+                        <input type="text" id="tipo" value="Fertilizante" placeholder="Tipo de insumo">
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label for="imagen">Imagen</label>
+                    <input type="file" id="imagen" placeholder="Imagen" accept=".jpg, .jpeg, .png" class="input-img">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id">ID del insumo</label>
+                        <input type="text" id="id" value="FERT-001" placeholder="Ingrese el identificador del insumo"
+                            disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="medida">Unidad de medida</label>
+                        <select name="medida" id="medida">
+                            <option value="default">Unidad de medida</option>
+                            <option value="kg">Kilogramos</option>
+                            <option value="l">Litros</option>
+                            <option value="m">Metros</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="valor-unitario">Valor unitario</label>
+                        <input type="text" id="valor-unitario" value="15000"
+                            placeholder="Ingrese el valor unitario del insumo">
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="text" id="cantidad" value="50" placeholder="Ingrese la cantidad de unidades">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="valor-total">Valor total</label>
+                        <input type="text" id="valor-total" value="750000"
+                            placeholder="Ingrese el valor total del insumo">
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion">Descripción</label>
+                        <textarea id="descripcion"
+                            placeholder="Ingrese descripción del cultivo">Fertilizante NPK de liberación controlada, ideal para cultivos de maíz y arroz.</textarea>
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <div class="status-container">
+                        <div class="status-item">
+                            <input type="radio" name="estado-habilitado" value="habilitado" checked> Habilitado
+                        </div>
+                        <div class="status-item">
+                            <input type="radio" name="estado-habilitado" value="deshabilitado"> Deshabilitado
+                        </div>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button type="button" class="submit-button"
+                        onclick="window.location.href='listar-cultivos.html';">Actualizar insumo</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

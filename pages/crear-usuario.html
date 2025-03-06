@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Usuario</title>
+    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
+    <link rel="stylesheet" href="../css/forms.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="sena-logo">
+            <h1>Registro de usuario</h1>
+            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="sgal-logo">
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <div class="back-link">
+                <a href="listar-usuarios.html" class="volver">← Volver</a>
+            </div>
+
+            <h2>Registrar un nuevo usuario</h2>
+
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tipo-documento">Tipo de documento</label>
+                        <select id="tipo-documento" required>
+                            <option value="">Cédula de ciudadanía</option>
+                            <option value="">Tarjeta de identidad</option>
+                            <option value="">Permiso de protección temporal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre completo</label>
+                        <input type="text" id="nombre" placeholder="Ingrese el nombre completo">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="numero-documento">Número de documento</label>
+                        <input type="text" id="numero-documento" placeholder="Ingrese el número de documento" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Número de Teléfono</label>
+                        <input type="text" id="telefono" placeholder="Ingrese el número de Teléfono" required>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="telefono" placeholder="Ingrese el correo electrónico" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="confirmar-correo">Confirmar correo</label>
+                    <input type="email" id="telefono" placeholder="Ingrese nuevamente el Correo electrónico" required>
+                </div>
+
+
+
+                <div class="form-group full-width">
+                    <label for="rol">Rol</label>
+                    <div class="rol">
+                        <select id="rol" class="rol-select" required>
+                            <option value="">Super administrador</option>
+                            <option value="">Administrador</option>
+                            <option value="">Personal de Apoyo</option>
+                            <option value="">Visitante</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="submit-button"
+                        onclick="window.location.href='listar-usuarios.html';">Registrar Usuario</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

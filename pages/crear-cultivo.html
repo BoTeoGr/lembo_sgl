@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear cultivo</title>
+    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="sena-logo">
+            <h1>Crear cultivo</h1>
+            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="sgal-logo">
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <div class="back-link">
+                <a href="listar-cultivos.html" class="volver">← Volver</a>
+            </div>
+
+            <h2>Creación del cultivo</h2>
+
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" placeholder="Ingrese nombre de cultivo">
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo de cultivo</label>
+                        <input type="text" id="tipo" placeholder="Tipo de cultivo">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id">ID del cultivo</label>
+                        <input type="text" id="id" placeholder="Ingrese el identificador del cultivo">
+                    </div>
+                    <div class="form-group">
+                        <label for="imagen">Imagen</label>
+                        <input type="file" id="imagen" placeholder="Imagen" accept=".jpg, .jpeg, .png" class="input-img">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tamano">Tamaño del cultivo</label>
+                        <input type="text" id="tamano" placeholder="Ingrese el respectivo tamaño del cultivo" title="Ingrese el respectivo tamaño del cultivo">
+                    </div>
+                    <div class="form-group">
+                        <label for="ubicacion">Ubicación</label>
+                        <input type="text" id="ubicacion" placeholder="Ingrese la ubicación del cultivo">
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" placeholder="Ingrese descripción del cultivo" class="txt-area-full"></textarea>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="submit-button" >Crear cultivo</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

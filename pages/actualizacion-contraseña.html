@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700" rel="stylesheet">
+    <title>Actualización de contraseña</title>
+    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
+    <link rel="stylesheet" href="../css/log.css">
+
+
+</head>
+<body>
+    <header class="header">
+        <div class="box-logo-sena"-><!--logo del SENA-->
+            <img class="logo-sena" src="../imgs/logoSena.svg" alt="logo del SENA">
+        </div><!--logo del SENA-->
+        <h2 class="title-actualizar-contraseña">Actualización de contraseña</h2>
+        <div class="box-logotipe-sgal"><!--Logo SGAL y el nombre SGAL-->
+            <p class="logotipe-name">SGAL</p>
+            <img class="logo-sgal" src="../imgs/sgal.jpeg" alt="logo de SGAL">
+        </div><!--Logo SGAL y el nombre SGAL-->
+    </header>
+    <main class="main-actualizacion-contraseña">
+        <div class="content-login">
+            <div class="box-logo-sgal">
+                <img class="logo-sgal" src="../imgs/sgal.jpeg" alt="logo de SGAL">
+            </div>
+            
+            <header class="box-title-login">
+                <h2 class="title-actualizar-contraseña">Actualización de contraseña</h2>
+            </header><!--header-->
+
+            <form class="form-actualizar-contraseña" action="#" method="post">
+                <section class="box-password">
+                    <label for="password">Nueva contraseña</label>
+                    <input type="password" class="box-text" required>    
+                </section><!--box-email-->
+
+                <section class="box-password">
+                    <label for="password">Confirmar contraseña</label>
+                    <input type="password" class="box-text" required>
+                </section><!--box-contraseña-->
+                
+                <section class="box-modified_button">
+                    <button class="modified_button" type="button" onclick="window.location.href='../login.html'">Actualizar contraseña</button>
+                </section>
+            </form><!--form-->
+        </div><!--content-login-->
+    </main>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700" rel="stylesheet">
+    <title>Olvide mi contraseña</title>
+    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
+    <link rel="stylesheet" href="../css/log.css">
+</head>
+
+<body>
+    <main class="login">
+        <div class="content-login">
+            <div class="box-logo-sgal">
+                <img class="logo-sgal" src="../imgs/sgal.jpeg" alt="logo de SGAL">
+            </div>
+
+            <header class="box-title-login">
+                <h3 class="title-olvide-contraseña">A tu correo se enviará un código para que recuperes tu contraseña
+                </h3>
+            </header><!--header-->
+
+            <form class="form-olvide-contraseña" action="#" method="post">
+                <section class="box-email">
+                    <label for="text">Correo electrónico</label>
+                    <input type="email" class="box-text" required>
+                </section><!--box-email-->
+
+                <section class="box-button">
+                    <button onclick="window.location.href='olvide-contraseña-recuperar.html'">Enviar
+                        código</button>
+                </section>
+
+            </form><!--form-->
+        </div><!--content-login-->
+    </main>
+</body>
+
+</html>
