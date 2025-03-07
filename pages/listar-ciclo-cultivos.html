@@ -135,7 +135,7 @@
             <div class="element-display">
                 <!-- Header -->
                 <div class="element-display__header">
-                    <h3 class="element-display__title">Visualización Cultivo</h3>
+                    <h3 class="element-display__title">Visualización Ciclo de Cultivo</h3>
                     <span class="element-display__close-icon material-symbols-outlined">
                         close
                     </span>
@@ -182,39 +182,21 @@
                         />
                         
                     </div>
-                    <div class="element-display__field-container">
-                        <label for="tamanio" class="element-display__label">Tamaño</label>
-                        <input
-                            type="number"
-                            name="tamanio"
-                            id="tamanio"
-                            value="10"
-                            disabled
-                            class="element-display__input"
-                        />
-                    </div>
-                    <div class="element-display__field-container">
-                        <label for="ubicacion" class="element-display__label">Ubicación</label>
-                        <input
-                            type="text"
-                            name="ubicacion"
-                            id="ubicacion"
-                            value="Parcela 1"
-                            disabled
-                            class="element-display__input"
-                        />
+                    <div class="element-display__field-container colspan-2">
+                        <label for="periodo" class="element-display__label">Periodo</label>
+                        <img src="../imgs/img-visualizacion-ciclo-cultivo.png" alt="periodo-img" srcset="">
                     </div>
                     <!-- Description Section -->
                     
-                    <label for="descripcion" class="element-display__label textarea__label">Descripción del cultivo</label>
+                    <label for="novedad" class="element-display__label textarea__label">Novedad</label>
                     <textarea
-                        name="descripcion"
-                        id="descripcion"
+                        name="novedad"
+                        id="novedad"
                         cols="30"
                         rows="10"
                         disabled
                         class="element-display__textarea"
-                    >Descripción del cultivo</textarea>
+                    >Novedad del ciclo de cultivo</textarea>
     
                     <!-- Status Section -->
                     <div class="element-display__field-container colspan-2">
@@ -245,7 +227,7 @@
                     </div>
     
                     <!-- Update Button -->
-                    <button class="element-display__button">Actualizar</button>
+                    <button class="element-display__button"><a href="actualizar-ciclo-cultivo.html">Actualizar</a></button>
                 </div>
             </div>
 			<div class="table">

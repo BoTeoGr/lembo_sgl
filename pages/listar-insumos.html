@@ -92,7 +92,7 @@
 		<div class="element-display">
 			<!-- Header -->
 			<div class="element-display__header">
-				<h3 class="element-display__title">Visualización Cultivo</h3>
+				<h3 class="element-display__title">Visualización Insumo</h3>
 				<span class="element-display__close-icon material-symbols-outlined">
 					close
 				</span>
@@ -103,8 +103,8 @@
 				<!-- Image Section -->
 				<div class="element-display__image">
 					<img
-						src="https://www.rocalba.es/blog/wp-content/uploads/cultivos-cosecha-rapida-950x500.jpg"
-						alt="Cultivo de Tomate"
+						src="https://italcol.com/wp-content/uploads/2023/05/pollo_engorde_40k.png"
+						alt="imagen-display"
 					/>
 				</div>
 
@@ -115,7 +115,7 @@
 						type="text"
 						name="nombre"
 						id="nombre"
-						value="Cultivo de Tomate"
+						value="Alimento balanceado para pollos"
 						disabled
 						class="element-display__input"
 					/>
@@ -124,7 +124,7 @@
 						type="number"
 						name="id"
 						id="id"
-						value="1032321"
+						value="65653098"
 						disabled
 						class="element-display__input"
 					/>
@@ -133,30 +133,52 @@
 						type="text"
 						name="tipo"
 						id="tipo"
-						value="Tomate"
+						value="Alimento para aves"
 						disabled
 						class="element-display__input"
 					/>
 					
 				</div>
 				<div class="element-display__field-container">
-					<label for="tamanio" class="element-display__label">Tamaño</label>
+					<label for="unidad-medida" class="element-display__label">Unidad medida</label>
 					<input
-						type="number"
-						name="tamanio"
-						id="tamanio"
-						value="10"
+						type="text"
+						name="unidad-medida"
+						id="unidad-medida"
+						value="Kilogramo (kg)"
 						disabled
 						class="element-display__input"
 					/>
 				</div>
 				<div class="element-display__field-container">
-					<label for="ubicacion" class="element-display__label">Ubicación</label>
+					<label for="cantidad" class="element-display__label">Cantidad</label>
+					<input
+						type="number"
+						name="cantidad"
+						id="cantidad"
+						value="500"
+						disabled
+						class="element-display__input"
+					/>
+				</div>
+				<div class="element-display__field-container">
+					<label for="valor-unitario" class="element-display__label">Valor unitario</label>
 					<input
 						type="text"
-						name="ubicacion"
-						id="ubicacion"
-						value="Parcela 1"
+						name="valor-unitario"
+						id="valor-unitario"
+						value="$1.20"
+						disabled
+						class="element-display__input"
+					/>
+				</div>
+				<div class="element-display__field-container">
+					<label for="valor-total" class="element-display__label">Valor total</label>
+					<input
+						type="text"
+						name="valor-total"
+						id="valor-total"
+						value="$600.00"
 						disabled
 						class="element-display__input"
 					/>
@@ -171,7 +193,7 @@
 					rows="10"
 					disabled
 					class="element-display__textarea"
-				>Descripción del cultivo</textarea>
+				>Descripción del insumo</textarea>
 
 				<!-- Status Section -->
 				<div class="element-display__field-container colspan-2">
@@ -202,7 +224,7 @@
 				</div>
 
 				<!-- Update Button -->
-				<button class="element-display__button">Actualizar</button>
+				<button class="element-display__button"><a href="actualizar-insumo.html">Actualizar</a></button>
 			</div>
 		</div>
 		<!-- Bloque: table -->
