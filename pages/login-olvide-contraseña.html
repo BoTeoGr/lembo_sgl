@@ -11,31 +11,28 @@
 </head>
 
 <body>
-    <main class="login">
-        <div class="content-login">
-            <div class="box-logo-sgal">
-                <img class="logo-sgal" src="../imgs/sgal.jpeg" alt="logo de SGAL">
-            </div>
+    <div class="container">
+        
+        <main class="main main--order">
+            <section class="login">
+                <header class="login__header">
+                    <h2 class="login__title--h2">A tu correo se enviará un código para que recuperes tu contraseña</h2>
+                </header>
+                <form class="login__form">
+                    <div class="login__fields">
+                        <input type="email" placeholder="Correo electrónico" class="login__input" required>
+                    </div>
+                    <div class="login__actions">
+                        <button class="login__button" onclick="window.location.href='olvide-contraseña-recuperar.html'">Enviar código</button>
+                    </div>
+                </form>
+            </section>
+        </main>
 
-            <header class="box-title-login">
-                <h3 class="title-olvide-contraseña">A tu correo se enviará un código para que recuperes tu contraseña
-                </h3>
-            </header><!--header-->
-
-            <form class="form-olvide-contraseña" action="#" method="post">
-                <section class="box-email">
-                    <label for="text">Correo electrónico</label>
-                    <input type="email" class="box-text" required>
-                </section><!--box-email-->
-
-                <section class="box-button">
-                    <button onclick="window.location.href='olvide-contraseña-recuperar.html'">Enviar
-                        código</button>
-                </section>
-
-            </form><!--form-->
-        </div><!--content-login-->
-    </main>
+        <aside class="aside aside--order">
+            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="aside__logo">
+        </aside>
+    </div>
 </body>
 
 </html>

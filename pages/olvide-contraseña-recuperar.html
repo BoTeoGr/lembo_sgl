@@ -11,25 +11,27 @@
 </head>
 
 <body>
-    <main class="login">
-        <div class="content-olvide-contraseña-recuperar">
-            <div class="box-logo-sgal">
-                <img class="logo" src="../imgs/sgal.jpeg" alt="logo de SGAL">
-            </div>
+    <div class="div__effect"></div>
+    <div class="div__effect"></div>
+    <div class="container">
+        
+        <main class="main main--widht">
+            <section class="login login--size">
+                <header class="login__header">
+                    <h2 class="login__title--h2">Ingresa el código de 6 dígitos</h2>
+                </header>
+                <form class="login__form">
+                    <div class="login__fields--widht">
+                        <input type="email" placeholder="_ _ _ _" class="login__input" required>
+                    </div>
+                    <div class="login__actions">
+                        <button type="submit" class="login__button">Enviar</button>
+                    </div>
+                </form>
+            </section>
+        </main>
 
-            <form class="form-olvide-contraseña-recuperar" action="#" method="post">
-                <section class="box-email">
-                    <label for="text">Ingresa el código de 6 dígitos</label>
-                    <input type="password" class="box-text" required>
-                </section><!--box-email-->
-
-                <section class="box-button">
-                    <button onclick="window.location.href='actualizacion-contraseña.html'">Enviar</button>
-                </section>
-
-            </form><!--form-->
-        </div><!--content-login-->
-    </main>
+    </div>
 </body>
 
 </html>
