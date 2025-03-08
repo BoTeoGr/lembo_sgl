@@ -102,7 +102,7 @@ if (userForm) {
 
     // Función para mostrar alertas
     function showAlert(message, error = false) {
-        const alert = document.createElement("p");
+        const alert = document.createElement("P");
         alert.textContent = message;
         alert.classList.add(error ? "error" : "correct");
 
