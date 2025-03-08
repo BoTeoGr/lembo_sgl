@@ -6,47 +6,48 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700" rel="stylesheet">
     <title>Actualización de contraseña</title>
     <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
-    <link rel="stylesheet" href="../css/log.css">
+    <link rel="stylesheet" href="../css/forms.css">
 
 
 </head>
 <body>
     <header class="header">
-        <div class="box-logo-sena"-><!--logo del SENA-->
-            <img class="logo-sena" src="../imgs/logoSena.svg" alt="logo del SENA">
-        </div><!--logo del SENA-->
-        <h2 class="title-actualizar-contraseña">Actualización de contraseña</h2>
-        <div class="box-logotipe-sgal"><!--Logo SGAL y el nombre SGAL-->
-            <p class="logotipe-name">SGAL</p>
-            <img class="logo-sgal" src="../imgs/sgal.jpeg" alt="logo de SGAL">
-        </div><!--Logo SGAL y el nombre SGAL-->
+        <div class="header__logo-container">
+            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="logo--sena">
+            <h1>Crear sensor</h1>
+            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="logo--sgal">
+        </div>
     </header>
-    <main class="main-actualizacion-contraseña">
-        <div class="content-login">
-            <div class="box-logo-sgal">
-                <img class="logo-sgal" src="../imgs/sgal.jpeg" alt="logo de SGAL">
-            </div>
-            
-            <header class="box-title-login">
-                <h2 class="title-actualizar-contraseña">Actualización de contraseña</h2>
-            </header><!--header-->
 
-            <form class="form-actualizar-contraseña" action="#" method="post">
-                <section class="box-password">
-                    <label for="password">Nueva contraseña</label>
-                    <input type="password" class="box-text" required>    
-                </section><!--box-email-->
+    <main class="main-content">
+        <div class="form form--height">
 
-                <section class="box-password">
-                    <label for="password">Confirmar contraseña</label>
-                    <input type="password" class="box-text" required>
-                </section><!--box-contraseña-->
-                
-                <section class="box-modified_button">
-                    <button class="modified_button" type="button" onclick="window.location.href='../login.html'">Actualizar contraseña</button>
-                </section>
-            </form><!--form-->
-        </div><!--content-login-->
+            <img class="form__logo" src="../imgs/sgal.jpeg" alt="logo de SGAL">
+            <h2 class="form__title">Actualización de contraseña</h2>
+
+            <form class="userForm form__container" action="#" method="post">
+                <div class="form__row">
+                    <div class="form__group--update">
+                        <label class="form__label" for="password">Nueva contraseña</label>
+                        <input type="password" id="password" class="form__input--size" required>  
+                    </div>
+                </div>
+                <div class="form__row">
+                    <div class="form__group--update">
+                        <label class="form__label" for="password">Confirmar contraseña</label>
+                        <input type="password" id="password2" class="form__input--size" required>
+                    </div>
+                </div>
+
+                <div class="form__button-container">
+                    <button class="button button--submit" type="submit" >Actualizar
+                    </button>
+                </div>
+            </form>
+        </div>
     </main>
+
+    <script src="../js/login.js"></script>
+
 </body>
 </html>
