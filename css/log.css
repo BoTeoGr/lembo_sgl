@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-
 :root {
 
     /* variables globals */
@@ -32,7 +30,7 @@
 
     /* font family */
     --main-family: 'WorkSans';
-    --secundary-family: 'Calibri';
+    --secundary-family: Calibri;
 
     /* Light (300) */
     --weight-light: 300;
@@ -72,12 +70,11 @@ body {
 
 /* headings */
 h1 {
-    font-size: 3.2rem;
+    font-size: clamp(2rem, 2vw, 2.4rem);
 }
 
 h2 {
-    font-size: 2.4rem;
-    font-weight: var(--weight-bold);
+    font-size: clamp(1.8rem, 2vw, 2rem);
 }
 
 h3 {
@@ -107,8 +104,8 @@ h6 {
 .login__button {
     background: var(--green-900);
     color: var(--white);
-    width: 19.6rem;
-    padding: 2rem 1rem;
+    width: auto;
+    padding: 1.2rem 2.4rem;
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
@@ -242,7 +239,9 @@ animation-delay: .3s;
 }
 
 /* Sección izquierda */
-.aside {
+
+.aside, 
+.aside.aside--order {
     width: 40%;
     background: var(--white);
     display: flex;
@@ -256,20 +255,28 @@ animation-delay: .3s;
 }/*caja con el logo SENA*/
 
 /* Sección derecha */
-.main {
+.main,
+.main.main--order,
+.main.main--widht{
     width: 60%;
-    background: var(--green-700);
+    background: var(--green-950);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem;
 }
 
+.main.main--widht {
+    width: 100%;
+}
+
 /* Bloque de formulario */
-.login {
+.login, 
+.login.login--size {
     background: var(--white);
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 4rem;
     padding: 3rem;
     border-radius: 1rem;
@@ -278,6 +285,16 @@ animation-delay: .3s;
     max-width: 80rem;
     text-align: center;
     box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
+}
+.login.login--size {
+    width: 40rem;
+    height: 40rem;
+}
+
+.login__title,
+.login__title--h2 {
+    font-weight: var(--weight-bold);
+    color: var(--gray-100);
 }
 
 .login__form {
@@ -288,19 +305,22 @@ animation-delay: .3s;
     align-items: center;
 }
 
-.login__fields {
+.login__fields,
+.login__fields--widht {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     width: 100%;
     max-width: 60rem;
+}
+.login__fields--widht{
+    max-width: 26rem;
 }	
 
 .login__input {
     width: 100%;
     height: 5.6rem;
     padding: 1rem;
-    /* margin: 0.8rem 0; */
     border: 0.1rem solid var(--gray-40);
     border-radius: 0.5rem;
     font-size: 1.6rem;
@@ -321,20 +341,43 @@ animation-delay: .3s;
     margin-bottom: 1rem;
 }
 
+.div__effect {
+    position: absolute; /* Cambia la posición del elemento para que right tenga efecto */
+    filter: blur(150px);
+    background: var(--green-100);
+    width: 40rem;
+    height: 30rem;
+    z-index: 2;
+}
 
-.login__button:hover {
-    background: var(--green-800);
+/* Estas cajas dan un estilo diferente a olvide-contraseña-recuperar en el .main-widht */
+.div__effect:nth-child(1){
+    top: 0;
+    left: 0;
+}
+.div__effect:nth-child(2){
+    bottom: 0;
+    right: 0;
 }
 
 /* Responsividad */
-@media (max-width: 768px) {
+@media (width < 768px) {
     .container {
         flex-direction: column;
     }
 
-    .aside {
+    .div__effect {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .aside,
+    .aside.aside--order {
         width: 100%;
         height: 15%;
+    }
+    .aside.aside--order {
+        order: 1;
     }
 
     .aside__logo {
@@ -342,9 +385,16 @@ animation-delay: .3s;
         height: 8rem;
     }
 
-    .main {
+    .main,
+    .main.main--order{
         width: 100%;
         height: 85%;
+    }
+    .main.main--order {
+        order: 2;
+    }
+    .main.main--widht {
+        height: 100%;
     }
 
     .login {
@@ -366,8 +416,12 @@ animation-delay: .3s;
 }
 
 @media (width < 480px) {
-    .aside {
+    .aside,
+    .aside.aside--order{
         height: 10%;
+    }
+    .aside.aside--order{
+        order: 1;
     }
 
     .aside__logo {
@@ -375,8 +429,15 @@ animation-delay: .3s;
         height: 6rem;
     }
 
-    .main {
+    .main,
+    .main.main--order {
         height: 90%;
+    }
+    .main.main--order {
+        order: 2;
+    }
+    .main.main--widht {
+        height: 100%;
     }
 
     .login {
@@ -384,7 +445,6 @@ animation-delay: .3s;
         height: 100%;
         padding: 2rem;
         justify-content: center;
-        align-items: center;
     }
 
     .login__logo {
