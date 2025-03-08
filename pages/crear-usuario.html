@@ -83,17 +83,7 @@
         </div>
     </main>
 
-    <script>
-        fetch("../js/config.json")
-            .then(response => response.json())
-            .then(data => {
-                const scriptElement = document.createElement("script"); 
-                scriptElement.src = data.crear_usuario; 
-                scriptElement.defer = true;
-                document.head.appendChild(scriptElement);
-            })
-            .catch(error => console.error("Error cargando el script de crear sensor", error));
-    </script>
+    <script src="../js/crear-usuario.js"></script>
 </body>
 
 </html>
