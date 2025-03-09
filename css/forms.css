@@ -59,7 +59,7 @@ html {
 body {
     padding: 0;
     margin: 0;
-    background-color: var(--background-color);
+    background-color: var(--green-500);
     color: var(--text-color);
     height: 100vh;
 }
@@ -94,7 +94,8 @@ body {
     padding: 1rem;
 }
 
-.form {
+.form,
+.form.form--height {
     width: 60rem;
     height: 60rem;
     background-color: var(--white);
@@ -107,6 +108,7 @@ body {
 
 }
 
+
 /* Enlaces */
 .form__back-link {
     margin-bottom: 1rem;
@@ -118,6 +120,14 @@ body {
     text-decoration: none;
     font-weight: 500;
 }
+
+/* logotipo de actuallizar-contraseña.html */
+.form__logo {
+    width: 10rem;
+    height: 10rem;
+    margin-bottom: 6rem;
+    margin: 0 auto;
+}/* logotipos*/
 
 /* Títulos */
 .form__title {
@@ -143,7 +153,12 @@ body {
     width: 100%;
     /* margin-bottom: 1rem; */
 }
-/* Aqui estav el cod */
+
+.form__group--update{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
 
 .form__label {
     display: block;
@@ -153,6 +168,7 @@ body {
     font-weight: 600;
 }
 
+
 .form__input, .form__image-input, .form__select,.form__textarea {
     width: 100%;
     height: 4rem;
@@ -160,6 +176,12 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 1.4rem;
+}
+
+.form__input--size{
+    display: flex;
+    height: 5.6rem;
+    width: 100%;
 }
 
 .form__textarea {
@@ -197,6 +219,9 @@ body {
 @media (width < 768px) {
     .form {
         height: auto;
+    }
+    .form.form--height {
+        height: 60rem;
     }
     .form__row {
         flex-direction: column;
@@ -238,12 +263,9 @@ body {
     max-width: 300px; /* Limita el ancho máximo */
     word-wrap: break-word; /* Asegura que el texto se ajuste */
     border-radius: 5px; /* Redondea las esquinas */
-
-    
 }
 
 .correct {
-    
     color: var(--green-900);
     border: none;
     padding: 0.5rem 1rem; /* Añadí padding para darle más espacio */

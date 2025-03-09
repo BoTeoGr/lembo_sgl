@@ -53,13 +53,6 @@ html {
     box-sizing: inherit;
 }
 
-/* Tipografía */
-h1 {
-    font-size: clamp(2rem, 2vw, 2.4rem);
-    font-weight: var(--weight-bold);
-    color: var(--gray-100);
-}
-
 body {
     font-family: var(--main-family), var(--secundary-family);
     margin: 0;
@@ -71,6 +64,8 @@ body {
 /* headings */
 h1 {
     font-size: clamp(2rem, 2vw, 2.4rem);
+    font-weight: var(--weight-bold);
+    color: var(--gray-100);
 }
 
 h2 {
