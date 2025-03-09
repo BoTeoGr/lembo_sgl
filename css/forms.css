@@ -247,7 +247,7 @@ body {
     color: var(--green-900);
     border: none;
     padding: 0.5rem 1rem; /* Añadí padding para darle más espacio */
-    font-size: 1rem;
+    font-size: 3rem;
     margin: 1rem;
     max-width: 300px; /* Limita el ancho máximo */
     word-wrap: break-word; /* Asegura que el texto se ajuste */

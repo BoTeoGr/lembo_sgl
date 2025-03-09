@@ -62,7 +62,7 @@ userForm.addEventListener('submit', function(e){
     // Redirigir después de que la alerta desaparezca
     setTimeout(() => {
         window.location.href = 'listar-sensores.html'; // Redirigir a la página
-    }, 1000); // Retraso de 5 segundos para permitir que la alerta sea visible
+    }, 5000); // Retraso de 5 segundos para permitir que la alerta sea visible
 });
 
 // Función para mostrar alertas en el formulario
