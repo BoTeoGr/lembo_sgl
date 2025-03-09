@@ -21,7 +21,7 @@ login__form.addEventListener('submit', function(e){
     }
 
     // Uso la funcion validarEmail para verificar que si sea un correo
-    if (!validarEmail(email)) {
+    if (!validarEmail(emailRecuperar)) {
         showAlert('El correo no es válido', true);
         return;
     }
@@ -34,9 +34,9 @@ login__form.addEventListener('submit', function(e){
 })
 
 // Esta funcion valida que sea un correo y que cumpla con el formato de uno
-function validarEmail(email) {
+function validarEmail(emailRecuperar) {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return regex.test(email);
+    return regex.test(emailRecuperar);
 }
 
 function showAlert(message, error = null){

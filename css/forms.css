@@ -90,13 +90,13 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 2rem auto;
     padding: 1rem;
 }
 
 .form,
-.form.form--height,
-.form.formMaxsize {
+.form.form--height {
     width: 60rem;
     height: 60rem;
     background-color: var(--white);
@@ -107,7 +107,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 8px var(--shadow-color);
 }
-.form.formMaxsize{
+.form.form--height{
     height: auto;
 }
 

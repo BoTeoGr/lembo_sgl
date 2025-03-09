@@ -34,7 +34,7 @@ loginForm.addEventListener('submit', function(e){
     }
     showAlert('Tu correo ha sido enviado satisfactoriamente');
     setTimeout(() => {
-        window.location.href = "../index.html"; // Asegúrate de que la ruta sea correcta
+        window.location.href = "../pages/actualizacion-contraseña.html"; // Asegúrate de que la ruta sea correcta
     }, 500);
 });
 
