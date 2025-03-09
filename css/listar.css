@@ -96,7 +96,7 @@
 .nav__dropdown-content {
 	display: none;
 	position: absolute;
-	background-color: #ffffff;
+	background-color: var(--white);
 	border: 1px solid var(--gray-40);
 	border-radius: 6px;
 	z-index: 1;
@@ -110,14 +110,14 @@
 	z-index: 1;
 	padding: 0.8rem;
 	border-radius: 6px;
-	background-color: #ffffff;
+	background-color: var(--white);
 	border: 1px solid var(--gray-40);
 	position: absolute;
 	right: 2rem;
 }
 
 .nav__dropdown-side-menu a {
-	font-size: 0.9rem;
+	font-size: 1rem;
 	font-weight: 500;
 	text-decoration: none;
 	color: var(--black);
@@ -139,7 +139,7 @@
 }
 
 .nav__dropdown-content a:hover {
-	background-color: #f0f0f0;
+	background-color: var(--gray-40);
 }
 
 body{

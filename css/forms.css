@@ -95,7 +95,8 @@ body {
 }
 
 .form,
-.form.form--height {
+.form.form--height,
+.form.formMaxsize {
     width: 60rem;
     height: 60rem;
     background-color: var(--white);
@@ -105,7 +106,9 @@ body {
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 8px var(--shadow-color);
-
+}
+.form.formMaxsize{
+    height: auto;
 }
 
 /* Enlaces */
@@ -135,6 +138,12 @@ body {
     text-align: center;
     font-weight: 600;
     margin: 0;
+}
+
+.userForm.form__container{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 /* Formulario */
@@ -219,12 +228,16 @@ body {
     .form {
         height: auto;
     }
+    .userForm.form__container{
+        gap: 2rem;
+    }
+
     .form.form--height {
         height: 60rem;
     }
     .form__row {
         flex-direction: column;
-        gap: 1rem;
+        gap: 2rem;
     }
 
     .header {

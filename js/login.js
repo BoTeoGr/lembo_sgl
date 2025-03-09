@@ -50,3 +50,7 @@ function showAlert(message, error = false){
 function readText(e){
     userLogin[e.target.id] = e.target.value;
 }
+
+
+
+

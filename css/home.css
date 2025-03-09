@@ -28,18 +28,27 @@
 	--gray-20: #f6f6f6;
 }
 
+p{
+	margin: 0;
+}
+
 body {
 	font-family: "Inter", sans-serif;
 	background-color: var(--green-200);
 	width: 100%;
-	height: 100%;
-}
-
-* {
-	box-sizing: border-box;
+	height: 100vh;
 	margin: 0;
 	padding: 0;
-	font-family: "Work Sans", serif;
+}
+
+html {
+    /* margin: 0; */
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
 }
 
 .nav {
@@ -83,6 +92,8 @@ body {
 	color: var(--gray-80);
 	display: flex;
 	align-items: center;
+	font-size: 1.6rem;
+	margin-right: 1rem;
 }
 
 .nav__link--selected {
@@ -102,31 +113,33 @@ body {
 .nav__dropdown-content {
 	display: none;
 	position: absolute;
-	background-color: #ffffff;
+	background-color: var(--white);
 	border: 1px solid var(--gray-40);
 	border-radius: 6px;
 	z-index: 1;
-	min-width: 11.25rem;
+	min-width: 18rem;
 }
 
 .nav__dropdown-side-menu {
+	width: 20rem;
 	display: none;
 	flex-direction: column;
 	gap: 0.3rem;
 	z-index: 1;
 	padding: 0.8rem;
 	border-radius: 6px;
-	background-color: #ffffff;
+	background-color: var(--white);
 	border: 1px solid var(--gray-40);
 	position: absolute;
 	right: 2rem;
 }
 
 .nav__dropdown-side-menu a {
-	font-size: 0.9rem;
+	font-size: 1.4rem;
 	font-weight: 500;
 	text-decoration: none;
 	color: var(--black);
+	margin: 1rem;
 }
 
 .nav__dropdown-side-menu hr {
@@ -136,7 +149,7 @@ body {
 
 .nav__dropdown-content a {
 	padding: 0.625rem;
-	font-size: 0.9rem;
+	font-size: 1.2rem;
 	color: var(--black);
 }
 
@@ -145,7 +158,7 @@ body {
 }
 
 .nav__dropdown-content a:hover {
-	background-color: #f0f0f0;
+	background-color: var(--gray-40);
 }
 
 .main {
@@ -206,10 +219,10 @@ body {
 .card__button {
 	background-color: var(--green-950);
 	color: var(--white);
-	padding: 0.6rem 1rem;
-	width: 9rem;
+	padding: 1.2rem 2.4rem;
+	width: 15rem;
 	border: none;
-	border-radius: 0.2rem;
+	border-radius: 0.6rem;
 	cursor: pointer;
 	transition: background-color 0.5s ease;
 	user-select: none;
@@ -362,7 +375,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-	height: 35vh;
+	height: auto;
 	flex: 0.8;
 }
 
@@ -418,7 +431,6 @@ body {
 	padding: 1rem;
 	flex: 0.5;
 	border-radius: 0.5rem;
-	height: 35vh;
 }
 
 .todo-list__title {
@@ -427,8 +439,8 @@ body {
 }
 
 .todo-list__checkbox {
-	width: 1.1rem;
-	height: 1.1rem;
+	width: 1.6rem;
+	height: 1.6rem;
 	accent-color: var(--green-950);
 	cursor: pointer;
 }
@@ -444,12 +456,13 @@ body {
 .todo-list__li {
 	display: flex;
 	align-items: center;
-	gap: 0.5rem;
+	gap: 1rem;
 }
 
 .footer {
 	background-color: var(--white);
 	width: 100%;
+	height: 4rem;
 	padding: 1rem;
 	border-radius: 0.5rem;
 	display: flex;
@@ -458,7 +471,7 @@ body {
 }
 
 .footer__text {
-	font-size: 0.9rem;
+	font-size: clamp(1rem, 1vw, 1.6rem);
 	color: var(--green-950);
 	font-weight: 500;
 }
@@ -469,11 +482,10 @@ body {
 }
 
 
-@media (max-width: 768px) {
+@media (width < 768px) {
 	.main {
 		padding: 0rem;
-		padding-top: 1rem;
-		padding-bottom: 1rem;
+		padding: 1rem;
 	}
 
 	.cards-container {
@@ -563,6 +575,7 @@ body {
 		flex-direction: column;
 		gap: 1rem;
 		bottom: 0;
+		height: auto;
 	}
 
 	.cultives-info {
@@ -574,7 +587,7 @@ body {
 	}
 }
 
-@media (max-width: 480px) {
+@media (width < 480px) {
 	.widget {
 		display: none;
 	}
@@ -590,5 +603,13 @@ body {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+	}
+
+	.card__button {
+		width: 100%;
+	}
+
+	.footer{
+		text-align: center;
 	}
 }
