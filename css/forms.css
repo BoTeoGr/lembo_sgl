@@ -101,13 +101,12 @@ body {
     background-color: var(--white);
     display: flex;
     flex-direction: column;
-    gap: 6rem;
+    gap: 3rem;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 8px var(--shadow-color);
 
 }
-
 
 /* Enlaces */
 .form__back-link {
@@ -241,6 +240,7 @@ body {
     display: flex;
     gap: 1rem;
     align-items: center;
+    margin: 2rem 0;
 }
 
 .status-item {

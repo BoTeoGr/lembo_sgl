@@ -10,74 +10,71 @@
 </head>
 
 <body>
-    <header>
-        <div class="logo-container">
-            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="sena-logo">
-            <h1>Actualizar insumo</h1>
-            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="sgal-logo">
+    <header class="header">
+        <div class="header__logo-container">
+            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="logo logo--sena">
+            <h1 class="header__title">Crear insumo</h1>
+            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="logo logo--sgal">
         </div>
     </header>
 
-    <main>
-        <div class="form-container">
-            <div class="back-link">
-                <a href="listar-insumos.html" class="volver">← Volver</a>
+    <main class="main-content">
+        <div class="form form--height">
+            <div class="form__back-link">
+                <a href="listar-insumos.html" class="button button--back">← Volver</a>
             </div>
 
-            <h2>Actualización del insumo</h2>
+            <h2 class="form__title">Actualización de insumo</h2>
 
-            <form>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" id="nombre" value="Fertilizante NPK" placeholder="Ingrese nombre del insumo">
+            <form class="userForm form__container">
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="nombre" class="form__label">Nombre</label>
+                        <input type="text" id="nombre" class="userName form__input" placeholder="Ingrese nombre del insumo" required>
                     </div>
-                    <div class="form-group">
-                        <label for="tipo">Tipo de insumo</label>
-                        <input type="text" id="tipo" value="Fertilizante" placeholder="Tipo de insumo">
+                    <div class="form__group">
+                        <label for="tipo" class="form__label">Tipo de insumo</label>
+                        <input type="text" id="tipo" class="userType form__input" placeholder="Tipo de insumo" required>
                     </div>
                 </div>
-                <div class="form-group full-width">
-                    <label for="imagen">Imagen</label>
-                    <input type="file" id="imagen" placeholder="Imagen" accept=".jpg, .jpeg, .png" class="input-img">
+                <div class="form__group form__group--full-width">
+                    <label for="imagen" class="form__label">Imagen</label>
+                    <input type="file" id="imagen" class="userImage form__image-input" accept=".jpg, .jpeg, .png" required>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="id">ID del insumo</label>
-                        <input type="text" id="id" value="FERT-001" placeholder="Ingrese el identificador del insumo"
-                            disabled>
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="id" class="form__label">ID del insumo</label>
+                        <input type="text" id="id" class="idInsumo form__input" placeholder="Ingrese el identificador del insumo" required>
                     </div>
-                    <div class="form-group">
-                        <label for="medida">Unidad de medida</label>
-                        <select name="medida" id="medida">
-                            <option value="default">Unidad de medida</option>
-                            <option value="kg">Kilogramos</option>
-                            <option value="l">Litros</option>
-                            <option value="m">Metros</option>
+                    <div class="form__group">
+                        <label for="medida" class="form__label">Unidad de medida </label>
+                        <select name="medida" id="medida" class="UserExtent form__select" required>
+                            <option value="default">Seleccione una Opcion</option>
+                            <option value="peso">peso</option>
+                            <option value="volumen">volumen</option>
+                            <option value="superficie">superficie</option>
+                            <option value="Concentración">Concentración</option>
                         </select>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="valor-unitario">Valor unitario</label>
-                        <input type="text" id="valor-unitario" value="15000"
-                            placeholder="Ingrese el valor unitario del insumo">
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="valor-unitario" class="form__label">Valor unitario</label>
+                        <input type="text" id="valor-unitario" class="userPrice form__input" placeholder="Ingrese el valor unitario del insumo" required>
                     </div>
-                    <div class="form-group">
-                        <label for="cantidad">Cantidad</label>
-                        <input type="text" id="cantidad" value="50" placeholder="Ingrese la cantidad de unidades">
+                    <div class="form__group">
+                        <label for="cantidad" class="form__label">Cantidad</label>
+                        <input type="text" id="cantidad" class="userAmount form__input" placeholder="Ingrese la cantidad de unidades" required>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="valor-total">Valor total</label>
-                        <input type="text" id="valor-total" value="750000"
-                            placeholder="Ingrese el valor total del insumo">
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="valor-total" class="form__label">Valor total</label>
+                        <input type="text" id="valor-total" class="totalValue form__input" placeholder="Ingrese el valor total del insumo" required>
                     </div>
-                    <div class="form-group">
-                        <label for="descripcion">Descripción</label>
-                        <textarea id="descripcion"
-                            placeholder="Ingrese descripción del cultivo">Fertilizante NPK de liberación controlada, ideal para cultivos de maíz y arroz.</textarea>
+                    <div class="form__group">
+                        <label for="descripcion" class="form__label">Descripción</label>
+                        <textarea id="descripcion" class="userDescription form__textarea" placeholder="Ingrese descripción del cultivo" required></textarea>
                     </div>
                 </div>
                 <div class="form-group full-width">
@@ -90,9 +87,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="button-container">
-                    <button type="button" class="submit-button"
-                        onclick="window.location.href='listar-cultivos.html';">Actualizar insumo</button>
+                <div class="form__button-container">
+                    <button class="button button--submit"
+                        onclick="window.location.href='listar-insumos.html';">Actualizar insumo</button>
                 </div>
             </form>
         </div>
