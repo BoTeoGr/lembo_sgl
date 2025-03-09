@@ -4,66 +4,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Ciclo de cultivo</title>
+    <title>Crear ciclo de cultivo</title>
     <link rel="stylesheet" href="../css/forms.css">
     <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
 </head>
 
 <body>
-    <header>
-        <div class="logo-container">
-            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="sena-logo">
-            <h1>Crear ciclo de cultivo</h1>
-            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="sgal-logo">
+
+    <header class="header">
+        <div class="header__logo-container">
+            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="logo logo--sena">
+            <h1 class="header__title">Crear ciclo de cultivo</h1>
+            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="logo logo--sgal">
         </div>
     </header>
 
-    <main>
-        <div class="form-container">
-            <div class="back-link">
-                <a href="listar-ciclo-cultivos.html" class="volver">← Volver</a>
+    <main class="main-content">
+        <div class="form">
+            <div class="form__back-link">
+                <a href="listar-ciclo-cultivos.html" class="button button--back">← Volver</a>
             </div>
 
-            <h2>Creación del ciclo de cultivo</h2>
+            <h2 class="form__title">Creación del ciclo de cultivo</h2>
 
-            <form>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" id="nombre" placeholder="Ingrese nombre del ciclo de cultivo" title="Ingrese nombre del ciclo de cultivo">
+            <form class="userForm form__container">
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="nombre" class="form__label">Nombre</label>
+                        <input type="text" id="nombre" class="userName form__input" placeholder="Ingrese nombre del ciclo de cultivo" title="Ingrese nombre del ciclo de cultivo" required>
                     </div>
-                    <div class="form-group">
-                        <label for="id">ID del ciclo de cultivo</label>
-                        <input type="text" id="id" placeholder="Ingrese el identificador del ciclo de cultivo" title="Ingrese el identificador del ciclo de cultivo">
-                    </div>
-                </div>
-                <div class="form-group full-width">
-                    <label for="descripcion">Descripción</label>
-                    <textarea id="descripcion" placeholder="Ingrese descripción del ciclo de cultivo" class="txt-area-full"></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="id">Periodo - Inicio</label>
-                        <input type="date" id="id">
-                    </div>
-                    <div class="form-group">
-                        <label for="medida">Periodo - Final</label>
-                        <input type="date" id="id">
+                    <div class="form__group">
+                        <label for="id" class="form__label">ID del ciclo de cultivo</label>
+                        <input type="text" id="id" class="userId form__input" placeholder="Ingrese el identificador del ciclo de cultivo" title="Ingrese el identificador del ciclo de cultivo" required>
                     </div>
                 </div>
-                <div class="form-group full-width">
-                    <label for="descripcion">Novedades</label>
-                    <textarea id="novedades" placeholder="Ingrese novedades del ciclo de cultivo" class="txt-area-full"></textarea>
+
+                <div class="form__group form__group--full-width">
+                    <label for="descripcion" class="form__label">Descripción</label>
+                    <textarea id="descripcion" class="userDescription form__textarea form__textarea--full-width" placeholder="Ingrese descripción del ciclo de cultivo" required></textarea>
                 </div>
 
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="periodo-inicio" class="form__label">Periodo - Inicio</label>
+                        <input type="date" id="periodo-inicio" class="userDateInicio form__input" required>
+                    </div>
+                    <div class="form__group">
+                        <label for="periodo-final" class="form__label">Periodo - Final</label>
+                        <input type="date" id="periodo-final" class="userDateFinal form__input" required>
+                    </div>
+                </div>
 
+                <div class="form__group form__group--full-width">
+                    <label for="novedades" class="form__label">Novedades</label>
+                    <textarea id="novedades" class="UserNovedades form__textarea form__textarea--full-width" placeholder="Ingrese novedades del ciclo de cultivo" required></textarea>
+                </div>
 
-                <div class="button-container">
-                    <button type="submit" class="submit-button">Crear ciclo de cultivo</button>
+                <div class="form__button-container">
+                    <button type="submit" class="button button--submit">Crear ciclo de cultivo</button>
                 </div>
             </form>
         </div>
     </main>
+
+    <script src="../js/crear-ciclo-cultivo.js"></script>
+
 </body>
 
 </html>
