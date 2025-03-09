@@ -168,12 +168,12 @@
 						
 					</div>
 					<div class="element-display__field-container">
-						<label for="tipo-sensor" class="element-display__label">Tipo de sensor</label>
+						<label for="ubicacion-sensor" class="element-display__label">Ubicación</label>
 						<input
 							type="text"
-							name="tipo-sensor"
-							id="tipo-sensor"
-							value="Sensor de temperatura digital"
+							name="ubicacion-sensor"
+							id="ubicacion-sensor"
+							value="Lote A"
 							disabled
 							class="element-display__input"
 						/>
@@ -185,6 +185,17 @@
 							name="tiempo-escaneo"
 							id="tiempo-escaneo"
 							value="1 muestra cada 5 segundos (0.2 Hz)"
+							disabled
+							class="element-display__input"
+						/>
+					</div>
+					<div class="element-display__field-container colspan-2">
+						<label for="tipo-sensor" class="element-display__label">Tipo de sensor</label>
+						<input
+							type="text"
+							name="tipo-sensor"
+							id="tipo-sensor"
+							value="Sensor de temperatura digital"
 							disabled
 							class="element-display__input"
 						/>
@@ -249,80 +260,78 @@
 					</thead>
 					<tbody class="table__body">
 						<tr class="table__row">
-							<td class="table__cell">Fertilizante NPK 15-15-15</td>
-							<td class="table__cell">1</td>
-							<td class="table__cell">FERT-001</td>
-							<td class="table__cell">Zona 1</td>
-							<td class="table__cell table__cell--status">
+							<td class="table__cell" data-Label="Nombre">Sensor de Humedad</td>
+							<td class="table__cell" data-Label="ID">1</td>
+							<td class="table__cell" data-Label="Tipo">Humedad del Suelo</td>
+							<td class="table__cell" data-Label="Ubicación">Lote A</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
 								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
-								Deshabilitado: &nbsp;<span class="table__status table__status"></span>
+								Deshabilitado: &nbsp;<span class="table__status"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell">Herbicida Glifosato</td>
-							<td class="table__cell">2</td>
-							<td class="table__cell">HERB-GLY-500</td>
-							<td class="table__cell">Zona 1</td>
-							<td class="table__cell table__cell--status">
+							<td class="table__cell" data-Label="Nombre">Sensor de Temperatura</td>
+							<td class="table__cell" data-Label="ID">2</td>
+							<td class="table__cell" data-Label="Tipo">Temperatura Ambiente</td>
+							<td class="table__cell" data-Label="Ubicación">Invernadero 1</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
 								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
-								Deshabilitado: &nbsp;<span class="table__status table__status"></span>
+								Deshabilitado: &nbsp;<span class="table__status"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell">Insecticida Cipermetrina</td>
-							<td class="table__cell">3</td>
-							<td class="table__cell">INS-CYP-250</td>
-							<td class="table__cell">Zona 1</td>
-							<td class="table__cell table__cell--status">
+							<td class="table__cell" data-Label="Nombre">Sensor de pH</td>
+							<td class="table__cell" data-Label="ID">3</td>
+							<td class="table__cell" data-Label="Tipo">Nivel de pH</td>
+							<td class="table__cell" data-Label="Ubicación">Lote C</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								Habilitado: &nbsp;<span class="table__status table__status"></span>&nbsp;
+								Deshabilitado: &nbsp;<span class="table__status table__status--disabled"></span>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">Sensor de CO2</td>
+							<td class="table__cell" data-Label="ID">4</td>
+							<td class="table__cell" data-Label="Tipo">Concentración de CO2</td>
+							<td class="table__cell" data-Label="Ubicación">Invernadero 2</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								Habilitado: &nbsp;<span class="table__status"></span>&nbsp;
+								Deshabilitado: &nbsp;<span class="table__status table__status--disabled"></span>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">Sensor de Lluvia</td>
+							<td class="table__cell" data-Label="ID">5</td>
+							<td class="table__cell" data-Label="Tipo">Detección de Lluvia</td>
+							<td class="table__cell" data-Label="Ubicación">Lote B</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
 								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
-								Deshabilitado: &nbsp;<span class="table__status table__status"></span>
+								Deshabilitado: &nbsp;<span class="table__status"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell">Concentrado Bovino</td>
-							<td class="table__cell">4</td>
-							<td class="table__cell">ALM-BO-2023</td>
-							<td class="table__cell">Zona 1</td>
-							<td class="table__cell table__cell--status">
-								Habilitado: &nbsp;<span class="table__status table__status"></span>&nbsp; Deshabilitado: &nbsp;<span
-									class="table__status table__status--disabled"
-								></span>
+							<td class="table__cell" data-Label="Nombre">Sensor de Viento</td>
+							<td class="table__cell" data-Label="ID">6</td>
+							<td class="table__cell" data-Label="Tipo">Velocidad del Viento</td>
+							<td class="table__cell" data-Label="Ubicación">Lote D</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								Habilitado: &nbsp;<span class="table__status"></span>&nbsp;
+								Deshabilitado: &nbsp;<span class="table__status table__status--disabled"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell">Sulfato de Amonio</td>
-							<td class="table__cell">5</td>
-							<td class="table__cell">FERT-SULF-2023</td>
-							<td class="table__cell">Zona 1</td>
-							<td class="table__cell table__cell--status">
-								Habilitado: &nbsp;<span class="table__status table__status"></span>&nbsp; Deshabilitado: &nbsp;<span
-									class="table__status table__status--disabled"
-								></span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell">Antibiótico Bovino</td>
-							<td class="table__cell">6</td>
-							<td class="table__cell">MED-ANTIB-500</td>
-							<td class="table__cell">Zona 1</td>
-							<td class="table__cell table__cell--status">
-								Habilitado: &nbsp;<span class="table__status table__status"></span>&nbsp; Deshabilitado: &nbsp;<span
-									class="table__status table__status--disabled"
-								></span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell">Aditivo Probiótico</td>
-							<td class="table__cell">7</td>
-							<td class="table__cell">SUP-PROB-2023</td>
-							<td class="table__cell">Zona 1</td>
-							<td class="table__cell table__cell--status">
+							<td class="table__cell" data-Label="Nombre">Sensor de Luz</td>
+							<td class="table__cell" data-Label="ID">7</td>
+							<td class="table__cell" data-Label="Tipo">Intensidad Luminosa</td>
+							<td class="table__cell" data-Label="Ubicación">Finca Experimental</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
 								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
 								Deshabilitado: &nbsp;<span class="table__status"></span>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				
 				<p class="table__count">
 					Cantidad neta de sensores: <span id="elements-count-cout" class="table__count-number">7</span>
 				</p>
