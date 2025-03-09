@@ -63,7 +63,7 @@ html {
 .nav__user-image {
 	width: 3rem;
 	height: 3rem;
-	border-radius: 9999px;
+	border-radius: 100%;
 	margin-left: 1rem;
 	object-fit: cover;
 }
@@ -115,7 +115,7 @@ html {
 	position: absolute;
 	background-color: var(--white);
 	border: 1px solid var(--gray-40);
-	border-radius: 6px;
+	border-radius: 0.6rem;
 	z-index: 1;
 	min-width: 18rem;
 }
@@ -127,7 +127,7 @@ html {
 	gap: 0.3rem;
 	z-index: 1;
 	padding: 0.8rem;
-	border-radius: 6px;
+	border-radius: 0.6rem;
 	background-color: var(--white);
 	border: 1px solid var(--gray-40);
 	position: absolute;
@@ -148,9 +148,10 @@ html {
 }
 
 .nav__dropdown-content a {
-	padding: 0.625rem;
-	font-size: 1.2rem;
+	padding: 1rem;
+	font-size: 1.4rem;
 	color: var(--black);
+	width: 100%;
 }
 
 .nav__item--dropdown:hover .nav__dropdown-content {

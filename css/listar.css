@@ -77,6 +77,8 @@
 	color: var(--gray-80);
 	display: flex;
 	align-items: center;
+    font-size: 16px;
+	margin-right: 10px;
 }
 
 .nav__link--selected {
@@ -100,10 +102,11 @@
 	border: 1px solid var(--gray-40);
 	border-radius: 6px;
 	z-index: 1;
-	min-width: 11.25rem;
+	min-width: 180px;
 }
 
 .nav__dropdown-side-menu {
+    width: 200px;
 	display: none;
 	flex-direction: column;
 	gap: 0.3rem;
@@ -117,10 +120,11 @@
 }
 
 .nav__dropdown-side-menu a {
-	font-size: 1rem;
+	font-size: 14px;
 	font-weight: 500;
 	text-decoration: none;
 	color: var(--black);
+    margin: 10px;
 }
 
 .nav__dropdown-side-menu hr {
@@ -129,7 +133,7 @@
 }
 
 .nav__dropdown-content a {
-	padding: 0.625rem;
+	padding: 10px;
 	font-size: 0.9rem;
 	color: var(--black);
 }
