@@ -149,7 +149,7 @@
                     <!-- Image Section -->
                     <div class="element-display__image">
                         <img
-                            src="https://www.rocalba.es/blog/wp-content/uploads/cultivos-cosecha-rapida-950x500.jpg"
+                            src="https://dimensionst.com/wp-content/uploads/2023/05/DIOMEDES.jpg"
                             alt="imagen-display"
                         />
                     </div>
@@ -186,18 +186,18 @@
                         
                     </div>
                     <div class="element-display__field-container">
-                        <label for="numero-documento" class="element-display__label">Tamaño</label>
+                        <label for="tipo-usuario" class="element-display__label">Tipo de Usuario</label>
                         <input
-                            type="number"
-                            name="numero-documento"
-                            id="numero-documento"
-                            value="4324324"
+                            type="text"
+                            name="tipo-usuario"
+                            id="tipo-usuario"
+                            value="Administrador"
                             disabled
                             class="element-display__input"
                         />
                     </div>
                     <div class="element-display__field-container">
-                        <label for="numero-telefono" class="element-display__label">Tamaño</label>
+                        <label for="numero-telefono" class="element-display__label">Teléfono</label>
                         <input
                             type="tel"
                             name="numero-telefono"
@@ -268,84 +268,71 @@
 					</thead>
 					<tbody class="table__body">
 						<tr class="table__row">
-							<td class="table__cell">Fertilizante NPK 15-15-15</td>
-							<td class="table__cell">Fertilizante</td>
-							<td class="table__cell">FERT-001</td>
-							<td class="table__cell table__cell--status">
-								Habilitado: &nbsp;<span
-									class="table__status table__status--enabled"
-								></span
-								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
+							<td class="table__cell" data-Label="Nombre">Juan Pérez</td>
+							<td class="table__cell" data-Label="ID">1</td>
+							<td class="table__cell" data-Label="Tipo de Usuario">Administrador</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
+								Deshabilitado: &nbsp;<span class="table__status"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell">Herbicida Glifosato</td>
-							<td class="table__cell">Plaguicida</td>
-							<td class="table__cell">HERB-GLY-500</td>
-							<td class="table__cell table__cell--status">
-								Habilitado: &nbsp;<span
-									class="table__status table__status--enabled"
-								></span
-								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
+							<td class="table__cell" data-Label="Nombre">María Gómez</td>
+							<td class="table__cell" data-Label="ID">2</td>
+							<td class="table__cell" data-Label="Tipo de Usuario">Operador</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
+								Deshabilitado: &nbsp;<span class="table__status"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell">Insecticida Cipermetrina</td>
-							<td class="table__cell">Plaguicida</td>
-							<td class="table__cell">INS-CYP-250</td>
-							<td class="table__cell table__cell--status">
-								Habilitado: &nbsp;<span
-									class="table__status table__status--enabled"
-								></span
-								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
+							<td class="table__cell" data-Label="Nombre">Carlos Ramírez</td>
+							<td class="table__cell" data-Label="ID">3</td>
+							<td class="table__cell" data-Label="Tipo de Usuario">Supervisor</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								Habilitado: &nbsp;<span class="table__status table__status"></span>&nbsp;
+								Deshabilitado: &nbsp;<span class="table__status table__status--disabled"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell">Concentrado Bovino</td>
-							<td class="table__cell">Alimento</td>
-							<td class="table__cell">ALM-BO-2023</td>
-							<td class="table__cell table__cell--status">
+							<td class="table__cell" data-Label="Nombre">Ana Torres</td>
+							<td class="table__cell" data-Label="ID">4</td>
+							<td class="table__cell" data-Label="Tipo de Usuario">Cliente</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
 								Habilitado: &nbsp;<span class="table__status"></span>&nbsp;
-								Deshabilitado: &nbsp;<span
-									class="table__status table__status--disabled"
-								></span>
+								Deshabilitado: &nbsp;<span class="table__status table__status--disabled"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell">Sulfato de Amonio</td>
-							<td class="table__cell">Fertilizante</td>
-							<td class="table__cell">FERT-SULF-2023</td>
-							<td class="table__cell table__cell--status">
+							<td class="table__cell" data-Label="Nombre">Luis Fernández</td>
+							<td class="table__cell" data-Label="ID">5</td>
+							<td class="table__cell" data-Label="Tipo de Usuario">Proveedor</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
+								Deshabilitado: &nbsp;<span class="table__status"></span>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">Sofía Herrera</td>
+							<td class="table__cell" data-Label="ID">6</td>
+							<td class="table__cell" data-Label="Tipo de Usuario">Cliente</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
 								Habilitado: &nbsp;<span class="table__status"></span>&nbsp;
-								Deshabilitado: &nbsp;<span
-									class="table__status table__status--disabled"
-								></span>
+								Deshabilitado: &nbsp;<span class="table__status table__status--disabled"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell">Antibiótico Bovino</td>
-							<td class="table__cell">Medicamento</td>
-							<td class="table__cell">MED-ANTIB-500</td>
-							<td class="table__cell table__cell--status">
-								Habilitado: &nbsp;<span class="table__status"></span>&nbsp;
-								Deshabilitado: &nbsp;<span
-									class="table__status table__status--disabled"
-								></span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell">Aditivo Probiótico</td>
-							<td class="table__cell">Suplemento</td>
-							<td class="table__cell">SUP-PROB-2023</td>
-							<td class="table__cell table__cell--status">
-								Habilitado: &nbsp;<span
-									class="table__status table__status--enabled"
-								></span
-								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
+							<td class="table__cell" data-Label="Nombre">Diego Martínez</td>
+							<td class="table__cell" data-Label="ID">7</td>
+							<td class="table__cell" data-Label="Tipo de Usuario">Técnico</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
+								Deshabilitado: &nbsp;<span class="table__status"></span>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				
 				<p class="table__count">
 					Cantidad neta de usuarios:
 					<span id="elements-count-cout" class="table__count-number">7</span>

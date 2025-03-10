@@ -455,3 +455,16 @@ animation-delay: .3s;
     }
 }
 
+.error, 
+.correct  {
+    color: rgb(185, 0, 0);
+    border: none;
+    font-size: clamp(1.2rem, 1vw, 1.6rem); /* Ajusta el tamaño de fuente según sea necesario */
+    margin: 0;
+    text-align: center;
+}
+
+.correct {
+    color: var(--green-900);
+}
+

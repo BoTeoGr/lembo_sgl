@@ -90,8 +90,10 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin: 2rem auto;
+    align-items: center;
+    /* margin: 1rem auto; */
     padding: 1rem;
+    min-height: calc(100vh - 60px); /* Ajusta 80px según la altura del navbar */
 }
 
 .form,
@@ -101,13 +103,14 @@ body {
     background-color: var(--white);
     display: flex;
     flex-direction: column;
-    gap: 6rem;
+    gap: 2rem;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 8px var(--shadow-color);
-
 }
-
+.form.form--height{
+    height: auto;
+}
 
 /* Enlaces */
 .form__back-link {
@@ -136,6 +139,12 @@ body {
     text-align: center;
     font-weight: 600;
     margin: 0;
+}
+
+.userForm.form__container{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 /* Formulario */
@@ -180,8 +189,11 @@ body {
 
 .form__input--size{
     display: flex;
-    height: 5.6rem;
+    height: 5rem;
     width: 100%;
+    border: 2px solid var(--gray-60);
+    border-radius: 0.6rem;
+    /* margin-bottom: 1rem; */
 }
 
 .form__textarea {
@@ -220,12 +232,16 @@ body {
     .form {
         height: auto;
     }
-    .form.form--height {
-        height: 60rem;
+    .userForm.form__container{
+        gap: 2rem;
     }
+
+    /* .form.form--height {
+        height: 60rem;
+    } */
     .form__row {
         flex-direction: column;
-        gap: 1rem;
+        gap: 2rem;
     }
 
     .header {
@@ -241,6 +257,7 @@ body {
     display: flex;
     gap: 1rem;
     align-items: center;
+    margin: 1rem 0;
 }
 
 .status-item {
@@ -254,24 +271,15 @@ body {
     accent-color: var(--green-950);
 }
 
-.error {
+.error, 
+.correct  {
     color: rgb(185, 0, 0);
     border: none;
-    padding: 0.5rem 1rem; /* Añadí padding para darle más espacio */
-    font-size: 1rem;
-    margin: 1rem;
-    max-width: 300px; /* Limita el ancho máximo */
-    word-wrap: break-word; /* Asegura que el texto se ajuste */
-    border-radius: 5px; /* Redondea las esquinas */
+    font-size: clamp(1.2rem, 1vw, 1.6rem); /* Ajusta el tamaño de fuente según sea necesario */
+    margin: 0;
+    text-align: center;
 }
 
 .correct {
     color: var(--green-900);
-    border: none;
-    padding: 0.5rem 1rem; /* Añadí padding para darle más espacio */
-    font-size: 3rem;
-    margin: 1rem;
-    max-width: 300px; /* Limita el ancho máximo */
-    word-wrap: break-word; /* Asegura que el texto se ajuste */
-    border-radius: 5px; /* Redondea las esquinas */
 }

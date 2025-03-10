@@ -25,12 +25,17 @@
                 </header>
                 <form class="login__form">
                     <div class="login__fields">
-                        <input type="email" placeholder="Correo electrónico" class="login__input" required>
-                        <input type="password" placeholder="Contraseña" class="login__input" required>    
+                        <input type="email" id="email" placeholder="Correo electrónico" class="login__input" >
+                        <!-- <input type="email" id="email" placeholder="Correo electrónico" class="login__input" required> -->
+
+                        <input type="password" id="password" placeholder="Contraseña" class="login__input" minlength="8" maxlength="16">
+                        <!-- <input type="password" id="password" placeholder="Contraseña" class="login__input" 
+                        required minlength="8" maxlength="16"> -->
                     </div>
                     <div class="login__actions">
                         <a href="../pages/login-olvide-contraseña.html" class="login__link">¿Olvidaste tu contraseña?</a>
-                        <button  class="login__button" onclick="window.location.href='pages/home.html'">Iniciar sesión</button>
+                        <!-- <button  class="login__button" onclick="window.location.href='pages/home.html'">Iniciar sesión</button> -->
+                        <button  class="login__button" type="submit">Iniciar sesión</button>
                     </div>
                 </form>
             </section>
@@ -51,7 +56,7 @@
     <!-- loader -->
 
     <script src="js/effect-loader.js"></script>
-
+    <script src="js/login.js"></script>
     
 </body>
 </html>
