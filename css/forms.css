@@ -93,6 +93,7 @@ body {
     align-items: center;
     margin: 2rem auto;
     padding: 1rem;
+    min-height: calc(100vh - 80px); /* Ajusta 80px según la altura del navbar */
 }
 
 .form,
@@ -188,8 +189,11 @@ body {
 
 .form__input--size{
     display: flex;
-    height: 5.6rem;
+    height: 5rem;
     width: 100%;
+    border: 2px solid var(--gray-60);
+    border-radius: 0.6rem;
+    /* margin-bottom: 1rem; */
 }
 
 .form__textarea {
@@ -232,9 +236,9 @@ body {
         gap: 2rem;
     }
 
-    .form.form--height {
+    /* .form.form--height {
         height: 60rem;
-    }
+    } */
     .form__row {
         flex-direction: column;
         gap: 2rem;

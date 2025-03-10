@@ -1,104 +1,80 @@
-// Bloquear números en el campo de nombre
-document.querySelectorAll("#nombre").forEach(function(element) {
-    element.addEventListener("keydown", function (e) {
-        if (e.key >= "0" && e.key <= "9") {
-            e.preventDefault();
-            console.log("Número bloqueado en el campo");
-        }
-    });
-});
-
-// Bloquear Enter en el botón para evitar recargas accidentales
-document.querySelector(".button--submit").addEventListener("keydown", function (e) {
-    if (e.key === "Enter") {
-        e.preventDefault();
-        console.log("Enter bloqueado en el botón de envío");
-    }
-});
-
-// Objeto para almacenar los datos del usuario
-const userData = {
-    userName: "",
-    userId: "",
-    userDescription: "",
-    userDateInicio: "",
-    userDateFinal: "",
-    UserNovedades: "",
-    userStatus: ""
+// Objeto para almacenar los datos del formulario
+const cicloCultivo = {
+    nombre: "",
+    id: "",
+    descripcion: "",
+    periodoInicio: "",
+    periodoFinal: "",
+    novedades: "",
+    estado: "habilitado" // Valor por defecto
 };
 
-// Selección del formulario
-const userForm = document.querySelector("form");
+// Mapeo entre los IDs de los inputs y las propiedades del objeto cicloCultivo
+const mapeoInputs = {
+    "nombre": "nombre",
+    "id": "id",
+    "descripcion": "descripcion",
+    "periodo-inicio": "periodoInicio",
+    "periodo-final": "periodoFinal",
+    "novedades": "novedades"
+};
 
-// Verificar que el formulario exista antes de agregar eventos
-if (userForm) {
-    const userName = document.querySelector("#nombre");
-    const userId = document.querySelector("#id");
-    const userDescription = document.querySelector("#descripcion");
-    const userDateInicio = document.querySelector("#periodo-inicio");
-    const userDateFinal = document.querySelector("#periodo-final");
-    const UserNovedades = document.querySelector("#novedades");
-    const userStatusRadios = document.querySelectorAll("input[name='estado-habilitado']");
+// Seleccionar elementos del formulario
+const form = document.querySelector('.userForm');
+const estadoRadios = document.querySelectorAll('input[name="estado-habilitado"]');
 
-    // Agregar eventos para capturar los datos
-    userName.addEventListener("input", readText);
-    userId.addEventListener("input", readText);
-    userDescription.addEventListener("input", readText);
-    userDateInicio.addEventListener("input", readText);
-    userDateFinal.addEventListener("input", readText);
-    UserNovedades.addEventListener("input", readText);
-    userStatusRadios.forEach(radio => radio.addEventListener("change", readText));
+// Evento para capturar datos en tiempo real
+form.addEventListener('input', (e) => {
+    const propiedad = mapeoInputs[e.target.id]; // Buscar la propiedad en el mapeo
+    if (propiedad) {
+        cicloCultivo[propiedad] = e.target.value.trim();
+        console.log(cicloCultivo); // Ver el objeto actualizado en consola
+    }
+});
 
-    // Validar y enviar el formulario
-    userForm.addEventListener("submit", function (e) {
-        e.preventDefault(); // Prevenir la recarga de la página
-
-        const { userName, userId, userDescription, userDateInicio, userDateFinal, UserNovedades, userStatus } = userData;
-
-        // Validación de los campos
-        if (!userName || !userId || !userDescription || !userDateInicio || !userDateFinal || !UserNovedades || !userStatus) {
-            showAlert("Todos los campos son obligatorios", true);
-            return;
-        }
-
-        // Mostrar mensaje de éxito
-        showAlert("Tus datos han sido enviados.");
-
-        // Redirigir después de mostrar el mensaje
-        setTimeout(() => {
-            window.location.href = "listar-ciclo-cultivos.html"; // Asegúrate de que la ruta sea correcta
-        }, 1000);
+// Evento para capturar el estado seleccionado
+estadoRadios.forEach(radio => {
+    radio.addEventListener('change', (e) => {
+        cicloCultivo.estado = e.target.value;
+        console.log("Estado seleccionado:", cicloCultivo.estado);
     });
-}
+});
 
-// Función para mostrar alertas en el formulario
-function showAlert(message, error = null) {
-    const alert = document.createElement('P');
-    alert.textContent = message;
-    alert.classList.add('alert'); // Añadir clase 'alert'
-
-    if (error) {
-        alert.classList.add('error');
-    } else {
-        alert.classList.add('correct');
+// 🚫 Bloquear teclas que no sean números en el campo ID
+document.querySelector('#id').addEventListener('keydown', (e) => {
+    const teclasPermitidas = ["Backspace", "Tab", "Enter", "ArrowLeft", "ArrowRight", "Delete"];
+    if (!/^[0-9]$/.test(e.key) && !teclasPermitidas.includes(e.key)) {
+        e.preventDefault(); // Bloquear la tecla
     }
-    userForm.appendChild(alert);
+});
 
-    // Eliminar la alerta después de 5 segundos
+// Evento para validar y guardar los datos al enviar el formulario
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Validaciones
+    if (!cicloCultivo.nombre) return showAlert("El nombre del ciclo de cultivo es obligatorio.", true);
+    if (!cicloCultivo.id || isNaN(cicloCultivo.id)) return showAlert("El ID debe ser un número válido.", true);
+    if (!cicloCultivo.descripcion) return showAlert("La descripción no puede estar vacía.", true);
+    if (!cicloCultivo.periodoInicio || !cicloCultivo.periodoFinal) return showAlert("Las fechas de inicio y final son obligatorias.", true);
+    if (new Date(cicloCultivo.periodoInicio) > new Date(cicloCultivo.periodoFinal)) return showAlert("La fecha de inicio no puede ser mayor que la fecha final.", true);
+    if (!cicloCultivo.novedades) return showAlert("Debe ingresar novedades del ciclo de cultivo.", true);
+
+    // Si todo es válido, mostrar éxito y redirigir
+    showAlert("Ciclo de cultivo actualizado correctamente.");
     setTimeout(() => {
-        alert.remove();
-    }, 5000);
-}
+        window.location.href = "../pages/listar-ciclo-cultivos.html";
+    }, 1000);
 
-// Función para capturar los valores de los inputs
-function readText(e) {
-    const field = e.target.id || e.target.name; // Obtener el id o name del input
+    // console.log("Datos finales del ciclo de cultivo:", cicloCultivo);
+});
 
-    if (field === 'estado-habilitado') {
-        userData.userStatus = e.target.value;
-    } else if (field in userData) {
-        userData[field] = e.target.value;
-    }
-
-    console.log(userData); // Ver los valores almacenados en userData para asegurarte de que se actualicen correctamente
+// Función para mostrar alertas personalizadas
+function showAlert(message, error = false) {
+    const alert = document.createElement('p');
+    alert.textContent = message;
+    alert.classList.add('alert', error ? 'error' : 'correct');
+    
+    form.appendChild(alert);
+    setTimeout(() => alert.remove(), 5000);
 }
