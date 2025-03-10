@@ -7,7 +7,7 @@ document.querySelector(".userName").addEventListener("keydown", function (e) {
 });
 
 // Seleccionamos todos los elementos con las clases .userPrice, .userAmount y .totalValue
-document.querySelectorAll(".userPrice, .userAmount, .totalValue").forEach(function(input) {
+document.querySelectorAll(".userPrice, .userAmount, .totalValue, .idInsumo").forEach(function(input) {
     input.addEventListener("keydown", function (e) {
         // Verificamos si la tecla presionada no es un número ni las teclas permitidas (Backspace o Tab)
         if (!(e.key >= '0' && e.key <= '9') && e.key !== "Backspace" && e.key !== "Tab") {
