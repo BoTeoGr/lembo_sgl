@@ -9,6 +9,13 @@ document.querySelectorAll(".userName, .typeCrop").forEach(function(element) {
     });
 });
 
+document.querySelector(".idCrop").addEventListener("keydown", function (e) {
+    if (isNaN(e.key) && e.key !== "Backspace" && e.key !== "Tab") {
+        e.preventDefault();
+        console.log("Letra bloqueada")
+    }
+});
+
 // Bloquear Enter en el botón para evitar recargas accidentales
 document.querySelector(".button--submit").addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
