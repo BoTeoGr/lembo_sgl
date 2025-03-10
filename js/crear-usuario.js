@@ -38,6 +38,7 @@ document.querySelector(".userTel").addEventListener("keydown", function(e){
   
 })
 
+// Objeto para almacenar datos del usuario
 const userData = {
     userTypeId: '',
     userName: '',
@@ -50,6 +51,7 @@ const userData = {
 
 const userForm = document.querySelector('.userForm');
 
+// Definir variables sin espacios incorrectos
 const userTypeId = document.querySelector('.userTypeId');
 const userName = document.querySelector('.userName');
 const userId = document.querySelector('.userId');
@@ -58,7 +60,7 @@ const userEmail = document.querySelector('.userEmail');
 const userConfirmEmail = document.querySelector('.userConfirmEmail');
 const userRol = document.querySelector('.userRol');
 
-
+// Agregar eventos sin errores de nombres
 userTypeId.addEventListener('change', readText);
 userName.addEventListener('input', readText);
 userId.addEventListener('input', readText);
@@ -67,8 +69,9 @@ userEmail.addEventListener('input', readText);
 userConfirmEmail.addEventListener('input', readText);
 userRol.addEventListener('change', readText);
 
+// Función para validar el formulario antes de enviarlo
 userForm.addEventListener('submit', function(e){
-    e.preventDefault(); 
+    e.preventDefault(); // Prevenir la recarga de la página
     const { userTypeId, userName, userId, userTel, userEmail, userConfirmEmail, userRol } = userData;
     if (userTypeId === '' || userName === '' || userId === '' || userTel === '' || userEmail === '' || userConfirmEmail=== '' || userRol === '') {
         showAlert('Todos los campos son obligatorios', true); 
