@@ -418,6 +418,7 @@ body {
 	flex: 0.5;
 	border-radius: 0.5rem;
 	height: 33vh;
+	overflow: auto;
 }
 
 .todo-list__title {
@@ -428,6 +429,8 @@ body {
 .todo-list__checkbox {
 	width: 1.1rem;
 	height: 1.1rem;
+	/* Contracción de elemento */
+	flex-shrink: 0;
 	accent-color: var(--green-950);
 	cursor: pointer;
 }
