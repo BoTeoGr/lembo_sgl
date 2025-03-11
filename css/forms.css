@@ -91,9 +91,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 2rem auto;
+    /* margin: 1rem auto; */
     padding: 1rem;
-    min-height: calc(100vh - 80px); /* Ajusta 80px según la altura del navbar */
+    min-height: calc(100vh - 60px); /* Ajusta 80px según la altura del navbar */
 }
 
 .form,
@@ -103,7 +103,7 @@ body {
     background-color: var(--white);
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2rem;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 8px var(--shadow-color);
@@ -144,7 +144,7 @@ body {
 .userForm.form__container{
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 /* Formulario */
@@ -257,7 +257,7 @@ body {
     display: flex;
     gap: 1rem;
     align-items: center;
-    margin: 2rem 0;
+    margin: 1rem 0;
 }
 
 .status-item {

@@ -25,14 +25,6 @@ const sensor = {
 const form = document.querySelector('.userForm');
 const estadoRadios = document.querySelectorAll('input[name="estado-habilitado"]');
 
-// Bloquear teclas que no sean números en el campo ID
-document.querySelector("#tamano").addEventListener('keydown', (e) => {
-    const teclasPermitidas = ["Backspace", "Tab", "Enter", "ArrowLeft", "ArrowRight", "Delete"];
-    if (!/^[0-9]$/.test(e.key) && !teclasPermitidas.includes(e.key)) {
-        e.preventDefault();
-    }
-});
-
 // Capturar cambios en los inputs y actualizar el objeto correctamente
 form.addEventListener('input', (e) => {
     const propiedad = mapeoInputs[e.target.id];
