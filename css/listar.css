@@ -267,8 +267,16 @@ tbody tr {
 		font-weight: 600;
 		color: var(--gray-80);
 		float: left;
-		width: 50%;
+		width: 45%;
 		text-align: left;
+	}
+
+	.table__cell--status::before {
+		width: 30%;
+	}
+
+	.table__cell--status {
+		text-align: center;
 	}
 }
 
