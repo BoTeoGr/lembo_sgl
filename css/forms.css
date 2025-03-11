@@ -91,13 +91,13 @@ body {
 
 /* Contenedor principal */
 .main-content {
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	/* margin: 1rem auto; */
-	padding: 1rem;
-	min-height: calc(100vh - 60px); /* Ajusta 80px según la altura del navbar */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin: 1rem auto; */
+    padding: 1rem;
+    min-height: calc(100vh - 6rem); /* Ajusta 60px según la altura del navbar */
 }
 
 .form,
