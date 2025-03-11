@@ -23,9 +23,7 @@
 				height="60px"
 			/>
 			<div class="nav__aside">
-				<span class="nav__menu-btn material-symbols-outlined">
-					menu
-				</span>
+				<span class="nav__menu-btn material-symbols-outlined"> menu </span>
 				<div class="nav__dropdown-side-menu">
 					<a href="home.html" class="nav__link">Inicio</a>
 					<hr class="nav__separator" />
@@ -43,7 +41,9 @@
 					<hr class="nav__separator" />
 					<a href="listar-cultivos.html" class="nav__link">Lista de Cultivos</a>
 					<hr class="nav__separator" />
-					<a href="listar-ciclo-cultivos.html" class="nav__link">Lista de Ciclos</a>
+					<a href="listar-ciclo-cultivos.html" class="nav__link"
+						>Lista de Ciclos</a
+					>
 					<hr class="nav__separator" />
 					<a href="crear-cultivo.html" class="nav__link">Agregar Cultivo</a>
 					<hr class="nav__separator" />
@@ -54,7 +54,9 @@
 			</div>
 			<div class="nav__right-content">
 				<ul class="nav__list">
-					<li class="nav__item"><a href="home.html" class="nav__link">Inicio</a></li>
+					<li class="nav__item">
+						<a href="home.html" class="nav__link">Inicio</a>
+					</li>
 					<li class="nav__item nav__item--dropdown">
 						<a href="" class="nav__link nav__link--selected"
 							>Sensores
@@ -63,7 +65,9 @@
 							></a
 						>
 						<div class="nav__dropdown-content">
-							<a href="listar-sensores.html" class="nav__link">Lista de Sensores</a>
+							<a href="listar-sensores.html" class="nav__link"
+								>Lista de Sensores</a
+							>
 							<a href="crear-sensor.html" class="nav__link">Agregar Sensor</a>
 						</div>
 					</li>
@@ -75,8 +79,12 @@
 							></a
 						>
 						<div class="nav__dropdown-content">
-							<a href="listar-usuarios.html" class="nav__link">Lista de Usuarios</a>
-							<a href="crear-usuario.html" class="nav__link">Registrar Usuario</a>
+							<a href="listar-usuarios.html" class="nav__link"
+								>Lista de Usuarios</a
+							>
+							<a href="crear-usuario.html" class="nav__link"
+								>Registrar Usuario</a
+							>
 						</div>
 					</li>
 					<li class="nav__item nav__item--dropdown">
@@ -87,7 +95,9 @@
 							></a
 						>
 						<div class="nav__dropdown-content">
-							<a href="listar-insumos.html" class="nav__link">Lista de Insumos</a>
+							<a href="listar-insumos.html" class="nav__link"
+								>Lista de Insumos</a
+							>
 							<a href="crear-insumo.html" class="nav__link">Agregar Insumo</a>
 						</div>
 					</li>
@@ -99,13 +109,21 @@
 							></a
 						>
 						<div class="nav__dropdown-content">
-							<a href="listar-cultivos.html" class="nav__link">Lista de Cultivos</a>
-							<a href="listar-ciclo-cultivos.html" class="nav__link">Lista de Ciclos</a>
+							<a href="listar-cultivos.html" class="nav__link"
+								>Lista de Cultivos</a
+							>
+							<a href="listar-ciclo-cultivos.html" class="nav__link"
+								>Lista de Ciclos</a
+							>
 							<a href="crear-cultivo.html" class="nav__link">Agregar Cultivo</a>
-							<a href="crear-ciclo-cultivo.html" class="nav__link">Agregar Ciclo</a>
+							<a href="crear-ciclo-cultivo.html" class="nav__link"
+								>Agregar Ciclo</a
+							>
 						</div>
 					</li>
-					<li class="nav__item"><a href="ajustes.html" class="nav__link">Ajustes</a></li>
+					<li class="nav__item">
+						<a href="ajustes.html" class="nav__link">Ajustes</a>
+					</li>
 				</ul>
 				<img
 					src="../imgs/profile-img.jpg"
@@ -125,7 +143,7 @@
 						close
 					</span>
 				</div>
-	
+
 				<!-- Grid Container -->
 				<div class="element-display__grid-container">
 					<!-- Image Section -->
@@ -135,7 +153,7 @@
 							alt="imagen-display"
 						/>
 					</div>
-	
+
 					<!-- Data Section -->
 					<div class="element-display__data">
 						<label for="nombre" class="element-display__label">Nombre</label>
@@ -165,10 +183,11 @@
 							disabled
 							class="element-display__input"
 						/>
-						
 					</div>
 					<div class="element-display__field-container">
-						<label for="ubicacion-sensor" class="element-display__label">Ubicación</label>
+						<label for="ubicacion-sensor" class="element-display__label"
+							>Ubicación</label
+						>
 						<input
 							type="text"
 							name="ubicacion-sensor"
@@ -179,7 +198,9 @@
 						/>
 					</div>
 					<div class="element-display__field-container">
-						<label for="tiempo-escaneo" class="element-display__label">Tiempo de escaneo/muestreo</label>
+						<label for="tiempo-escaneo" class="element-display__label"
+							>Tiempo de escaneo/muestreo</label
+						>
 						<input
 							type="text"
 							name="tiempo-escaneo"
@@ -190,7 +211,9 @@
 						/>
 					</div>
 					<div class="element-display__field-container colspan-2">
-						<label for="tipo-sensor" class="element-display__label">Tipo de sensor</label>
+						<label for="tipo-sensor" class="element-display__label"
+							>Tipo de sensor</label
+						>
 						<input
 							type="text"
 							name="tipo-sensor"
@@ -201,8 +224,12 @@
 						/>
 					</div>
 					<!-- Description Section -->
-					
-					<label for="descripcion" class="element-display__label textarea__label">Descripción del cultivo</label>
+
+					<label
+						for="descripcion"
+						class="element-display__label textarea__label"
+						>Descripción del cultivo</label
+					>
 					<textarea
 						name="descripcion"
 						id="descripcion"
@@ -210,25 +237,30 @@
 						rows="10"
 						disabled
 						class="element-display__textarea"
-					>Descripción del sensor</textarea>
-	
+					>
+Descripción del sensor</textarea
+					>
+
 					<!-- Status Section -->
 					<div class="element-display__field-container colspan-2">
 						<label for="status" class="element-display__label">Estado</label>
 						<div class="element-display__status-container">
 							<div class="element-display__radio-container">
-								<label for="habilitado" class="element-display__radio-label">Habilitado</label>
+								<label for="habilitado" class="element-display__radio-label"
+									>Habilitado</label
+								>
 								<input
 									type="radio"
 									name="status"
 									id="habilitado"
-									
 									checked
 									class="element-display__radio-input active"
 								/>
 							</div>
 							<div class="element-display__radio-container">
-								<label for="deshabilitado" class="element-display__radio-label">Deshabilitado</label>
+								<label for="deshabilitado" class="element-display__radio-label"
+									>Deshabilitado</label
+								>
 								<input
 									type="radio"
 									name="status"
@@ -239,9 +271,11 @@
 							</div>
 						</div>
 					</div>
-	
+
 					<!-- Update Button -->
-					<button class="element-display__button"><a href="actualizar_sensor.html">Actualizar</a></button>
+					<button class="element-display__button">
+						<a href="actualizar_sensor.html">Actualizar</a>
+					</button>
 				</div>
 			</div>
 			<!-- Bloque: table -->
@@ -265,18 +299,26 @@
 							<td class="table__cell" data-Label="Tipo">Humedad del Suelo</td>
 							<td class="table__cell" data-Label="Ubicación">Lote A</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
-								Deshabilitado: &nbsp;<span class="table__status"></span>
+								Habilitado: &nbsp;<span
+									class="table__status table__status--enabled"
+								></span
+								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Sensor de Temperatura</td>
+							<td class="table__cell" data-Label="Nombre">
+								Sensor de Temperatura
+							</td>
 							<td class="table__cell" data-Label="ID">2</td>
-							<td class="table__cell" data-Label="Tipo">Temperatura Ambiente</td>
+							<td class="table__cell" data-Label="Tipo">
+								Temperatura Ambiente
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Invernadero 1</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
-								Deshabilitado: &nbsp;<span class="table__status"></span>
+								Habilitado: &nbsp;<span
+									class="table__status table__status--enabled"
+								></span
+								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
@@ -285,18 +327,26 @@
 							<td class="table__cell" data-Label="Tipo">Nivel de pH</td>
 							<td class="table__cell" data-Label="Ubicación">Lote C</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span class="table__status table__status"></span>&nbsp;
-								Deshabilitado: &nbsp;<span class="table__status table__status--disabled"></span>
+								Habilitado: &nbsp;<span
+									class="table__status table__status"
+								></span
+								>&nbsp; Deshabilitado: &nbsp;<span
+									class="table__status table__status--disabled"
+								></span>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Sensor de CO2</td>
 							<td class="table__cell" data-Label="ID">4</td>
-							<td class="table__cell" data-Label="Tipo">Concentración de CO2</td>
+							<td class="table__cell" data-Label="Tipo">
+								Concentración de CO2
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Invernadero 2</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
 								Habilitado: &nbsp;<span class="table__status"></span>&nbsp;
-								Deshabilitado: &nbsp;<span class="table__status table__status--disabled"></span>
+								Deshabilitado: &nbsp;<span
+									class="table__status table__status--disabled"
+								></span>
 							</td>
 						</tr>
 						<tr class="table__row">
@@ -305,58 +355,64 @@
 							<td class="table__cell" data-Label="Tipo">Detección de Lluvia</td>
 							<td class="table__cell" data-Label="Ubicación">Lote B</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
-								Deshabilitado: &nbsp;<span class="table__status"></span>
+								Habilitado: &nbsp;<span
+									class="table__status table__status--enabled"
+								></span
+								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Sensor de Viento</td>
 							<td class="table__cell" data-Label="ID">6</td>
-							<td class="table__cell" data-Label="Tipo">Velocidad del Viento</td>
+							<td class="table__cell" data-Label="Tipo">
+								Velocidad del Viento
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Lote D</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
 								Habilitado: &nbsp;<span class="table__status"></span>&nbsp;
-								Deshabilitado: &nbsp;<span class="table__status table__status--disabled"></span>
+								Deshabilitado: &nbsp;<span
+									class="table__status table__status--disabled"
+								></span>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Sensor de Luz</td>
 							<td class="table__cell" data-Label="ID">7</td>
 							<td class="table__cell" data-Label="Tipo">Intensidad Luminosa</td>
-							<td class="table__cell" data-Label="Ubicación">Finca Experimental</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Finca Experimental
+							</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span class="table__status table__status--enabled"></span>&nbsp;
-								Deshabilitado: &nbsp;<span class="table__status"></span>
+								Habilitado: &nbsp;<span
+									class="table__status table__status--enabled"
+								></span
+								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				
+
 				<p class="table__count">
-					Cantidad neta de sensores: <span id="elements-count-cout" class="table__count-number">7</span>
+					Cantidad neta de sensores:
+					<span id="elements-count-cout" class="table__count-number">7</span>
 				</p>
 			</div>
 
 			<!-- Bloque: buttons -->
 			<div class="buttons">
-				<div class="buttons__primary">
-					<button class="buttons__button buttons__button--primary">
-						Descargar Reporte
-					</button>
-					<button class="buttons__button buttons__button--primary">
-						<a href="consulta-ciclo-cultivo.html" class="buttons__link"
-							>Buscar Ciclo de Cultivo</a
-						>
-					</button>
-				</div>
+				<button class="buttons__button buttons__button--primary">
+					Descargar Reporte
+				</button>
 				<button class="buttons__button buttons__button--secondary">
 					<span class="buttons__icon material-symbols-outlined">add</span
-					><a href="crear-ciclo-cultivo.html" class="buttons__link-plus">Agregar</a>
+					><a href="crear-ciclo-cultivo.html" class="buttons__link-plus"
+						>Agregar</a
+					>
 				</button>
 			</div>
 		</main>
 	</body>
-	
-    <script src="../js/aside-menu.js"></script>
+
+	<script src="../js/aside-menu.js"></script>
 	<script src="../js/display-item.js"></script>
 </html>
