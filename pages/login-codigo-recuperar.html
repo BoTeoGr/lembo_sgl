@@ -1,38 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700"
+			rel="stylesheet"
+		/>
+		<title>Recuperar Contraseña</title>
+		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+		<link rel="stylesheet" href="../css/log.css" />
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700" rel="stylesheet">
-    <title>Olvide-contraseña-recuperar</title>
-    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
-    <link rel="stylesheet" href="../css/log.css">
-</head>
-
-<body>
-    <div class="div__effect"></div>
-    <div class="div__effect"></div>
-    <div class="container">
-        
-        <main class="main main--widht">
-            <section class="login login--size">
-                <header class="login__header">
-                    <h2 class="login__title--h2">Ingresa el código de 6 dígitos</h2>
-                </header>
-                <form class="login__form">
-                    <div class="login__fields--widht">
-                        <input type="text" placeholder="_ _ _ _" class="login__input" id="input_num"  minlength="4" maxlength="4">
-                    </div>
-                    <div class="login__actions">
-                        <button type="submit" class="login__button">Enviar</button>
-                    </div>
-                </form>
-            </section>
-        </main>
-
-    </div>
-    <script src="../js/login-codigo-recuperar.js"></script>
-</body>
-
+	<body>
+		<div class="div__effect"></div>
+		<div class="div__effect"></div>
+		<div class="container">
+			<main class="main main--widht">
+				<section class="login login--size">
+					<header class="login__header">
+						<h2 class="login__title--h2">Ingresa el código de 6 dígitos</h2>
+					</header>
+					<form class="login__form">
+						<div class="login__fields--widht">
+							<input
+								type="text"
+								placeholder="_ _ _ _"
+								class="login__input"
+								id="input_num"
+								minlength="6"
+								maxlength="6"
+							/>
+						</div>
+						<div class="login__actions">
+							<button type="submit" class="login__button">Enviar</button>
+						</div>
+					</form>
+				</section>
+			</main>
+		</div>
+		<script src="../js/login-codigo-recuperar.js"></script>
+	</body>
 </html>

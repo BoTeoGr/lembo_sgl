@@ -1,91 +1,142 @@
 <!DOCTYPE html>
 <html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Registrar Usuario</title>
+		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+		<link rel="stylesheet" href="../css/forms.css" />
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Usuario</title>
-    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
-    <link rel="stylesheet" href="../css/forms.css">
-</head>
+	<body>
+		<header class="header">
+			<div class="header__logo-container">
+				<img
+					src="../imgs/logoSena.svg"
+					alt="Logo SENA"
+					class="logo logo--sena"
+				/>
+				<h1 class="header__title">Registro de usuario</h1>
+				<img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="logo logo--sgal" />
+			</div>
+		</header>
 
-<body>
+		<main class="main-content">
+			<div class="form form--height">
+				<div class="form__back-link">
+					<a href="listar-usuarios.html" class="button button--back"
+						>← Volver</a
+					>
+				</div>
 
-    <header class="header">
-        <div class="header__logo-container">
-            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="logo logo--sena">
-            <h1 class="header__title">Registro de usuario</h1>
-            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="logo logo--sgal">
-        </div>
-    </header>
+				<h2 class="form__title">Registrar un nuevo usuario</h2>
 
-    <main class="main-content">
-        <div class="form form--height">
-            <div class="form__back-link">
-                <a href="listar-usuarios.html" class="button button--back">← Volver</a>
-            </div>
+				<form class="userForm form__container">
+					<div class="form__row">
+						<div class="form__group">
+							<label for="tipo-documento" class="form__label"
+								>Tipo de documento</label
+							>
+							<select
+								id="tipo-documento"
+								class="userTypeId form__select"
+								required
+							>
+								<option value="default">Seleccione una Opcion</option>
+								<option value="ti">Tarjeta de identidad</option>
+								<option value="cc">Cédula de ciudadanía</option>
+								<option value="ppt">Permiso de protección temporal</option>
+							</select>
+						</div>
+						<div class="form__group">
+							<label for="nombre" class="form__label">Nombre completo</label>
+							<input
+								type="text"
+								id="nombre"
+								class="userName form__input"
+								placeholder="Ingrese el nombre completo"
+								required
+							/>
+						</div>
+					</div>
 
-            <h2 class="form__title">Registrar un nuevo usuario</h2>
+					<div class="form__row">
+						<div class="form__group">
+							<label for="numero-documento" class="form__label"
+								>Número de documento</label
+							>
+							<input
+								type="text"
+								id="numero-documento"
+								class="userId form__input"
+								placeholder="Ingrese el número de documento"
+								required
+							/>
+						</div>
+						<div class="form__group">
+							<label for="telefono" class="form__label"
+								>Número de Teléfono</label
+							>
+							<input
+								type="text"
+								id="telefono"
+								class="userTel form__input"
+								placeholder="Ingrese el número de Teléfono"
+								required
+							/>
+						</div>
+					</div>
 
-            <form class="userForm form__container">
-                <div class="form__row">
-                    <div class="form__group">
-                        <label for="tipo-documento" class="form__label">Tipo de documento</label>
-                        <select id="tipo-documento" class="userTypeId form__select" required>
-                            <option value="default">Seleccione una Opcion</option>
-                            <option value="ti">Tarjeta de identidad</option>
-                            <option value="cc">Cédula de ciudadanía</option>
-                            <option value="ppt">Permiso de protección temporal</option>
-                        </select>
-                    </div>
-                    <div class="form__group">
-                        <label for="nombre" class="form__label">Nombre completo</label>
-                        <input type="text" id="nombre" class="userName form__input" placeholder="Ingrese el nombre completo" required>
-                    </div>
-                </div>
+					<div class="form__group form__group--full-width">
+						<label for="correo" class="form__label">Correo electrónico</label>
+						<input
+							type="email"
+							id="correo"
+							class="userEmail form__input"
+							placeholder="Ingrese el correo electrónico"
+							required
+						/>
+					</div>
 
-                <div class="form__row">
-                    <div class="form__group">
-                        <label for="numero-documento" class="form__label">Número de documento</label>
-                        <input type="text" id="numero-documento" class="userId form__input" placeholder="Ingrese el número de documento" required>
-                    </div>
-                    <div class="form__group">
-                        <label for="telefono" class="form__label">Número de Teléfono</label>
-                        <input type="text" id="telefono" class="userTel form__input" placeholder="Ingrese el número de Teléfono" required>
-                    </div>
-                </div>
+					<div class="form__group form__group--full-width">
+						<label for="confirmar-correo" class="form__label"
+							>Confirmar correo</label
+						>
+						<input
+							type="email"
+							id="confirmar-correo"
+							class="userConfirmEmail form__input"
+							placeholder="Ingrese nuevamente el Correo electrónico"
+							required
+						/>
+					</div>
 
-                <div class="form__group form__group--full-width">
-                    <label for="correo" class="form__label">Correo electrónico</label>
-                    <input type="email" id="correo" class="userEmail form__input" placeholder="Ingrese el correo electrónico" required>
-                </div>
+					<div class="form__group form__group--full-width">
+						<label for="rol" class="form__label">Rol</label>
+						<div class="form__rol">
+							<select
+								id="rol"
+								class="userRol form__select form__select--rol"
+								required
+							>
+								<option value="default" selected>Seleccione una Opcion</option>
+								<option value="superadmin">Super administrador</option>
+								<option value="admin">Administrador</option>
+								<option value="apoyo">Personal de Apoyo</option>
+								<option value="visitante">Visitante</option>
+							</select>
+						</div>
+					</div>
 
-                <div class="form__group form__group--full-width">
-                    <label for="confirmar-correo" class="form__label">Confirmar correo</label>
-                    <input type="email" id="confirmar-correo" class="userConfirmEmail form__input" placeholder="Ingrese nuevamente el Correo electrónico" required>
-                </div>
+					<div class="form__button-container">
+						<button type="submit" class="button button--submit">
+							Registrar Usuario
+						</button>
+					</div>
+				</form>
+			</div>
+		</main>
 
-                <div class="form__group form__group--full-width">
-                    <label for="rol" class="form__label">Rol</label>
-                    <div class="form__rol">
-                        <select id="rol" class="userRol form__select form__select--rol" required>
-                            <option value="default" selected>Seleccione una Opcion</option>
-                            <option value="superadmin">Super administrador</option>
-                            <option value="admin">Administrador</option>
-                            <option value="apoyo">Personal de Apoyo</option>
-                            <option value="visitante">Visitante</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form__button-container">
-                    <button type="submit" class="button button--submit">Registrar Usuario</button>
-                </div>
-            </form>
-        </div>
-    </main>
-
-    <script src="../js/crear-usuario.js"></script>
-</body>
-
+		<script src="../js/crear-usuario.js"></script>
+	</body>
 </html>

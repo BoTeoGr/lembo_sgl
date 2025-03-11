@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700"
+			rel="stylesheet"
+		/>
+		<title>Olvide mi contraseña</title>
+		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+		<link rel="stylesheet" href="../css/log.css" />
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700" rel="stylesheet">
-    <title>Olvide mi contraseña</title>
-    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
-    <link rel="stylesheet" href="../css/log.css">
-</head>
+	<body>
+		<div class="container">
+			<main class="main main--order">
+				<section class="login">
+					<header class="login__header">
+						<h2 class="login__title--h2">
+							A tu correo se enviará un código para que recuperes tu contraseña
+						</h2>
+					</header>
+					<form class="login__form">
+						<div class="login__fields">
+							<input
+								type="email"
+								placeholder="Correo electrónico"
+								class="login__input"
+								id="emailRecuperar"
+							/>
+						</div>
+						<div class="login__actions">
+							<button class="login__button" type="submit">Enviar código</button>
+						</div>
+					</form>
+				</section>
+			</main>
 
-<body>
-    <div class="container">
-        
-        <main class="main main--order">
-            <section class="login">
-                <header class="login__header">
-                    <h2 class="login__title--h2">A tu correo se enviará un código para que recuperes tu contraseña</h2>
-                </header>
-                <form class="login__form">
-                    <div class="login__fields">
-                        <input type="email" placeholder="Correo electrónico" class="login__input" id="emailRecuperar">
-                    </div>
-                    <div class="login__actions">
-                        <button class="login__button" type="submit">Enviar código</button>
-                    </div>
-                </form>
-            </section>
-        </main>
+			<aside class="aside aside--order">
+				<img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="aside__logo" />
+			</aside>
+		</div>
 
-        <aside class="aside aside--order">
-            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="aside__logo">
-        </aside>
-    </div>
-
-    <script src="../js/olvide-contraseña.js"></script>
-
-</body>
+		<script src="../js/olvide-contraseña.js"></script>
+	</body>
 </html>

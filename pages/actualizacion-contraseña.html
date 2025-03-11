@@ -1,53 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700" rel="stylesheet">
-    <title>Actualización de contraseña</title>
-    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon">
-    <link rel="stylesheet" href="../css/forms.css">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700"
+			rel="stylesheet"
+		/>
+		<title>Actualización de contraseña</title>
+		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+		<link rel="stylesheet" href="../css/forms.css" />
+	</head>
+	<body>
+		<header class="header">
+			<div class="header__logo-container">
+				<img src="../imgs/logoSena.svg" alt="Logo SENA" class="logo--sena" />
+				<h1>Actualizar contraseña</h1>
+				<img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="logo--sgal" />
+			</div>
+		</header>
 
+		<main class="main-content">
+			<div class="form form--height">
+				<img class="form__logo" src="../imgs/sgal.jpeg" alt="logo de SGAL" />
+				<h2 class="form__title">Actualización de contraseña</h2>
 
-</head>
-<body>
-    <header class="header">
-        <div class="header__logo-container">
-            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="logo--sena">
-            <h1>Actualizar contraseña</h1>
-            <img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="logo--sgal">
-        </div>
-    </header>
+				<form class="userForm form__container" action="#" method="post">
+					<div class="form__row">
+						<div class="form__group--update">
+							<label class="form__label" for="password">Nueva contraseña</label>
+							<input
+								type="password"
+								id="password"
+								class="form__input--size"
+								minlength="8"
+								maxlength="16"
+							/>
+						</div>
+					</div>
+					<div class="form__row">
+						<div class="form__group--update">
+							<label class="form__label" for="password"
+								>Confirmar contraseña</label
+							>
+							<input
+								type="password"
+								id="password2"
+								class="form__input--size"
+								minlength="8"
+								maxlength="16"
+							/>
+						</div>
+					</div>
 
-    <main class="main-content">
-        <div class="form form--height">
+					<div class="form__button-container">
+						<button class="button button--submit" type="submit">
+							Actualizar
+						</button>
+					</div>
+				</form>
+			</div>
+		</main>
 
-            <img class="form__logo" src="../imgs/sgal.jpeg" alt="logo de SGAL">
-            <h2 class="form__title">Actualización de contraseña</h2>
-
-            <form class="userForm form__container" action="#" method="post">
-                <div class="form__row">
-                    <div class="form__group--update">
-                        <label class="form__label" for="password">Nueva contraseña</label>
-                        <input type="password" id="password" class="form__input--size" minlength="8" maxlength="16">  
-                    </div>
-                </div>
-                <div class="form__row">
-                    <div class="form__group--update">
-                        <label class="form__label" for="password">Confirmar contraseña</label>
-                        <input type="password" id="password2" class="form__input--size" minlength="8" maxlength="16">
-                    </div>
-                </div>
-
-                <div class="form__button-container">
-                    <button class="button button--submit" type="submit">Actualizar
-                    </button>
-                </div>
-            </form>
-        </div>
-    </main>
-
-    <script src="../js/actualizar-contraseña.js"></script>
-
-</body>
+		<script src="../js/actualizar-contraseña.js"></script>
+	</body>
 </html>
