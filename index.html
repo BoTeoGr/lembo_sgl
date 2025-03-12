@@ -15,52 +15,51 @@
 	</head>
 	<body>
 		<div class="container">
-			<aside class="aside">
+			<aside class="leftAside">
 				<img src="imgs/logoSena.svg" alt="Logo SENA" class="aside__logo" />
 			</aside>
 
 			<main class="main">
 				<section class="login">
-					<header class="login__header">
-						<img src="imgs/sgal.jpeg" alt="Logo SGAL" class="login__logo" />
-						<h1 class="login__title">Iniciar sesión</h1>
+					<header class="header">
+						<img src="imgs/sgal.jpeg" alt="Logo SGAL" class="header__logo" />
+						<h1 class="header__title">Iniciar sesión</h1>
 					</header>
-					<form class="login__form">
-						<div class="login__fields">
+
+					<form class="form">
+						<div class="fields">
 							<input
 								type="email"
 								id="email"
 								placeholder="Correo electrónico"
-								class="login__input"
+								class="fields__input"
 							/>
-							<!-- <input type="email" id="email" placeholder="Correo electrónico" class="login__input" required> -->
 
 							<input
 								type="password"
 								id="password"
 								placeholder="Contraseña"
-								class="login__input"
+								class="fields__input"
 								minlength="8"
 								maxlength="16"
 							/>
-							<!-- <input type="password" id="password" placeholder="Contraseña" class="login__input" 
-                        required minlength="8" maxlength="16"> -->
+								
 						</div>
-						<div class="login__actions">
+						<div class="actions">
 							<a
 								href="../pages/login-olvide-contraseña.html"
-								class="login__link"
+								class="actions__link"
 								>¿Olvidaste tu contraseña?</a
 							>
-							<!-- <button  class="login__button" onclick="window.location.href='pages/home.html'">Iniciar sesión</button> -->
-							<button class="login__button" type="submit">
+							<button class="actions__button" type="submit">
 								Iniciar sesión
 							</button>
 						</div>
 					</form>
 				</section>
 			</main>
-		</div>
+		</div><!--container-->
+
 		<!-- loader -->
 		<!-- From Uiverse.io by mobinkakei -->
 		<div class="loader">

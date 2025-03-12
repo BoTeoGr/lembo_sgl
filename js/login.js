@@ -6,7 +6,7 @@ const userLogin = {
 //Seleccionando elementos
 const password = document.querySelector("#password");
 const email = document.querySelector("#email");
-const form = document.querySelector(".login__form");
+const form = document.querySelector(".form");
 
 //inputs
 form.addEventListener("input", readText);

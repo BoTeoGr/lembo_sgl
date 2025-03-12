@@ -1,71 +1,72 @@
+// Funcion para mover entre inputs
+function moveToNext(input, index) {
+	const inputs = document.querySelectorAll(".code-input");
+	if (input.value.length === 1 && index < inputs.length - 1) {
+		inputs[index + 1].focus();
+	} else if (input.value.length === 0 && index > 0) {
+		inputs[index - 1].focus();
+	}
+}//Una vez completo el input pasa al siguiente input
+
 const codigoRecuperar = {
 	codigo: "",
 };
 
-// Seleccionando elementos
-const loginForm = document.querySelector(".login__form");
-const codigoInput = document.querySelector("#input_num");
+// Seleccionar todos los inputs
+const inputs = document.querySelectorAll(".inputCode");
 
-// Bloquear letras en el input de código
-codigoInput.addEventListener("keydown", function (e) {
-	if (
-		e.key === "Backspace" ||
-		e.key === "Tab" ||
-		e.key === "Enter" ||
-		e.key === "ArrowLeft" ||
-		e.key === "ArrowRight"
-	) {
-		return; // No bloquear estas teclas
-	}
+// Bloquear letras y manejar desplazamiento
+inputs.forEach((input, index) => {
+	input.addEventListener("input", function () {
+		// Avanzar al siguiente input automáticamente
+		if (input.value.length === 1 && index < inputs.length - 1) {
+			inputs[index + 1].focus();
+		}
+	});
 
-	// Bloquear cualquier tecla que NO sea un número
-	if (e.key < "0" || e.key > "9") {
-		e.preventDefault();
-		console.log("Solo se permiten números");
-	}
+	input.addEventListener("keydown", function (e) {
+		if (
+			e.key === "Backspace" ||
+			e.key === "Tab" ||
+			e.key === "Enter" ||
+			e.key === "ArrowLeft" ||
+			e.key === "ArrowRight"
+		) {
+			return;
+		}
+
+		// Bloquear cualquier tecla que NO sea un número
+		if (e.key < "0" || e.key > "9") {
+			e.preventDefault();
+			console.log("Solo se permiten números");
+		}
+	});
 });
 
-// Añadir eventos de input
-loginForm.addEventListener("input", readText);
-codigoInput.addEventListener("input", readText);
+// Capturar el código ingresado
+function readText() {
+	let codigoIngresado = "";
+	inputs.forEach(input => {
+		codigoIngresado += input.value; // Concatenar valores de los 6 inputs
+	});
+	codigoRecuperar.codigo = codigoIngresado;
+	console.log(codigoRecuperar);
+}
+
+// Agregar evento input a todos los inputs de código
+inputs.forEach(input => input.addEventListener("input", readText));
 
 // Evento submit
-loginForm.addEventListener("submit", function (e) {
+document.querySelector(".form").addEventListener("submit", function (e) {
 	e.preventDefault();
-	const { codigo } = codigoRecuperar;
 
-	if (codigo === "") {
-		showAlert("Este campo es obligatorio", true);
+	if (codigoRecuperar.codigo.length < 6) {
+		showAlert("Debes ingresar los 6 dígitos", true);
 		return;
 	}
+
 	showAlert("Tu correo ha sido enviado satisfactoriamente");
 	setTimeout(() => {
 		window.location.href = "../pages/actualizacion-contraseña.html"; // Asegúrate de que la ruta sea correcta
 	}, 500);
 });
-
-// Función para mostrar alertas
-function showAlert(message, error = null) {
-	const alert = document.createElement("P");
-	alert.textContent = message;
-	alert.classList.add("alert"); // Añadir clase 'alert'
-
-	if (error) {
-		alert.classList.add("error");
-	} else {
-		alert.classList.add("correct");
-	}
-	loginForm.appendChild(alert);
-
-	setTimeout(() => {
-		alert.remove();
-	}, 5000);
-}
-
-// Función para leer el texto del input
-function readText(e) {
-	if (e.target.id === "input_num") {
-		codigoRecuperar.codigo = e.target.value;
-	}
-	console.log(codigoRecuperar);
-}

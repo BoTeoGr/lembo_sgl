@@ -3,14 +3,14 @@ const recuperar = {
 };
 // oSelelcciono los elementos
 const emailRecuperar = document.querySelector("#emailRecuperar");
-const login__form = document.querySelector(".login__form");
+const form = document.querySelector(".form");
 
 // guardo los valores de los input que seran usando por el callback readText
-login__form.addEventListener("input", readText);
+form.addEventListener("input", readText);
 emailRecuperar.addEventListener("input", readText);
 
 //Evento submit
-login__form.addEventListener("submit", function (e) {
+form.addEventListener("submit", function (e) {
 	e.preventDefault();
 	const { emailRecuperar } = recuperar; // Cambiado a recuperar.emailRecuperar
 
@@ -47,7 +47,7 @@ function showAlert(message, error = null) {
 	} else {
 		alert.classList.add("correct");
 	}
-	login__form.appendChild(alert);
+	form.appendChild(alert);
 
 	setTimeout(() => {
 		alert.remove();
