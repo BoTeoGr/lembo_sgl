@@ -1,30 +1,30 @@
-// Funcion para mover entre inputs
-function moveToNext(input, index) {
-	const inputs = document.querySelectorAll(".code-input");
-	if (input.value.length === 1 && index < inputs.length - 1) {
-		inputs[index + 1].focus();
-	} else if (input.value.length === 0 && index > 0) {
-		inputs[index - 1].focus();
-	}
-}//Una vez completo el input pasa al siguiente input
-
+// Objeto para almacenar el código ingresado
 const codigoRecuperar = {
 	codigo: "",
 };
 
-// Seleccionar todos los inputs
+// Seleccionar todos los inputs de código
 const inputs = document.querySelectorAll(".inputCode");
+const form = document.querySelector(".form");
 
-// Bloquear letras y manejar desplazamiento
+// Función para mover entre inputs automáticamente
+function moveToNext(input, index) {
+	if (input.value.length === 1 && index < inputs.length - 1) {
+		inputs[index + 1].focus(); // Ir al siguiente input
+	} else if (input.value.length === 0 && index > 0) {
+		inputs[index - 1].focus(); // Volver al anterior si se borra
+	}
+}
+
+// Bloquear letras y manejar desplazamiento entre inputs
 inputs.forEach((input, index) => {
 	input.addEventListener("input", function () {
-		// Avanzar al siguiente input automáticamente
-		if (input.value.length === 1 && index < inputs.length - 1) {
-			inputs[index + 1].focus();
-		}
+		moveToNext(input, index);
+		readText(); // Actualizar el código ingresado
 	});
 
 	input.addEventListener("keydown", function (e) {
+		// Permitir teclas de navegación y eliminación
 		if (
 			e.key === "Backspace" ||
 			e.key === "Tab" ||
@@ -43,7 +43,7 @@ inputs.forEach((input, index) => {
 	});
 });
 
-// Capturar el código ingresado
+// Capturar el código ingresado de todos los inputs
 function readText() {
 	let codigoIngresado = "";
 	inputs.forEach(input => {
@@ -53,20 +53,40 @@ function readText() {
 	console.log(codigoRecuperar);
 }
 
-// Agregar evento input a todos los inputs de código
-inputs.forEach(input => input.addEventListener("input", readText));
+// Función para mostrar alertas
+function showAlert(message, error = false) {
+	const alert = document.createElement("p");
+	alert.textContent = message;
+	alert.classList.add("alert"); // Clase base para la alerta
 
-// Evento submit
-document.querySelector(".form").addEventListener("submit", function (e) {
-	e.preventDefault();
-
-	if (codigoRecuperar.codigo.length < 6) {
-		showAlert("Debes ingresar los 6 dígitos", true);
-		return;
+	if (error) {
+		alert.classList.add("error"); // Agregar clase de error si es necesario
+	} else {
+		alert.classList.add("correct"); // Clase de éxito
 	}
 
-	showAlert("Tu correo ha sido enviado satisfactoriamente");
+	form.appendChild(alert);
+
 	setTimeout(() => {
-		window.location.href = "../pages/actualizacion-contraseña.html"; // Asegúrate de que la ruta sea correcta
-	}, 500);
-});
+		alert.remove();
+	}, 5000);
+}
+
+// Evento submit del formulario
+if (form) {
+	form.addEventListener("submit", function (e) {
+		e.preventDefault();
+
+		if (codigoRecuperar.codigo.length < 6) {
+			showAlert("Debes ingresar los 6 dígitos", true);
+			return;
+		}
+
+		showAlert("Tu correo ha sido enviado satisfactoriamente");
+		setTimeout(() => {
+			window.location.href = "../pages/actualizacion-contraseña.html";
+		}, 500);
+	});
+} else {
+	console.error("No se encontró el formulario en el HTML.");
+}
