@@ -99,7 +99,7 @@
 	border: 1px solid var(--gray-40);
 	border-radius: 6px;
 	z-index: 1;
-	min-width: 11.25rem;
+	min-width: 11rem;
 }
 
 .nav__dropdown-side-menu {
