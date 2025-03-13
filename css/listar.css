@@ -538,6 +538,7 @@ tbody tr {
 
 .table__title {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
 }
@@ -555,6 +556,13 @@ tbody tr {
 	padding: 0.3rem 0.6rem;
 	border: 1px solid var(--gray-40);
 	transition: box-shadow 0.1s ease;
+}
+
+@media(width < 768px){
+	.table__title-side{
+		width: 100%;
+		margin: 2rem 0rem;
+	}
 }
 
 .table__icon {
