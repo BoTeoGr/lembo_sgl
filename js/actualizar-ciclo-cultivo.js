@@ -42,7 +42,7 @@ estadoRadios.forEach((radio) => {
 	});
 });
 
-// 🚫 Bloquear teclas que no sean números en el campo ID
+// Bloquear teclas que no sean números en el campo ID
 document.querySelector("#id").addEventListener("keydown", (e) => {
 	const teclasPermitidas = [
 		"Backspace",

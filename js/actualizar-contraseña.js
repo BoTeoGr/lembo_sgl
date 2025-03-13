@@ -31,7 +31,7 @@ form.addEventListener("submit", function (e) {
 	showAlert("Contraseña actualizada satisfactoriamente");
 	setTimeout(() => {
 		window.location.href = "../index.html"; // Asegúrate de que la ruta sea correcta
-	}, 500);
+	}, 1000);
 });
 
 // Función para mostrar alertas
