@@ -277,9 +277,21 @@ Descripción del sensor</textarea
 			</div>
 			<!-- Bloque: table -->
 			<div class="table">
-				<h2 class="table__title">Lista de Sensores</h2>
-				<p class="table__description">Resumen de los sensores de la granja</p>
-				<table class="table__content">
+				<div class="table__title">
+					<div class="table__title-column">
+						<h2 class="table__title">Lista de Ciclo de Cultivos</h2>
+						<p class="table__description">
+							Resumen de los ciclos de cultivos de la granja
+						</p>
+					</div>
+					<div class="table__title-side">
+						<span class="table__icon material-symbols-outlined">
+							search
+						</span>
+						<input type="search" class="table__search" placeholder="Buscar..." id="searchInput">
+					</div>
+				</div>
+				<table class="table__content" id="dataTable">
 					<thead class="table__header">
 						<tr class="table__row">
 							<th class="table__header-cell">Nombre</th>
@@ -407,7 +419,7 @@ Descripción del sensor</textarea
 			</div>
 		</main>
 	</body>
-
+	<script src="../js/search.js"></script>
 	<script src="../js/aside-menu.js"></script>
 	<script src="../js/display-item.js"></script>
 </html>
