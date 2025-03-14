@@ -73,7 +73,7 @@ userForm.addEventListener("submit", function (e) {
 
 	// Redirigir después de mostrar el mensaje
 	setTimeout(() => {
-		window.location.href = "../pages/listar-cultivos.html"; // Asegúrate de que la ruta sea correcta
+		window.location.href = "listar-cultivos.html"; // Asegúrate de que la ruta sea correcta
 	}, 1000);
 });
 

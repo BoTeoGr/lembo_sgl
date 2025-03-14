@@ -7,7 +7,7 @@
 			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700"
 			rel="stylesheet"
 		/>
-		<title>Lista de Insumos</title>
+		<title>Lista de Cultivos</title>
 		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
 		<link rel="stylesheet" href="../css/listar.css" />
 	</head>
@@ -88,7 +88,7 @@
 						</div>
 					</li>
 					<li class="nav__item nav__item--dropdown">
-						<a href="" class="nav__link nav__link--selected"
+						<a href="" class="nav__link"
 							>Insumos
 							<span class="nav__icon material-symbols-outlined"
 								>keyboard_arrow_down</span
@@ -102,7 +102,7 @@
 						</div>
 					</li>
 					<li class="nav__item nav__item--dropdown">
-						<a href="" class="nav__link"
+						<a href="" class="nav__link nav__link--selected"
 							>Cultivos
 							<span class="nav__icon material-symbols-outlined"
 								>keyboard_arrow_down</span
@@ -135,7 +135,7 @@
 			<div class="element-display">
 				<!-- Header -->
 				<div class="element-display__header">
-					<h3 class="element-display__title">Visualización Insumo</h3>
+					<h3 class="element-display__title">Visualización Cultivo</h3>
 					<span class="element-display__close-icon material-symbols-outlined">
 						close
 					</span>
@@ -146,8 +146,8 @@
 					<!-- Image Section -->
 					<div class="element-display__image">
 						<img
-							src="https://italcol.com/wp-content/uploads/2023/05/pollo_engorde_40k.png"
-							alt="imagen-display"
+							src="https://www.rocalba.es/blog/wp-content/uploads/cultivos-cosecha-rapida-950x500.jpg"
+							alt="Cultivo de Tomate"
 						/>
 					</div>
 
@@ -158,7 +158,7 @@
 							type="text"
 							name="nombre"
 							id="nombre"
-							value="Alimento balanceado para pollos"
+							value="Cultivo de Tomate"
 							disabled
 							class="element-display__input"
 						/>
@@ -167,7 +167,7 @@
 							type="number"
 							name="id"
 							id="id"
-							value="65653098"
+							value="1032321"
 							disabled
 							class="element-display__input"
 						/>
@@ -176,59 +176,31 @@
 							type="text"
 							name="tipo"
 							id="tipo"
-							value="Alimento para aves"
+							value="Tomate"
 							disabled
 							class="element-display__input"
 						/>
 					</div>
 					<div class="element-display__field-container">
-						<label for="unidad-medida" class="element-display__label"
-							>Unidad medida</label
-						>
-						<input
-							type="text"
-							name="unidad-medida"
-							id="unidad-medida"
-							value="Kilogramo (kg)"
-							disabled
-							class="element-display__input"
-						/>
-					</div>
-					<div class="element-display__field-container">
-						<label for="cantidad" class="element-display__label"
-							>Cantidad</label
-						>
+						<label for="tamanio" class="element-display__label">Tamaño</label>
 						<input
 							type="number"
-							name="cantidad"
-							id="cantidad"
-							value="500"
+							name="tamanio"
+							id="tamanio"
+							value="10"
 							disabled
 							class="element-display__input"
 						/>
 					</div>
 					<div class="element-display__field-container">
-						<label for="valor-unitario" class="element-display__label"
-							>Valor unitario</label
+						<label for="ubicacion" class="element-display__label"
+							>Ubicación</label
 						>
 						<input
 							type="text"
-							name="valor-unitario"
-							id="valor-unitario"
-							value="$1.20"
-							disabled
-							class="element-display__input"
-						/>
-					</div>
-					<div class="element-display__field-container">
-						<label for="valor-total" class="element-display__label"
-							>Valor total</label
-						>
-						<input
-							type="text"
-							name="valor-total"
-							id="valor-total"
-							value="$600.00"
+							name="ubicacion"
+							id="ubicacion"
+							value="Parcela 1"
 							disabled
 							class="element-display__input"
 						/>
@@ -248,7 +220,7 @@
 						disabled
 						class="element-display__textarea"
 					>
-Descripción del insumo</textarea
+Descripción del cultivo</textarea
 					>
 
 					<!-- Status Section -->
@@ -284,7 +256,7 @@ Descripción del insumo</textarea
 
 					<!-- Update Button -->
 					<button class="element-display__button">
-						<a href="actualizar-insumo.html">Actualizar</a>
+						<a href="actualizar-cultivo.html">Actualizar</a>
 					</button>
 				</div>
 			</div>
@@ -309,119 +281,110 @@ Descripción del insumo</textarea
 						<tr class="table__row">
 							<th class="table__header-cell">Nombre</th>
 							<th class="table__header-cell">Tipo</th>
-							<th class="table__header-cell">Código</th>
+							<th class="table__header-cell">Identificador</th>
 							<th class="table__header-cell">Ubicación</th>
-							<th class="table__header-cell">Fecha de Expiración</th>
+							<th class="table__header-cell">Tamaño</th>
 						</tr>
 					</thead>
 					<tbody class="table__body">
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">
-								Fertilizante NPK 15-15-15
+							<td class="table__cell" data-Label="Nombre">Maíz</td>
+							<td class="table__cell" data-Label="Tipo">Cereal</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-MAIZ-001
 							</td>
-							<td class="table__cell" data-Label="Tipo">Fertilizante</td>
-							<td class="table__cell" data-Label="Código">FERT-001</td>
-							<td class="table__cell" data-Label="Ubicación">
-								Almacén de insumos
-							</td>
-							<td class="table__cell" data-Label="Fecha de Expiración">
+							<td class="table__cell" data-Label="Ubicación">Lote A</td>
+							<td class="table__cell" data-Label="Tamaño">
 								<span class="table__status table__status--good"
-									>12/12/2024</span
+									>2 hectáreas</span
 								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">
-								Herbicida Glifosato
+							<td class="table__cell" data-Label="Nombre">Frijol</td>
+							<td class="table__cell" data-Label="Tipo">Leguminosa</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-FRIJ-002
 							</td>
-							<td class="table__cell" data-Label="Tipo">Plaguicida</td>
-							<td class="table__cell" data-Label="Código">HERB-GLY-500</td>
-							<td class="table__cell" data-Label="Ubicación">
-								Depósito químico
-							</td>
-							<td class="table__cell" data-Label="Fecha de Expiración">
+							<td class="table__cell" data-Label="Ubicación">Lote B</td>
+							<td class="table__cell" data-Label="Tamaño">
 								<span class="table__status table__status--good"
-									>05/06/2025</span
+									>1.5 hectáreas</span
 								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">
-								Insecticida Cipermetrina
+							<td class="table__cell" data-Label="Nombre">Tomate</td>
+							<td class="table__cell" data-Label="Tipo">Hortaliza</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-TOM-003
 							</td>
-							<td class="table__cell" data-Label="Tipo">Plaguicida</td>
-							<td class="table__cell" data-Label="Código">INS-CYP-250</td>
-							<td class="table__cell" data-Label="Ubicación">
-								Depósito químico
-							</td>
-							<td class="table__cell" data-Label="Fecha de Expiración">
+							<td class="table__cell" data-Label="Ubicación">Invernadero 1</td>
+							<td class="table__cell" data-Label="Tamaño">
 								<span class="table__status table__status--good"
-									>15/03/2025</span
+									>0.5 hectáreas</span
 								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">
-								Concentrado Bovino
+							<td class="table__cell" data-Label="Nombre">Papa</td>
+							<td class="table__cell" data-Label="Tipo">Tubérculo</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-PAPA-004
 							</td>
-							<td class="table__cell" data-Label="Tipo">Alimento</td>
-							<td class="table__cell" data-Label="Código">ALM-BO-2023</td>
-							<td class="table__cell" data-Label="Ubicación">
-								Almacén de alimentos
-							</td>
-							<td class="table__cell" data-Label="Fecha de Expiración">
+							<td class="table__cell" data-Label="Ubicación">Lote C</td>
+							<td class="table__cell" data-Label="Tamaño">
 								<span class="table__status table__status--warning"
-									>18/08/2024</span
+									>3 hectáreas</span
 								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Sulfato de Amonio</td>
-							<td class="table__cell" data-Label="Tipo">Fertilizante</td>
-							<td class="table__cell" data-Label="Código">FERT-SULF-2023</td>
-							<td class="table__cell" data-Label="Ubicación">
-								Depósito químico
+							<td class="table__cell" data-Label="Nombre">Caña de Azúcar</td>
+							<td class="table__cell" data-Label="Tipo">Gramínea</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-CAÑA-005
 							</td>
-							<td class="table__cell" data-Label="Fecha de Expiración">
+							<td class="table__cell" data-Label="Ubicación">Lote D</td>
+							<td class="table__cell" data-Label="Tamaño">
 								<span class="table__status table__status--warning"
-									>11/08/2024</span
+									>5 hectáreas</span
 								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">
-								Antibiótico Bovino
+							<td class="table__cell" data-Label="Nombre">Zanahoria</td>
+							<td class="table__cell" data-Label="Tipo">Hortaliza</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-ZAN-006
 							</td>
-							<td class="table__cell" data-Label="Tipo">Medicamento</td>
-							<td class="table__cell" data-Label="Código">MED-ANTIB-500</td>
-							<td class="table__cell" data-Label="Ubicación">
-								Depósito médico
-							</td>
-							<td class="table__cell" data-Label="Fecha de Expiración">
+							<td class="table__cell" data-Label="Ubicación">Invernadero 2</td>
+							<td class="table__cell" data-Label="Tamaño">
 								<span class="table__status table__status--good"
-									>30/11/2025</span
+									>0.3 hectáreas</span
 								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">
-								Aditivo Probiótico
+							<td class="table__cell" data-Label="Nombre">Café</td>
+							<td class="table__cell" data-Label="Tipo">Cultivo Permanente</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-CAFE-007
 							</td>
-							<td class="table__cell" data-Label="Tipo">Suplemento</td>
-							<td class="table__cell" data-Label="Código">SUP-PROB-2023</td>
 							<td class="table__cell" data-Label="Ubicación">
-								Almacén de alimentos
+								Finca Experimental
 							</td>
-							<td class="table__cell" data-Label="Fecha de Expiración">
+							<td class="table__cell" data-Label="Tamaño">
 								<span class="table__status table__status--expired"
-									>30/01/2024</span
+									>10 hectáreas</span
 								>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+
 				<p class="table__count">
-					Cantidad neta de insumos:
+					Cantidad neta de cultivos:
 					<span id="elements-count-cout" class="table__count-number">7</span>
 				</p>
 			</div>
@@ -440,7 +403,8 @@ Descripción del insumo</textarea
 			</div>
 		</main>
 	</body>
-	<script src="../js/search.js"></script>
-	<script src="../js/aside-menu.js"></script>
-	<script src="../js/display-item.js"></script>
+
+	<script src="../components/js/search.js"></script>
+	<script src="../components/js/aside-menu.js"></script>
+	<script src="../components/js/display-item.js"></script>
 </html>

@@ -96,7 +96,7 @@ form.addEventListener("submit", (e) => {
 	showAlert("Insumo actualizado correctamente.");
 	// Redirigir después de mostrar el mensaje
 	setTimeout(() => {
-		window.location.href = "../pages/listar-insumos.html"; // Asegúrate de que la ruta sea correcta
+		window.location.href = "listar-insumos.html"; // Asegúrate de que la ruta sea correcta
 	}, 1000);
 	// console.log(insumo);
 });

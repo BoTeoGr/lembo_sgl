@@ -116,7 +116,7 @@ form.addEventListener("submit", (e) => {
 	showAlert("Usuario actualizado correctamente.");
 
 	setTimeout(() => {
-		window.location.href = "../pages/listar-usuarios.html"; // Asegúrate de que la ruta sea correcta
+		window.location.href = "listar-usuarios.html"; // Asegúrate de que la ruta sea correcta
 	}, 1000);
 
 	console.log("Datos finales del usuario:", usuario);

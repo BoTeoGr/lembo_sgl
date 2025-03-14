@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Actualizar sensor</title>
+		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+		<link rel="stylesheet" href="../css/forms.css" />
+	</head>
+
+	<body>
+		<header class="header">
+			<div class="header__logo-container">
+				<img
+					src="../imgs/logoSena.svg"
+					alt="Logo SENA"
+					class="logo logo--sena"
+				/>
+				<h1>Actualizar sensor</h1>
+				<img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="logo logo--sgal" />
+			</div>
+		</header>
+
+		<main class="main-content">
+			<div class="form form--height">
+				<div class="form__back-link">
+					<a href="listar-sensores.html" class="button button--back"
+						>← Volver</a
+					>
+				</div>
+
+				<h2 class="form__title">Actualizar del sensor</h2>
+
+				<form class="userForm form__container">
+					<div class="form__row">
+						<div class="form__group">
+							<label for="tipo-sensor" class="form__label"
+								>Tipo de sensor</label
+							>
+							<select id="tipo-sensor" class="userType form__select" required>
+								<option value="default" selected>Seleccione una Opcion</option>
+								<option value="Sensor de contacto">Sensor de contacto</option>
+								<option value="Sensor de distancia">Sensor de distancia</option>
+								<option value="Sensores de luz">Sensores de luz</option>
+							</select>
+						</div>
+						<div class="form__group">
+							<label for="nombre-sensor" class="form__label"
+								>Ingrese nombre del sensor</label
+							>
+							<input
+								type="text"
+								id="nombre-sensor"
+								class="userNameSensor form__input"
+								placeholder="Ingrese nombre del sensor"
+								required
+							/>
+						</div>
+					</div>
+
+					<div class="form__row">
+						<div class="form__group">
+							<label for="unidad-medida" class="form__label"
+								>Unidad de medida</label
+							>
+							<select
+								id="unidad-medida"
+								class="userMedida form__select"
+								required
+							>
+								<option value="default" selected>Seleccione una Opcion</option>
+								<option value="Temperatura">Temperatura</option>
+								<option value="Distancia">Distancia</option>
+								<option value="Presión">Presión</option>
+							</select>
+						</div>
+						<div class="form__group">
+							<label for="imagen" class="form__label">Imagen</label>
+							<div class="form__image-input">
+								<input
+									type="file"
+									id="imagen"
+									class="userImage form__file"
+									placeholder="Imagen"
+									accept=".jpg, .jpeg, .png"
+									required
+								/>
+							</div>
+						</div>
+					</div>
+
+					<div class="form__group form__group--full-width">
+						<label for="descripcion" class="form__label">Descripción</label>
+						<textarea
+							id="descripcion"
+							class="UserDescription form__textarea"
+							placeholder="Ingrese descripción del cultivo"
+							required
+						></textarea>
+					</div>
+
+					<div class="form__row">
+						<div class="form__group">
+							<label for="ID" class="form__label">ID</label>
+							<input
+								type="text"
+								id="tamano"
+								class="userId form__input"
+								placeholder="Ingrese el ID del sensor"
+								required
+							/>
+						</div>
+						<div class="form__group">
+							<label for="tiempo-escaneo" class="form__label"
+								>Tiempo de Escaneo/Muestreo</label
+							>
+							<select
+								id="tiempo-escaneo"
+								class="userEscaneo form__select"
+								required
+							>
+								<option value="default" selected>Seleccione una Opcion</option>
+								<option value="Sensores lentos">Sensores lentos</option>
+								<option value="Sensores de velocidad media">
+									Sensores de velocidad media
+								</option>
+								<option value="Sensores rápidos">Sensores rápidos</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group full-width">
+						<div class="status-container">
+							<div class="status-item">
+								<input
+									type="radio"
+									name="estado-habilitado"
+									value="habilitado"
+									checked
+								/>
+								Habilitado
+							</div>
+							<div class="status-item">
+								<input
+									type="radio"
+									name="estado-habilitado"
+									value="deshabilitado"
+								/>
+								Deshabilitado
+							</div>
+						</div>
+					</div>
+
+					<div class="form__button-container">
+						<button class="button button--submit" type="submit">
+							Actualizar
+						</button>
+					</div>
+				</form>
+			</div>
+		</main>
+
+		<script src="../components/js/actualizar-sensor.js"></script>
+	</body>
+</html>
