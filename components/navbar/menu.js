@@ -1,7 +1,7 @@
 export default function MenuNav() {
 	const menu = document.querySelector(".nav__dropdown-side-menu");
 	const menuBtn = document.querySelector(".nav__menu-btn");
-	const navList = document.querySelector(".nav__list");
+	const navList = document.querySelector(".nav__right-content");
 
 	// Función para alternar la visibilidad del menú desplegable
 	const toggleMenu = () => {
