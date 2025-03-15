@@ -285,7 +285,7 @@ tbody tr {
 	z-index: 1;
 	background: var(--white);
 	border-radius: 8px;
-	box-shadow: 7px 20px 0px 600px rgba(0, 0, 0, 0.53);
+	box-shadow: 7px 20px 0px 600rem rgba(0, 0, 0, 0.53);
 	position: absolute;
 	top: 50%;
 	left: 50%;
