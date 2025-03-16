@@ -16,19 +16,6 @@ if (nav) {
 
 const headerRoot = document.querySelector(".header");
 if (headerRoot) {
-	const currentScript = document.querySelector('script[src$=".js"]:not([src*="main.js"])');
-	let headerTitle = "SGAL";
-
-	if (currentScript) {
-		try {
-			const scriptModule = await import(currentScript.src);
-			if (scriptModule.pageTitle) {
-				headerTitle = scriptModule.pageTitle;
-			}
-		} catch (error) {
-			console.error("Error loading page title:", error);
-		}
-	}
-
-	headerRoot.innerHTML = Header(headerTitle);
+	const title = headerRoot.dataset.title;
+	headerRoot.innerHTML = Header(title);
 }
