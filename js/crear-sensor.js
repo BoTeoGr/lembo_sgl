@@ -1,6 +1,3 @@
-// Exportar el título para el header
-export const pageTitle = "Crear sensor";
-
 // Código que impide que el usuario ingrese números en un input de texto
 document
 	.querySelector(".userNameSensor")

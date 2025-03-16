@@ -1,6 +1,3 @@
-// Exportar el título para el header
-export const pageTitle = "Crear insumo";
-
 // Bloquear números en el campo de nombre
 document.querySelector(".userName").addEventListener("keydown", function (e) {
 	if (e.key >= "0" && e.key <= "9") {

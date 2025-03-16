@@ -1,6 +1,3 @@
-// Exportar el título para el header
-export const pageTitle = "Crear ciclo de cultivo";
-
 // Bloquear números en el campo de nombre
 document.querySelectorAll(".userName").forEach(function (element) {
 	element.addEventListener("keydown", function (e) {

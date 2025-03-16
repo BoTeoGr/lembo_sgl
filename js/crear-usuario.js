@@ -1,6 +1,3 @@
-// Exportar el título para el header
-export const pageTitle = "Crear usuario";
-
 document.querySelector(".userName").addEventListener("keydown", function (e) {
 	if (e.key >= "0" && e.key <= "9") {
 		e.preventDefault();
