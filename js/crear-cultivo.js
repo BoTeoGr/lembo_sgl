@@ -1,3 +1,6 @@
+// Exportar el título para el header
+export const pageTitle = "Crear cultivo";
+
 // Bloquear números en el campo de nombre
 // Bloquear números en los campos 'userName' y 'typeCrop'
 document.querySelectorAll(".userName, .typeCrop").forEach(function (element) {
