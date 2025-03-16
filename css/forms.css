@@ -68,27 +68,6 @@ body {
 	height: 100vh;
 }
 
-/* Header */
-.header {
-	background-color: var(--white);
-	padding: 0.5rem 0;
-	box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.header__logo-container {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	max-width: 120rem;
-	margin: 0 auto;
-}
-
-.logo--sgal,
-.logo--sena {
-	height: 5rem;
-	object-fit: contain;
-}
-
 /* Contenedor principal */
 .main-content {
     width: 100%;
