@@ -29,7 +29,7 @@ ubicacion.addEventListener("input", readText);
 descripcion.addEventListener("input", readText);
 estadoRadios.forEach((radio) => radio.addEventListener("change", readText));
 
-// 🚫 Bloquear teclas que no sean números en el campo ID
+// Bloquear teclas que no sean números en el campo ID
 id.addEventListener("keydown", (e) => {
 	// Permitir teclas de control (backspace, tab, enter, etc.)
 	const teclasPermitidas = [
@@ -73,7 +73,7 @@ userForm.addEventListener("submit", function (e) {
 
 	// Redirigir después de mostrar el mensaje
 	setTimeout(() => {
-		window.location.href = "../pages/listar-cultivos.html"; // Asegúrate de que la ruta sea correcta
+		window.location.href = "listar-cultivos.html"; // Asegúrate de que la ruta sea correcta
 	}, 1000);
 });
 

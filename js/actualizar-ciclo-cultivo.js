@@ -42,7 +42,7 @@ estadoRadios.forEach((radio) => {
 	});
 });
 
-// 🚫 Bloquear teclas que no sean números en el campo ID
+// Bloquear teclas que no sean números en el campo ID
 document.querySelector("#id").addEventListener("keydown", (e) => {
 	const teclasPermitidas = [
 		"Backspace",
@@ -83,7 +83,7 @@ form.addEventListener("submit", (e) => {
 	// Si todo es válido, mostrar éxito y redirigir
 	showAlert("Ciclo de cultivo actualizado correctamente.");
 	setTimeout(() => {
-		window.location.href = "../pages/listar-ciclo-cultivos.html";
+		window.location.href = "listar-ciclo-cultivos.html";
 	}, 1000);
 
 	// console.log("Datos finales del ciclo de cultivo:", cicloCultivo);

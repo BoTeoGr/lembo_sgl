@@ -84,7 +84,7 @@ if (form) {
 
 		showAlert("Tu correo ha sido enviado satisfactoriamente");
 		setTimeout(() => {
-			window.location.href = "../pages/actualizacion-contraseña.html";
+			window.location.href = "actualizacion-contraseña.html";
 		}, 500);
 	});
 } else {

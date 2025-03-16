@@ -28,7 +28,7 @@ form.addEventListener("submit", function (e) {
 	showAlert("Tu correo ha sido enviado satisfactoriamente");
 
 	setTimeout(() => {
-		window.location.href = "../pages/login-codigo-recuperar.html"; // Asegúrate de que la ruta sea correcta
+		window.location.href = "login-codigo-recuperar.html"; // Asegúrate de que la ruta sea correcta
 	}, 1000);
 });
 

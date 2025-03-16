@@ -10,124 +10,12 @@
 		<title>Lista de Cultivos</title>
 		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
 		<link rel="stylesheet" href="../css/listar.css" />
+		<link rel="stylesheet" href="../components/navbar/navbar.css">
+		<script type="module" src="../js/main.js"></script>
 	</head>
 
 	<body>
-		<!-- Bloque: nav -->
 		<nav class="nav">
-			<img
-				src="../imgs/logoSena.svg"
-				alt="Logo Sena"
-				class="nav__logo"
-				width="60px"
-				height="60px"
-			/>
-			<div class="nav__aside">
-				<span class="nav__menu-btn material-symbols-outlined"> menu </span>
-				<div class="nav__dropdown-side-menu">
-					<a href="home.html" class="nav__link">Inicio</a>
-					<hr class="nav__separator" />
-					<a href="listar-sensores.html" class="nav__link">Lista de Sensores</a>
-					<hr class="nav__separator" />
-					<a href="crear-sensor.html" class="nav__link">Agregar Sensor</a>
-					<hr class="nav__separator" />
-					<a href="listar-usuarios.html" class="nav__link">Lista de Usuarios</a>
-					<hr class="nav__separator" />
-					<a href="crear-usuario.html" class="nav__link">Registrar Usuario</a>
-					<hr class="nav__separator" />
-					<a href="listar-insumos.html" class="nav__link">Lista de Insumos</a>
-					<hr class="nav__separator" />
-					<a href="crear-insumo.html" class="nav__link">Agregar Insumo</a>
-					<hr class="nav__separator" />
-					<a href="listar-cultivos.html" class="nav__link">Lista de Cultivos</a>
-					<hr class="nav__separator" />
-					<a href="listar-ciclo-cultivos.html" class="nav__link"
-						>Lista de Ciclos</a
-					>
-					<hr class="nav__separator" />
-					<a href="crear-cultivo.html" class="nav__link">Agregar Cultivo</a>
-					<hr class="nav__separator" />
-					<a href="crear-ciclo-cultivo.html" class="nav__link">Agregar Ciclo</a>
-					<hr class="nav__separator" />
-					<a href="ajustes.html" class="nav__link">Ajustes</a>
-				</div>
-			</div>
-			<div class="nav__right-content">
-				<ul class="nav__list">
-					<li class="nav__item">
-						<a href="home.html" class="nav__link">Inicio</a>
-					</li>
-					<li class="nav__item nav__item--dropdown">
-						<a href="" class="nav__link"
-							>Sensores
-							<span class="nav__icon material-symbols-outlined"
-								>keyboard_arrow_down</span
-							></a
-						>
-						<div class="nav__dropdown-content">
-							<a href="listar-sensores.html" class="nav__link"
-								>Lista de Sensores</a
-							>
-							<a href="crear-sensor.html" class="nav__link">Agregar Sensor</a>
-						</div>
-					</li>
-					<li class="nav__item nav__item--dropdown">
-						<a href="" class="nav__link"
-							>Usuarios
-							<span class="nav__icon material-symbols-outlined"
-								>keyboard_arrow_down</span
-							></a
-						>
-						<div class="nav__dropdown-content">
-							<a href="listar-usuarios.html" class="nav__link"
-								>Lista de Usuarios</a
-							>
-							<a href="crear-usuario.html" class="nav__link"
-								>Registrar Usuario</a
-							>
-						</div>
-					</li>
-					<li class="nav__item nav__item--dropdown">
-						<a href="" class="nav__link"
-							>Insumos
-							<span class="nav__icon material-symbols-outlined"
-								>keyboard_arrow_down</span
-							></a
-						>
-						<div class="nav__dropdown-content">
-							<a href="listar-insumos.html" class="nav__link"
-								>Lista de Insumos</a
-							>
-							<a href="crear-insumo.html" class="nav__link">Agregar Insumo</a>
-						</div>
-					</li>
-					<li class="nav__item nav__item--dropdown">
-						<a href="" class="nav__link nav__link--selected"
-							>Cultivos
-							<span class="nav__icon material-symbols-outlined"
-								>keyboard_arrow_down</span
-							></a
-						>
-						<div class="nav__dropdown-content">
-							<a href="listar-cultivos.html" class="nav__link"
-								>Lista de Cultivos</a
-							>
-							<a href="listar-ciclo-cultivos.html" class="nav__link"
-								>Lista de Ciclos</a
-							>
-							<a href="crear-cultivo.html" class="nav__link">Agregar Cultivo</a>
-							<a href="crear-ciclo-cultivo.html" class="nav__link"
-								>Agregar Ciclo</a
-							>
-						</div>
-					</li>
-				</ul>
-				<img
-					src="../imgs/profile-img.jpg"
-					alt="profile-image"
-					class="nav__user-image"
-				/>
-			</div>
 		</nav>
 
 		<!-- Bloque: main -->
@@ -262,9 +150,21 @@ Descripción del cultivo</textarea
 			</div>
 			<!-- Bloque: table -->
 			<div class="table">
-				<h2 class="table__title">Lista de Cultivos</h2>
-				<p class="table__description">Resumen de los cultivos de la granja</p>
-				<table class="table__content">
+				<div class="table__title">
+					<div class="table__title-column">
+						<h2 class="table__title">Lista de Ciclo de Cultivos</h2>
+						<p class="table__description">
+							Resumen de los ciclos de cultivos de la granja
+						</p>
+					</div>
+					<div class="table__title-side">
+						<span class="table__icon material-symbols-outlined">
+							search
+						</span>
+						<input type="search" class="table__search" placeholder="Buscar..." id="searchInput">
+					</div>
+				</div>
+				<table class="table__content" id="dataTable">
 					<thead class="table__header">
 						<tr class="table__row">
 							<th class="table__header-cell">Nombre</th>
@@ -392,7 +292,7 @@ Descripción del cultivo</textarea
 		</main>
 	</body>
 
-	<script src="../js/aside-menu.js"></script>
-
+	
+	<script src="../js/search.js"></script>
 	<script src="../js/display-item.js"></script>
 </html>

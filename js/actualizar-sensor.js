@@ -68,7 +68,7 @@ form.addEventListener("submit", (e) => {
 	console.log("Datos finales del sensor:", sensor);
 
 	setTimeout(() => {
-		window.location.href = "../pages/listar-sensores.html";
+		window.location.href = "listar-sensores.html";
 	}, 1000);
 });
 

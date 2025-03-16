@@ -1,0 +1,19 @@
+.footer {
+	background-color: var(--white);
+	width: 100%;
+	padding: 0.6rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.footer__text {
+	font-size: 0.9rem;
+	color: var(--green-950);
+	font-weight: 500;
+}
+
+.footer__icons {
+	display: flex;
+	gap: 1.5rem;
+}
