@@ -40,24 +40,45 @@ body {
 }
 /* Bloque: main */
 .main {
-	padding: 1rem;
-	padding-top: 0.8rem;
+	padding: 0.5rem;
 }
 /* Bloque: table */
 .table {
 	background-color: var(--white);
 	width: 100%;
-	border: solid 1px var(--gray-40);
-	border-radius: 0.5rem;
-	padding: 1rem;
+	border: none;
+	border-radius: 1rem;
+	padding: 1.5rem;
 	padding-top: 0;
-	overflow-x: auto; /* Permite el scroll horizontal en pantallas pequeñas */
+	overflow-x: auto;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 tbody {
 	display: block;
-	max-height: 55vh;
+	max-height: 50vh;
 	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: var(--green-500) var(--gray-20);
+}
+
+tbody::-webkit-scrollbar {
+	width: 8px;
+}
+
+tbody::-webkit-scrollbar-track {
+	background: var(--gray-20);
+	border-radius: 4px;
+}
+
+tbody::-webkit-scrollbar-thumb {
+	background-color: var(--green-500);
+	border-radius: 4px;
+	border: 2px solid var(--gray-20);
+}
+
+tbody::-webkit-scrollbar-thumb:hover {
+	background-color: var(--green-600);
 }
 
 thead,
@@ -92,11 +113,18 @@ tbody tr {
 
 .table__header-cell {
 	padding: 1rem 1.5rem;
-	color: var(--gray-80);
+	color: var(--green-950);
+    font-weight: 700;
+    border-bottom: 2px solid var(--green-300);
 }
 
 .table__row {
 	border-bottom: 1px solid var(--gray-40);
+	transition: background-color 0.2s ease;
+}
+
+.table__row:hover {
+	background-color: var(--green-50);
 }
 
 .table__cell {
@@ -105,25 +133,36 @@ tbody tr {
 }
 
 .table__cell--status {
-	align-items: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-text {
+    font-size: 14px;
+    color: #666;
 }
 
 .table__status {
-	font-size: 0.9rem;
-	padding: 0.01rem 0.5rem;
+	font-size: 0.85rem;
+	padding: 0.05rem 0.55rem;
 	border-radius: 999px;
 	text-align: center;
 	background-color: var(--gray-40);
 	font-weight: 600;
 	user-select: none;
+	transition: transform 0.2s ease;
+    margin: 0 0.2rem;
 }
 
 .table__status--enabled {
-	background-color: var(--green-600);
+	background-color: var(--green-500);
+	color: var(--white);
 }
 
 .table__status--disabled {
 	background-color: var(--expired);
+	color: var(--white);
 }
 
 .table__count {
@@ -165,13 +204,7 @@ tbody tr {
 		text-align: left;
 	}
 
-	.table__cell--status::before {
-		width: 30%;
-	}
 
-	.table__cell--status {
-		text-align: center;
-	}
 }
 
 /* Bloque: buttons */
@@ -479,7 +512,7 @@ tbody tr {
 }
 
 .table__title-side:focus-within {
-	box-shadow: 0 0 0 1px var(--green-700);
+	box-shadow: 0 0 0 1px var(--green-600);
 }
 
 .table__search::-webkit-search-cancel-button {
