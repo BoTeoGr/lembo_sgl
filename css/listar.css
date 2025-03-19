@@ -56,7 +56,7 @@ body {
 
 tbody {
 	display: block;
-	max-height: 50vh;
+	max-height: 54vh;
 	overflow-y: auto;
 	scrollbar-width: thin;
 	scrollbar-color: var(--green-500) var(--gray-20);
@@ -89,7 +89,7 @@ tbody tr {
 }
 
 .table__title {
-	margin-top: 1rem;
+	margin-top: 0.5rem;
 	color: var(--gray-100);
 }
 
@@ -166,7 +166,7 @@ tbody tr {
 }
 
 .table__count {
-	margin-top: 2rem;
+	margin-top: 1rem;
 	font-size: 1rem;
 	color: var(--gray-60);
 	font-weight: 600;
@@ -295,16 +295,9 @@ tbody tr {
 	align-items: center;
 }
 
-.date {
-	min-width: 8rem;
-	padding: 0.2rem;
-	border: 1px solid var(--gray-60);
-	border-radius: 6px;
-}
-
-.date p {
-	display: flex;
-	align-items: center;
+.table__date p span{
+	font-size: 1.2rem;
+	color: var(--secondary-green);
 }
 
 @media (max-width: 768px) {

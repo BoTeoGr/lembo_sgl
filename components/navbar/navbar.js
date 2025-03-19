@@ -23,50 +23,36 @@ export default function Navbar() {
         <a href="home.html" class="nav__link ${isSelected(
 					"home.html"
 				)}">Inicio</a>
-        <hr class="nav__separator" />
         <a href="listar-sensores.html" class="nav__link ${isSelected(
 					"listar-sensores.html"
 				)}">Lista de Sensores</a>
-        <hr class="nav__separator" />
         <a href="crear-sensor.html" class="nav__link ${isSelected(
 					"crear-sensor.html"
 				)}">Agregar Sensor</a>
-        <hr class="nav__separator" />
         <a href="listar-usuarios.html" class="nav__link ${isSelected(
 					"listar-usuarios.html"
 				)}">Lista de Usuarios</a>
-        <hr class="nav__separator" />
         <a href="crear-usuario.html" class="nav__link ${isSelected(
 					"crear-usuario.html"
 				)}">Registrar Usuario</a>
-        <hr class="nav__separator" />
         <a href="listar-insumos.html" class="nav__link ${isSelected(
 					"listar-insumos.html"
 				)}">Lista de Insumos</a>
-        <hr class="nav__separator" />
         <a href="crear-insumo.html" class="nav__link ${isSelected(
 					"crear-insumo.html"
 				)}">Agregar Insumo</a>
-        <hr class="nav__separator" />
         <a href="listar-cultivos.html" class="nav__link ${isSelected(
 					"listar-cultivos.html"
 				)}">Lista de Cultivos</a>
-        <hr class="nav__separator" />
         <a href="listar-ciclo-cultivos.html" class="nav__link ${isSelected(
 					"listar-ciclo-cultivos.html"
 				)}">Lista de Ciclos</a>
-        <hr class="nav__separator" />
         <a href="crear-cultivo.html" class="nav__link ${isSelected(
 					"crear-cultivo.html"
 				)}">Agregar Cultivo</a>
-        <hr class="nav__separator" />
         <a href="crear-ciclo-cultivo.html" class="nav__link ${isSelected(
 					"crear-ciclo-cultivo.html"
 				)}">Agregar Ciclo</a>
-        <hr class="nav__separator" />
-        <a href="ajustes.html" class="nav__link ${isSelected(
-					"ajustes.html"
-				)}">Ajustes</a>
     </div>
     </div>
     <div class="nav__right-content">
