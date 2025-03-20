@@ -35,7 +35,7 @@ export default function MenuNav() {
 	window.addEventListener("resize", handleResize);
 
 	// Evento para manejar el tamaño de la ventana al cargar la página
-	window.addEventListener('DOMContentLoaded', handleResize);
+	window.addEventListener("DOMContentLoaded", handleResize);
 
 	// Inicializar el estado del menú y el botón al cargar la página
 	handleResize();

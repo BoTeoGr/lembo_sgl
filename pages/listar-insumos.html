@@ -10,13 +10,12 @@
 		<title>Lista de Insumos</title>
 		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
 		<link rel="stylesheet" href="../css/listar.css" />
-		<link rel="stylesheet" href="../components/navbar/navbar.css">
+		<link rel="stylesheet" href="../components/navbar/navbar.css" />
 		<script type="module" src="../js/main.js"></script>
 	</head>
 
 	<body>
-		<nav class="nav">
-		</nav>
+		<nav class="nav"></nav>
 
 		<!-- Bloque: main -->
 		<main class="main">
@@ -186,10 +185,13 @@ Descripción del insumo</textarea
 						</p>
 					</div>
 					<div class="table__title-side">
-						<span class="table__icon material-symbols-outlined">
-							search
-						</span>
-						<input type="search" class="table__search" placeholder="Buscar..." id="searchInput">
+						<span class="table__icon material-symbols-outlined"> search </span>
+						<input
+							type="search"
+							class="table__search"
+							placeholder="Buscar..."
+							id="searchInput"
+						/>
 					</div>
 				</div>
 				<table class="table__content" id="dataTable">
@@ -204,111 +206,179 @@ Descripción del insumo</textarea
 					</thead>
 					<tbody class="table__body">
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Fertilizante NPK 15-15-15</td>
+							<td class="table__cell" data-Label="Nombre">
+								Fertilizante NPK 15-15-15
+							</td>
 							<td class="table__cell" data-Label="Tipo">Fertilizante</td>
 							<td class="table__cell" data-Label="Código">FERT-001</td>
-							<td class="table__cell" data-Label="Ubicación">Almacén de insumos</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Almacén de insumos
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--good">12/12/2024</span>
+								<span class="table__status table__status--good"
+									>12/12/2024</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Herbicida Glifosato</td>
+							<td class="table__cell" data-Label="Nombre">
+								Herbicida Glifosato
+							</td>
 							<td class="table__cell" data-Label="Tipo">Plaguicida</td>
 							<td class="table__cell" data-Label="Código">HERB-GLY-500</td>
-							<td class="table__cell" data-Label="Ubicación">Depósito químico</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Depósito químico
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--good">05/06/2025</span>
+								<span class="table__status table__status--good"
+									>05/06/2025</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Insecticida Cipermetrina</td>
+							<td class="table__cell" data-Label="Nombre">
+								Insecticida Cipermetrina
+							</td>
 							<td class="table__cell" data-Label="Tipo">Plaguicida</td>
 							<td class="table__cell" data-Label="Código">INS-CYP-250</td>
-							<td class="table__cell" data-Label="Ubicación">Depósito químico</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Depósito químico
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--good">15/03/2025</span>
+								<span class="table__status table__status--good"
+									>15/03/2025</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Concentrado Bovino</td>
+							<td class="table__cell" data-Label="Nombre">
+								Concentrado Bovino
+							</td>
 							<td class="table__cell" data-Label="Tipo">Alimento</td>
 							<td class="table__cell" data-Label="Código">ALM-BO-2023</td>
-							<td class="table__cell" data-Label="Ubicación">Almacén de alimentos</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Almacén de alimentos
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--warning">18/08/2024</span>
+								<span class="table__status table__status--warning"
+									>18/08/2024</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Sulfato de Amonio</td>
 							<td class="table__cell" data-Label="Tipo">Fertilizante</td>
 							<td class="table__cell" data-Label="Código">FERT-SULF-2023</td>
-							<td class="table__cell" data-Label="Ubicación">Depósito químico</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Depósito químico
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--warning">11/08/2024</span>
+								<span class="table__status table__status--warning"
+									>11/08/2024</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Antibiótico Bovino</td>
+							<td class="table__cell" data-Label="Nombre">
+								Antibiótico Bovino
+							</td>
 							<td class="table__cell" data-Label="Tipo">Medicamento</td>
 							<td class="table__cell" data-Label="Código">MED-ANTIB-500</td>
-							<td class="table__cell" data-Label="Ubicación">Depósito médico</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Depósito médico
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--good">30/11/2025</span>
+								<span class="table__status table__status--good"
+									>30/11/2025</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Aditivo Probiótico</td>
+							<td class="table__cell" data-Label="Nombre">
+								Aditivo Probiótico
+							</td>
 							<td class="table__cell" data-Label="Tipo">Suplemento</td>
 							<td class="table__cell" data-Label="Código">SUP-PROB-2023</td>
-							<td class="table__cell" data-Label="Ubicación">Almacén de alimentos</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Almacén de alimentos
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--expired">30/01/2024</span>
+								<span class="table__status table__status--expired"
+									>30/01/2024</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Fungicida Mancozeb</td>
+							<td class="table__cell" data-Label="Nombre">
+								Fungicida Mancozeb
+							</td>
 							<td class="table__cell" data-Label="Tipo">Plaguicida</td>
 							<td class="table__cell" data-Label="Código">FUNG-MAN-750</td>
-							<td class="table__cell" data-Label="Ubicación">Depósito químico</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Depósito químico
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--good">22/09/2025</span>
+								<span class="table__status table__status--good"
+									>22/09/2025</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Vitamina A para Aves</td>
+							<td class="table__cell" data-Label="Nombre">
+								Vitamina A para Aves
+							</td>
 							<td class="table__cell" data-Label="Tipo">Suplemento</td>
 							<td class="table__cell" data-Label="Código">SUP-VIT-A-2023</td>
-							<td class="table__cell" data-Label="Ubicación">Almacén de alimentos</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Almacén de alimentos
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--warning">14/10/2024</span>
+								<span class="table__status table__status--warning"
+									>14/10/2024</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Urea Granulada</td>
 							<td class="table__cell" data-Label="Tipo">Fertilizante</td>
 							<td class="table__cell" data-Label="Código">FERT-URE-2023</td>
-							<td class="table__cell" data-Label="Ubicación">Almacén de insumos</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Almacén de insumos
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--good">25/12/2025</span>
+								<span class="table__status table__status--good"
+									>25/12/2025</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Desinfectante Clorado</td>
+							<td class="table__cell" data-Label="Nombre">
+								Desinfectante Clorado
+							</td>
 							<td class="table__cell" data-Label="Tipo">Químico</td>
 							<td class="table__cell" data-Label="Código">QUIM-CLOR-500</td>
-							<td class="table__cell" data-Label="Ubicación">Depósito químico</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Depósito químico
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--expired">15/05/2023</span>
+								<span class="table__status table__status--expired"
+									>15/05/2023</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Alimento para Peces</td>
+							<td class="table__cell" data-Label="Nombre">
+								Alimento para Peces
+							</td>
 							<td class="table__cell" data-Label="Tipo">Alimento</td>
 							<td class="table__cell" data-Label="Código">ALM-PEZ-2023</td>
-							<td class="table__cell" data-Label="Ubicación">Almacén de alimentos</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Almacén de alimentos
+							</td>
 							<td class="table__cell" data-Label="Fecha de Expiración">
-								<span class="table__status table__status--warning">30/09/2024</span>
+								<span class="table__status table__status--warning"
+									>30/09/2024</span
+								>
 							</td>
 						</tr>
 					</tbody>
@@ -325,16 +395,15 @@ Descripción del insumo</textarea
 					Descargar Reporte
 				</button>
 				<button class="buttons__button buttons__button--secondary">
-					<a href="crear-insumo.html" class="buttons__link-plus"
-						>
-					<span class="buttons__icon material-symbols-outlined">add</span
-					>Agregar</a
+					<a href="crear-insumo.html" class="buttons__link-plus">
+						<span class="buttons__icon material-symbols-outlined">add</span
+						>Agregar</a
 					>
 				</button>
 			</div>
 		</main>
 	</body>
 	<script src="../js/search.js"></script>
-	
+
 	<script src="../js/display-item.js"></script>
 </html>

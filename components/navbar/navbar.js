@@ -121,8 +121,8 @@ export default function Navbar() {
         </li>
         <li class="nav__item">
             <a href="../index.html" class="nav__link ${isSelected(
-									"index.html"
-								)}">Cerrar Sesión</a>
+							"index.html"
+						)}">Cerrar Sesión</a>
         </li>
     </ul>
     <img
