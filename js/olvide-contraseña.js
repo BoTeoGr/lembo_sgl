@@ -15,7 +15,7 @@ form.addEventListener("submit", function (e) {
 	const { emailRecuperar } = recuperar; // Cambiado a recuperar.emailRecuperar
 
 	if (emailRecuperar === "") {
-		showAlert("Este campo es obligatorios", true);
+		showAlert("Este campo es obligatorio", true);
 		return;
 	}
 
