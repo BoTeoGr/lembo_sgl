@@ -10,14 +10,12 @@
 		<title>Lista de Ciclo de Cultivo</title>
 		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
 		<link rel="stylesheet" href="../css/listar.css" />
-		<link rel="stylesheet" href="../components/navbar/navbar.css">
+		<link rel="stylesheet" href="../components/navbar/navbar.css" />
 		<script type="module" src="../js/main.js"></script>
 	</head>
 
 	<body>
-		<nav class="nav">
-			
-		</nav>
+		<nav class="nav"></nav>
 		<main class="main">
 			<div class="element-display">
 				<!-- Header -->
@@ -132,10 +130,13 @@
 						</p>
 					</div>
 					<div class="table__title-side">
-						<span class="table__icon material-symbols-outlined">
-							search
-						</span>
-						<input type="search" class="table__search" placeholder="Buscar..." id="searchInput">
+						<span class="table__icon material-symbols-outlined"> search </span>
+						<input
+							type="search"
+							class="table__search"
+							placeholder="Buscar..."
+							id="searchInput"
+						/>
 					</div>
 				</div>
 				<table class="table__content" id="dataTable">
@@ -298,6 +299,106 @@
 								>
 							</td>
 						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">Trigo</td>
+							<td class="table__cell" data-Label="ID">7</td>
+							<td class="table__cell table__cell--dates" data-Label="Periodo">
+								<div class="table__date">
+									<p>
+										<span class="material-symbols-outlined"> today </span>
+										01/04/2025
+									</p>
+								</div>
+								<div class="table__date">
+									<p>
+										<span class="material-symbols-outlined">
+											event_available
+										</span>
+										30/08/2025
+									</p>
+								</div>
+							</td>
+							<td class="table__cell" data-Label="Novedad">
+								<span class="table__status table__status--warning"
+									>Riego insuficiente</span
+								>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">Cebolla</td>
+							<td class="table__cell" data-Label="ID">8</td>
+							<td class="table__cell table__cell--dates" data-Label="Periodo">
+								<div class="table__date">
+									<p>
+										<span class="material-symbols-outlined"> today </span>
+										15/03/2025
+									</p>
+								</div>
+								<div class="table__date">
+									<p>
+										<span class="material-symbols-outlined">
+											event_available
+										</span>
+										20/07/2025
+									</p>
+								</div>
+							</td>
+							<td class="table__cell" data-Label="Novedad">
+								<span class="table__status table__status--good"
+									>Crecimiento estable</span
+								>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">Plátano</td>
+							<td class="table__cell" data-Label="ID">9</td>
+							<td class="table__cell table__cell--dates" data-Label="Periodo">
+								<div class="table__date">
+									<p>
+										<span class="material-symbols-outlined"> today </span>
+										10/06/2025
+									</p>
+								</div>
+								<div class="table__date">
+									<p>
+										<span class="material-symbols-outlined">
+											event_available
+										</span>
+										15/12/2025
+									</p>
+								</div>
+							</td>
+							<td class="table__cell" data-Label="Novedad">
+								<span class="table__status table__status--expired"
+									>Maduración tardía</span
+								>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">Lechuga</td>
+							<td class="table__cell" data-Label="ID">10</td>
+							<td class="table__cell table__cell--dates" data-Label="Periodo">
+								<div class="table__date">
+									<p>
+										<span class="material-symbols-outlined"> today </span>
+										05/05/2025
+									</p>
+								</div>
+								<div class="table__date">
+									<p>
+										<span class="material-symbols-outlined">
+											event_available
+										</span>
+										30/06/2025
+									</p>
+								</div>
+							</td>
+							<td class="table__cell" data-Label="Novedad">
+								<span class="table__status table__status--good"
+									>Lista para cosecha</span
+								>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 
@@ -312,8 +413,8 @@
 				</button>
 
 				<button class="buttons__button buttons__button--secondary">
-					<span class="buttons__icon material-symbols-outlined">add</span
-					><a href="crear-ciclo-cultivo.html" class="buttons__link-plus"
+					<a href="crear-ciclo-cultivo.html" class="buttons__link-plus">
+						<span class="buttons__icon material-symbols-outlined">add</span
 						>Agregar</a
 					>
 				</button>

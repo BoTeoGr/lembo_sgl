@@ -10,13 +10,12 @@
 		<title>Lista de Sensores</title>
 		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
 		<link rel="stylesheet" href="../css/listar.css" />
-		<link rel="stylesheet" href="../components/navbar/navbar.css">
+		<link rel="stylesheet" href="../components/navbar/navbar.css" />
 		<script type="module" src="../js/main.js"></script>
 	</head>
 
 	<body>
-		<nav class="nav">
-		</nav>
+		<nav class="nav"></nav>
 
 		<!-- Bloque: main -->
 		<main class="main">
@@ -167,16 +166,19 @@ Descripción del sensor</textarea
 			<div class="table">
 				<div class="table__title">
 					<div class="table__title-column">
-						<h2 class="table__title">Lista de Ciclo de Cultivos</h2>
+						<h2 class="table__title">Lista de Sensores</h2>
 						<p class="table__description">
-							Resumen de los ciclos de cultivos de la granja
+							Resumen de los sensores de la granja
 						</p>
 					</div>
 					<div class="table__title-side">
-						<span class="table__icon material-symbols-outlined">
-							search
-						</span>
-						<input type="search" class="table__search" placeholder="Buscar..." id="searchInput">
+						<span class="table__icon material-symbols-outlined"> search </span>
+						<input
+							type="search"
+							class="table__search"
+							placeholder="Buscar..."
+							id="searchInput"
+						/>
 					</div>
 				</div>
 				<table class="table__content" id="dataTable">
@@ -196,10 +198,8 @@ Descripción del sensor</textarea
 							<td class="table__cell" data-Label="Tipo">Humedad del Suelo</td>
 							<td class="table__cell" data-Label="Ubicación">Lote A</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span
-									class="table__status table__status--enabled"
-								></span
-								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
+								<span class="table__status table__status--enabled"></span>
+								<span class="status-text">Activo</span>
 							</td>
 						</tr>
 						<tr class="table__row">
@@ -208,14 +208,12 @@ Descripción del sensor</textarea
 							</td>
 							<td class="table__cell" data-Label="ID">2</td>
 							<td class="table__cell" data-Label="Tipo">
-								Temperatura Ambiente
+								Temperatura Ambiental
 							</td>
-							<td class="table__cell" data-Label="Ubicación">Invernadero 1</td>
+							<td class="table__cell" data-Label="Ubicación">Lote B</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span
-									class="table__status table__status--enabled"
-								></span
-								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
+								<span class="table__status table__status--disabled"></span>
+								<span class="status-text">Inactivo</span>
 							</td>
 						</tr>
 						<tr class="table__row">
@@ -224,12 +222,8 @@ Descripción del sensor</textarea
 							<td class="table__cell" data-Label="Tipo">Nivel de pH</td>
 							<td class="table__cell" data-Label="Ubicación">Lote C</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span
-									class="table__status table__status"
-								></span
-								>&nbsp; Deshabilitado: &nbsp;<span
-									class="table__status table__status--disabled"
-								></span>
+								<span class="table__status table__status--disabled"></span>
+								<span class="status-text">Inactivo</span>
 							</td>
 						</tr>
 						<tr class="table__row">
@@ -240,10 +234,8 @@ Descripción del sensor</textarea
 							</td>
 							<td class="table__cell" data-Label="Ubicación">Invernadero 2</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span class="table__status"></span>&nbsp;
-								Deshabilitado: &nbsp;<span
-									class="table__status table__status--disabled"
-								></span>
+								<span class="table__status table__status--disabled"></span>
+								<span class="status-text">Inactivo</span>
 							</td>
 						</tr>
 						<tr class="table__row">
@@ -252,10 +244,8 @@ Descripción del sensor</textarea
 							<td class="table__cell" data-Label="Tipo">Detección de Lluvia</td>
 							<td class="table__cell" data-Label="Ubicación">Lote B</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span
-									class="table__status table__status--enabled"
-								></span
-								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
+								<span class="table__status table__status--enabled"></span>
+								<span class="status-text">Activo</span>
 							</td>
 						</tr>
 						<tr class="table__row">
@@ -266,10 +256,8 @@ Descripción del sensor</textarea
 							</td>
 							<td class="table__cell" data-Label="Ubicación">Lote D</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span class="table__status"></span>&nbsp;
-								Deshabilitado: &nbsp;<span
-									class="table__status table__status--disabled"
-								></span>
+								<span class="table__status table__status--disabled"></span>
+								<span class="status-text">Inactivo</span>
 							</td>
 						</tr>
 						<tr class="table__row">
@@ -280,10 +268,70 @@ Descripción del sensor</textarea
 								Finca Experimental
 							</td>
 							<td class="table__cell table__cell--status" data-Label="Estado">
-								Habilitado: &nbsp;<span
-									class="table__status table__status--enabled"
-								></span
-								>&nbsp; Deshabilitado: &nbsp;<span class="table__status"></span>
+								<span class="table__status table__status--enabled"></span>
+								<span class="status-text">Activo</span>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">Sensor de Presión</td>
+							<td class="table__cell" data-Label="ID">8</td>
+							<td class="table__cell" data-Label="Tipo">Presión Atmosférica</td>
+							<td class="table__cell" data-Label="Ubicación">Lote E</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								<span class="table__status table__status--enabled"></span>
+								<span class="status-text">Activo</span>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">Sensor de Sonido</td>
+							<td class="table__cell" data-Label="ID">9</td>
+							<td class="table__cell" data-Label="Tipo">Nivel de Ruido</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Área de Producción
+							</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								<span class="table__status table__status--disabled"></span>
+								<span class="status-text">Inactivo</span>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">
+								Sensor de Movimiento
+							</td>
+							<td class="table__cell" data-Label="ID">10</td>
+							<td class="table__cell" data-Label="Tipo">
+								Detección de Movimiento
+							</td>
+							<td class="table__cell" data-Label="Ubicación">Almacén</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								<span class="table__status table__status--enabled"></span>
+								<span class="status-text">Activo</span>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">Sensor de Gas</td>
+							<td class="table__cell" data-Label="ID">11</td>
+							<td class="table__cell" data-Label="Tipo">Detección de Gas</td>
+							<td class="table__cell" data-Label="Ubicación">Cocina</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								<span class="table__status table__status--enabled"></span>
+								<span class="status-text">Activo</span>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell" data-Label="Nombre">
+								Sensor de Proximidad
+							</td>
+							<td class="table__cell" data-Label="ID">12</td>
+							<td class="table__cell" data-Label="Tipo">
+								Detección de Proximidad
+							</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Entrada Principal
+							</td>
+							<td class="table__cell table__cell--status" data-Label="Estado">
+								<span class="table__status table__status--disabled"></span>
+								<span class="status-text">Inactivo</span>
 							</td>
 						</tr>
 					</tbody>
@@ -301,13 +349,15 @@ Descripción del sensor</textarea
 					Descargar Reporte
 				</button>
 				<button class="buttons__button buttons__button--secondary">
-					<span class="buttons__icon material-symbols-outlined">add</span
-					><a href="crear-sensor.html" class="buttons__link-plus">Agregar</a>
+					<a href="crear-sensor.html" class="buttons__link-plus">
+						<span class="buttons__icon material-symbols-outlined">add</span
+						>Agregar</a
+					>
 				</button>
 			</div>
 		</main>
 	</body>
 	<script src="../js/search.js"></script>
-	
+
 	<script src="../js/display-item.js"></script>
 </html>

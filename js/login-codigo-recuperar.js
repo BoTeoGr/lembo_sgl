@@ -46,7 +46,7 @@ inputs.forEach((input, index) => {
 // Capturar el código ingresado de todos los inputs
 function readText() {
 	let codigoIngresado = "";
-	inputs.forEach(input => {
+	inputs.forEach((input) => {
 		codigoIngresado += input.value; // Concatenar valores de los 6 inputs
 	});
 	codigoRecuperar.codigo = codigoIngresado;
