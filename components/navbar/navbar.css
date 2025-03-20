@@ -18,7 +18,7 @@
 .nav__right-content {
 	display: flex;
 	align-items: center;
-	gap: 1rem;
+	gap: 0.5rem;
 }
 
 .nav__list {
@@ -26,7 +26,7 @@
 	padding: 0;
 	margin: 0;
 	display: flex;
-	gap: 1.5rem;
+	gap: 1rem;
 	align-items: center;
 }
 

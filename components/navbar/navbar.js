@@ -53,6 +53,9 @@ export default function Navbar() {
         <a href="crear-ciclo-cultivo.html" class="nav__link ${isSelected(
 					"crear-ciclo-cultivo.html"
 				)}">Agregar Ciclo</a>
+        <a href="../index.html" class="nav__link ${isSelected(
+					"index.html"
+				)}">Cerrar Sesión</a>
     </div>
     </div>
     <div class="nav__right-content">
@@ -115,6 +118,11 @@ export default function Navbar() {
                 <a href="crear-cultivo.html" class="nav__link">Agregar Cultivo</a>
                 <a href="crear-ciclo-cultivo.html" class="nav__link">Agregar Ciclo</a>
             </div>
+        </li>
+        <li class="nav__item">
+            <a href="../index.html" class="nav__link ${isSelected(
+									"index.html"
+								)}">Cerrar Sesión</a>
         </li>
     </ul>
     <img

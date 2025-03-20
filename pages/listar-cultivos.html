@@ -10,13 +10,12 @@
 		<title>Lista de Cultivos</title>
 		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
 		<link rel="stylesheet" href="../css/listar.css" />
-		<link rel="stylesheet" href="../components/navbar/navbar.css">
+		<link rel="stylesheet" href="../components/navbar/navbar.css" />
 		<script type="module" src="../js/main.js"></script>
 	</head>
 
 	<body>
-		<nav class="nav">
-		</nav>
+		<nav class="nav"></nav>
 
 		<!-- Bloque: main -->
 		<main class="main">
@@ -158,10 +157,13 @@ Descripción del cultivo</textarea
 						</p>
 					</div>
 					<div class="table__title-side">
-						<span class="table__icon material-symbols-outlined">
-							search
-						</span>
-						<input type="search" class="table__search" placeholder="Buscar..." id="searchInput">
+						<span class="table__icon material-symbols-outlined"> search </span>
+						<input
+							type="search"
+							class="table__search"
+							placeholder="Buscar..."
+							id="searchInput"
+						/>
 					</div>
 				</div>
 				<table class="table__content" id="dataTable">
@@ -178,109 +180,159 @@ Descripción del cultivo</textarea
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Maíz</td>
 							<td class="table__cell" data-Label="Tipo">Cereal</td>
-							<td class="table__cell" data-Label="Identificador">CULT-MAIZ-001</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-MAIZ-001
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Lote A</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good">2 hectáreas</span>
+								<span class="table__status table__status--good"
+									>2 hectáreas</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Frijol</td>
 							<td class="table__cell" data-Label="Tipo">Leguminosa</td>
-							<td class="table__cell" data-Label="Identificador">CULT-FRIJ-002</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-FRIJ-002
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Lote B</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good">1.5 hectáreas</span>
+								<span class="table__status table__status--good"
+									>1.5 hectáreas</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Tomate</td>
 							<td class="table__cell" data-Label="Tipo">Hortaliza</td>
-							<td class="table__cell" data-Label="Identificador">CULT-TOM-003</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-TOM-003
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Invernadero 1</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good">0.5 hectáreas</span>
+								<span class="table__status table__status--good"
+									>0.5 hectáreas</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Papa</td>
 							<td class="table__cell" data-Label="Tipo">Tubérculo</td>
-							<td class="table__cell" data-Label="Identificador">CULT-PAPA-004</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-PAPA-004
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Lote C</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--warning">3 hectáreas</span>
+								<span class="table__status table__status--warning"
+									>3 hectáreas</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Caña de Azúcar</td>
 							<td class="table__cell" data-Label="Tipo">Gramínea</td>
-							<td class="table__cell" data-Label="Identificador">CULT-CAÑA-005</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-CAÑA-005
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Lote D</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--warning">5 hectáreas</span>
+								<span class="table__status table__status--warning"
+									>5 hectáreas</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Zanahoria</td>
 							<td class="table__cell" data-Label="Tipo">Hortaliza</td>
-							<td class="table__cell" data-Label="Identificador">CULT-ZAN-006</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-ZAN-006
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Invernadero 2</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good">0.3 hectáreas</span>
+								<span class="table__status table__status--good"
+									>0.3 hectáreas</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Café</td>
 							<td class="table__cell" data-Label="Tipo">Cultivo Permanente</td>
-							<td class="table__cell" data-Label="Identificador">CULT-CAFE-007</td>
-							<td class="table__cell" data-Label="Ubicación">Finca Experimental</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-CAFE-007
+							</td>
+							<td class="table__cell" data-Label="Ubicación">
+								Finca Experimental
+							</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--expired">10 hectáreas</span>
+								<span class="table__status table__status--expired"
+									>10 hectáreas</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Arroz</td>
 							<td class="table__cell" data-Label="Tipo">Cereal</td>
-							<td class="table__cell" data-Label="Identificador">CULT-ARROZ-008</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-ARROZ-008
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Lote E</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good">4 hectáreas</span>
+								<span class="table__status table__status--good"
+									>4 hectáreas</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Lechuga</td>
 							<td class="table__cell" data-Label="Tipo">Hortaliza</td>
-							<td class="table__cell" data-Label="Identificador">CULT-LECH-009</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-LECH-009
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Invernadero 3</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good">0.2 hectáreas</span>
+								<span class="table__status table__status--good"
+									>0.2 hectáreas</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Trigo</td>
 							<td class="table__cell" data-Label="Tipo">Cereal</td>
-							<td class="table__cell" data-Label="Identificador">CULT-TRIGO-010</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-TRIGO-010
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Lote F</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--warning">6 hectáreas</span>
+								<span class="table__status table__status--warning"
+									>6 hectáreas</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Cebolla</td>
 							<td class="table__cell" data-Label="Tipo">Hortaliza</td>
-							<td class="table__cell" data-Label="Identificador">CULT-CEB-011</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-CEB-011
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Invernadero 4</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good">0.8 hectáreas</span>
+								<span class="table__status table__status--good"
+									>0.8 hectáreas</span
+								>
 							</td>
 						</tr>
 						<tr class="table__row">
 							<td class="table__cell" data-Label="Nombre">Plátano</td>
 							<td class="table__cell" data-Label="Tipo">Cultivo Permanente</td>
-							<td class="table__cell" data-Label="Identificador">CULT-PLAT-012</td>
+							<td class="table__cell" data-Label="Identificador">
+								CULT-PLAT-012
+							</td>
 							<td class="table__cell" data-Label="Ubicación">Lote G</td>
 							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--expired">8 hectáreas</span>
+								<span class="table__status table__status--expired"
+									>8 hectáreas</span
+								>
 							</td>
 						</tr>
 					</tbody>
@@ -298,8 +350,8 @@ Descripción del cultivo</textarea
 					Descargar Reporte
 				</button>
 				<button class="buttons__button buttons__button--secondary">
-					<span class="buttons__icon material-symbols-outlined">add</span
-					><a href="crear-cultivo.html" class="buttons__link-plus"
+					<a href="crear-cultivo.html" class="buttons__link-plus">
+						<span class="buttons__icon material-symbols-outlined">add</span
 						>Agregar</a
 					>
 				</button>
@@ -307,7 +359,6 @@ Descripción del cultivo</textarea
 		</main>
 	</body>
 
-	
 	<script src="../js/search.js"></script>
 	<script src="../js/display-item.js"></script>
 </html>
