@@ -1,5 +1,5 @@
 export default function Footer() {
-    return `
+	return `
         <p class="footer__text">
 				© 2024 Sistema de Gestión Agraria Lembo. Todos los derechos reservados.
 			</p>

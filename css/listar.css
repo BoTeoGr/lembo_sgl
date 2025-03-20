@@ -114,8 +114,8 @@ tbody tr {
 .table__header-cell {
 	padding: 1rem 1.5rem;
 	color: var(--green-950);
-    font-weight: 700;
-    border-bottom: 2px solid var(--green-300);
+	font-weight: 700;
+	border-bottom: 2px solid var(--green-300);
 }
 
 .table__row {
@@ -133,14 +133,14 @@ tbody tr {
 }
 
 .table__cell--status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 
 .status-text {
-    font-size: 14px;
-    color: #666;
+	font-size: 14px;
+	color: #666;
 }
 
 .table__status {
@@ -152,7 +152,7 @@ tbody tr {
 	font-weight: 600;
 	user-select: none;
 	transition: transform 0.2s ease;
-    margin: 0 0.2rem;
+	margin: 0 0.2rem;
 }
 
 .table__status--enabled {
@@ -203,8 +203,6 @@ tbody tr {
 		width: 45%;
 		text-align: left;
 	}
-
-
 }
 
 /* Bloque: buttons */
@@ -230,7 +228,7 @@ tbody tr {
 	cursor: pointer;
 }
 
-.buttons__button--secondary{
+.buttons__button--secondary {
 	background-color: transparent;
 	padding: 0.3rem 0.6rem;
 	border: 1px solid var(--gray-40);
@@ -247,11 +245,11 @@ tbody tr {
 	transform: translateY(-8px);
 }
 
-.buttons__button--secondary:hover a{
+.buttons__button--secondary:hover a {
 	color: var(--white);
 }
 
-.buttons__button--secondary a{
+.buttons__button--secondary a {
 	display: flex;
 	align-items: center;
 }
@@ -307,7 +305,7 @@ tbody tr {
 	align-items: center;
 }
 
-.table__date p span{
+.table__date p span {
 	font-size: 1.2rem;
 	color: var(--secondary-green);
 }
@@ -490,8 +488,8 @@ tbody tr {
 	transition: box-shadow 0.1s ease;
 }
 
-@media(width < 768px){
-	.table__title-side{
+@media (width < 768px) {
+	.table__title-side {
 		width: 100%;
 		margin: 2rem 0rem;
 	}

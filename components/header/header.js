@@ -1,4 +1,4 @@
-export default function Header(title = 'SGAL') {
+export default function Header(title = "SGAL") {
 	return `
         <div class="header__logo-container">
 				<img src="../imgs/logoSena.svg" alt="Logo SENA" class="logo--sena" />

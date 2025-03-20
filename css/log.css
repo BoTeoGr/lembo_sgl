@@ -319,7 +319,8 @@ h6 {
 	border-radius: 0.6px;
 	font-size: 1.6rem;
 	transition: all 0.2s ease-in-out;
-} .fields__input:focus {
+}
+.fields__input:focus {
 	border-bottom: 2px solid var(--green-950); /* Color cuando está enfocado */
 	box-shadow: 0 6px 10px -5px rgba(0, 0, 0, 0.5);
 }
@@ -338,7 +339,8 @@ h6 {
 	border-radius: 8px;
 	outline: none;
 	transition: all 0.2s ease-in-out;
-}.inputCode:focus {
+}
+.inputCode:focus {
 	border-color: var(--green-950);
 	box-shadow: 0 4px 6px -2px rgba(0, 128, 0, 0.5);
 }
@@ -449,7 +451,7 @@ h6 {
 	.mainForgetPassword {
 		order: 2;
 	}
-	
+
 	.login {
 		width: 94%;
 		height: 100%;
