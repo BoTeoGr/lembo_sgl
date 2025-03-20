@@ -250,10 +250,12 @@ body {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
+	font-size: 1.4rem;
 }
 
 .status-item input {
-	margin-right: 0.5rem;
+	width: 1.5rem;
+	height: 1.5rem;
 	accent-color: var(--green-950);
 }
 
