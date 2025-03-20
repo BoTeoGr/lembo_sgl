@@ -239,6 +239,16 @@ tbody tr {
 	font-size: 1rem;
 	border-radius: 0.3rem;
 	cursor: pointer;
+	transition: transform 0.5s ease, background-color 0.5s ease, color 0.5s ease;
+}
+
+.buttons__button--secondary:hover {
+	background-color: var(--green-600);
+	transform: translateY(-8px);
+}
+
+.buttons__button--secondary:hover a{
+	color: var(--white);
 }
 
 .buttons__button--secondary a{
