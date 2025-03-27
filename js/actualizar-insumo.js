@@ -25,7 +25,7 @@ const estadoRadios = document.querySelectorAll(
 	'input[name="estado-habilitado"]'
 );
 
-// 🚫 Función para bloquear teclas que no sean números
+//  Función para bloquear teclas que no sean números
 function bloquearTeclasNoNumericas(input) {
 	input.addEventListener("keydown", (e) => {
 		const teclasPermitidas = [
@@ -60,7 +60,7 @@ estadoRadios.forEach((radio) => {
 	});
 });
 
-// 🚀 Evento para validar y enviar el formulario
+//  Evento para validar y enviar el formulario
 form.addEventListener("submit", (e) => {
 	e.preventDefault();
 
