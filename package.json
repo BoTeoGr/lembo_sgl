@@ -1,0 +1,27 @@
+{
+  "name": "lembo_sgl",
+  "version": "1.0.0",
+  "description": "Proyecto lembo sgl",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BoTeoGr/Lembo_Sgl.git"
+  },
+  "keywords": [
+    "lembo"
+  ],
+  "author": "Kevin Acevedo, Sthephanny Cruz, Mateo Mosquera",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BoTeoGr/Lembo_Sgl/issues"
+  },
+  "homepage": "https://github.com/BoTeoGr/Lembo_Sgl#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "mysql2": "^3.14.0"
+  }
+}
