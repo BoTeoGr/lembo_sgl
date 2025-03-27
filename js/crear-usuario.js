@@ -1,3 +1,5 @@
+import axios from axios
+
 document.querySelector(".userName").addEventListener("keydown", function (e) {
 	if (e.key >= "0" && e.key <= "9") {
 		e.preventDefault();
@@ -118,7 +120,7 @@ function showAlert(message, error = null) {
 }
 
 // Función para capturar los valores de los inputs
-function readText(e) {
+async function readText(e) {
 	if (e.target.classList.contains("userTypeId")) {
 		userData.userTypeId = e.target.value;
 	} else if (e.target.classList.contains("userName")) {
@@ -137,4 +139,11 @@ function readText(e) {
 	}
 
 	console.log(userData); // Ver los valores almacenados en userData para asegurarte de que se actualicen correctamente
+
+	try{
+		const response = await axios.post("http://localhost:3000/users", userData);
+		console.log("Esta fue la respuesta del servidor", response)
+	}catch(err){
+		console.log("el error fue : ", err);
+	}
 }
