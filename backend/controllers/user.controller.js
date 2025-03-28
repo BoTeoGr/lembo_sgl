@@ -1,6 +1,5 @@
 import db from './../db/config.db.js'
 
-//papi estás son las funciones de las rutas
 
 export function VerUsuarios (req, res) {
     try {
@@ -11,10 +10,10 @@ export function VerUsuarios (req, res) {
                 console.error('Error al obtener usuarios:', err);
                 return res.status(500).json({ error: 'Error al obtener usuarios' });
             }
-
+            console.log(results);
             res.status(200).json(results);
         });
-
+        console.log('usuarios obtenidos correctamente');
     } catch (error) {
         console.error('Error en obtenerUsuarios:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
@@ -30,19 +29,10 @@ export function crearUsuario(req, res){
             return res.status(400).json({ error: 'Los correos no coinciden' });
         }
 
-        const tiposDocumento = ['ti', 'cc', 'ppt'];
-        if (!tiposDocumento.includes(userTypeId)) {
-            return res.status(400).json({ error: 'Tipo de documento invalido' });
-        }
-        const rolesValidos = ['superadmin', 'admin', 'apoyo', 'visitante'];
-        if (!rolesValidos.includes(userRol)) {
-            return res.status(400).json({ error: 'Rol invalido' });
-        }
 
-        //esta ya es la peticion a la base de datos pa
-        db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol)  
-            VALUES (?, ?, ?, ?, ?, ?)`,
-            [userTypeId, userId, userName, userTel, userEmail, userRol],
+        db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion, fecha_actualizacion)  
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date(), new Date()],
             (err, results) => {
                 if (err) {
                     console.error('error al insertar usuario:', err);
@@ -52,6 +42,8 @@ export function crearUsuario(req, res){
             }
 
         )
+
+        console.log('Usuario creado correctamente');
     }catch(err){
         console.error(err)
         res.status(500).json({error: 'error desconocido'})
