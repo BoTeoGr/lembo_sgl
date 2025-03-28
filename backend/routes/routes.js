@@ -6,6 +6,6 @@ const router = express.Router()
 router.get('/users', VerUsuarios)
 router.post('/users', crearUsuario);
 
-//router.get('/insumos', VerInsumos);
+
 
 export default router
