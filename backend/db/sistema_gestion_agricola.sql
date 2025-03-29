@@ -1,8 +1,6 @@
 -- Crear la base de datos
 CREATE DATABASE IF NOT EXISTS sistema_gestion_agricola;
 USE sistema_gestion_agricola;
-
--- Tabla de Usuarios
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tipo_documento ENUM('ti', 'cc', 'ppt') NOT NULL,
@@ -17,7 +15,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- Tabla de Cultivos
 CREATE TABLE IF NOT EXISTS cultivos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_cultivo VARCHAR(50) NOT NULL UNIQUE,
+    -- id_cultivo VARCHAR(50) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     tipo VARCHAR(50) NOT NULL,
     imagen VARCHAR(255),
@@ -47,7 +45,7 @@ CREATE TABLE IF NOT EXISTS ciclo_cultivo (
 -- Tabla de Sensores
 CREATE TABLE IF NOT EXISTS sensores (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_sensor VARCHAR(50) NOT NULL UNIQUE,
+    -- id_sensor VARCHAR(50) NOT NULL UNIQUE,
     tipo_sensor ENUM('Sensor de contacto', 'Sensor de distancia', 'Sensores de luz') NOT NULL,
     nombre_sensor VARCHAR(100) NOT NULL,
     unidad_medida ENUM('Temperatura', 'Distancia', 'Presión') NOT NULL,
@@ -62,7 +60,7 @@ CREATE TABLE IF NOT EXISTS sensores (
 -- Tabla de Insumos
 CREATE TABLE IF NOT EXISTS insumos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_insumo VARCHAR(50) NOT NULL UNIQUE,
+    -- id_insumo VARCHAR(50) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     tipo VARCHAR(50) NOT NULL,
     imagen VARCHAR(255),

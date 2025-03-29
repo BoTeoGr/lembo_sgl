@@ -96,6 +96,9 @@ userForm.addEventListener("submit", function (e) {
 	showAlert("Tus datos han sido enviados."); // Mostrar alerta de éxito
 
 	// Redirigir después de que la alerta desaparezca
+	setTimeout(() => {
+            window.location.href = "listar-usuarios.html"; // Asegúrate de que la ruta sea correcta
+        }, 1000);
 	// Retraso de 5 segundos para permitir que la alerta sea visible
 });
 

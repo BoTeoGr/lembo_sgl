@@ -20,7 +20,8 @@
 
 				<h2 class="form__title">Creación del sensor</h2>
 
-				<form class="userForm form__container">
+				<form class="userForm form__container" method="post">
+					
 					<div class="form__row">
 						<div class="form__group">
 							<label for="tipo-sensor" class="form__label"
@@ -81,23 +82,14 @@
 						<label for="descripcion" class="form__label">Descripción</label>
 						<textarea
 							id="descripcion"
-							class="UserDescription form__textarea"
+							class="userDescription form__textarea"
 							placeholder="Ingrese descripción del cultivo"
 							required
 						></textarea>
 					</div>
 
 					<div class="form__row">
-						<div class="form__group">
-							<label for="id-sensor" class="form__label">ID</label>
-							<input
-								type="text"
-								id="id-sensor"
-								class="userId form__input"
-								placeholder="Ingrese el ID del sensor"
-								required
-							/>
-						</div>
+						
 						<div class="form__group">
 							<label for="tiempo-escaneo" class="form__label"
 								>Tiempo de Escaneo/Muestreo</label

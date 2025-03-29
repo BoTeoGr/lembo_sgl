@@ -1,9 +1,8 @@
 import db from './../db/config.db.js'
 
-
 export function VerUsuarios (req, res) {
     try {
-        const query = 'SELECT id, tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion, fecha_actualizacion FROM usuarios';
+        const query = 'SELECT * FROM usuarios';
 
         db.query(query, (err, results) => {
             if (err) {
@@ -30,18 +29,18 @@ export function crearUsuario(req, res){
         }
 
 
-        db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion, fecha_actualizacion)  
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date(), new Date()],
+        db.query(
+            `INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion)  
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date()],
             (err, results) => {
                 if (err) {
-                    console.error('error al insertar usuario:', err);
-                    return res.status(500).json({ error: 'error desconocido al crear el usuario' });
+                    console.error('Error al insertar usuario:', err.message);
+                    return res.status(500).json({ error: 'Error desconocido al crear el usuario' });
                 }
-                res.status(201).json({ message: 'usuario creado correctamente', userId: results.insertId });
+                res.status(201).json({ message: 'Usuario creado correctamente', userId: results.insertId });
             }
-
-        )
+        );
 
         console.log('Usuario creado correctamente');
     }catch(err){
