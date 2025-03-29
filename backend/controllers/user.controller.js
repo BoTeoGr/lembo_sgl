@@ -29,10 +29,9 @@ export function crearUsuario(req, res){
             return res.status(400).json({ error: 'Los correos no coinciden' });
         }
 
-
-        db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion, fecha_actualizacion)  
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date(), new Date()],
+        db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion)  
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date()],
             (err, results) => {
                 if (err) {
                     console.error('error al insertar usuario:', err);
@@ -40,7 +39,6 @@ export function crearUsuario(req, res){
                 }
                 res.status(201).json({ message: 'usuario creado correctamente', userId: results.insertId });
             }
-
         )
 
         console.log('Usuario creado correctamente');
