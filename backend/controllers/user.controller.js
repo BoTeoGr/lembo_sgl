@@ -3,7 +3,7 @@ import db from './../db/config.db.js'
 
 export function VerUsuarios (req, res) {
     try {
-        const query = 'SELECT id, tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion, fecha_actualizacion FROM usuarios';
+        const query = 'SELECT * FROM usuarios';
 
         db.query(query, (err, results) => {
             if (err) {
