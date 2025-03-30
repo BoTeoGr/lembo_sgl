@@ -149,7 +149,7 @@ submitButton.addEventListener("click", async () => {
 		if (response.ok) {
 			showAlert("Ciclo de cultivo creado exitosamente", false);
 			setTimeout(() => {
-				window.location.href = "listar-ciclos-cultivos.html";
+				window.location.href = "listar-ciclo-cultivos.html";
 			}, 2000);
 		} else {
 			showAlert(data.error || "Error al crear el ciclo de cultivo", true);
