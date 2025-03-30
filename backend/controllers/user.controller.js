@@ -29,10 +29,9 @@ export function crearUsuario(req, res){
         }
 
 
-        db.query(
-            `INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion)  
-            VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date()],
+        db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion, fecha_actualizacion)  
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date(), new Date()],
             (err, results) => {
                 if (err) {
                     console.error('Error al insertar usuario:', err.message);
@@ -40,7 +39,8 @@ export function crearUsuario(req, res){
                 }
                 res.status(201).json({ message: 'Usuario creado correctamente', userId: results.insertId });
             }
-        );
+
+        )
 
         console.log('Usuario creado correctamente');
     }catch(err){
