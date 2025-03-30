@@ -49,3 +49,4 @@ export function crearSensor(req, res) {
         res.status(500).json({ error: 'Error desconocido' });
     }
 }
+// Olvide este comentario

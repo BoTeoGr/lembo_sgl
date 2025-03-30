@@ -11,10 +11,10 @@ router.post('/users', crearUsuario);
 // RUtas para sensores
 router.get('/sensor', VerSensores)
 router.post('/sensor', crearSensor);
-// Rutas para insumo
+// Rutas para insumos
 router.get('/insumos', VerInsumos);
 router.post('/insumos', crearInsumo);
-// Rutas para cultivo
+// Rutas para cultivos
 router.get('/cultivos', VerCultivos);
 router.post('/cultivos', crearCultivo);
 

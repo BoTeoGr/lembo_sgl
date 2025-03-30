@@ -139,4 +139,5 @@ submitButton.addEventListener("click", async () => {
         console.log(error);
         showAlert("Error al comunicarse con el servidor", true);
     }
-});
+});  
+// Olvide este comentario

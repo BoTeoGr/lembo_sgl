@@ -53,3 +53,4 @@ export function crearCultivo(req, res) {
         res.status(500).json({ error: 'Error desconocido' });
     }
 }
+// Olvide este comentario

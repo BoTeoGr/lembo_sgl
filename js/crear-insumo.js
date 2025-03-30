@@ -97,7 +97,7 @@ function showAlert(message, error = null) {
     }, 5000);
 }
 
-// Función para validar los datos del insumo
+// Función para validar los datos de insumos
 function validateInsumoData() {
     const requiredFields = [
         { field: "userName", label: "Nombre del insumo" },
