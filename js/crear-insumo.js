@@ -51,15 +51,23 @@ userAmount.addEventListener("input", readText);
 function calculateTotal() {
     const price = parseFloat(userPrice.value) || 0;
     const amount = parseInt(userAmount.value) || 0;
-    const total = (price * amount).toFixed(2);
-
-    totalValue.value = total;
-    insumoData.totalValue = total;
+    
+    // Validar que el precio sea un número válido
+    if (isNaN(price)) {
+        totalValue.value = '';
+        insumoData.totalValue = '';
+        return;
+    }
+    const total = (price * amount).toFixed(0); // Redondear a entero
+    // Formatear con puntos y signo $
+    const formattedTotal = `$${total}`;
+    
+    totalValue.value = formattedTotal;
+    insumoData.totalValue = total; // Guardar el valor sin formato para el backend
 }
 
 userPrice.addEventListener("input", calculateTotal);
 userAmount.addEventListener("input", calculateTotal);
-
 
 // Función para capturar los valores de los inputs
 function readText(e) {

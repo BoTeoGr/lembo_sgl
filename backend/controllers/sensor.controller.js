@@ -3,7 +3,7 @@ import db from './../db/config.db.js';
 
 export function VerSensores(req, res) {
     try {
-        const query = 'SELECT id, tipo_sensor, nombre_sensor, unidad_medida, imagen, descripcion, tiempo_escaneo, usuario_id, fecha_creacion FROM sensores';
+        const query = 'SELECT * FROM sensores';
 
         db.query(query, (err, results) => {
             if (err) {

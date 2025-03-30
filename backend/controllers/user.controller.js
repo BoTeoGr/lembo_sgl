@@ -29,9 +29,9 @@ export function crearUsuario(req, res){
         }
 
 
-        db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion, fecha_actualizacion)  
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date(), new Date()],
+        db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion)  
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date()],
             (err, results) => {
                 if (err) {
                     console.error('Error al insertar usuario:', err.message);
@@ -46,5 +46,33 @@ export function crearUsuario(req, res){
     }catch(err){
         console.error(err)
         res.status(500).json({error: 'error desconocido'})
+    }
+}
+
+export function obtenerUsuarioActual(req, res) {
+    try {
+        // Aquí deberías obtener el ID del usuario de la sesión o token
+        // Por ahora, vamos a asumir que tienes una sesión activa
+        const userId = req.session.userId; // Esto dependerá de tu implementación de autenticación
+
+        if (!userId) {
+            return res.status(401).json({ error: 'No hay usuario autenticado' });
+        }
+
+        db.query('SELECT id FROM usuarios WHERE id = ?', [userId], (err, results) => {
+            if (err) {
+                console.error('Error al obtener usuario:', err);
+                return res.status(500).json({ error: 'Error al obtener usuario' });
+            }
+            
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'Usuario no encontrado' });
+            }
+
+            res.status(200).json({ userId });
+        });
+    } catch (error) {
+        console.error('Error en obtenerUsuarioActual:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 }

@@ -3,7 +3,7 @@ import mysql from 'mysql2'; // Para usar MySQL
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'root',  
     database: 'sistema_gestion_agricola'
 });
 

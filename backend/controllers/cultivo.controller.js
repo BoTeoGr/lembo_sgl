@@ -3,7 +3,7 @@ import db from './../db/config.db.js';
 // Función para obtener todos los cultivos
 export function VerCultivos(req, res) {
     try {
-        const query = 'SELECT id, nombre, tipo, imagen, ubicacion, descripcion, usuario_id, fecha_creacion FROM cultivos';
+        const query = 'SELECT * FROM cultivos';
 
         db.query(query, (err, results) => {
             if (err) {

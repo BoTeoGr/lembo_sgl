@@ -3,7 +3,7 @@ import db from './../db/config.db.js';
 // Función para obtener todos los insumos
 export function VerInsumos(req, res) {
     try {
-        const query = 'SELECT id, nombre, tipo, imagen, unidad_medida, valor_unitario, cantidad, valor_total, descripcion, usuario_id, fecha_creacion FROM insumos';
+        const query = 'SELECT * FROM insumos';
 
         db.query(query, (err, results) => {
             if (err) {
