@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- Tabla de Cultivos
 CREATE TABLE IF NOT EXISTS cultivos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    -- id_cultivo VARCHAR(50) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     tipo VARCHAR(50) NOT NULL,
     imagen VARCHAR(255),
@@ -28,24 +27,20 @@ CREATE TABLE IF NOT EXISTS cultivos (
 
 -- Tabla de Ciclos de Cultivo
 CREATE TABLE IF NOT EXISTS ciclo_cultivo (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_ciclo VARCHAR(50) NOT NULL UNIQUE,
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT NOT NULL,
     periodo_inicio DATE NOT NULL,
     periodo_final DATE NOT NULL,
     novedades TEXT,
-    cultivo_id INT NOT NULL,
     usuario_id INT,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (cultivo_id) REFERENCES cultivos(id) ON DELETE CASCADE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );
 
 -- Tabla de Sensores
 CREATE TABLE IF NOT EXISTS sensores (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    -- id_sensor VARCHAR(50) NOT NULL UNIQUE,
     tipo_sensor ENUM('Sensor de contacto', 'Sensor de distancia', 'Sensores de luz') NOT NULL,
     nombre_sensor VARCHAR(100) NOT NULL,
     unidad_medida ENUM('Temperatura', 'Distancia', 'Presión') NOT NULL,
@@ -60,7 +55,6 @@ CREATE TABLE IF NOT EXISTS sensores (
 -- Tabla de Insumos
 CREATE TABLE IF NOT EXISTS insumos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    -- id_insumo VARCHAR(50) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     tipo VARCHAR(50) NOT NULL,
     imagen VARCHAR(255),
@@ -95,5 +89,5 @@ END //
 DELIMITER ;
 
 -- Índices básicos para mejorar el rendimiento
-CREATE INDEX idx_cultivos_tipo ON cultivos(tipo);
-CREATE INDEX idx_ciclo_cultivo_cultivo ON ciclo_cultivo(cultivo_id);
+-- CREATE INDEX idx_cultivos_tipo ON cultivos(tipo);
+-- CREATE INDEX idx_ciclo_cultivo_cultivo ON ciclo_cultivo(cultivo_id);

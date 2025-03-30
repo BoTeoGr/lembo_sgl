@@ -21,25 +21,25 @@ export function VerInsumos(req, res) {
 // Función para crear un insumo
 export function crearInsumo(req, res) {
     try {
-        const { userName, userType, userImage, userExtent, userDescription, userPrice, userAmount, totalValue, userId } = req.body;
+        const { insumeName, insumeType, insumeImage, insumeExtent, insumeDescription, insumePrice, insumeAmount, totalValue, insumeId } = req.body;
 
         // Validar que todos los campos requeridos estén presentes
-        if (!userName || !userType || !userImage || !userExtent || !userPrice || !userAmount || !totalValue || !userDescription || !userId) {
+        if (!insumeName || !insumeType || !insumeImage || !insumeExtent || !insumePrice || !insumeAmount || !totalValue || !insumeDescription || !insumeId) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
         // Validar que la unidad de medida sea válida
-        if (!['peso', 'volumen', 'superficie', 'Concentración'].includes(userExtent)) {
+        if (!['peso', 'volumen', 'superficie', 'Concentración'].includes(insumeExtent)) {
             return res.status(400).json({ error: 'Unidad de medida no válida' });
         }
 
         // Validar que los valores numéricos sean válidos
-        if (isNaN(userPrice) || isNaN(userAmount) || isNaN(totalValue)) {
+        if (isNaN(insumePrice) || isNaN(insumeAmount) || isNaN(totalValue)) {
             return res.status(400).json({ error: 'Valores numéricos inválidos' });
         }
 
         // Validar que el usuario exista
-        db.query('SELECT id FROM usuarios WHERE id = ?', [userId], (err, results) => {
+        db.query('SELECT id FROM usuarios WHERE id = ?', [insumeId], (err, results) => {
             if (err || results.length === 0) {
                 return res.status(400).json({ error: 'El usuario especificado no existe' });
             }
@@ -48,7 +48,7 @@ export function crearInsumo(req, res) {
             db.query(
                 `INSERT INTO insumos (nombre, tipo, imagen, unidad_medida, valor_unitario, cantidad, valor_total, descripcion, usuario_id, fecha_creacion)  
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [userName, userType, userImage, userExtent, userPrice, userAmount, totalValue, userDescription, userId, new Date()],
+                [insumeName, insumeType, insumeImage, insumeExtent, insumePrice, insumeAmount, totalValue, insumeDescription, insumeId, new Date()],
                 (err, results) => {
                     if (err) {
                         console.error('Error al insertar insumo:', err.message);

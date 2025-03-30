@@ -1,18 +1,11 @@
-// Bloquear números en el campo de nombre
-document.querySelectorAll(".userName").forEach(function (element) {
+// Bloquear números en los campos 'cycleName'
+document.querySelectorAll(".cycleName").forEach(function (element) {
 	element.addEventListener("keydown", function (e) {
 		if (e.key >= "0" && e.key <= "9") {
 			e.preventDefault();
 			console.log("Número bloqueado en el campo");
 		}
 	});
-});
-
-document.querySelector(".userId").addEventListener("keydown", function (e) {
-	if (isNaN(e.key) && e.key !== "Backspace" && e.key !== "Tab") {
-		e.preventDefault();
-		console.log("Letra bloqueada");
-	}
 });
 
 // Bloquear Enter en el botón para evitar recargas accidentales
@@ -25,82 +18,55 @@ document
 		}
 	});
 
-// Objeto para almacenar los datos del usuario
-const userData = {
-	userName: "",
-	userId: "",
-	userDescription: "",
-	userDateInicio: "",
-	userDateFinal: "",
-	UserNovedades: "",
+// Objeto para almacenar los datos del ciclo de cultivo
+const cycleData = {
+	cycleName: "", // Corresponde a 'nombre'
+	cycleDescription: "", // Corresponde a 'descripcion'
+	cycleStartDate: "", // Corresponde a 'periodo_inicio'
+	cycleEndDate: "", // Corresponde a 'periodo_final'
+	cycleUpdates: "", // Corresponde a 'novedades'
 };
 
 // Selección del formulario
-const userForm = document.querySelector(".userForm");
+const cultivationCycleForm = document.querySelector(".form__container");
 
-// Verificar que el formulario exista antes de agregar eventos
-if (userForm) {
-	const userName = document.querySelector(".userName");
-	const userId = document.querySelector(".userId");
-	const userDescription = document.querySelector(".userDescription");
-	const userDateInicio = document.querySelector(".userDateInicio");
-	const userDateFinal = document.querySelector(".userDateFinal");
-	const UserNovedades = document.querySelector(".UserNovedades");
+// Definir variables para los campos del formulario
+const cycleName = document.querySelector(".cycleName");
+const cycleDescription = document.querySelector(".cycleDescription");
+const cycleStartDate = document.querySelector(".cycleStartDate");
+const cycleEndDate = document.querySelector(".cycleEndDate");
+const cycleUpdates = document.querySelector(".cycleUpdates");
+const submitButton = document.querySelector(".button--submit");
 
-	// Agregar eventos para capturar los datos
-	userName.addEventListener("input", readText);
-	userId.addEventListener("input", readText);
-	userDescription.addEventListener("input", readText);
-	userDateInicio.addEventListener("input", readText);
-	userDateFinal.addEventListener("input", readText);
-	UserNovedades.addEventListener("input", readText);
+// Agregar eventos para capturar los datos
+cycleName.addEventListener("input", readText);
+cycleDescription.addEventListener("input", readText);
+cycleStartDate.addEventListener("input", readText);
+cycleEndDate.addEventListener("input", readText);
+cycleUpdates.addEventListener("input", readText);
 
-	// Validar y enviar el formulario
-	userForm.addEventListener("submit", function (e) {
-		e.preventDefault(); // Prevenir la recarga de la página
-
-		const {
-			userName,
-			userId,
-			userDescription,
-			userDateInicio,
-			userDateFinal,
-			UserNovedades,
-		} = userData;
-
-		// Validación de los campos
-		if (
-			!userName ||
-			!userId ||
-			!userDescription ||
-			!userDateInicio ||
-			!userDateFinal ||
-			!UserNovedades
-		) {
-			showAlert("Todos los campos son obligatorios", true);
-			return;
-		}
-
-		// Mostrar mensaje de éxito
-		showAlert("Tus datos han sido enviados.");
-
-		// Redirigir después de mostrar el mensaje
-		setTimeout(() => {
-			window.location.href = "listar-ciclo-cultivos.html"; // Asegúrate de que la ruta sea correcta
-		}, 1000);
-	});
+// Función para capturar los valores de los inputs
+function readText(e) {
+	if (e.target.classList.contains("cycleName")) {
+		cycleData.cycleName = e.target.value;
+	} else if (e.target.classList.contains("cycleDescription")) {
+		cycleData.cycleDescription = e.target.value;
+	} else if (e.target.classList.contains("cycleStartDate")) {
+		cycleData.cycleStartDate = e.target.value;
+	} else if (e.target.classList.contains("cycleEndDate")) {
+		cycleData.cycleEndDate = e.target.value;
+	} else if (e.target.classList.contains("cycleUpdates")) {
+		cycleData.cycleUpdates = e.target.value;
+	}
+	console.log(cycleData); // Ver los valores almacenados en cycleData
 }
 
 // Función para mostrar alertas en el formulario
 function showAlert(message, error = null) {
 	const alert = document.createElement("P");
 	alert.textContent = message;
-	if (error) {
-		alert.classList.add("error");
-	} else {
-		alert.classList.add("correct");
-	}
-	userForm.appendChild(alert);
+	alert.classList.add(error ? "error" : "correct");
+	cultivationCycleForm.appendChild(alert);
 
 	// Eliminar la alerta después de 5 segundos
 	setTimeout(() => {
@@ -108,13 +74,95 @@ function showAlert(message, error = null) {
 	}, 5000);
 }
 
-// Función para capturar los valores de los inputs
-function readText(e) {
-	const field = e.target.classList[0]; // Obtener la clase del input
+// Función para validar fechas
+function validarFechas(fechaInicio, fechaFinal) {
+	const fechaInicioObj = new Date(fechaInicio);
+	const fechaFinalObj = new Date(fechaFinal);
 
-	if (field in userData) {
-		userData[field] = e.target.value;
+	if (fechaInicioObj > fechaFinalObj) {
+		return false;
+	}
+	return true;
+}
+
+// Función para validar formato de fecha
+function validarFormatoFecha(fecha) {
+	const regex = /^\d{4}-\d{2}-\d{2}$/;
+	return regex.test(fecha);
+}
+
+// Función para validar que el campo no esté vacío ni tenga solo espacios
+function validarCampoVacio(valor) {
+	return valor.trim() !== "";
+}
+
+// Función para enviar los datos del ciclo de cultivo al servidor
+submitButton.addEventListener("click", async () => {
+	// Limpiar alertas anteriores
+	const alerts = document.querySelectorAll(".error, .correct");
+	alerts.forEach((alert) => alert.remove());
+
+	// Validar los datos
+	if (!validarCampoVacio(cycleData.cycleName)) {
+		showAlert("El nombre del ciclo de cultivo es obligatorio", true);
+		return;
+	}
+	if (!validarCampoVacio(cycleData.cycleDescription)) {
+		showAlert("La descripción del ciclo de cultivo es obligatoria", true);
+		return;
+	}
+	if (!validarFormatoFecha(cycleData.cycleStartDate)) {
+		showAlert(
+			"Por favor, ingrese una fecha de inicio válida (YYYY-MM-DD)",
+			true
+		);
+		return;
+	}
+	if (!validarFormatoFecha(cycleData.cycleEndDate)) {
+		showAlert("Por favor, ingrese una fecha final válida (YYYY-MM-DD)", true);
+		return;
+	}
+	if (!validarFechas(cycleData.cycleStartDate, cycleData.cycleEndDate)) {
+		showAlert("La fecha de inicio debe ser anterior a la fecha final", true);
+		return;
+	}
+	if (!validarCampoVacio(cycleData.cycleUpdates)) {
+		showAlert("Las novedades del ciclo de cultivo son obligatorias", true);
+		return;
 	}
 
-	console.log(userData); // Ver los valores almacenados en userData para asegurarte de que se actualicen correctamente
-}
+	try {
+		// Deshabilitar el botón durante el envío
+		submitButton.disabled = true;
+		submitButton.textContent = "Creando...";
+
+		const response = await fetch("http://localhost:5000/ciclos-cultivos", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(cycleData),
+		});
+
+		const data = await response.json();
+
+		if (response.ok) {
+			showAlert("Ciclo de cultivo creado exitosamente", false);
+			setTimeout(() => {
+				window.location.href = "listar-ciclos-cultivos.html";
+			}, 2000);
+		} else {
+			showAlert(data.error || "Error al crear el ciclo de cultivo", true);
+		}
+	} catch (error) {
+		console.error("Error en la conexión:", error);
+		showAlert(
+			"Error al comunicarse con el servidor. Por favor, inténtelo de nuevo.",
+			true
+		);
+	} finally {
+		// Rehabilitar el botón
+		submitButton.disabled = false;
+		submitButton.textContent = "Crear Ciclo";
+	}
+});

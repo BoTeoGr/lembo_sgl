@@ -1,4 +1,4 @@
-import mysql from 'mysql2'; // Para usar MySQL
+import mysql from 'mysql2'; 
 
 const db = mysql.createConnection({
     host: 'localhost',

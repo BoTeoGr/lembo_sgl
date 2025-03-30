@@ -1,191 +1,192 @@
 // Código que impide que el usuario ingrese números en un input de texto
-document.querySelector(".userNameSensor").addEventListener("keydown", function (e) {
-    if (e.key >= "0" && e.key <= "9") {
-        e.preventDefault();
-        console.log("Número bloqueado");
-    }
+document.querySelector(".sensorName").addEventListener("keydown", function (e) {
+	if (e.key >= "0" && e.key <= "9") {
+		e.preventDefault();
+		console.log("Número bloqueado");
+	}
 });
 
 document.querySelector(".button").addEventListener("keydown", function (e) {
-    if (e.key === "Enter") {
-        e.preventDefault();
-        console.log("Enter bloqueado");
-    }
+	if (e.key === "Enter") {
+		e.preventDefault();
+		console.log("Enter bloqueado");
+	}
 });
 
 // Objeto para almacenar datos del sensor
 const sensorData = {
-    userType: "",
-    userNameSensor: "",
-    userMedida: "",
-    userImage: "",
-    userDescription: "",
-    userEscaneo: "",
-    userId: 1, // Valor predeterminado para userId
+	sensorType: "",
+	sensorName: "",
+	sensorUnit: "",
+	sensorImage: "",
+	sensorDescription: "",
+	sensorScan: "",
+	userId: 1, // Valor predeterminado para userId
 };
 
 // Selección de elementos del formulario
-const userForm = document.querySelector(".userForm");
-const userType = document.querySelector(".userType");
-const userNameSensor = document.querySelector(".userNameSensor");
-const userMedida = document.querySelector(".userMedida");
-const userImage = document.querySelector(".userImage");
-const userDescription = document.querySelector(".userDescription");
-const userEscaneo = document.querySelector(".userEscaneo");
+const sensorForm = document.querySelector(".form__container");
+const sensorType = document.querySelector(".sensorType");
+const sensorName = document.querySelector(".sensorName");
+const sensorUnit = document.querySelector(".sensorUnit");
+const sensorImage = document.querySelector(".sensorImage");
+const sensorDescription = document.querySelector(".sensorDescription");
+const sensorScan = document.querySelector(".sensorScan");
 const submitButton = document.querySelector(".button--submit");
 
 // Agregar eventos para capturar los valores de los inputs
-userType.addEventListener("change", readText);
-userNameSensor.addEventListener("input", readText);
-userMedida.addEventListener("change", readText);
-userImage.addEventListener("input", readText);
-userDescription.addEventListener("input", readText);
-userEscaneo.addEventListener("change", readText);
+sensorType.addEventListener("change", readText);
+sensorName.addEventListener("input", readText);
+sensorUnit.addEventListener("change", readText);
+sensorImage.addEventListener("input", readText);
+sensorDescription.addEventListener("input", readText);
+sensorScan.addEventListener("change", readText);
 
 // Función para capturar los valores de los inputs
 function readText(e) {
-    if (e.target.classList.contains("userType")) {
-        sensorData.userType = e.target.value;
-    } else if (e.target.classList.contains("userNameSensor")) {
-        sensorData.userNameSensor = e.target.value;
-    } else if (e.target.classList.contains("userMedida")) {
-        sensorData.userMedida = e.target.value;
-    } else if (e.target.classList.contains("userImage")) {
-        sensorData.userImage = e.target.value;
-    } else if (e.target.classList.contains("userDescription")) {
-        sensorData.userDescription = e.target.value;
-    } else if (e.target.classList.contains("userEscaneo")) {
-        sensorData.userEscaneo = e.target.value;
-    }
+	if (e.target.classList.contains("sensorType")) {
+		sensorData.sensorType = e.target.value;
+	} else if (e.target.classList.contains("sensorName")) {
+		sensorData.sensorName = e.target.value;
+	} else if (e.target.classList.contains("sensorUnit")) {
+		sensorData.sensorUnit = e.target.value;
+	} else if (e.target.classList.contains("sensorImage")) {
+		sensorData.sensorImage = e.target.value;
+	} else if (e.target.classList.contains("sensorDescription")) {
+		sensorData.sensorDescription = e.target.value;
+	} else if (e.target.classList.contains("sensorScan")) {
+		sensorData.sensorScan = e.target.value;
+	}
 
-    console.log(sensorData); // Ver los valores almacenados en sensorData
+	console.log(sensorData); // Ver los valores almacenados en sensorData
 }
 
 // Función para mostrar alertas en el formulario
 function showAlert(message, error = null) {
-    const alert = document.createElement("P");
-    alert.textContent = message;
-    alert.classList.add(error ? "error" : "correct");
-    userForm.appendChild(alert);
+	const alert = document.createElement("P");
+	alert.textContent = message;
+	alert.classList.add(error ? "error" : "correct");
+	sensorForm.appendChild(alert);
 
-    // Eliminar la alerta después de 5 segundos
-    setTimeout(() => {
-        alert.remove();
-    }, 5000);
+	// Eliminar la alerta después de 5 segundos
+	setTimeout(() => {
+		alert.remove();
+	}, 5000);
 }
 
 // Función para validar los datos del sensor
 function validateSensorData() {
-    const requiredFields = [
-        { field: "userType", label: "Tipo de sensor" },
-        { field: "userNameSensor", label: "Nombre del sensor" },
-        { field: "userMedida", label: "Medida" },
-        { field: "userImage", label: "Imagen" },
-        { field: "userDescription", label: "Descripción" },
-        { field: "userEscaneo", label: "Escaneo" },
-    ];
+	const requiredFields = [
+		{ field: "sensorType", label: "Tipo de sensor" },
+		{ field: "sensorName", label: "Nombre del sensor" },
+		{ field: "sensorUnit", label: "Medida" },
+		{ field: "sensorImage", label: "Imagen" },
+		{ field: "sensorDescription", label: "Descripción" },
+		{ field: "sensorScan", label: "Escaneo" },
+	];
 
-    for (const field of requiredFields) {
-        if (!sensorData[field.field]) {
-            showAlert(`Por favor, complete el campo ${field.label}`, true);
-            return false;
-        }
-    }
-    return true;
+	for (const field of requiredFields) {
+		if (!sensorData[field.field]) {
+			showAlert(`Por favor, complete el campo ${field.label}`, true);
+			return false;
+		}
+	}
+	return true;
 }
 
 // Validación y envío del formulario
-userForm.addEventListener("submit", function (e) {
-    e.preventDefault(); // Prevenir la recarga de la página
+sensorForm.addEventListener("submit", function (e) {
+	e.preventDefault(); // Prevenir la recarga de la página
 
-    const {
-        userType,
-        userNameSensor,
-        userMedida,
-        userImage,
-        userDescription,
-        userEscaneo,
-        userId,
-    } = sensorData;
+	const {
+		sensorType,
+		sensorName,
+		sensorUnit,
+		sensorImage,
+		sensorDescription,
+		sensorScan,
+		userId,
+	} = sensorData;
 
-    // Validación de los campos
-    if (
-        userType === "" ||
-        userNameSensor === "" ||
-        userMedida === "" ||
-        userImage === "" ||
-        userDescription === "" ||
-        userEscaneo === "" ||
-        userId === ""
-    ) {
-        showAlert("Todos los campos son obligatorios", true);
-        return;
-    }
+	// Validación de los campos
+	if (
+		sensorType === "" ||
+		sensorName === "" ||
+		sensorUnit === "" ||
+		sensorImage === "" ||
+		sensorDescription === "" ||
+		sensorScan === "" ||
+		userId === ""
+	) {
+		showAlert("Todos los campos son obligatorios", true);
+		return;
+	}
 
-    // Validar que el tipo de sensor sea válido
-    const validSensorTypes = [
-        "Sensor de contacto",
-        "Sensor de distancia",
-        "Sensores de luz",
-    ];
-    if (!validSensorTypes.includes(userType)) {
-        showAlert("Tipo de sensor no válido", true);
-        return;
-    }
+	// Validar que el tipo de sensor sea válido
+	const validSensorTypes = [
+		"Sensor de contacto",
+		"Sensor de distancia",
+		"Sensores de luz",
+	];
+	if (!validSensorTypes.includes(sensorType)) {
+		showAlert("Tipo de sensor no válido", true);
+		return;
+	}
 
-    // Validar que la unidad de medida sea válida
-    const validUnits = ["Temperatura", "Distancia", "Presión"];
-    if (!validUnits.includes(userMedida)) {
-        showAlert("Unidad de medida no válida", true);
-        return;
-    }
+	// Validar que la unidad de medida sea válida
+	const validUnits = ["Temperatura", "Distancia", "Presión"];
+	if (!validUnits.includes(sensorUnit)) {
+		showAlert("Unidad de medida no válida", true);
+		return;
+	}
 
-    // Validar que el tiempo de escaneo sea válido
-    const validScanTimes = [
-        "Sensores lentos",
-        "Sensores de velocidad media",
-        "Sensores rápidos",
-    ];
-    if (!validScanTimes.includes(userEscaneo)) {
-        showAlert("Tiempo de escaneo no válido", true);
-        return;
-    }
-
-    // Si todos los campos son válidos
-    showAlert("Tus datos han sido enviados.");
-
-    // Redirigir después de que la alerta desaparezca
-	setTimeout(() => {
-        window.location.href = "listar-usuarios.html"; // Asegúrate de que la ruta sea correcta
-    }, 1000);
-// Retraso de 5 segundos para permitir que la alerta sea visible
+	// Validar que el tiempo de escaneo sea válido
+	const validScanTimes = [
+		"Sensores lentos",
+		"Sensores de velocidad media",
+		"Sensores rápidos",
+	];
+	if (!validScanTimes.includes(sensorScan)) {
+		showAlert("Tiempo de escaneo no válido", true);
+		return;
+	}
 });
 
 // Función para enviar los datos del sensor al servidor
 submitButton.addEventListener("click", async () => {
-    if (!validateSensorData()) {
-        return;
-    }
+	if (!validateSensorData()) {
+		return;
+	}
 
-    try {
-        const response = await fetch("http://localhost:5000/sensor", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(sensorData),
-        });
-        const data = await response.json();
+	try {
+		// Deshabilitar el botón durante el envío
+		submitButton.disabled = true;
+		submitButton.textContent = "Creando...";
+		const response = await fetch("http://localhost:5000/sensor", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(sensorData),
+		});
+		const data = await response.json();
 
-        if (response.ok) {
-            showAlert("Sensor creado exitosamente", false);
-        } else {
-            showAlert(data.error || "Error al crear el sensor", true);
-        }
-    } catch (error) {
-        console.log(error);
-        showAlert("Error al comunicarse con el servidor", true);
-    }
+		if (response.ok) {
+			showAlert("Sensor creado exitosamente", false);
+			setTimeout(() => {
+				window.location.href = "listar-sensores.html";
+			}, 2000);
+		} else {
+			showAlert(data.error || "Error al crear el sensor", true);
+		}
+	} catch (error) {
+		console.log(error);
+		showAlert("Error al comunicarse con el servidor", true);
+	} finally {
+		// Rehabilitar el botón
+		submitButton.disabled = false;
+		submitButton.textContent = "Crear Sensor";
+	}
 });
 
 // Olvide este comentario

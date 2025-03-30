@@ -21,14 +21,14 @@
 
 				<h2 class="form__title">Creación del cultivo</h2>
 
-				<form class="userForm form__container" method="post">
+				<form class="form__container" method="post">
 					<div class="form__row">
 						<div class="form__group">
 							<label for="nombre" class="form__label">Nombre</label>
 							<input
 								type="text"
 								id="nombre"
-								class="userName form__input form__input--nombre"
+								class="cultiveName form__input form__input--nombre"
 								placeholder="Ingrese nombre del cultivo"
 								required
 							/>
@@ -38,7 +38,7 @@
 							<input
 								type="text"
 								id="tipo"
-								class="typeCrop form__input form__input--tipo"
+								class="cultiveType form__input form__input--tipo"
 								placeholder="Tipo de cultivo"
 								required
 							/>
@@ -50,7 +50,7 @@
 						<input
 							type="file"
 							id="imagen"
-							class="userImage form__input form__input--imagen"
+							class="cultiveImage form__input form__input--imagen"
 							accept=".jpg, .jpeg, .png"
 							required
 						/>
@@ -63,7 +63,7 @@
 							<input
 								type="text"
 								id="ubicacion"
-								class="userLocation form__input form__input--ubicacion"
+								class="cultiveLocation form__input form__input--ubicacion"
 								placeholder="Ingrese la ubicación del cultivo"
 								required
 							/>
@@ -74,7 +74,7 @@
 						<label for="descripcion" class="form__label">Descripción</label>
 						<textarea
 							id="descripcion"
-							class="userDescription form__textarea form__textarea--descripcion"
+							class="cultiveDescription form__textarea form__textarea--descripcion"
 							placeholder="Ingrese descripción del cultivo"
 							required
 						></textarea>
