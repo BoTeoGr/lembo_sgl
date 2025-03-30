@@ -37,8 +37,8 @@ export function crearCultivo(req, res) {
             // Consulta para insertar un nuevo cultivo
             db.query(
                 `INSERT INTO cultivos (nombre, tipo, imagen, ubicacion, descripcion, usuario_id, fecha_creacion)  
-                VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [cultiveName, cultiveType, cultiveImage, cultiveLocation, cultiveDescription, userId, new Date()],
+                VALUES (?, ?, ?, ?, ?, 1, ?)`,
+                [cultiveName, cultiveType, cultiveImage, cultiveLocation, cultiveDescription, new Date()],
                 (err, results) => {
                     if (err) {
                         console.error('Error al insertar cultivo:', err.message);

@@ -21,3 +21,5 @@ db.connect(err => {
 app.listen(5000, () => {
     console.log('Servidor escuchando en http://localhost:5000');
 });
+
+//Ejecutar el servidor con nodemon (automatizar el reinicio del servidor cuando detecta cambios en los archivos de tu proyecto): npm run dev

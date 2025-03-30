@@ -30,8 +30,8 @@ export function crearCicloCultivo(req, res) {
 
         // Consulta para insertar un nuevo ciclo de cultivo
         db.query(
-            `INSERT INTO ciclo_cultivo (nombre, descripcion, periodo_inicio, periodo_final, novedades)  
-            VALUES (?, ?, ?, ?, ?)`,
+            `INSERT INTO ciclo_cultivo (nombre, descripcion, periodo_inicio, periodo_final, novedades, usuario_id)  
+            VALUES (?, ?, ?, ?, ?, 1)`,
             [cycleName, cycleDescription, cycleStartDate, cycleEndDate, cycleUpdates],
             (err, results) => {
                 if (err) {

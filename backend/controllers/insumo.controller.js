@@ -29,7 +29,7 @@ export function crearInsumo(req, res) {
         }
 
         // Validar que la unidad de medida sea válida
-        if (!['peso', 'volumen', 'superficie', 'Concentración'].includes(insumeExtent)) {
+        if (!['peso', 'volumen', 'superficie', 'concentración', 'litro', 'kilo'].includes(insumeExtent)) {
             return res.status(400).json({ error: 'Unidad de medida no válida' });
         }
 
@@ -47,8 +47,8 @@ export function crearInsumo(req, res) {
             // Consulta para insertar un nuevo insumo
             db.query(
                 `INSERT INTO insumos (nombre, tipo, imagen, unidad_medida, valor_unitario, cantidad, valor_total, descripcion, usuario_id, fecha_creacion)  
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [insumeName, insumeType, insumeImage, insumeExtent, insumePrice, insumeAmount, totalValue, insumeDescription, insumeId, new Date()],
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)`,
+                [insumeName, insumeType, insumeImage, insumeExtent, insumePrice, insumeAmount, totalValue, insumeDescription, new Date()],
                 (err, results) => {
                     if (err) {
                         console.error('Error al insertar insumo:', err.message);

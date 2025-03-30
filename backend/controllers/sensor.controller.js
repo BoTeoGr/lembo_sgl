@@ -22,18 +22,18 @@ export function VerSensores(req, res) {
 // Función para crear un sensor
 export function crearSensor(req, res) {
     try {
-        const { sensorType, sensorName, sensorUnit, sensorImage, sensorDescription, sensorScan, userId } = req.body;
+        const { sensorType, sensorName, sensorUnit, sensorImage, sensorDescription, sensorScan } = req.body;
 
         // Validar que todos los campos requeridos estén presentes
-        if (!sensorType || !sensorName || !sensorUnit || !sensorImage || !sensorDescription || !sensorScan || !userId) {
+        if (!sensorType || !sensorName || !sensorUnit || !sensorImage || !sensorDescription || !sensorScan) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
         // Consulta para insertar un nuevo sensor
         db.query(
             `INSERT INTO sensores (tipo_sensor, nombre_sensor, unidad_medida, imagen, descripcion, tiempo_escaneo, usuario_id, fecha_creacion)  
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [sensorType, sensorName, sensorUnit, sensorImage, sensorDescription, sensorScan, userId, new Date()],
+            VALUES (?, ?, ?, ?, ?, ?, 1, ?)`,
+            [sensorType, sensorName, sensorUnit, sensorImage, sensorDescription, sensorScan, new Date()],
             (err, results) => {
                 if (err) {
                     console.error('Error al insertar sensor:', err.message); // Imprime el mensaje del error
