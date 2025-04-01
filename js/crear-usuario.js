@@ -18,7 +18,7 @@ document.querySelector(".button").addEventListener("keydown", function (e) {
 	}
 });
 
-//Solo permita numeros y bloquees la letra
+//Solo permita números y bloquee la letra
 document.querySelector(".userTel").addEventListener("keydown", function (e) {
 	if (
 		e.key === "Backspace" ||
@@ -30,10 +30,10 @@ document.querySelector(".userTel").addEventListener("keydown", function (e) {
 		return; //No bloquear estas teclas
 	}
 
-	//Bloquear caulquier tecla que NO sea un numero
+	//Bloquear cualquier tecla que NO sea un número
 	if (e.key < "0" || e.key > "9") {
 		e.preventDefault();
-		console.log("Solo se permite numeros");
+		console.log("Solo se permite números");
 	}
 });
 
@@ -48,7 +48,7 @@ const userData = {
 	userRol: "",
 };
 
-const userForm = document.querySelector(".userForm");
+const userForm = document.querySelector(".form__container");
 
 // Definir variables sin espacios incorrectos
 const userTypeId = document.querySelector(".userTypeId");
@@ -58,6 +58,7 @@ const userTel = document.querySelector(".userTel");
 const userEmail = document.querySelector(".userEmail");
 const userConfirmEmail = document.querySelector(".userConfirmEmail");
 const userRol = document.querySelector(".userRol");
+const submitButton = document.querySelector(".button--submit");
 
 // Agregar eventos sin errores de nombres
 userTypeId.addEventListener("change", readText);
@@ -96,8 +97,9 @@ userForm.addEventListener("submit", function (e) {
 
 	// Redirigir después de que la alerta desaparezca
 	setTimeout(() => {
-		window.location.href = "listar-usuarios.html"; // Redirigir a la página
-	}, 1000); // Retraso de 5 segundos para permitir que la alerta sea visible
+		window.location.href = "listar-usuarios.html"; // Asegúrate de que la ruta sea correcta
+	}, 1000);
+	// Retraso de 5 segundos para permitir que la alerta sea visible
 });
 
 // Función para mostrar alertas en el formulario
@@ -117,7 +119,78 @@ function showAlert(message, error = null) {
 	}, 5000);
 }
 
+// Función para validar los datos del usuario
+function validateUserData() {
+	const requiredFields = [
+		{ field: "userTypeId", label: "Tipo de documento" },
+		{ field: "userName", label: "Nombre" },
+		{ field: "userId", label: "Número de documento" },
+		{ field: "userTel", label: "Teléfono" },
+		{ field: "userEmail", label: "Correo electrónico" },
+		{ field: "userConfirmEmail", label: "Confirmación de correo" },
+		{ field: "userRol", label: "Rol" },
+	];
+
+	for (const field of requiredFields) {
+		if (!userData[field.field]) {
+			showAlert(`Por favor, complete el campo ${field.label}`);
+			return false;
+		}
+	}
+
+	// Validar que los correos coincidan
+	if (userData.userEmail !== userData.userConfirmEmail) {
+		showAlert("Los correos electrónicos no coinciden");
+		return false;
+	}
+
+	// Validar que el tipo de documento sea válido
+	const validDocumentTypes = ["ti", "cc", "ppt"];
+	if (!validDocumentTypes.includes(userData.userTypeId)) {
+		showAlert("Tipo de documento no válido");
+		return false;
+	}
+
+	return true;
+}
+
 // Función para capturar los valores de los inputs
+submitButton.addEventListener("click", async () => {
+	if (!validateUserData()) {
+		return;
+	}
+
+	try {
+		// Deshabilitar el botón durante el envío
+		submitButton.disabled = true;
+		submitButton.textContent = "Creando...";
+		const response = await fetch("http://localhost:5000/users", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(userData),
+		});
+		const data = await response.json();
+
+		if (response.ok) {
+			showAlert("Usuario creado exitosamente", false);
+			setTimeout(() => {
+				window.location.href = "listar-usuarios.html";
+			}, 2000);
+		} else {
+			showAlert(data.error || "Error al crear el usuario");
+		}
+	} catch (error) {
+		console.log(error);
+		showAlert("Error al comunicarse con el servidor");
+	} finally {
+		// Rehabilitar el botón
+		submitButton.disabled = false;
+		submitButton.textContent = "Crear Usuario";
+	}
+});
+
 function readText(e) {
 	if (e.target.classList.contains("userTypeId")) {
 		userData.userTypeId = e.target.value;
@@ -126,7 +199,6 @@ function readText(e) {
 	} else if (e.target.classList.contains("userId")) {
 		userData.userId = e.target.value;
 	} else if (e.target.classList.contains("userTel")) {
-		// Corregido: eliminé el espacio extra
 		userData.userTel = e.target.value;
 	} else if (e.target.classList.contains("userEmail")) {
 		userData.userEmail = e.target.value;
@@ -135,6 +207,5 @@ function readText(e) {
 	} else if (e.target.classList.contains("userRol")) {
 		userData.userRol = e.target.value;
 	}
-
 	console.log(userData); // Ver los valores almacenados en userData para asegurarte de que se actualicen correctamente
 }

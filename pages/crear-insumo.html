@@ -21,14 +21,14 @@
 
 				<h2 class="form__title">Creación del insumo</h2>
 
-				<form class="userForm form__container">
+				<form class="form__container" method="post">
 					<div class="form__row">
 						<div class="form__group">
 							<label for="nombre" class="form__label">Nombre</label>
 							<input
 								type="text"
 								id="nombre"
-								class="userName form__input"
+								class="insumeName form__input"
 								placeholder="Ingrese nombre del insumo"
 								required
 							/>
@@ -38,7 +38,7 @@
 							<input
 								type="text"
 								id="tipo"
-								class="userType form__input"
+								class="insumeType form__input"
 								placeholder="Tipo de insumo"
 								required
 							/>
@@ -49,35 +49,28 @@
 						<input
 							type="file"
 							id="imagen"
-							class="userImage form__image-input"
+							class="insumeImage form__image-input"
 							accept=".jpg, .jpeg, .png"
 							required
 						/>
 					</div>
 					<div class="form__row">
-						<div class="form__group">
-							<label for="id" class="form__label">ID del insumo</label>
-							<input
-								type="text"
-								id="id"
-								class="idInsumo form__input"
-								placeholder="Ingrese el identificador del insumo"
-								required
-							/>
-						</div>
+						
 						<div class="form__group">
 							<label for="medida" class="form__label">Unidad de medida </label>
 							<select
 								name="medida"
 								id="medida"
-								class="UserExtent form__select"
+								class="insumeExtent form__select"
 								required
 							>
 								<option value="default">Seleccione una Opción</option>
 								<option value="peso">peso</option>
 								<option value="volumen">volumen</option>
 								<option value="superficie">superficie</option>
-								<option value="Concentración">Concentración</option>
+								<option value="concentración">concentración</option>
+								<option value="litro">litro</option>
+								<option value="kilo">kilo</option>
 							</select>
 						</div>
 					</div>
@@ -89,7 +82,7 @@
 							<input
 								type="text"
 								id="valor-unitario"
-								class="userPrice form__input"
+								class="insumePrice form__input"
 								placeholder="Ingrese el valor unitario del insumo"
 								required
 							/>
@@ -99,7 +92,7 @@
 							<input
 								type="text"
 								id="cantidad"
-								class="userAmount form__input"
+								class="insumeAmount form__input"
 								placeholder="Ingrese la cantidad de unidades"
 								required
 							/>
@@ -113,6 +106,7 @@
 								id="valor-total"
 								class="totalValue form__input"
 								placeholder="Ingrese el valor total del insumo"
+								readonly
 								required
 							/>
 						</div>
@@ -120,7 +114,7 @@
 							<label for="descripcion" class="form__label">Descripción</label>
 							<textarea
 								id="descripcion"
-								class="userDescription form__textarea"
+								class="insumeDescription form__textarea"
 								placeholder="Ingrese descripción del cultivo"
 								required
 							></textarea>
@@ -138,3 +132,4 @@
 		<script src="../js/crear-insumo.js"></script>
 	</body>
 </html>
+

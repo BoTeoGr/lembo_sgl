@@ -89,9 +89,8 @@ h6 {
 
 /* logotipos*/
 .header__logo {
-	width: 10rem;
-	height: 10rem;
-	margin-bottom: 6rem;
+	width: 15rem;
+	height: 15rem;
 } /* logotipos*/
 
 /* Botones */
@@ -420,9 +419,8 @@ h6 {
 	}
 
 	.header__logo {
-		width: 8rem;
-		height: 8rem;
-		margin-bottom: 2rem;
+		width: 10rem;
+		height: 10rem;
 	}
 	.fields__input {
 		height: 4.6rem;
