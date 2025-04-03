@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700"
+			rel="stylesheet"
+		/>
+		<title>Recuperar Contraseña</title>
+		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+		<link rel="stylesheet" href="../css/log.css" />
+	</head>
+
+	<body>
+		<main class="mainCode">
+			<section class="loginCode">
+				<header class="header">
+					<h2 class="header__fontSize">Ingresa el código de 6 dígitos</h2>
+				</header>
+				<form class="form">
+					<div class="containerCode">
+						<input
+							type="text"
+							class="inputCode"
+							maxlength="1"
+							oninput="moveToNext(this, 0)"
+						/>
+
+						<input
+							type="text"
+							class="inputCode"
+							maxlength="1"
+							oninput="moveToNext(this, 1)"
+						/>
+
+						<input
+							type="text"
+							class="inputCode"
+							maxlength="1"
+							oninput="moveToNext(this, 2)"
+						/>
+
+						<input
+							type="text"
+							class="inputCode"
+							maxlength="1"
+							oninput="moveToNext(this, 3)"
+						/>
+
+						<input
+							type="text"
+							class="inputCode"
+							maxlength="1"
+							oninput="moveToNext(this, 4)"
+						/>
+
+						<input
+							type="text"
+							class="inputCode"
+							maxlength="1"
+							oninput="moveToNext(this, 5)"
+						/>
+					</div>
+					<div class="actions">
+						<button type="submit" class="actions__button">Enviar</button>
+					</div>
+				</form>
+			</section>
+		</main>
+
+		<script src="../js/login-codigo-recuperar.js"></script>
+	</body>
+</html>

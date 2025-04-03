@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Login SENA SGAL</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+
+		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+		<link rel="stylesheet" href="../css/log.css" />
+	</head>
+	<body>
+		<div class="container">
+			<aside class="leftAside">
+				<img src="../imgs/logoSena.svg" alt="Logo SENA" class="aside__logo" />
+			</aside>
+
+			<main class="main">
+				<section class="login">
+					<header class="header">
+						<img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="header__logo" />
+						<h1 class="header__title">Iniciar sesión</h1>
+					</header>
+
+					<form class="form">
+						<div class="fields">
+							<input
+								type="email"
+								id="email"
+								placeholder="Correo electrónico"
+								class="fields__input"
+							/>
+
+							<input
+								type="password"
+								id="password"
+								placeholder="Contraseña"
+								class="fields__input"
+								minlength="8"
+								maxlength="16"
+							/>
+						</div>
+						<div class="actions">
+							<a href="login-olvide-contraseña.html" class="actions__link"
+								>¿Olvidaste tu contraseña?</a
+							>
+							<button class="actions__button" type="submit">
+								Iniciar sesión
+							</button>
+						</div>
+					</form>
+				</section>
+			</main>
+		</div>
+		<!--container-->
+
+		<!-- loader -->
+		<!-- From Uiverse.io by mobinkakei -->
+		<div class="loader">
+			<div class="wrapper">
+				<div class="circle"></div>
+				<div class="circle"></div>
+				<div class="circle"></div>
+				<div class="shadow"></div>
+				<div class="shadow"></div>
+				<div class="shadow"></div>
+			</div>
+		</div>
+		<!-- loader -->
+		<script src="../js/effect-loader.js"></script>
+		<script src="../js/login.js"></script>
+	</body>
+</html>
