@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS cultivos (
     ubicacion VARCHAR(100) NOT NULL,
     descripcion TEXT NOT NULL,
     usuario_id INT,
+    tamano VARCHAR(50) NOT NULL,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );
@@ -104,15 +105,15 @@ INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo
 ('ppt', '6677889900', 'Sofia Castro', '555-4321', 'sofia.castro@example.com', 'superadmin');
 
 -- Insert data into cultivos table
-INSERT INTO cultivos (nombre, tipo, imagen, ubicacion, descripcion, usuario_id) VALUES
-('Tomate', 'Fruta', 'tomate.jpg', 'Invernadero 1', 'Cultivo de tomates', 1),
-('Lechuga', 'Verdura', 'lechuga.jpg', 'Campo 2', 'Cultivo de lechugas', 2),
-('Maíz', 'Cereal', 'maiz.jpg', 'Campo 3', 'Cultivo de maíz', 3),
-('Papa', 'Tubérculo', 'papa.jpg', 'Campo 4', 'Cultivo de papas', 4),
-('Café', 'Bebida', 'cafe.jpg', 'Plantación 1', 'Cultivo de café', 5),
-('Trigo', 'Cereal', 'trigo.jpg', 'Campo 5', 'Cultivo de trigo', 6),
-('Cebolla', 'Verdura', 'cebolla.jpg', 'Campo 6', 'Cultivo de cebollas', 7),
-('Fresa', 'Fruta', 'fresa.jpg', 'Invernadero 2', 'Cultivo de fresas', 8);
+INSERT INTO cultivos (nombre, tipo, imagen, ubicacion, descripcion, usuario_id, tamano) VALUES
+('Tomate', 'Fruta', 'tomate.jpg', 'Invernadero 1', 'Cultivo de tomates', 1,200),
+('Lechuga', 'Verdura', 'lechuga.jpg', 'Campo 2', 'Cultivo de lechugas', 2,100),
+('Maíz', 'Cereal', 'maiz.jpg', 'Campo 3', 'Cultivo de maíz', 3,150),
+('Papa', 'Tubérculo', 'papa.jpg', 'Campo 4', 'Cultivo de papas', 4,250),
+('Café', 'Bebida', 'cafe.jpg', 'Plantación 1', 'Cultivo de café', 5,300),
+('Trigo', 'Cereal', 'trigo.jpg', 'Campo 5', 'Cultivo de trigo', 6,200),
+('Cebolla', 'Verdura', 'cebolla.jpg', 'Campo 6', 'Cultivo de cebollas', 7,120),
+('Fresa', 'Fruta', 'fresa.jpg', 'Invernadero 2', 'Cultivo de fresas', 8,50);
 
 -- Insert data into ciclo_cultivo table
 INSERT INTO ciclo_cultivo (nombre, descripcion, periodo_inicio, periodo_final, novedades, usuario_id) VALUES

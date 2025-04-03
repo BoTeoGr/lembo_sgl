@@ -18,6 +18,15 @@ document
 		}
 	});
 
+// Bloquear caracteres no numéricos en el campo cultiveSize
+document
+	.querySelector(".cultiveSize")
+	.addEventListener("keydown", function (e) {
+		if ((e.key < "0" || e.key > "9") && e.key !== "." && e.key !== "Backspace") {
+			e.preventDefault();
+		}
+	});
+
 // Objeto para almacenar los datos del cultivo
 const cultivoData = {
 	cultiveName: "", // Corresponde a 'nombre'
@@ -25,6 +34,7 @@ const cultivoData = {
 	cultiveImage: "", // Corresponde a 'imagen'
 	cultiveLocation: "", // Corresponde a 'ubicacion'
 	cultiveDescription: "", // Corresponde a 'descripcion'
+	cultiveSize: "", // Corresponde a 'tamaño'
 	userId: 1, // Corresponde a 'usuario_id'
 };
 
@@ -37,10 +47,12 @@ const cultiveType = document.querySelector(".cultiveType");
 const cultiveImage = document.querySelector(".cultiveImage");
 const cultiveLocation = document.querySelector(".cultiveLocation");
 const cultiveDescription = document.querySelector(".cultiveDescription");
+const cultiveSize = document.querySelector(".cultiveSize");
 const submitButton = document.querySelector(".button--submit");
 
 // Agregar eventos para capturar los datos
 cultiveName.addEventListener("input", readText);
+cultiveSize.addEventListener("input", readText);
 cultiveType.addEventListener("input", readText);
 cultiveImage.addEventListener("input", readText);
 cultiveLocation.addEventListener("input", readText);
@@ -58,6 +70,8 @@ function readText(e) {
 		cultivoData.cultiveLocation = e.target.value;
 	} else if (e.target.classList.contains("cultiveDescription")) {
 		cultivoData.cultiveDescription = e.target.value;
+	} else if (e.target.classList.contains("cultiveSize")) {
+		cultivoData.cultiveSize = e.target.value;
 	}
 	console.log(cultivoData); // Ver los valores almacenados en cultivoData
 }
@@ -85,6 +99,7 @@ cultivoForm.addEventListener("submit", function (e) {
 		cultiveImage,
 		cultiveLocation,
 		cultiveDescription,
+		cultiveSize,
 		userId,
 	} = cultivoData;
 
@@ -95,12 +110,21 @@ cultivoForm.addEventListener("submit", function (e) {
 		!cultiveImage ||
 		!cultiveLocation ||
 		!cultiveDescription ||
-		userId === ""
+		!userId ||
+		userId === "" ||
+		!isValidSize(cultiveSize)
 	) {
-		showAlert("Todos los campos son obligatorios", true);
+		showAlert("Todos los campos son obligatorios y el tamaño debe estar entre 10 y 10000 m²", true);
 		return;
 	}
 });
+
+// Función para validar el tamaño del cultivo
+function isValidSize(size) {
+	const parsedSize = parseFloat(size);
+	// El tamaño mínimo razonable para un cultivo es 10m²
+	return !isNaN(parsedSize) && parsedSize >= 10 && parsedSize <= 10000;
+}
 
 // Función para enviar los datos del cultivo al servidor
 submitButton.addEventListener("click", async () => {
@@ -109,7 +133,8 @@ submitButton.addEventListener("click", async () => {
 		!cultivoData.cultiveType ||
 		!cultivoData.cultiveImage ||
 		!cultivoData.cultiveLocation ||
-		!cultivoData.cultiveDescription
+		!cultivoData.cultiveDescription ||
+		!cultivoData.cultiveSize
 	) {
 		showAlert("Todos los campos son obligatorios", true);
 		return;

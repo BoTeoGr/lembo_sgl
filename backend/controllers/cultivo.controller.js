@@ -21,11 +21,19 @@ export function VerCultivos(req, res) {
 // Función para crear un cultivo
 export function crearCultivo(req, res) {
     try {
-        const { cultiveName, cultiveType, cultiveImage, cultiveLocation, cultiveDescription, userId } = req.body;
+        const { cultiveName, cultiveType, cultiveImage, cultiveLocation, cultiveDescription, userId, cultiveSize } = req.body;
 
         // Validar que todos los campos requeridos estén presentes
-        if (!cultiveName || !cultiveType || !cultiveImage || !cultiveLocation || !cultiveDescription || !userId) {
+        if (!cultiveName || !cultiveType || !cultiveImage || !cultiveLocation || !cultiveDescription || !userId || !cultiveSize) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+        }
+
+        // Validar que cultiveSize sea un número válido y esté dentro del rango permitido
+        const parsedSize = parseFloat(cultiveSize);
+        if (isNaN(parsedSize) || parsedSize < 10 || parsedSize > 10000) {
+            return res.status(400).json({ 
+                error: 'El tamaño del cultivo debe ser un número válido entre 10 y 10000 m²' 
+            });
         }
 
         // Validar que el usuario exista
@@ -36,15 +44,19 @@ export function crearCultivo(req, res) {
 
             // Consulta para insertar un nuevo cultivo
             db.query(
-                `INSERT INTO cultivos (nombre, tipo, imagen, ubicacion, descripcion, usuario_id, fecha_creacion)  
-                VALUES (?, ?, ?, ?, ?, 1, ?)`,
-                [cultiveName, cultiveType, cultiveImage, cultiveLocation, cultiveDescription, new Date()],
+                `INSERT INTO cultivos (nombre, tipo, imagen, ubicacion, descripcion, usuario_id, fecha_creacion, tamano)  
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                [cultiveName, cultiveType, cultiveImage, cultiveLocation, cultiveDescription, userId, new Date(), parsedSize],
                 (err, results) => {
                     if (err) {
                         console.error('Error al insertar cultivo:', err.message);
                         return res.status(500).json({ error: 'Error desconocido al crear el cultivo' });
                     }
-                    res.status(201).json({ message: 'Cultivo creado correctamente', cultivoId: results.insertId });
+                    res.status(201).json({ 
+                        message: 'Cultivo creado correctamente', 
+                        cultivoId: results.insertId,
+                        info: `Tamaño del cultivo: ${parsedSize} m²`
+                    });
                 }
             );
         });

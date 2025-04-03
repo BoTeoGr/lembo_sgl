@@ -13,6 +13,7 @@ const userForm = document.querySelector(".userForm");
 const nombre = document.querySelector("#nombre");
 const tipo = document.querySelector("#tipo");
 const imagen = document.querySelector("#imagen");
+const tamano = document.querySelector("#tamano");
 const id = document.querySelector("#id");
 const ubicacion = document.querySelector("#ubicacion");
 const descripcion = document.querySelector("#descripcion");
@@ -26,6 +27,7 @@ tipo.addEventListener("input", readText);
 imagen.addEventListener("change", readText);
 id.addEventListener("input", readText);
 ubicacion.addEventListener("input", readText);
+tamano.addEventListener("input", readText);
 descripcion.addEventListener("input", readText);
 estadoRadios.forEach((radio) => radio.addEventListener("change", readText));
 
@@ -51,7 +53,7 @@ id.addEventListener("keydown", (e) => {
 userForm.addEventListener("submit", function (e) {
 	e.preventDefault(); // Prevenir la recarga de la página
 
-	const { nombre, tipo, imagen, id, ubicacion, descripcion, estado } =
+	const { nombre, tipo, imagen, id, ubicacion, descripcion, tamano, estado } =
 		cultivoActualizado;
 
 	// Validación de los campos
@@ -62,6 +64,7 @@ userForm.addEventListener("submit", function (e) {
 		id === "" ||
 		ubicacion === "" ||
 		descripcion === "" ||
+		tamano === "" ||
 		estado === ""
 	) {
 		showAlert("Todos los campos son obligatorios", true);
