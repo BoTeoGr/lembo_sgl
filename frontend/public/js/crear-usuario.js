@@ -90,31 +90,11 @@ userForm.addEventListener("submit", function (e) {
 		userConfirmEmail === "" ||
 		userRol === ""
 	) {
-		showAlert("Todos los campos son obligatorios", true);
+		showToast("Campos requeridos", "Todos los campos son obligatorios", "error");
 		return;
 	}
-	showAlert("Tus datos han sido enviados."); // Mostrar alerta de éxito
-
-	// Redirigir después de que la alerta desaparezca
-	setTimeout(() => {
-		window.location.href = "listar-usuarios.html"; // Asegúrate de que la ruta sea correcta
-	}, 1000);
-	// Retraso de 5 segundos para permitir que la alerta sea visible
+	showToast("Enviando datos", "Tus datos están siendo enviados", "info");
 });
-
-// Función para mostrar alertas en el formulario
-function showAlert(message, error = null) {
-	const alert = document.createElement("P");
-	alert.textContent = message;
-	alert.classList.add(error ? "error" : "correct");
-	userForm.appendChild(alert);
-
-	// Eliminar la alerta después de 5 segundos
-	setTimeout(() => {
-		alert.remove();
-	}, 5000);
-}
-
 
 // Función para validar los datos del usuario
 function validateUserData() {
@@ -130,21 +110,21 @@ function validateUserData() {
 
 	for (const field of requiredFields) {
 		if (!userData[field.field]) {
-			showAlert(`Por favor, complete el campo ${field.label}`);
+			showToast(`Por favor, complete el campo ${field.label}`, "", "error");
 			return false;
 		}
 	}
 
 	// Validar que los correos coincidan
 	if (userData.userEmail !== userData.userConfirmEmail) {
-		showAlert("Los correos electrónicos no coinciden");
+		showToast("Error", "Los correos electrónicos no coinciden", "error");
 		return false;
 	}
 
 	// Validar que el tipo de documento sea válido
 	const validDocumentTypes = ["ti", "cc", "ppt"];
 	if (!validDocumentTypes.includes(userData.userTypeId)) {
-		showAlert("Tipo de documento no válido");
+		showToast("Error", "Tipo de documento no válido", "error");
 		return false;
 	}
 
@@ -171,16 +151,13 @@ submitButton.addEventListener("click", async () => {
 		const data = await response.json();
 
 		if (response.ok) {
-			showAlert("Usuario creado exitosamente", false);
-			setTimeout(() => {
-				window.location.href = "listar-usuarios.html";
-			}, 2000);
+			showToast("Éxito", "El usuario ha sido creado correctamente", "success");
 		} else {
-			showAlert(data.error || "Error al crear el usuario");
+			showToast("Error", data.error || "Error al crear el usuario", "error");
 		}
 	} catch (error) {
 		console.log(error);
-		showAlert("Error al comunicarse con el servidor");
+		showToast("Error", "Error al comunicarse con el servidor", "error");
 	} finally {
 		// Rehabilitar el botón
 		submitButton.disabled = false;
@@ -205,4 +182,51 @@ function readText(e) {
 		userData.userRol = e.target.value;
 	}
 	console.log(userData); // Ver los valores almacenados en userData para asegurarte de que se actualicen correctamente
+}
+
+// Función general para mostrar toasts
+function showToast(title, message, type = 'success') {
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastDescription = document.getElementById('toastDescription');
+    const toastIcon = document.getElementById('toastIcon');
+    const toastProgress = document.querySelector('.toast-progress');
+
+    // Establecer el contenido del toast
+    toastTitle.textContent = title;
+    toastDescription.textContent = message;
+    
+    // Establecer el icono según el tipo
+    switch(type) {
+        case 'success':
+            toastIcon.className = 'fas fa-check-circle';
+            break;
+        case 'error':
+            toastIcon.className = 'fas fa-exclamation-circle';
+            break;
+        case 'warning':
+            toastIcon.className = 'fas fa-exclamation-triangle';
+            break;
+        case 'info':
+            toastIcon.className = 'fas fa-info-circle';
+            break;
+    }
+
+    // Mostrar el toast
+    toast.classList.remove('hidden');
+    
+    // Animación de la barra de progreso
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+        progress += 2;
+        toastProgress.style.width = `${progress}%`;
+        if (progress >= 100) {
+            clearInterval(progressInterval);
+            // Ocultar el toast después de 5 segundos
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toastProgress.style.width = '0%';
+            }, 3400);
+        }
+    }, 30);
 }

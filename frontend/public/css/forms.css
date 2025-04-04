@@ -274,3 +274,78 @@ body {
 .correct {
 	color: var(--green-900);
 }
+
+
+
+/* Toast */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1rem;
+    min-width: 300px;
+    max-width: 400px;
+    z-index: 1001;
+    animation: toastFadeIn 0.3s;
+}
+
+@keyframes toastFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+}
+
+.toast-content i {
+    margin-right: 0.75rem;
+    font-size: 2.2rem;
+}
+
+.toast-content i.fa-check-circle {
+    color: var(--primary-color);
+}
+
+.toast-content i.fa-exclamation-circle {
+    color: #ef4444;
+}
+
+.toast-message {
+    flex: 1;
+}
+
+.toast-title {
+    display: block;
+    font-weight: 500;
+	font-size: 1.4rem;
+}
+
+.toast-description {
+    display: block;
+    font-size: 1rem;
+    color: var(--text-light);
+}
+
+.toast-progress {
+    height: 3px;
+    background-color: var(--primary-color);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    animation: progress 5s linear;
+}
+
+@keyframes progress {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+.hidden {
+    display: none;
+}

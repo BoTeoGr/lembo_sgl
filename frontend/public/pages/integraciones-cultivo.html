@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Integraciones Cultivo</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700"
+			rel="stylesheet"
+		/>
+		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+		<link rel="stylesheet" href="../css/integraciones.css" />
+		<script type="module" src="../js/integraciones.js"></script>
+		<link rel="stylesheet" href="../css/components/navbar/navbar.css" />
+		<script type="module" src="../js/main.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+		/>
+	</head>
+	<body>
+        <nav class="nav"></nav>
+		<main class="container">
+			<div class="card main-card">
+				<div class="card-header">
+					<h1>Integraciones Cultivo: Tomate Roma</h1>
+				</div>
+				<div class="card-content">
+					<div class="grid-layout">
+						<!-- Columna de imagen -->
+						<div class="image-column">
+							<div class="crop-image">
+								<img
+									src="https://www.rocalba.es/blog/wp-content/uploads/cultivos-cosecha-rapida-950x500.jpg"
+									alt="Imagen del cultivo"
+								/>
+							</div>
+							<button id="btnAgregarIntegracion" class="btn btn-primary">
+								<i class="fas fa-plus-circle"></i> Agregar Integración
+							</button>
+						</div>
+
+						<!-- Columna de listas -->
+						<div class="lists-column">
+							<div class="tabs">
+								<div class="tab-buttons">
+									<button class="tab-button" data-tab="insumos">
+										Lista Insumo
+									</button>
+									<button class="tab-button active" data-tab="sensores">
+										Lista Sensor
+									</button>
+								</div>
+								<div class="tab-content">
+									<div id="insumos" class="tab-pane">
+										<ul class="integration-list" id="insumosList">
+											<!-- Los insumos se cargarán dinámicamente aquí -->
+										</ul>
+									</div>
+									<div id="sensores" class="tab-pane active">
+										<ul class="integration-list" id="sensoresList">
+											<!-- Los sensores se cargarán dinámicamente aquí -->
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Sección de lecturas de sensores -->
+					<div class="card sensor-readings">
+						<div class="card-header">
+							<h2>Lecturas Sensores</h2>
+						</div>
+						<div class="card-content">
+							<div class="readings-grid" id="lecturasGrid">
+								<!-- Las lecturas se cargarán dinámicamente aquí -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- Modal para agregar integración -->
+		<div id="integrationModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2>Agregar Nueva Integración</h2>
+					<span class="close">&times;</span>
+				</div>
+				<div class="modal-body">
+					<form id="integrationForm">
+						<!-- Selector de tipo de integración -->
+						<div class="radio-group">
+							<div class="radio-option">
+								<input
+									type="radio"
+									id="sensorType"
+									name="integrationType"
+									value="sensor"
+									checked
+								/>
+								<label for="sensorType">
+									<i class="fas fa-thermometer-half"></i>
+									<span>Sensor</span>
+								</label>
+							</div>
+							<div class="radio-option">
+								<input
+									type="radio"
+									id="insumoType"
+									name="integrationType"
+									value="insumo"
+								/>
+								<label for="insumoType">
+									<i class="fas fa-leaf"></i>
+									<span>Insumo</span>
+								</label>
+							</div>
+						</div>
+
+						<!-- Buscador -->
+						<div class="search-container">
+							<i class="fas fa-search"></i>
+							<input
+								type="text"
+								id="searchInput"
+								placeholder="Buscar sensor por nombre, tipo o modelo..."
+							/>
+						</div>
+
+						<!-- Lista de elementos disponibles -->
+						<div class="selection-list" id="selectionList">
+							<!-- Los elementos se cargarán dinámicamente aquí -->
+						</div>
+
+						<!-- Información del elemento seleccionado -->
+						<div id="selectedItemInfo" class="selected-item-info hidden">
+							<p class="title">Elemento seleccionado:</p>
+							<p id="selectedItemName" class="name"></p>
+							<p id="selectedItemDescription" class="description"></p>
+						</div>
+
+						<div class="form-actions">
+							<button type="button" id="btnCancel" class="btn btn-secondary">
+								Cancelar
+							</button>
+							<button type="submit" id="btnSave" class="btn btn-primary">
+								Guardar
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- Toast para notificaciones -->
+		<div id="toast" class="toast hidden">
+			<div class="toast-content">
+				<i id="toastIcon" class="fas fa-check-circle"></i>
+				<div class="toast-message">
+					<span id="toastTitle" class="toast-title"></span>
+					<span id="toastDescription" class="toast-description"></span>
+				</div>
+			</div>
+			<div class="toast-progress"></div>
+		</div>
+
+		<script src="script.js"></script>
+	</body>
+</html>

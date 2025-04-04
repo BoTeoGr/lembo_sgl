@@ -445,11 +445,10 @@ tbody tr {
 .element-display__button {
 	background-color: var(--green-950);
 	border: none;
-	grid-column: span 2;
 	border-radius: 0.3rem;
 	color: var(--white);
-	font-size: 1rem;
-	padding: 0.6rem 1.2rem;
+	font-size: 0.9rem;
+	padding: 0.5rem 1rem;
 	cursor: pointer;
 }
 
@@ -460,6 +459,13 @@ tbody tr {
 
 .element-display__button:hover {
 	background-color: var(--green-950);
+}
+
+.element-display__button-container {
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+	grid-column: span 2;
 }
 
 .table__cell:first-child {
