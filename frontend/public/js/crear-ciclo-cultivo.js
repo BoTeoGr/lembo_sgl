@@ -147,22 +147,63 @@ submitButton.addEventListener("click", async () => {
 		const data = await response.json();
 
 		if (response.ok) {
-			showAlert("Ciclo de cultivo creado exitosamente", false);
-			setTimeout(() => {
-				window.location.href = "listar-ciclo-cultivos.html";
-			}, 2000);
+			showToast("Ciclo de cultivo creado", "El ciclo de cultivo ha sido creado correctamente", "success");
 		} else {
-			showAlert(data.error || "Error al crear el ciclo de cultivo", true);
+			showToast("Error", data.error || "Error al crear el ciclo de cultivo", "error");
 		}
 	} catch (error) {
-		console.error("Error en la conexión:", error);
-		showAlert(
-			"Error al comunicarse con el servidor. Por favor, inténtelo de nuevo.",
-			true
-		);
+		console.log(error);
+		showToast("Error", "Error al comunicarse con el servidor", "error");
 	} finally {
 		// Rehabilitar el botón
 		submitButton.disabled = false;
-		submitButton.textContent = "Crear Ciclo";
+		submitButton.textContent = "Crear Ciclo de Cultivo";
 	}
 });
+
+// Función general para mostrar toasts
+function showToast(title, message, type = "success") {
+	const toast = document.getElementById("toast");
+	const toastTitle = document.getElementById("toastTitle");
+	const toastDescription = document.getElementById("toastDescription");
+	const toastIcon = document.getElementById("toastIcon");
+	const toastProgress = document.querySelector(".toast-progress");
+
+	// Establecer el contenido del toast
+	toastTitle.textContent = title;
+	toastDescription.textContent = message;
+
+	// Establecer el icono según el tipo
+	switch (type) {
+		case "success":
+			toastIcon.className = "fas fa-check-circle";
+			break;
+		case "error":
+			toastIcon.className = "fas fa-exclamation-circle";
+			break;
+		case "warning":
+			toastIcon.className = "fas fa-exclamation-triangle";
+			break;
+		case "info":
+			toastIcon.className = "fas fa-info-circle";
+			break;
+	}
+
+	// Mostrar el toast
+	toast.classList.remove("hidden");
+
+	// Animación de la barra de progreso
+	let progress = 0;
+	const progressInterval = setInterval(() => {
+		progress += 2;
+		toastProgress.style.width = `${progress}%`;
+		if (progress >= 100) {
+			clearInterval(progressInterval);
+			// Ocultar el toast después de 5 segundos
+			setTimeout(() => {
+				toast.classList.add("hidden");
+				toastProgress.style.width = "0%";
+			}, 3400);
+		}
+	}, 30);
+}

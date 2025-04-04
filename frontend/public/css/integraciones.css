@@ -203,7 +203,7 @@ a {
 }
 
 .tab-button.active {
-    background-color: var(--green-50);
+    background-color: var(--green-200);
     color: var(--secondary-green);
 }
 
@@ -290,13 +290,13 @@ a {
 }
 
 .status-badge.active {
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
+    background-color: var(--green-800);
+    color: var(--white);
 }
 
 .status-badge.inactive {
-    background-color: var(--white);
-    color: var(--gray-80);
+    background-color: var(--gray-60 );
+    color: var(--white);
 }
 
 .integration-date {
@@ -626,4 +626,23 @@ a {
 
 .hidden {
     display: none;
+}
+
+.tab-pane::-webkit-scrollbar {
+	width: 8px;
+}
+
+.tab-pane::-webkit-scrollbar-track {
+	background: var(--gray-20);
+	border-radius: 4px;
+}
+
+.tab-pane::-webkit-scrollbar-thumb {
+	background-color: var(--green-500);
+	border-radius: 4px;
+	border: 2px solid var(--gray-20);
+}
+
+.tab-pane::-webkit-scrollbar-thumb:hover {
+	background-color: var(--green-600);
 }

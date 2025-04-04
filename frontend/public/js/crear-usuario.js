@@ -151,7 +151,7 @@ submitButton.addEventListener("click", async () => {
 		const data = await response.json();
 
 		if (response.ok) {
-			showToast("Éxito", "El usuario ha sido creado correctamente", "success");
+			showToast("Usuario creado", "El usuario ha sido creado correctamente", "success");
 		} else {
 			showToast("Error", data.error || "Error al crear el usuario", "error");
 		}

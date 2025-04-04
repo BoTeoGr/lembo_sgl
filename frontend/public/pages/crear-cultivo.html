@@ -8,6 +8,10 @@
 		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
 		<script type="module" src="../js/main.js"></script>
 		<link rel="stylesheet" href="../css/components/header/header.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+		/>
 	</head>
 
 	<body>
@@ -95,6 +99,17 @@
 						</button>
 					</div>
 				</form>
+			</div>
+			<!-- Toast para notificaciones -->
+			<div id="toast" class="toast hidden">
+				<div class="toast-content">
+					<i id="toastIcon" class="fas fa-check-circle"></i>
+					<div class="toast-message">
+						<span id="toastTitle" class="toast-title"></span>
+						<span id="toastDescription" class="toast-description"></span>
+					</div>
+				</div>
+				<div class="toast-progress"></div>
 			</div>
 		</main>
 
