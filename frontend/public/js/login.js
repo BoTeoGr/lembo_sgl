@@ -31,7 +31,7 @@ form.addEventListener("submit", function (e) {
 	showAlert("Tus datos han sido enviados satisfactoriamente");
 
 	setTimeout(() => {
-		window.location.href = "/frontend/public/pages/home.html"; // Asegúrate de que la ruta sea correcta
+		window.location.href = "home.html"; // Asegúrate de que la ruta sea correcta
 	}, 1000);
 });
 
