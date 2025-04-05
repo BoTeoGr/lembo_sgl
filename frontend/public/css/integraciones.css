@@ -27,6 +27,8 @@
 	--gray-60: #949494;
 	--gray-40: #c5c5c5;
 	--gray-20: #f6f6f6;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --radius: 0.5rem;
 }
 
 /* Reset y estilos base */
@@ -81,9 +83,7 @@ a {
     background-color: var(--white);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     overflow: hidden;
-    
 }
 
 .card-header {
@@ -200,7 +200,6 @@ a {
     border-radius: var(--radius);
     cursor: pointer;
     font-weight: 500;
-    border-radius: 0.5rem;
 }
 
 .tab-button.active {
@@ -215,7 +214,6 @@ a {
     padding: 1rem;
     max-height: 15.5rem;
     overflow-y: auto;
-    border-radius: 0.5rem;
 }
 
 .tab-pane.active {
