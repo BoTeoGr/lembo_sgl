@@ -25,6 +25,8 @@ const cycleData = {
 	cycleStartDate: "", // Corresponde a 'periodo_inicio'
 	cycleEndDate: "", // Corresponde a 'periodo_final'
 	cycleUpdates: "", // Corresponde a 'novedades'
+	estado: "habilitado", // Valor predeterminado para el estado
+	usuario_id : 1, // Corresponde a el id del usuario
 };
 
 // Selección del formulario
@@ -36,6 +38,9 @@ const cycleDescription = document.querySelector(".cycleDescription");
 const cycleStartDate = document.querySelector(".cycleStartDate");
 const cycleEndDate = document.querySelector(".cycleEndDate");
 const cycleUpdates = document.querySelector(".cycleUpdates");
+const estadoRadios = document.querySelectorAll(
+    'input[name="estado-habilitado"]'
+);
 const submitButton = document.querySelector(".button--submit");
 
 // Agregar eventos para capturar los datos
@@ -44,6 +49,14 @@ cycleDescription.addEventListener("input", readText);
 cycleStartDate.addEventListener("input", readText);
 cycleEndDate.addEventListener("input", readText);
 cycleUpdates.addEventListener("input", readText);
+
+// Capturar el estado seleccionado en tiempo real
+estadoRadios.forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+        cycleData.estado = e.target.value;
+        console.log(cycleData); // Mostrar en consola cuando cambia el estado
+    });
+});
 
 // Función para capturar los valores de los inputs
 function readText(e) {
@@ -148,6 +161,10 @@ submitButton.addEventListener("click", async () => {
 
 		if (response.ok) {
 			showToast("Ciclo de cultivo creado", "El ciclo de cultivo ha sido creado correctamente", "success");
+			// Redirigir a listar-usuarios.html
+            setTimeout(() => {
+                window.location.href = "listar-ciclo-cultivos.html";
+            }, 2000); // Espera 2 segundos para mostrar el toast antes de redirigir
 		} else {
 			showToast("Error", data.error || "Error al crear el ciclo de cultivo", "error");
 		}

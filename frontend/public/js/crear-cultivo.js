@@ -1,5 +1,5 @@
 // Bloquear números en los campos 'userName' y 'typeCrop'
-document.querySelectorAll(".userName, .typeCrop").forEach(function (element) {
+document.querySelectorAll(".cultiveName, .cultiveType").forEach(function (element) {
 	element.addEventListener("keydown", function (e) {
 		if (e.key >= "0" && e.key <= "9") {
 			e.preventDefault();
@@ -28,14 +28,16 @@ document
 	});
 
 // Objeto para almacenar los datos del cultivo
-const cultivoData = {
+const cultiveData = {
 	cultiveName: "", // Corresponde a 'nombre'
 	cultiveType: "", // Corresponde a 'tipo'
 	cultiveImage: "", // Corresponde a 'imagen'
 	cultiveLocation: "", // Corresponde a 'ubicacion'
 	cultiveDescription: "", // Corresponde a 'descripcion'
 	cultiveSize: "", // Corresponde a 'tamaño'
-	userId: 1, // Corresponde a 'usuario_id'
+	usuario_id: 1, // Corresponde a 'usuario_id'
+	estado: "habilitado", // Valor predeterminado para el estado
+	cultivoId: 1, // Asegúrate de incluir el ID del cultivo
 };
 
 // Selección del formulario
@@ -48,6 +50,9 @@ const cultiveImage = document.querySelector(".cultiveImage");
 const cultiveLocation = document.querySelector(".cultiveLocation");
 const cultiveDescription = document.querySelector(".cultiveDescription");
 const cultiveSize = document.querySelector(".cultiveSize");
+const estadoRadios = document.querySelectorAll(
+    'input[name="estado-habilitado"]'
+);
 const submitButton = document.querySelector(".button--submit");
 
 // Agregar eventos para capturar los datos
@@ -58,22 +63,30 @@ cultiveImage.addEventListener("input", readText);
 cultiveLocation.addEventListener("input", readText);
 cultiveDescription.addEventListener("input", readText);
 
+// Capturar el estado seleccionado en tiempo real
+estadoRadios.forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+        cultiveData.estado = e.target.value;
+        console.log(cultiveData); // Mostrar en consola cuando cambia el estado
+    });
+});
+
 // Función para capturar los valores de los inputs
 function readText(e) {
 	if (e.target.classList.contains("cultiveName")) {
-		cultivoData.cultiveName = e.target.value;
+		cultiveData.cultiveName = e.target.value;
 	} else if (e.target.classList.contains("cultiveType")) {
-		cultivoData.cultiveType = e.target.value;
+		cultiveData.cultiveType = e.target.value;
 	} else if (e.target.classList.contains("cultiveImage")) {
-		cultivoData.cultiveImage = e.target.value;
+		cultiveData.cultiveImage = e.target.value;
 	} else if (e.target.classList.contains("cultiveLocation")) {
-		cultivoData.cultiveLocation = e.target.value;
+		cultiveData.cultiveLocation = e.target.value;
 	} else if (e.target.classList.contains("cultiveDescription")) {
-		cultivoData.cultiveDescription = e.target.value;
+		cultiveData.cultiveDescription = e.target.value;
 	} else if (e.target.classList.contains("cultiveSize")) {
-		cultivoData.cultiveSize = e.target.value;
+		cultiveData.cultiveSize = e.target.value;
 	}
-	console.log(cultivoData); // Ver los valores almacenados en cultivoData
+	console.log(cultiveData); // Ver los valores almacenados en cultiveData
 }
 
 // Función para mostrar alertas en el formulario
@@ -100,8 +113,8 @@ cultivoForm.addEventListener("submit", function (e) {
 		cultiveLocation,
 		cultiveDescription,
 		cultiveSize,
-		userId,
-	} = cultivoData;
+		usuario_id,
+	} = cultiveData;
 
 	// Validación de los campos
 	if (
@@ -110,13 +123,13 @@ cultivoForm.addEventListener("submit", function (e) {
 		!cultiveImage ||
 		!cultiveLocation ||
 		!cultiveDescription ||
-		!userId ||
-		userId === "" ||
+		usuario_id === "" ||
 		!isValidSize(cultiveSize)
 	) {
 		showAlert("Todos los campos son obligatorios y el tamaño debe estar entre 10 y 10000 m²", true);
 		return;
 	}
+	
 });
 
 // Función para validar el tamaño del cultivo
@@ -129,12 +142,12 @@ function isValidSize(size) {
 // Función para enviar los datos del cultivo al servidor
 submitButton.addEventListener("click", async () => {
 	if (
-		!cultivoData.cultiveName ||
-		!cultivoData.cultiveType ||
-		!cultivoData.cultiveImage ||
-		!cultivoData.cultiveLocation ||
-		!cultivoData.cultiveDescription ||
-		!cultivoData.cultiveSize
+		!cultiveData.cultiveName ||
+		!cultiveData.cultiveType ||
+		!cultiveData.cultiveImage ||
+		!cultiveData.cultiveLocation ||
+		!cultiveData.cultiveDescription ||
+		!cultiveData.cultiveSize
 	) {
 		showAlert("Todos los campos son obligatorios", true);
 		return;
@@ -149,12 +162,16 @@ submitButton.addEventListener("click", async () => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(cultivoData),
+			body: JSON.stringify(cultiveData),
 		});
 		const data = await response.json();
 
 		if (response.ok) {
 			showToast("Cultivo creado", "El cultivo ha sido creado correctamente", "success");
+			// Redirigir a listar-usuarios.html
+            setTimeout(() => {
+                window.location.href = "listar-cultivos.html";
+            }, 2000); // Espera 2 segundos para mostrar el toast antes de redirigir
 		} else {
 			showToast("Error", data.error || "Error al crear el cultivo", "error");
 		}

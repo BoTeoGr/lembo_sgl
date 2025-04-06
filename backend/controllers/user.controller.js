@@ -22,16 +22,25 @@ export function VerUsuarios (req, res) {
 
 export function crearUsuario(req, res){
     try{
-        const { userTypeId, userName, userId, userTel, userEmail, userConfirmEmail, userRol } = req.body;
+        const { userTypeId, userName, userId, userTel, userEmail, userConfirmEmail, userRol, estado} = req.body;
 
         if (userEmail !== userConfirmEmail) {
             return res.status(400).json({ error: 'Los correos no coinciden' });
         }
 
+        // Validar que el estado sea válido
+        if (estado !== "habilitado" && estado !== "deshabilitado") {
+            return res.status(400).json({ error: "Estado no válido" });
+        }
 
-        db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, fecha_creacion)  
-            VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date()],
+        // Bloquear el envío si el estado es "deshabilitado"
+        if (estado === "deshabilitado") {
+            return res.status(400).json({ error: "No se puede crear un sensor con el estado 'deshabilitado'" });
+        }
+
+        db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, estado, fecha_creacion)  
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date(), estado],
             (err, results) => {
                 if (err) {
                     console.error('Error al insertar usuario:', err.message);

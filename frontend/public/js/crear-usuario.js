@@ -5,9 +5,20 @@ document.querySelector(".userName").addEventListener("keydown", function (e) {
 	}
 });
 document.querySelector(".userId").addEventListener("keydown", function (e) {
-	if (isNaN(e.key) && e.key !== "Backspace" && e.key !== "Tab") {
+	if (
+		e.key === "Backspace" ||
+		e.key === "Tab" ||
+		e.key === "Enter" ||
+		e.key === "ArrowLeft" ||
+		e.key === "ArrowRight"
+	) {
+		return; //No bloquear estas teclas
+	}
+
+	//Bloquear cualquier tecla que NO sea un número
+	if (e.key < "0" || e.key > "9") {
 		e.preventDefault();
-		console.log("Letra bloqueada");
+		console.log("Solo se permite números");
 	}
 });
 
@@ -46,6 +57,7 @@ const userData = {
 	userEmail: "",
 	userConfirmEmail: "",
 	userRol: "",
+	estado: "habilitado", // Valor predeterminado para el estado
 };
 
 const userForm = document.querySelector(".form__container");
@@ -58,6 +70,9 @@ const userTel = document.querySelector(".userTel");
 const userEmail = document.querySelector(".userEmail");
 const userConfirmEmail = document.querySelector(".userConfirmEmail");
 const userRol = document.querySelector(".userRol");
+const estadoRadios = document.querySelectorAll(
+	'input[name="estado-habilitado"]'
+);
 const submitButton = document.querySelector(".button--submit");
 
 // Agregar eventos sin errores de nombres
@@ -68,6 +83,14 @@ userTel.addEventListener("input", readText);
 userEmail.addEventListener("input", readText);
 userConfirmEmail.addEventListener("input", readText);
 userRol.addEventListener("change", readText);
+
+// Capturar el estado seleccionado en tiempo real
+estadoRadios.forEach((radio) => {
+	radio.addEventListener("change", (e) => {
+		userData.estado = e.target.value;
+		console.log(userData); // Mostrar en consola cuando cambia el estado
+	});
+});
 
 // Función para validar el formulario antes de enviarlo
 userForm.addEventListener("submit", function (e) {
@@ -88,11 +111,15 @@ userForm.addEventListener("submit", function (e) {
 		userTel === "" ||
 		userEmail === "" ||
 		userConfirmEmail === "" ||
-		userRol === ""
+		userRol === "" 
 	) {
 		showToast("Campos requeridos", "Todos los campos son obligatorios", "error");
 		return;
 	}
+	// Validación de los campos
+    if (!validateSensorData()) {
+        return;
+    }
 	showToast("Enviando datos", "Tus datos están siendo enviados", "info");
 });
 
@@ -106,6 +133,7 @@ function validateUserData() {
 		{ field: "userEmail", label: "Correo electrónico" },
 		{ field: "userConfirmEmail", label: "Confirmación de correo" },
 		{ field: "userRol", label: "Rol" },
+		{ field: "estado", label: "Estado" }, // Agregamos el estado a las validaciones
 	];
 
 	for (const field of requiredFields) {
@@ -122,11 +150,17 @@ function validateUserData() {
 	}
 
 	// Validar que el tipo de documento sea válido
-	const validDocumentTypes = ["ti", "cc", "ppt"];
+	const validDocumentTypes = ["ti", "cc", "ce","ppt", "pep"];
 	if (!validDocumentTypes.includes(userData.userTypeId)) {
 		showToast("Error", "Tipo de documento no válido", "error");
 		return false;
 	}
+
+	// Validar que el estado no sea "Deshabilitado"
+    if (userData.estadoRadios === "deshabilitado") {
+        showToast("Error", "Cambia el estado para crear el usuario", "error");
+        return false;
+    }
 
 	return true;
 }
@@ -152,6 +186,10 @@ submitButton.addEventListener("click", async () => {
 
 		if (response.ok) {
 			showToast("Usuario creado", "El usuario ha sido creado correctamente", "success");
+			// Redirigir a listar-usuarios.html
+            setTimeout(() => {
+                window.location.href = "listar-usuarios.html";
+            }, 2000); // Espera 2 segundos para mostrar el toast antes de redirigir
 		} else {
 			showToast("Error", data.error || "Error al crear el usuario", "error");
 		}
@@ -167,20 +205,20 @@ submitButton.addEventListener("click", async () => {
 
 function readText(e) {
 	if (e.target.classList.contains("userTypeId")) {
-		userData.userTypeId = e.target.value;
-	} else if (e.target.classList.contains("userName")) {
-		userData.userName = e.target.value;
-	} else if (e.target.classList.contains("userId")) {
-		userData.userId = e.target.value;
-	} else if (e.target.classList.contains("userTel")) {
-		userData.userTel = e.target.value;
-	} else if (e.target.classList.contains("userEmail")) {
-		userData.userEmail = e.target.value;
-	} else if (e.target.classList.contains("userConfirmEmail")) {
-		userData.userConfirmEmail = e.target.value;
-	} else if (e.target.classList.contains("userRol")) {
-		userData.userRol = e.target.value;
-	}
+        userData.userTypeId = e.target.value;
+    } else if (e.target.classList.contains("userName")) {
+        userData.userName = e.target.value;
+    } else if (e.target.classList.contains("userId")) {
+        userData.userId = e.target.value;
+    } else if (e.target.classList.contains("userTel")) {
+        userData.userTel = e.target.value;
+    } else if (e.target.classList.contains("userEmail")) {
+        userData.userEmail = e.target.value;
+    } else if (e.target.classList.contains("userConfirmEmail")) {
+        userData.userConfirmEmail = e.target.value;
+    } else if (e.target.classList.contains("userRol")) {
+        userData.userRol = e.target.value;
+    }
 	console.log(userData); // Ver los valores almacenados en userData para asegurarte de que se actualicen correctamente
 }
 

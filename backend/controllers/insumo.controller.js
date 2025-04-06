@@ -21,10 +21,10 @@ export function VerInsumos(req, res) {
 // Función para crear un insumo
 export function crearInsumo(req, res) {
     try {
-        const { insumeName, insumeType, insumeImage, insumeExtent, insumeDescription, insumePrice, insumeAmount, totalValue, insumeId } = req.body;
+        const { insumeName, insumeType, insumeImage, insumeExtent, insumeDescription, insumePrice, insumeAmount, totalValue, insumeId, estado } = req.body;
 
         // Validar que todos los campos requeridos estén presentes
-        if (!insumeName || !insumeType || !insumeImage || !insumeExtent || !insumePrice || !insumeAmount || !totalValue || !insumeDescription || !insumeId) {
+        if (!insumeName || !insumeType || !insumeImage || !insumeExtent || !insumePrice || !insumeAmount || !totalValue || !insumeDescription || !insumeId || !estado) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
@@ -38,6 +38,16 @@ export function crearInsumo(req, res) {
             return res.status(400).json({ error: 'Valores numéricos inválidos' });
         }
 
+        // Validar que el estado sea válido
+        if (estado !== "habilitado" && estado !== "deshabilitado") {
+            return res.status(400).json({ error: "Estado no válido" });
+        }
+
+        // Bloquear el envío si el estado es "deshabilitado"
+        if (estado === "deshabilitado") {
+            return res.status(400).json({ error: "No se puede crear un sensor con el estado 'deshabilitado'" });
+        }
+
         // Validar que el usuario exista
         db.query('SELECT id FROM usuarios WHERE id = ?', [insumeId], (err, results) => {
             if (err || results.length === 0) {
@@ -46,9 +56,9 @@ export function crearInsumo(req, res) {
 
             // Consulta para insertar un nuevo insumo
             db.query(
-                `INSERT INTO insumos (nombre, tipo, imagen, unidad_medida, valor_unitario, cantidad, valor_total, descripcion, usuario_id, fecha_creacion)  
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)`,
-                [insumeName, insumeType, insumeImage, insumeExtent, insumePrice, insumeAmount, totalValue, insumeDescription, new Date()],
+                `INSERT INTO insumos (nombre, tipo, imagen, unidad_medida, valor_unitario, cantidad, valor_total, descripcion, usuario_id, estado, fecha_creacion)  
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [insumeName, insumeType, insumeImage, insumeExtent, insumePrice, insumeAmount, totalValue, insumeDescription, 1, estado, new Date()],
                 (err, results) => {
                     if (err) {
                         console.error('Error al insertar insumo:', err.message);

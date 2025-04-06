@@ -3,12 +3,13 @@ CREATE DATABASE IF NOT EXISTS sistema_gestion_agricola;
 USE sistema_gestion_agricola;
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    tipo_documento ENUM('ti', 'cc', 'ppt') NOT NULL,
+    tipo_documento ENUM('ti', 'cc', 'ppt', 'ce', 'pep' ) NOT NULL,
     numero_documento VARCHAR(20) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     telefono VARCHAR(15) NOT NULL,
     correo VARCHAR(100) NOT NULL UNIQUE,
     rol ENUM('superadmin', 'admin', 'apoyo', 'visitante') NOT NULL,
+    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -22,6 +23,7 @@ CREATE TABLE IF NOT EXISTS cultivos (
     descripcion TEXT NOT NULL,
     usuario_id INT,
     tamano VARCHAR(50) NOT NULL,
+    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );
@@ -35,6 +37,7 @@ CREATE TABLE IF NOT EXISTS ciclo_cultivo (
     periodo_final DATE NOT NULL,
     novedades TEXT,
     usuario_id INT,
+    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );
@@ -49,6 +52,7 @@ CREATE TABLE IF NOT EXISTS sensores (
     descripcion TEXT NOT NULL,
     tiempo_escaneo ENUM('Sensores lentos', 'Sensores de velocidad media', 'Sensores rápidos') NOT NULL,
     usuario_id INT,
+    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );
@@ -65,6 +69,7 @@ CREATE TABLE IF NOT EXISTS insumos (
     valor_total DECIMAL(10, 2) NOT NULL,
     descripcion TEXT NOT NULL,
     usuario_id INT,
+    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );

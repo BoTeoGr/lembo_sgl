@@ -22,31 +22,42 @@ export function VerSensores(req, res) {
 // Función para crear un sensor
 export function crearSensor(req, res) {
     try {
-        const { sensorType, sensorName, sensorUnit, sensorImage, sensorDescription, sensorScan } = req.body;
+        const { sensorType, sensorName, sensorUnit, sensorImage, sensorDescription, sensorScan, estado } = req.body;
+
+        console.log("Datos recibidos en el backend:", req.body);
 
         // Validar que todos los campos requeridos estén presentes
-        if (!sensorType || !sensorName || !sensorUnit || !sensorImage || !sensorDescription || !sensorScan) {
-            return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+        if (!sensorType || !sensorName || !sensorUnit || !sensorImage || !sensorDescription || !sensorScan || !estado) {
+            return res.status(400).json({ error: "Todos los campos son obligatorios" });
+        }
+
+        // Bloquear el envío si el estado es "deshabilitado"
+        if (estado === "deshabilitado") {
+            return res.status(400).json({ error: "No se puede crear un sensor con el estado 'deshabilitado'" });
+        }
+
+        // Validar que el estado sea válido
+        if (estado !== "habilitado" && estado !== "deshabilitado") {
+            return res.status(400).json({ error: "Estado no válido" });
         }
 
         // Consulta para insertar un nuevo sensor
         db.query(
-            `INSERT INTO sensores (tipo_sensor, nombre_sensor, unidad_medida, imagen, descripcion, tiempo_escaneo, usuario_id, fecha_creacion)  
-            VALUES (?, ?, ?, ?, ?, ?, 1, ?)`,
-            [sensorType, sensorName, sensorUnit, sensorImage, sensorDescription, sensorScan, new Date()],
+            `INSERT INTO sensores (tipo_sensor, nombre_sensor, unidad_medida, imagen, descripcion, tiempo_escaneo, usuario_id, estado, fecha_creacion)  
+            VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?)`,
+            [sensorType, sensorName, sensorUnit, sensorImage, sensorDescription, sensorScan, estado, new Date()],
             (err, results) => {
                 if (err) {
-                    console.error('Error al insertar sensor:', err.message); // Imprime el mensaje del error
-                    return res.status(500).json({ error: 'Error desconocido al crear el sensor' });
+                    console.error("Error al insertar sensor:", err.message); // Imprime el mensaje del error
+                    return res.status(500).json({ error: "Error desconocido al crear el sensor" });
                 }
-                res.status(201).json({ message: 'Sensor creado correctamente', sensorId: results.insertId });
+                res.status(201).json({ message: "Sensor creado correctamente", sensorId: results.insertId });
             }
         );
 
-        console.log('Sensor creado correctamente');
+        console.log("Sensor creado correctamente");
     } catch (err) {
-        console.error('Error en el servidor:', err);
-        res.status(500).json({ error: 'Error desconocido' });
+        console.error("Error en el servidor:", err);
+        res.status(500).json({ error: "Error desconocido" });
     }
 }
-// Olvide este comentario

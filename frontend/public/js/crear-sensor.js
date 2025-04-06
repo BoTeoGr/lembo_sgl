@@ -22,6 +22,7 @@ const sensorData = {
 	sensorDescription: "",
 	sensorScan: "",
 	userId: 1, // Valor predeterminado para userId
+	estado: "habilitado", // Valor predeterminado para el estado
 };
 
 // Selección de elementos del formulario
@@ -32,6 +33,9 @@ const sensorUnit = document.querySelector(".sensorUnit");
 const sensorImage = document.querySelector(".sensorImage");
 const sensorDescription = document.querySelector(".sensorDescription");
 const sensorScan = document.querySelector(".sensorScan");
+const estadoRadios = document.querySelectorAll(
+    'input[name="estado-habilitado"]'
+);
 const submitButton = document.querySelector(".button--submit");
 
 // Agregar eventos para capturar los valores de los inputs
@@ -41,6 +45,14 @@ sensorUnit.addEventListener("change", readText);
 sensorImage.addEventListener("input", readText);
 sensorDescription.addEventListener("input", readText);
 sensorScan.addEventListener("change", readText);
+
+// Capturar el estado seleccionado en tiempo real
+estadoRadios.forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+        sensorData.estado = e.target.value;
+        console.log(sensorData); // Mostrar en consola cuando cambia el estado
+    });
+});
 
 // Función para capturar los valores de los inputs
 function readText(e) {
@@ -57,7 +69,6 @@ function readText(e) {
 	} else if (e.target.classList.contains("sensorScan")) {
 		sensorData.sensorScan = e.target.value;
 	}
-
 	console.log(sensorData); // Ver los valores almacenados en sensorData
 }
 
@@ -83,6 +94,7 @@ function validateSensorData() {
 		{ field: "sensorImage", label: "Imagen" },
 		{ field: "sensorDescription", label: "Descripción" },
 		{ field: "sensorScan", label: "Escaneo" },
+		{ field: "estado", label: "Estado" }, // Cambiado de estadoRadios a estado
 	];
 
 	for (const field of requiredFields) {
@@ -173,6 +185,10 @@ submitButton.addEventListener("click", async () => {
 
 		if (response.ok) {
 			showToast("Sensor creado", "El sensor ha sido creado correctamente", "success");
+			// Redirigir a listar-usuarios.html
+            setTimeout(() => {
+                window.location.href = "listar-sensores.html";
+            }, 2000); // Espera 2 segundos para mostrar el toast antes de redirigir
 		} else {
 			showToast("Error", data.error || "Error al crear el sensor", "error");
 		}
@@ -185,7 +201,6 @@ submitButton.addEventListener("click", async () => {
 		submitButton.textContent = "Crear Sensor";
 	}
 });
-
 
 // Función general para mostrar toasts
 function showToast(title, message, type = 'success') {

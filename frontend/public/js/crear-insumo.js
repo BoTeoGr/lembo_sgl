@@ -24,6 +24,7 @@ const insumoData = {
 	insumeAmount: "",
 	totalValue: "",
 	insumeId: 1, // Valor predeterminado para insumeId
+	estado: "habilitado", // Valor predeterminado para el estado
 };
 
 // Selección de elementos del formulario
@@ -36,6 +37,9 @@ const insumeDescription = document.querySelector(".insumeDescription");
 const insumePrice = document.querySelector(".insumePrice");
 const insumeAmount = document.querySelector(".insumeAmount");
 const totalValue = document.querySelector(".totalValue");
+const estadoRadios = document.querySelectorAll(
+    'input[name="estado-habilitado"]'
+);
 const submitButton = document.querySelector(".button--submit");
 
 // Agregar eventos para capturar los valores de los inputs
@@ -46,6 +50,14 @@ insumeImage.addEventListener("input", readText);
 insumeDescription.addEventListener("input", readText);
 insumePrice.addEventListener("input", readText);
 insumeAmount.addEventListener("input", readText);
+
+// Capturar el estado seleccionado en tiempo real
+estadoRadios.forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+        insumoData.estado = e.target.value;
+        console.log(insumoData); // Mostrar en consola cuando cambia el estado
+    });
+});
 
 // Función para calcular el valor total automáticamente
 function calculateTotal() {
@@ -116,6 +128,7 @@ function validateInsumoData() {
 		{ field: "insumePrice", label: "Precio unitario" },
 		{ field: "insumeAmount", label: "Cantidad" },
 		{ field: "totalValue", label: "Valor total" },
+		{ field: "estado", label: "Estado" }, // Cambiado de estadoRadios a estado
 	];
 
 	for (const field of requiredFields) {
@@ -176,6 +189,12 @@ insumeForm.addEventListener("submit", function (e) {
 		return;
 	}
 
+	// Validar que el estado no sea "deshabilitado"
+    if (estado === "deshabilitado") {
+        showAlert("Habilita el sensor para guardarlo", true);
+        return;
+    }
+	
 	// Validar que la unidad de medida sea válida
 	const validUnits = ["peso", "volumen", "superficie", "Concentración"];
 	if (!validUnits.includes(insumeExtent)) {
@@ -205,6 +224,10 @@ submitButton.addEventListener("click", async () => {
 
 		if (response.ok) {
 			showToast("Insumo creado", "El insumo ha sido creado correctamente", "success");
+			// Redirigir a listar-usuarios.html
+            setTimeout(() => {
+                window.location.href = "listar-insumos.html";
+            }, 2000); // Espera 2 segundos para mostrar el toast antes de redirigir
 		} else {
 			showToast("Error", data.error || "Error al crear el insumo", "error");
 		}

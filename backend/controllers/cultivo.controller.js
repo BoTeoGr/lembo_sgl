@@ -21,10 +21,10 @@ export function VerCultivos(req, res) {
 // Función para crear un cultivo
 export function crearCultivo(req, res) {
     try {
-        const { cultiveName, cultiveType, cultiveImage, cultiveLocation, cultiveDescription, userId, cultiveSize } = req.body;
+        const { cultiveName, cultiveType, cultiveImage, cultiveLocation, cultiveDescription, usuario_id, cultiveSize, estado } = req.body;
 
         // Validar que todos los campos requeridos estén presentes
-        if (!cultiveName || !cultiveType || !cultiveImage || !cultiveLocation || !cultiveDescription || !userId || !cultiveSize) {
+        if (!cultiveName || !cultiveType || !cultiveImage || !cultiveLocation || !cultiveDescription || !usuario_id || !cultiveSize || !estado) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
@@ -36,17 +36,27 @@ export function crearCultivo(req, res) {
             });
         }
 
+        // Bloquear el envío si el estado es "deshabilitado"
+        if (estado === "deshabilitado") {
+            return res.status(400).json({ error: "No se puede crear un sensor con el estado 'deshabilitado'" });
+        }
+
+        // Validar que el estado sea válido
+        if (estado !== "habilitado" && estado !== "deshabilitado") {
+            return res.status(400).json({ error: "Estado no válido" });
+        }
+
         // Validar que el usuario exista
-        db.query('SELECT id FROM usuarios WHERE id = ?', [userId], (err, results) => {
+        db.query('SELECT id FROM usuarios WHERE id = ?', [usuario_id], (err, results) => {
             if (err || results.length === 0) {
                 return res.status(400).json({ error: 'El usuario especificado no existe' });
             }
 
             // Consulta para insertar un nuevo cultivo
             db.query(
-                `INSERT INTO cultivos (nombre, tipo, imagen, ubicacion, descripcion, usuario_id, fecha_creacion, tamano)  
+                `INSERT INTO cultivos (nombre, tipo, imagen, ubicacion, descripcion, usuario_id, fecha_creacion, estado)  
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-                [cultiveName, cultiveType, cultiveImage, cultiveLocation, cultiveDescription, userId, new Date(), parsedSize],
+                [cultiveName, cultiveType, cultiveImage, cultiveLocation, cultiveDescription, usuario_id , new Date(), parsedSize, estado],
                 (err, results) => {
                     if (err) {
                         console.error('Error al insertar cultivo:', err.message);
