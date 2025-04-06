@@ -1,8 +1,9 @@
 export default function Footer() {
-	return `
+    const currentYear = new Date().getFullYear(); // Obtener el año actual dinámicamente
+    return `
         <p class="footer__text">
-				© 2024 Sistema de Gestión Agraria Lembo. Todos los derechos reservados.
-			</p>
+            © ${currentYear} Sistema de Gestión Agraria Lembo. Todos los derechos reservados.
+        </p>
 			<div class="footer__icons">
 				<a href="" class="footer-icon">
 					<svg
