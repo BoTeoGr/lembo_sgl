@@ -40,7 +40,7 @@ export function crearUsuario(req, res){
 
         db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, estado, fecha_creacion)  
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [userTypeId, userId, userName, userTel, userEmail, userRol, new Date(), estado],
+            [userTypeId, userId, userName, userTel, userEmail, userRol, estado, new Date()],
             (err, results) => {
                 if (err) {
                     console.error('Error al insertar usuario:', err.message);

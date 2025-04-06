@@ -1,0 +1,549 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quicksand:wght@300..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+	--green-50: #edf7e8;
+	--green-100: #dbefb9;
+	--green-200: #c9e8b9;
+	--green-300: #b7e0a2;
+	--green-400: #a5d88b;
+	--green-500: #93d074;
+	--green-600: #81c85d;
+	--green-700: #6fc046;
+	--green-800: #5dd12e;
+	--green-900: #4bbd17;
+	--green-950: #39a900;
+
+	--secondary-green: #007832;
+	--secondary-blue: #50e5f9;
+	--warning: #fdc300;
+	--expired: #ef4443;
+
+	--white: #ffffff;
+	--black: #000000;
+
+	--gray-100: #313131;
+	--gray-80: #626262;
+	--gray-60: #949494;
+	--gray-40: #c5c5c5;
+	--gray-20: #f6f6f6;
+
+	--button-height: 2.5rem; /* 40px */
+	--button-border-radius: 1.25rem; /* 20px */
+	--button-padding-between-elements: 0.5rem; /* 8px */
+	--button-icon-size: 1.125rem; /* 18px */
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: "Work Sans", serif;
+}
+
+body {
+	background-color: var(--gray-20);
+}
+/* Bloque: main */
+.main {
+	padding: 0.5rem;
+}
+/* Bloque: table */
+.table {
+	background-color: var(--white);
+	width: 100%;
+	border: none;
+	border-radius: 1rem;
+	padding: 1.5rem;
+	padding-top: 0;
+	overflow-x: auto;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+tbody {
+	display: block;
+	max-height: 54vh;
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: var(--green-500) var(--gray-20);
+}
+
+tbody::-webkit-scrollbar {
+	width: 8px;
+}
+
+tbody::-webkit-scrollbar-track {
+	background: var(--gray-20);
+	border-radius: 4px;
+}
+
+tbody::-webkit-scrollbar-thumb {
+	background-color: var(--green-500);
+	border-radius: 4px;
+	border: 2px solid var(--gray-20);
+}
+
+tbody::-webkit-scrollbar-thumb:hover {
+	background-color: var(--green-600);
+}
+
+thead,
+tbody tr {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+}
+
+.table__title {
+	margin-top: 0.5rem;
+	color: var(--gray-100);
+}
+
+.table__description {
+	margin-top: 1rem;
+	color: var(--gray-80);
+}
+
+.table__content {
+	margin-top: 0.5rem;
+	width: 100%;
+	border-collapse: collapse;
+	white-space: nowrap;
+}
+
+.table__header {
+	text-align: left;
+	font-weight: 600;
+	font-size: 1.1rem;
+}
+
+.table__header-cell {
+	padding: 1rem 1.5rem;
+	color: var(--green-950);
+	font-weight: 700;
+	border-bottom: 2px solid var(--green-300);
+}
+
+.table__row {
+	border-bottom: 1px solid var(--gray-40);
+	transition: background-color 0.2s ease;
+}
+
+.table__row:hover {
+	background-color: var(--green-50);
+}
+
+.table__cell {
+	padding: 1rem 1.5rem;
+	color: var(--gray-100);
+}
+
+.table__cell--status {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.status-text {
+	font-size: 14px;
+	color: #666;
+}
+
+.table__status {
+	font-size: 0.85rem;
+	padding: 0.05rem 0.55rem;
+	border-radius: 999px;
+	text-align: center;
+	background-color: var(--gray-40);
+	font-weight: 600;
+	user-select: none;
+	transition: transform 0.2s ease;
+	margin: 0 0.2rem;
+}
+
+.table__status--enabled {
+	background-color: var(--green-500);
+	color: var(--white);
+}
+
+.table__status--disabled {
+	background-color: var(--expired);
+	color: var(--white);
+}
+
+.table__count {
+	margin-top: 1rem;
+	font-size: 1rem;
+	color: var(--gray-60);
+	font-weight: 600;
+}
+
+.table__count-number {
+	color: var(--black);
+}
+
+@media (max-width: 768px) {
+	.table__header {
+		display: none;
+	}
+
+	.table__row,
+	.table__cell {
+		display: block;
+		border-collapse: collapse;
+		border: 1px solid var(--gray-20);
+	}
+
+	.table__row {
+		margin-bottom: 0.8rem;
+	}
+
+	.table__cell:nth-child(even) {
+		background-color: var(--gray-20);
+	}
+	.table__cell::before {
+		content: attr(data-label);
+		font-weight: 600;
+		color: var(--gray-80);
+		float: left;
+		width: 45%;
+		text-align: left;
+	}
+}
+
+/* Bloque: buttons */
+.buttons {
+	margin-top: 0.8rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.buttons__primary {
+	display: flex;
+	gap: 2rem;
+}
+
+.buttons__button {
+	background-color: var(--green-950);
+	border: none;
+	border-radius: var(--button-border-radius);
+	color: var(--white);
+	font-weight: 500;
+	font-size: 1rem;
+	padding: 0.6rem 1.2rem;
+	cursor: pointer;
+	height: var(--button-height);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--button-padding-between-elements);
+}
+
+.buttons__button .buttons__icon {
+	font-size: var(--button-icon-size);
+}
+
+.buttons__button--secondary {
+	background-color: transparent;
+	padding: 0.6rem 1.2rem;
+	border: 1px solid var(--gray-40);
+	color: var(--gray-100);
+	font-weight: 600;
+	font-size: 1rem;
+	border-radius: var(--button-border-radius);
+	cursor: pointer;
+	transition: transform 0.5s ease, background-color 0.5s ease, color 0.5s ease;
+}
+
+.buttons__button--secondary:hover {
+	background-color: var(--green-950);
+	transform: translateY(-8px);
+}
+
+.buttons__button--secondary:hover a {
+	color: var(--white);
+}
+
+.buttons__button--secondary a {
+	display: flex;
+	align-items: center;
+}
+
+.buttons__link {
+	color: var(--white);
+	text-decoration: none;
+}
+
+.buttons__link-plus {
+	color: var(--gray-100);
+	text-decoration: none;
+}
+
+.buttons__icon {
+	font-size: 1.3rem;
+}
+
+/* Modificadores adicionales */
+.table__status--good {
+	background-color: var(--green-600);
+}
+
+.table__status--warning {
+	background-color: var(--warning);
+}
+
+.table__status--expired {
+	background-color: var(--expired);
+}
+
+.table__status-enabled {
+	background-color: var(--green-600);
+}
+
+.table__status-disabled {
+	background-color: var(--expired);
+}
+
+.dates-container {
+	display: flex;
+	gap: 1rem;
+}
+
+.table__cell--dates {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.table__date p {
+	display: flex;
+	align-items: center;
+}
+
+.table__date p span {
+	font-size: 1.2rem;
+	color: var(--secondary-green);
+}
+
+@media (max-width: 768px) {
+	.nav__right-content {
+		display: none;
+	}
+}
+
+.element-display {
+	display: none;
+	z-index: 1;
+	background: var(--white);
+	border-radius: 8px;
+	box-shadow: 7px 20px 0px 600rem rgba(0, 0, 0, 0.53);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 1.1rem;
+	width: 28rem;
+}
+
+/* Encabezado */
+.element-display__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 2px solid var(--green-600);
+	padding-bottom: 0.6rem;
+	margin-bottom: 1rem;
+}
+
+.element-display__title {
+	font-size: 1.5rem;
+	font-weight: bold;
+	color: var(--green-950);
+}
+
+.element-display__close-icon {
+	cursor: pointer;
+	color: var(--black);
+}
+
+.element-display__close-icon:hover {
+	color: var(--green-950);
+}
+
+/* Contenedor de la cuadrícula */
+.element-display__grid-container {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	gap: 0.8rem;
+}
+
+/* Sección de la imagen */
+.element-display__image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 0.5rem;
+}
+
+/* Sección de datos */
+.element-display__data {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.element-display__field-container {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+.element-display__label {
+	font-weight: bold;
+	color: var(--gray-80);
+}
+
+.element-display__input {
+	padding: 0.4rem;
+	border: 1px solid var(--gray-40);
+	border-radius: 0.4rem;
+	font-size: 0.9rem;
+	color: var(--gray-100);
+	background-color: var(--gray-20);
+	width: 100%;
+}
+
+.textarea__label {
+	grid-column: span 2;
+}
+
+/* Área de texto */
+.element-display__textarea {
+	padding: 0.4rem;
+	border: 1px solid var(--gray-40);
+	border-radius: 0.4rem;
+	font-size: 0.9rem;
+	color: var(--gray-100);
+	background-color: var(--gray-20);
+	width: 100%;
+	grid-column: span 2;
+	resize: vertical;
+	height: 5rem;
+}
+
+.colspan-2 {
+	grid-column: span 2;
+}
+
+/* Contenedor de estado */
+.element-display__status-container {
+	display: flex;
+	gap: 1.2rem;
+	margin-top: 0.5rem;
+}
+
+.element-display__radio-container {
+	display: flex;
+	align-items: center;
+	gap: 0.2rem;
+}
+
+.element-display__radio-label {
+	font-size: 0.9rem;
+	color: var(--gray-80);
+}
+
+.active {
+	accent-color: var(--green-950);
+}
+
+/* Botón de actualización */
+.element-display__button {
+	background-color: var(--green-900);
+	border: none;
+	border-radius: var(--button-border-radius);
+	color: var(--white);
+	font-size: 0.9rem;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+}
+
+.element-display__button a {
+	color: var(--white);
+	text-decoration: none;
+}
+
+.element-display__button:hover {
+	background-color: var(--green-950);
+}
+
+.element-display__button-container {
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+	grid-column: span 2;
+}
+
+.table__cell:first-child {
+	cursor: pointer;
+}
+
+.table__title {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.table__title-column {
+	display: flex;
+	flex-direction: column;
+}
+
+.table__title-side {
+	display: flex;
+	align-items: center;
+	background-color: var(--gray-20);
+	border-radius: 1rem;
+	padding: 0.3rem 0.6rem;
+	border: 1px solid var(--gray-40);
+	transition: box-shadow 0.1s ease;
+}
+
+@media (width < 768px) {
+	.table__title-side {
+		width: 100%;
+		margin: 2rem 0rem;
+	}
+}
+
+.table__icon {
+	color: var(--gray-60);
+	font-size: 1.3rem;
+	margin-right: 0.3rem;
+}
+
+.table__search {
+	border: none;
+	outline: none;
+	background-color: transparent;
+	font-size: 1rem;
+	color: var(--gray-80);
+	width: 100%;
+}
+
+.table__search::placeholder {
+	color: var(--gray-60);
+}
+
+.table__title-side:focus-within {
+	box-shadow: 0 0 0 1px var(--green-600);
+}
+
+.table__search::-webkit-search-cancel-button {
+	appearance: none;
+	background-color: var(--gray-60);
+	mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E")
+		no-repeat center; /* La propiedad mask en CSS se utiliza para aplicar una máscara a un elemento, lo que permite mostrar solo ciertas partes del elemento y ocultar otras. En este caso, se está utilizando para personalizar el icono de cancelación de un campo de búsqueda */
+	width: 1rem;
+	height: 1rem;
+	cursor: pointer;
+}
