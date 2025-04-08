@@ -59,7 +59,7 @@ a {
 
 .container {
     width: 100%;
-    padding: 1rem;
+    padding: 0.2rem;
     height: 100%;
 }
 
@@ -91,7 +91,7 @@ a {
 }
 
 .card-header {
-    padding: 1rem 1.5rem;
+    padding: 0.5rem 1rem;
     border-bottom: 1px solid var(--gray-40);
 }
 
@@ -150,26 +150,20 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius);
+    height: var(--button-height);
+	border-radius: var(--button-border-radius);
+	gap: var(--button-padding-between-elements);
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
     border: none;
-    width: 100%;
     margin-top: 1rem;
+    padding: 0 1rem;
 }
 
 .btn-primary {
     background-color: var(--green-900);
     color: var(--white);
-	height: var(--button-height);
-	border-radius: var(--button-border-radius);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: var(--button-padding-between-elements);
 }
 
 .btn-primary i {
@@ -192,6 +186,15 @@ a {
 
 .btn:active {
     transform: translateY(1px);
+}
+
+.btn-danger{
+    background-color: var(--expired);
+    color: var(--white);
+}
+
+.btn-danger:hover {
+    background-color: rgb(172, 23, 23);
 }
 
 /* Tabs */
@@ -226,14 +229,13 @@ a {
     border: 1px solid var(--gray-40);
     border-radius: var(--radius);
     padding: 1rem;
-    max-height: 15.5rem;
+    max-height: 19rem;
     overflow-y: auto;
 }
 
 .tab-pane.active {
     display: block;
 }
-
 /* Listas de integración */
 .integration-list {
     display: flex;
