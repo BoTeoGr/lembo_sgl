@@ -4,9 +4,9 @@ const userLogin = {
 };
 
 //Seleccionando elementos
-const password = document.querySelector("#password");
-const email = document.querySelector("#email");
-const form = document.querySelector(".form");
+const password = document.querySelector(".form__input--password");
+const email = document.querySelector(".form__input--email");
+const form = document.querySelector(".form__container--login");
 
 //inputs
 form.addEventListener("input", readText);
@@ -59,10 +59,10 @@ function showAlert(message, error = null) {
 
 //Callback o funcion
 function readText(e) {
-	if (e.target.id === "email") {
-		userLogin.email = e.target.value;
-	} else if (e.target.id === "password") {
-		userLogin.password = e.target.value;
-	}
+	if (e.target.classList.contains("form__input--email")) {
+        userLogin.email = e.target.value.trim(); // Actualizar el valor del correo
+    } else if (e.target.classList.contains("form__input--password")) {
+        userLogin.password = e.target.value.trim(); // Actualizar el valor de la contraseña
+    }
 	console.log(userLogin);
 }

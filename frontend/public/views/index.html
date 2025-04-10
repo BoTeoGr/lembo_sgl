@@ -1,77 +1,66 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Login SENA SGAL</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap"
-			rel="stylesheet"
-		/>
 
-		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
-		<link rel="stylesheet" href="../css/pages/log.css" />
-	</head>
-	<body>
-		<div class="container">
-			<aside class="leftAside">
-				<img src="../imgs/logoSena.svg" alt="Logo SENA" class="aside__logo" />
-			</aside>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login SENA SGAL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
 
-			<main class="main">
-				<section class="login">
-					<header class="header">
-						<img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="header__logo" />
-						<h1 class="header__title">Iniciar sesión</h1>
-					</header>
+    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/pages/forms.css" />
+</head>
 
-					<form class="form">
-						<div class="fields">
-							<input
-								type="email"
-								id="email"
-								placeholder="Correo electrónico"
-								class="fields__input"
-							/>
+<body>
+    <div class="container-login">
+        <aside class="aside">
+            <img src="../imgs/logoSena.svg" alt="Logo SENA" class="aside__logo" />
+        </aside>
 
-							<input
-								type="password"
-								id="password"
-								placeholder="Contraseña"
-								class="fields__input"
-								minlength="8"
-								maxlength="16"
-							/>
-						</div>
-						<div class="actions">
-							<a href="login-olvide-contraseña.html" class="actions__link"
-								>¿Olvidaste tu contraseña?</a
-							>
-							<button class="actions__button" type="submit">
-								Iniciar sesión
-							</button>
-						</div>
-					</form>
-				</section>
-			</main>
-		</div>
-		<!--container-->
+        <main class="main-content main-content--login">
+            <div class="form form--login">
+                <h2 class="form__title">Iniciar sesión</h2>
 
-		<!-- loader -->
-		<!-- From Uiverse.io by mobinkakei -->
-		<div class="loader">
-			<div class="wrapper">
-				<div class="circle"></div>
-				<div class="circle"></div>
-				<div class="circle"></div>
-				<div class="shadow"></div>
-				<div class="shadow"></div>
-			</div>
-		</div>
-		<!-- loader -->
-		<script src="../js/pages/pageLoadAnimation.js"></script>
-		<script src="../js/validations/loginValidator.js"></script>
-	</body>
+                <form class="form__container form__container--login" method="post">
+                    <div class="form__group form__group--login">
+                        <input type="email" class="form__input form__input--email"
+                            placeholder="Ingrese su correo electrónico"  />
+                    </div>
+
+                    <div class="form__group form__group--login">
+                        <input type="password" class="form__input form__input--password"
+                            placeholder="Ingrese su contraseña" minlength="8" maxlength="16"  />
+                    </div>
+
+                    <a href="login-olvide-contraseña.html" class="form__link form__link--forgot-password">¿Olvidaste tu
+                        contraseña?</a>
+
+                    <div class="form__button-container">
+                        <button type="submit" class="button button--submit">
+                            Iniciar sesión
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- loader -->
+    <div class="loader">
+        <div class="loader__wrapper">
+            <div class="loader__circle"></div>
+            <div class="loader__circle"></div>
+            <div class="loader__circle"></div>
+            <div class="loader__shadow"></div>
+            <div class="loader__shadow"></div>
+        </div>
+    </div>
+    <!-- loader -->
+    <script src="../js/pages/pageLoadAnimation.js"></script>
+    <script src="../js/validations/loginValidator.js"></script>
+</body>
+
 </html>

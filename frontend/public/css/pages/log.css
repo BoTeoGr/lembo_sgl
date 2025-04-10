@@ -15,8 +15,8 @@
 
 	--secondary-green: #007832;
 	--secondary-blue: #50e5f9;
-	--warning: #fdc300;
-	--expired: #ef4443;
+	--warning: rgb(254,217,93);
+	--expired: rgb(253,195,0);
 
 	--white: #ffffff;
 	--black: #000000;

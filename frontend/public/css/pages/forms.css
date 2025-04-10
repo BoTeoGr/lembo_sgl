@@ -16,6 +16,8 @@
 
 	--secondary-green: #007832;
 	--secondary-blue: #50e5f9;
+	--warning: rgb(254,217,93);
+	--expired: rgb(253,195,0);
 
 	--gray-100: #313131;
 	--gray-80: #626262;
@@ -29,10 +31,14 @@
 	--border-color: #ddd;
 	--shadow-color: rgba(0, 0, 0, 0.1);
 
-	--button-height: 4rem; /* 40px */
-	--button-border-radius: 2rem; /* 20px */
-	--button-padding-between-elements: 0.8rem; /* 8px */
-	--button-icon-size: 1.8rem; /* 18px */
+	--button-height: 4rem;
+	/* 40px */
+	--button-border-radius: 2rem;
+	/* 20px */
+	--button-padding-between-elements: 0.8rem;
+	/* 8px */
+	--button-icon-size: 1.8rem;
+	/* 18px */
 }
 
 h1 {
@@ -65,6 +71,7 @@ html {
 * {
 	font-family: "Work Sans", serif;
 }
+
 body {
 	padding: 0;
 	margin: 0;
@@ -81,11 +88,179 @@ body {
 	align-items: center;
 	/* margin: 1rem auto; */
 	padding: 1rem;
-	min-height: calc(100vh - 6rem); /* Ajusta 60px según la altura del navbar */
+	min-height: calc(100vh - 6rem);
+	/* Ajusta 60px según la altura del navbar */
 }
 
+/* Estolos del login */
+/* Loader que cubre toda la pantalla */
+/* Loader aparece en el login (index.html) */
+.loader {
+	background: var(--white);
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10000;
+	clip-path: circle(150% at 100% 0%);
+	transition: clip-path 0.8s ease-in-out;
+}
+
+.loader--hidden {
+	clip-path: circle(0% at 100% 0%);
+}
+
+/* From Uiverse.io by mobinkakei */
+.loader__wrapper {
+	width: 200px;
+	height: 60px;
+	position: relative;
+	z-index: 1;
+}
+
+.loader__circle {
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	border-radius: 50%;
+	background-color: var(--green-950);
+	left: 15%;
+	transform-origin: 50%;
+	animation: circle7124 0.5s alternate infinite ease;
+}
+
+@keyframes circle7124 {
+	0% {
+		top: 60px;
+		height: 5px;
+		border-radius: 50px 50px 25px 25px;
+		transform: scaleX(1.7);
+	}
+
+	40% {
+		height: 20px;
+		border-radius: 50%;
+		transform: scaleX(1);
+	}
+
+	100% {
+		top: 0%;
+	}
+}
+
+.loader__circle:nth-child(2) {
+	left: 45%;
+	animation-delay: 0.2s;
+}
+
+.loader__circle:nth-child(3) {
+	left: auto;
+	right: 15%;
+	animation-delay: 0.3s;
+}
+
+.loader__shadow {
+	width: 20px;
+	height: 4px;
+	border-radius: 50%;
+	background-color: rgba(0, 0, 0, 0.9);
+	position: absolute;
+	top: 62px;
+	transform-origin: 50%;
+	z-index: -1;
+	left: 15%;
+	filter: blur(1px);
+	animation: shadow046 0.5s alternate infinite ease;
+}
+
+@keyframes shadow046 {
+	0% {
+		transform: scaleX(1.5);
+	}
+
+	40% {
+		transform: scaleX(1);
+		opacity: 0.7;
+	}
+
+	100% {
+		transform: scaleX(0.2);
+		opacity: 0.4;
+	}
+}
+
+.loader__shadow:nth-child(4) {
+	left: 45%;
+	animation-delay: 0.2s;
+}
+
+.loader__shadow:nth-child(5) {
+	left: auto;
+	right: 15%;
+	animation-delay: 0.3s;
+}
+
+/* Contenedor */
+.container-login {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+}
+
+.aside {
+	width: 40%;
+	background: var(--white);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/*caja con el logo SENA */
+.aside__logo {
+	width: 25rem;
+}
+
+.main-content--login {
+	width: 60%;
+	display: flex;
+	justify-content: center; 
+	align-items: center; 
+	background-color: var(--green-950);
+}
+
+.button--submit {
+	background-color: var(--green-800);
+	color: var(--white);
+	padding: 1rem 2.4rem;
+	height: var(--button-height);
+	border: none;
+	border-radius: var(--button-border-radius);
+	cursor: pointer;
+	font-size: 1.6rem;
+	transition: background-color 0.3s ease;
+}
+
+.form__link--forgot-password {
+	font-size: 1.2rem;
+	color: var(--green-900);
+	text-decoration: none;
+	margin-bottom: 1rem;
+}
+
+.button--submit:hover {
+	background-color: var(--green-900);
+}
+
+/* Estolos del login */
+
 .form,
-.form.form--height {
+.form.form--height,
+.form--login {
 	width: 60rem;
 	height: 60rem;
 	background-color: var(--white);
@@ -96,8 +271,36 @@ body {
 	border-radius: 8px;
 	box-shadow: 0 2px 8px var(--shadow-color);
 }
+
 .form.form--height {
 	height: auto;
+}
+
+.form--login {
+	align-items: center;
+	justify-content: center;
+	gap: 4rem;
+}
+.form__container--login {
+	background: var(--white);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 4rem;
+	padding: 3rem;
+	border-radius: 1rem;
+	width: 100%;
+	height: auto;
+	text-align: center;
+}
+
+.form__group--login {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 4rem;
+	width: 100%;
+	max-width: 60rem;
 }
 
 /* Enlaces */
@@ -118,7 +321,9 @@ body {
 	height: 10rem;
 	margin-bottom: 6rem;
 	margin: 0 auto;
-} /* logotipos*/
+}
+
+/* logotipos*/
 
 /* Títulos */
 .form__title {
@@ -143,6 +348,13 @@ body {
 
 .form__group {
 	flex: 1;
+}
+
+.form__group--login {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin: 1rem;
 }
 
 .form__group--full-width {
@@ -185,6 +397,25 @@ body {
 	/* margin-bottom: 1rem; */
 }
 
+.form__input--email,
+.form__input--password {
+	width: 100%;
+	height: 4.6rem;
+	padding: 1rem;
+	border: none;
+	border-bottom: 0.2rem solid var(--gray-40);
+	outline: none;
+	border-radius: 0.6px;
+	font-size: 1.4rem;
+	transition: all 0.2s ease-in-out;
+}
+.form__input--email:focus,
+.form__input--password:focus {
+	border-bottom: 2px solid var(--green-950);
+	/* Color cuando está enfocado */
+	box-shadow: 0 6px 10px -5px rgba(0, 0, 0, 0.5);
+}
+
 .form__textarea {
 	resize: vertical;
 	height: 4.2rem;
@@ -216,17 +447,97 @@ body {
 	background-color: var(--green-900);
 }
 
+/* Responsividad */
+@media (width < 480px) {
+	.aside {
+		height: 10%;
+		width: 100%;
+		display: flex;
+	}
+
+	.aside__logo {
+		width: 6rem;
+		height: 6rem;
+	}
+
+	.main-content--login {
+		width: 100%;
+		height: 90%;
+		padding: 2rem;
+	}
+
+	.form--login {
+		width: 100%;
+		height: 28rem;
+		padding: 4rem 2rem ;
+		gap: 4rem;
+	}
+
+	.form__container--login {
+		padding: 2rem 0;
+		width: 100%;	
+	}
+
+	.form__input--email,
+	.form__input--password {
+		height: 5.6rem;
+		font-size: 1.4rem;
+		width: 100%;
+	}
+
+	.form__link--forgot-password {
+		font-size: 1.6rem;
+	}
+}
+
 @media (width < 768px) {
+	.container-login {
+		flex-direction: column;
+	}
+
+	.div__effect {
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	.aside {
+		width: 100%;
+		height: 15%;
+		order: 1;
+	}
+
+	.aside__logo {
+		width: 8rem;
+		height: 8rem;
+	}
+
+	.main-content--login {
+		width: 100%;
+		height: 85%;
+		padding: 2rem ;
+		order: 2;
+	}
+
+	.form__link--forgot-password {
+		font-size: 1.4rem;
+	}
+
 	.form {
 		height: auto;
+		padding: 4rem 2rem;
 	}
+
+	.form--login {
+		width: 100%;
+		height: 54rem;
+		padding: 4rem 2rem ;
+		gap: 4rem;
+	}
+
 	.form__container {
 		gap: 2rem;
 	}
 
-	/* .form.form--height {
-        height: 60rem;
-    } */
 	.form__row {
 		flex-direction: column;
 		gap: 2rem;
@@ -264,13 +575,12 @@ body {
 
 .error,
 .correct {
-	color: rgb(185, 0, 0);
+	color: var(--expired);
 	border: none;
-	font-size: clamp(
-		1.2rem,
-		1vw,
-		1.6rem
-	); /* Ajusta el tamaño de fuente según sea necesario */
+	font-size: clamp(1.2rem,
+			1vw,
+			1.6rem);
+	/* Ajusta el tamaño de fuente según sea necesario */
 	margin: 0;
 	text-align: center;
 }
@@ -283,73 +593,85 @@ body {
 
 /* Toast */
 .toast {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background-color: white;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 1rem;
-    min-width: 300px;
-    max-width: 400px;
-    z-index: 1001;
-    animation: toastFadeIn 0.3s;
+	position: fixed;
+	bottom: 2rem;
+	right: 2rem;
+	background-color: white;
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	padding: 1rem;
+	min-width: 300px;
+	max-width: 400px;
+	z-index: 1001;
+	animation: toastFadeIn 0.3s;
 }
 
 @keyframes toastFadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 .toast-content {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .toast-content i {
-    margin-right: 0.75rem;
-    font-size: 2.2rem;
+	margin-right: 0.75rem;
+	font-size: 2.2rem;
 }
 
 .toast-content i.fa-check-circle {
-    color: var(--primary-color);
+	color: var(--primary-color);
 }
 
 .toast-content i.fa-exclamation-circle {
-    color: #ef4444;
+	color: var(--warning);
 }
 
 .toast-message {
-    flex: 1;
+	flex: 1;
 }
 
 .toast-title {
-    display: block;
-    font-weight: 500;
+	display: block;
+	font-weight: 500;
 	font-size: 1.4rem;
 }
 
 .toast-description {
-    display: block;
-    font-size: 1rem;
-    color: var(--text-light);
+	display: block;
+	font-size: 1rem;
+	color: var(--text-light);
 }
 
 .toast-progress {
-    height: 3px;
-    background-color: var(--primary-color);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    animation: progress 5s linear;
+	height: 3px;
+	background-color: var(--primary-color);
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	animation: progress 5s linear;
 }
 
 @keyframes progress {
-    from { width: 100%; }
-    to { width: 0%; }
+	from {
+		width: 100%;
+	}
+
+	to {
+		width: 0%;
+	}
 }
 
 .hidden {
-    display: none;
+	display: none;
 }
