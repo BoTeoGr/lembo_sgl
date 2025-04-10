@@ -253,17 +253,18 @@ let sensoresIntegrados = [
     iconoColor: "#8b5cf6",
   },
   {
-    id: "sd-004",
-    nombre: "Anemómetro",
-    tipo: "viento",
+    id: "sd-009",
+    nombre: "Sensor de Humedad del Suelo",
+    tipo: "humedad",
     ubicacion: "Parcela 1",
-    modelo: "WS-3000",
-    fabricante: "WeatherTech",
-    descripcion: "Sensor para medir la velocidad del viento",
-    icono: "wind",
-    iconoColor: "#8b5cf6",
-    unidadMedida: "km/h",
-  },
+    modelo: "YL-69",
+    fabricante: "Generic",
+    descripcion: "Sensor de humedad del suelo",
+    icono: "tint",
+    iconoColor: "#3b82f6",
+    unidadMedida: "%",
+    fechaCreacion: "15/01/2023",
+  }
 ]
 
 // Datos iniciales de insumos integrados
@@ -995,15 +996,15 @@ function renderSelectionList() {
         div.className = `selection-item ${selectedSensor && selectedSensor.id === sensor.id ? "selected" : ""}`
 
         div.innerHTML = `
-                    <div class="selection-icon">
-                        <i class="fas fa-${sensor.icono}" style="color: ${sensor.iconoColor}"></i>
-                    </div>
-                    <div class="selection-details">
-                        <div class="selection-name">${sensor.nombre}</div>
-                        <div class="selection-meta">${sensor.modelo} | ${sensor.fabricante}</div>
-                    </div>
-                    <div class="selection-unit">${sensor.unidadMedida}</div>
-                `
+          <div class="selection-icon">
+              <i class="fas fa-${sensor.icono}" style="color: ${sensor.iconoColor}"></i>
+          </div>
+          <div class="selection-details">
+              <div class="selection-name">${sensor.nombre}</div>
+              <div class="selection-meta">${sensor.modelo} | ${sensor.fabricante}</div>
+          </div>
+          <div class="selection-unit">${sensor.unidadMedida}</div>
+        `
 
         div.addEventListener("click", () => {
           selectedSensor = sensor
@@ -1015,10 +1016,49 @@ function renderSelectionList() {
           })
           div.classList.add("selected")
 
-          // Mostrar información del elemento seleccionado
+          // Mostrar información detallada del sensor
           selectedItemInfo.classList.remove("hidden")
           selectedItemName.textContent = sensor.nombre
-          selectedItemDescription.textContent = sensor.descripcion
+          selectedItemDescription.innerHTML = `
+            <div class="detail-grid">
+              <div class="detail-item">
+                <span class="detail-label">Tipo:</span>
+                <span class="detail-value">${sensor.tipo}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Modelo:</span>
+                <span class="detail-value">${sensor.modelo}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Fabricante:</span>
+                <span class="detail-value">${sensor.fabricante}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Ubicación:</span>
+                <span class="detail-value">${sensor.ubicacion}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Unidad de medida:</span>
+                <span class="detail-value">${sensor.unidadMedida}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Frecuencia de lectura:</span>
+                <span class="detail-value">Cada ${formatIntervalo(15)}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Rango de medición:</span>
+                <span class="detail-value">${getRangoMedicion(sensor.tipo)}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Precisión:</span>
+                <span class="detail-value">${getPrecision(sensor.tipo, sensor.modelo)}</span>
+              </div>
+              <div class="detail-item descripcion">
+                <span class="detail-label">Descripción:</span>
+                <span class="detail-value">${sensor.descripcion}</span>
+              </div>
+            </div>
+          `
         })
 
         selectionList.appendChild(div)
@@ -1040,15 +1080,15 @@ function renderSelectionList() {
         div.className = `selection-item ${selectedInsumo && selectedInsumo.id === insumo.id ? "selected" : ""}`
 
         div.innerHTML = `
-                    <div class="selection-icon">
-                        <i class="fas fa-${insumo.icono}" style="color: ${insumo.iconoColor}"></i>
-                    </div>
-                    <div class="selection-details">
-                        <div class="selection-name">${insumo.nombre}</div>
-                        <div class="selection-meta">${insumo.marca} | ${insumo.presentacion}</div>
-                    </div>
-                    <div class="selection-unit">${insumo.unidad}</div>
-                `
+          <div class="selection-icon">
+              <i class="fas fa-${insumo.icono}" style="color: ${insumo.iconoColor}"></i>
+          </div>
+          <div class="selection-details">
+              <div class="selection-name">${insumo.nombre}</div>
+              <div class="selection-meta">${insumo.marca} | ${insumo.presentacion}</div>
+          </div>
+          <div class="selection-unit">${insumo.unidad}</div>
+        `
 
         div.addEventListener("click", () => {
           selectedInsumo = insumo
@@ -1060,10 +1100,49 @@ function renderSelectionList() {
           })
           div.classList.add("selected")
 
-          // Mostrar información del elemento seleccionado
+          // Mostrar información detallada del insumo
           selectedItemInfo.classList.remove("hidden")
           selectedItemName.textContent = insumo.nombre
-          selectedItemDescription.textContent = insumo.descripcion
+          selectedItemDescription.innerHTML = `
+            <div class="detail-grid">
+              <div class="detail-item">
+                <span class="detail-label">Tipo:</span>
+                <span class="detail-value">${insumo.tipo}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Marca:</span>
+                <span class="detail-value">${insumo.marca}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Presentación:</span>
+                <span class="detail-value">${insumo.presentacion}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Unidad:</span>
+                <span class="detail-value">${insumo.unidad}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Método de aplicación:</span>
+                <span class="detail-value">${getMetodoAplicacion(insumo.tipo)}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Frecuencia recomendada:</span>
+                <span class="detail-value">${getFrecuenciaAplicacion(insumo.tipo)}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Personal requerido:</span>
+                <span class="detail-value">${getPersonalRequerido(insumo.tipo)}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Precauciones:</span>
+                <span class="detail-value">${getPrecauciones(insumo.tipo)}</span>
+              </div>
+              <div class="detail-item descripcion">
+                <span class="detail-label">Descripción:</span>
+                <span class="detail-value">${insumo.descripcion}</span>
+              </div>
+            </div>
+          `
         })
 
         selectionList.appendChild(div)
@@ -1232,4 +1311,77 @@ function formatIntervalo(minutos) {
   if (min === 60) return "1 hora"
   if (min < 1440) return `${min / 60} horas`
   return "24 horas"
+}
+
+// Agregar estas nuevas funciones auxiliares
+function getRangoMedicion(tipo) {
+  const rangos = {
+    temperatura: "-40°C a 80°C",
+    humedad: "0% a 100%",
+    viento: "0 km/h a 160 km/h",
+    aire: "0 ppm a 5000 ppm",
+    luz: "0 a 65535 lux",
+    quimico: "0 a 14 pH"
+  }
+  return rangos[tipo] || "No especificado"
+}
+
+function getPrecision(tipo, modelo) {
+  const precisiones = {
+    "DHT22": "±0.5°C, ±2-5% HR",
+    "FC-28": "±5%",
+    "WS-3000": "±2 km/h",
+    "MG-811": "±50 ppm",
+    "BH1750": "±20%",
+    "PH-4502C": "±0.1 pH"
+  }
+  return precisiones[modelo] || "±5%"
+}
+
+function getMetodoAplicacion(tipo) {
+  const metodos = {
+    fertilizante: "Aplicación directa al suelo o sistema de riego",
+    pesticida: "Fumigación foliar",
+    agua: "Sistema de riego",
+    bioestimulante: "Aplicación foliar o radicular",
+    micronutriente: "Aplicación al suelo o foliar",
+    regulador: "Aplicación directa al ambiente"
+  }
+  return metodos[tipo] || "No especificado"
+}
+
+function getFrecuenciaAplicacion(tipo) {
+  const frecuencias = {
+    fertilizante: "Cada 15-30 días",
+    pesticida: "Según necesidad, mínimo 7 días entre aplicaciones",
+    agua: "Diariamente según necesidad",
+    bioestimulante: "Cada 15 días",
+    micronutriente: "Mensualmente",
+    regulador: "Según ciclo de cultivo"
+  }
+  return frecuencias[tipo] || "Según especificaciones"
+}
+
+function getPersonalRequerido(tipo) {
+  const personal = {
+    fertilizante: "Técnico agrícola",
+    pesticida: "Operador certificado con EPP",
+    agua: "Operador de riego",
+    bioestimulante: "Técnico agrícola",
+    micronutriente: "Técnico agrícola",
+    regulador: "Especialista agrícola"
+  }
+  return personal[tipo] || "Personal capacitado"
+}
+
+function getPrecauciones(tipo) {
+  const precauciones = {
+    fertilizante: "Usar guantes y mascarilla",
+    pesticida: "EPP completo, no aplicar con viento fuerte",
+    agua: "Verificar pH y calidad del agua",
+    bioestimulante: "Usar protección básica",
+    micronutriente: "Evitar contacto con piel y ojos",
+    regulador: "Mantener condiciones ambientales controladas"
+  }
+  return precauciones[tipo] || "Seguir instrucciones del fabricante"
 }
