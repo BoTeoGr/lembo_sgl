@@ -11,16 +11,16 @@ const insumo = {
 	estado: "habilitado",
 };
 
-// Seleccionar elementos del formulario
-const form = document.querySelector(".userForm");
-const nombre = document.querySelector("#nombre");
-const tipo = document.querySelector("#tipo");
-const id = document.querySelector("#id");
-const medida = document.querySelector("#medida");
-const valorUnitario = document.querySelector("#valor-unitario");
-const cantidad = document.querySelector("#cantidad");
-const valorTotal = document.querySelector("#valor-total");
-const descripcion = document.querySelector("#descripcion");
+// Seleccionar elementos usando las nuevas clases BEM
+const form = document.querySelector(".form__container");
+const nombre = document.querySelector(".form__input--insume-name");
+const tipo = document.querySelector(".form__input--insume-type");
+const id = document.querySelector(".form__input--insume-id");
+const medida = document.querySelector(".form__select--insume-extent");
+const valorUnitario = document.querySelector(".form__input--insume-price");
+const cantidad = document.querySelector(".form__input--insume-amount");
+const valorTotal = document.querySelector(".form__input--total-value");
+const descripcion = document.querySelector(".form__textarea--insume-description");
 const estadoRadios = document.querySelectorAll(
 	'input[name="estado-habilitado"]'
 );
@@ -48,9 +48,19 @@ bloquearTeclasNoNumericas(valorUnitario);
 bloquearTeclasNoNumericas(cantidad);
 bloquearTeclasNoNumericas(valorTotal);
 
+// Actualizar los selectores en el evento input
 form.addEventListener("input", (e) => {
-	insumo[e.target.id] = e.target.value.trim();
-	console.log(insumo); // Puedes enviarlo a un backend si es necesario
+    const className = e.target.classList;
+    if (className.contains("form__input--insume-name")) insumo.nombre = e.target.value;
+    if (className.contains("form__input--insume-type")) insumo.tipo = e.target.value;
+    if (className.contains("form__input--insume-id")) insumo.id = e.target.value;
+    if (className.contains("form__select--insume-extent")) insumo.medida = e.target.value;
+    if (className.contains("form__input--insume-price")) insumo.valorUnitario = e.target.value;
+    if (className.contains("form__input--insume-amount")) insumo.cantidad = e.target.value;
+    if (className.contains("form__input--total-value")) insumo.valorTotal = e.target.value;
+    if (className.contains("form__textarea--insume-description")) insumo.descripcion = e.target.value;
+    
+    console.log(insumo);
 });
 
 // Capturar el estado seleccionado

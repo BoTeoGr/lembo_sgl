@@ -9,27 +9,36 @@ const cicloCultivo = {
 	estado: "habilitado", // Valor por defecto
 };
 
-// Mapeo entre los IDs de los inputs y las propiedades del objeto cicloCultivo
-const mapeoInputs = {
-	nombre: "nombre",
-	id: "id",
-	descripcion: "descripcion",
-	"periodo-inicio": "periodoInicio",
-	"periodo-final": "periodoFinal",
-	novedades: "novedades",
+// Mapeo entre las clases de los inputs y las propiedades del objeto cicloCultivo
+const mapeoClases = {
+	"form__input--cycle-name": "nombre",
+	"form__input--cycle-id": "id",
+	"form__textarea--cycle-description": "descripcion",
+	"form__input--cycle-start-date": "periodoInicio",
+	"form__input--cycle-end-date": "periodoFinal",
+	"form__textarea--cycle-updates": "novedades",
 };
 
-// Seleccionar elementos del formulario
-const form = document.querySelector(".userForm");
+// Seleccionar elementos del formulario usando las nuevas clases BEM
+const form = document.querySelector(".form__container");
+const nombre = document.querySelector(".form__input--cycle-name");
+const id = document.querySelector(".form__input--cycle-id");
+const descripcion = document.querySelector(".form__textarea--cycle-description");
+const periodoInicio = document.querySelector(".form__input--cycle-start-date");
+const periodoFinal = document.querySelector(".form__input--cycle-end-date");
+const novedades = document.querySelector(".form__textarea--cycle-updates");
 const estadoRadios = document.querySelectorAll(
 	'input[name="estado-habilitado"]'
 );
 
-// Evento para capturar datos en tiempo real
+// Evento para capturar datos en tiempo real usando clases BEM
 form.addEventListener("input", (e) => {
-	const propiedad = mapeoInputs[e.target.id]; // Buscar la propiedad en el mapeo
-	if (propiedad) {
-		cicloCultivo[propiedad] = e.target.value.trim();
+	const className = Array.from(e.target.classList).find((cls) =>
+		mapeoClases.hasOwnProperty(cls)
+	);
+
+	if (className) {
+		cicloCultivo[mapeoClases[className]] = e.target.value.trim();
 		console.log(cicloCultivo); // Ver el objeto actualizado en consola
 	}
 });
@@ -43,7 +52,7 @@ estadoRadios.forEach((radio) => {
 });
 
 // Bloquear teclas que no sean números en el campo ID
-document.querySelector("#id").addEventListener("keydown", (e) => {
+document.querySelector(".form__input--cycle-id").addEventListener("keydown", (e) => {
 	const teclasPermitidas = [
 		"Backspace",
 		"Tab",

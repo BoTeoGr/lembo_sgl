@@ -31,7 +31,7 @@
 							<label for="tipo-sensor" class="form__label"
 								>Tipo de sensor</label
 							>
-							<select id="tipo-sensor" class="sensorType form__select" required>
+							<select id="tipo-sensor" class="form__select form__select--sensor-type" required>
 								<option value="default" selected>Seleccione una opción</option>
 								<option value="Sensor de contacto">Sensor de contacto</option>
 								<option value="Sensor de distancia">Sensor de distancia</option>
@@ -45,7 +45,7 @@
 							<input
 								type="text"
 								id="nombre-sensor"
-								class="sensorName form__input"
+								class="form__input form__input--sensor-name"
 								placeholder="Ingrese nombre del sensor"
 								required
 							/>
@@ -59,7 +59,7 @@
 							>
 							<select
 								id="unidad-medida"
-								class="sensorUnit form__select"
+								class="form__select form__select--sensor-unit"
 								required
 							>
 								<option value="default" selected>Seleccione una opción</option>
@@ -74,7 +74,7 @@
 								<input
 									type="file"
 									id="imagen"
-									class="sensorImage form__file"
+									class="form__file form__file--sensor-image"
 									accept=".jpg, .jpeg, .png"
 									required
 								/>
@@ -86,7 +86,7 @@
 						<label for="descripcion" class="form__label">Descripción</label>
 						<textarea
 							id="descripcion"
-							class="sensorDescription form__textarea"
+							class="form__textarea form__textarea--sensor-description"
 							placeholder="Ingrese descripción del cultivo"
 							required
 						></textarea>
@@ -100,7 +100,7 @@
 							>
 							<select
 								id="tiempo-escaneo"
-								class="sensorScan form__select"
+								class="form__select form__select--sensor-scan"
 								required
 							>
 								<option value="default" selected>Seleccione una opción</option>

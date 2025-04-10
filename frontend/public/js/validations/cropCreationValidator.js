@@ -1,5 +1,5 @@
 // Bloquear números en los campos 'userName' y 'typeCrop'
-document.querySelectorAll(".cultiveName, .cultiveType").forEach(function (element) {
+document.querySelectorAll(".form__input--cultive-name, .form__input--cultive-type").forEach(function (element) {
 	element.addEventListener("keydown", function (e) {
 		if (e.key >= "0" && e.key <= "9") {
 			e.preventDefault();
@@ -20,7 +20,7 @@ document
 
 // Bloquear caracteres no numéricos en el campo cultiveSize
 document
-	.querySelector(".cultiveSize")
+	.querySelector(".form__input--cultive-size")
 	.addEventListener("keydown", function (e) {
 		if ((e.key < "0" || e.key > "9") && e.key !== "." && e.key !== "Backspace") {
 			e.preventDefault();
@@ -44,12 +44,12 @@ const cultiveData = {
 const cultivoForm = document.querySelector(".form__container");
 
 // Definir variables para los campos del formulario
-const cultiveName = document.querySelector(".cultiveName");
-const cultiveType = document.querySelector(".cultiveType");
-const cultiveImage = document.querySelector(".cultiveImage");
-const cultiveLocation = document.querySelector(".cultiveLocation");
-const cultiveDescription = document.querySelector(".cultiveDescription");
-const cultiveSize = document.querySelector(".cultiveSize");
+const cultiveName = document.querySelector(".form__input--cultive-name");
+const cultiveType = document.querySelector(".form__input--cultive-type");
+const cultiveImage = document.querySelector(".form__file--cultive-image");
+const cultiveLocation = document.querySelector(".form__input--cultive-location");
+const cultiveDescription = document.querySelector(".form__textarea--cultive-description");
+const cultiveSize = document.querySelector(".form__input--cultive-size");
 const estadoRadios = document.querySelectorAll(
     'input[name="estado-habilitado"]'
 );
@@ -73,17 +73,17 @@ estadoRadios.forEach((radio) => {
 
 // Función para capturar los valores de los inputs
 function readText(e) {
-	if (e.target.classList.contains("cultiveName")) {
+	if (e.target.classList.contains("form__input--cultive-name")) {
 		cultiveData.cultiveName = e.target.value;
-	} else if (e.target.classList.contains("cultiveType")) {
+	} else if (e.target.classList.contains("form__input--cultive-type")) {
 		cultiveData.cultiveType = e.target.value;
-	} else if (e.target.classList.contains("cultiveImage")) {
+	} else if (e.target.classList.contains("form__file--cultive-image")) {
 		cultiveData.cultiveImage = e.target.value;
-	} else if (e.target.classList.contains("cultiveLocation")) {
+	} else if (e.target.classList.contains("form__input--cultive-location")) {
 		cultiveData.cultiveLocation = e.target.value;
-	} else if (e.target.classList.contains("cultiveDescription")) {
+	} else if (e.target.classList.contains("form__textarea--cultive-description")) {
 		cultiveData.cultiveDescription = e.target.value;
-	} else if (e.target.classList.contains("cultiveSize")) {
+	} else if (e.target.classList.contains("form__input--cultive-size")) {
 		cultiveData.cultiveSize = e.target.value;
 	}
 	console.log(cultiveData); // Ver los valores almacenados en cultiveData

@@ -1,5 +1,5 @@
 // Código que impide que el usuario ingrese números en un input de texto
-document.querySelector(".sensorName").addEventListener("keydown", function (e) {
+document.querySelector(".form__input--sensor-name").addEventListener("keydown", function (e) {
 	if (e.key >= "0" && e.key <= "9") {
 		e.preventDefault();
 		console.log("Número bloqueado");
@@ -27,12 +27,12 @@ const sensorData = {
 
 // Selección de elementos del formulario
 const sensorForm = document.querySelector(".form__container");
-const sensorType = document.querySelector(".sensorType");
-const sensorName = document.querySelector(".sensorName");
-const sensorUnit = document.querySelector(".sensorUnit");
-const sensorImage = document.querySelector(".sensorImage");
-const sensorDescription = document.querySelector(".sensorDescription");
-const sensorScan = document.querySelector(".sensorScan");
+const sensorType = document.querySelector(".form__select--sensor-type");
+const sensorName = document.querySelector(".form__input--sensor-name");
+const sensorUnit = document.querySelector(".form__select--sensor-unit");
+const sensorImage = document.querySelector(".form__file--sensor-image");
+const sensorDescription = document.querySelector(".form__textarea--sensor-description");
+const sensorScan = document.querySelector(".form__select--sensor-scan");
 const estadoRadios = document.querySelectorAll(
     'input[name="estado-habilitado"]'
 );
@@ -56,17 +56,17 @@ estadoRadios.forEach((radio) => {
 
 // Función para capturar los valores de los inputs
 function readText(e) {
-	if (e.target.classList.contains("sensorType")) {
+	if (e.target.classList.contains("form__select--sensor-type")) {
 		sensorData.sensorType = e.target.value;
-	} else if (e.target.classList.contains("sensorName")) {
+	} else if (e.target.classList.contains("form__input--sensor-name")) {
 		sensorData.sensorName = e.target.value;
-	} else if (e.target.classList.contains("sensorUnit")) {
+	} else if (e.target.classList.contains("form__select--sensor-unit")) {
 		sensorData.sensorUnit = e.target.value;
-	} else if (e.target.classList.contains("sensorImage")) {
+	} else if (e.target.classList.contains("form__file--sensor-image")) {
 		sensorData.sensorImage = e.target.value;
-	} else if (e.target.classList.contains("sensorDescription")) {
+	} else if (e.target.classList.contains("form__textarea--sensor-description")) {
 		sensorData.sensorDescription = e.target.value;
-	} else if (e.target.classList.contains("sensorScan")) {
+	} else if (e.target.classList.contains("form__select--sensor-scan")) {
 		sensorData.sensorScan = e.target.value;
 	}
 	console.log(sensorData); // Ver los valores almacenados en sensorData
