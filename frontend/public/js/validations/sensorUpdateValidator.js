@@ -1,12 +1,12 @@
-// Mapeo entre los IDs de los inputs y las propiedades reales del objeto
+// Actualizar selectores para usar clases BEM
 const mapeoInputs = {
-	"tipo-sensor": "tipo",
-	"nombre-sensor": "nombre",
-	"unidad-medida": "unidadMedida",
-	imagen: "imagen",
-	descripcion: "descripcion",
-	tamano: "id",
-	"tiempo-escaneo": "tiempoEscaneo",
+    "form__select--sensor-type": "tipo",
+    "form__input--sensor-name": "nombre",
+    "form__select--sensor-unit": "unidadMedida",
+    "form__file--sensor-image": "imagen", 
+    "form__textarea--sensor-description": "descripcion",
+    "form__input--sensor-id": "id",
+    "form__select--sensor-scan": "tiempoEscaneo"
 };
 
 // Objeto para almacenar los datos del sensor
@@ -21,19 +21,28 @@ const sensor = {
 	estado: "habilitado",
 };
 
-// Seleccionar elementos del formulario
-const form = document.querySelector(".userForm");
+// Seleccionar elementos usando las nuevas clases BEM
+const form = document.querySelector(".form__container");
+const tipoSensor = document.querySelector(".form__select--sensor-type");
+const nombreSensor = document.querySelector(".form__input--sensor-name");
+const unidadMedida = document.querySelector(".form__select--sensor-unit");
+const imagen = document.querySelector(".form__file--sensor-image");
+const descripcion = document.querySelector(".form__textarea--sensor-description");
+const sensorId = document.querySelector(".form__input--sensor-id");
+const tiempoEscaneo = document.querySelector(".form__select--sensor-scan");
 const estadoRadios = document.querySelectorAll(
 	'input[name="estado-habilitado"]'
 );
 
-// Capturar cambios en los inputs y actualizar el objeto correctamente
+// Capturar cambios usando las nuevas clases
 form.addEventListener("input", (e) => {
-	const propiedad = mapeoInputs[e.target.id];
-	if (propiedad) {
-		sensor[propiedad] = e.target.value.trim();
-		console.log(sensor); // Verifica que el objeto tenga solo las propiedades correctas
-	}
+    const className = Array.from(e.target.classList)
+        .find(cls => mapeoInputs.hasOwnProperty(cls));
+    
+    if (className) {
+        sensor[mapeoInputs[className]] = e.target.value.trim();
+        console.log(sensor);
+    }
 });
 
 // Capturar el estado en tiempo real

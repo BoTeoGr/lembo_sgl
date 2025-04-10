@@ -1,5 +1,5 @@
 // Código que impide que el usuario ingrese números en un input de texto
-document.querySelector(".insumeName").addEventListener("keydown", function (e) {
+document.querySelector(".form__input--insume-name").addEventListener("keydown", function (e) {
 	if (e.key >= "0" && e.key <= "9") {
 		e.preventDefault();
 		console.log("Número bloqueado");
@@ -29,14 +29,14 @@ const insumoData = {
 
 // Selección de elementos del formulario
 const insumeForm = document.querySelector(".form__container");
-const insumeName = document.querySelector(".insumeName");
-const insumeType = document.querySelector(".insumeType");
-const insumeImage = document.querySelector(".insumeImage");
-const insumeExtent = document.querySelector(".insumeExtent");
-const insumeDescription = document.querySelector(".insumeDescription");
-const insumePrice = document.querySelector(".insumePrice");
-const insumeAmount = document.querySelector(".insumeAmount");
-const totalValue = document.querySelector(".totalValue");
+const insumeName = document.querySelector(".form__input--insume-name");
+const insumeType = document.querySelector(".form__input--insume-type");
+const insumeImage = document.querySelector(".form__file--insume-image");
+const insumeExtent = document.querySelector(".form__select--insume-extent");
+const insumeDescription = document.querySelector(".form__textarea--insume-description");
+const insumePrice = document.querySelector(".form__input--insume-price");
+const insumeAmount = document.querySelector(".form__input--insume-amount");
+const totalValue = document.querySelector(".form__input--total-value");
 const estadoRadios = document.querySelectorAll(
     'input[name="estado-habilitado"]'
 );
@@ -83,21 +83,21 @@ insumeAmount.addEventListener("input", calculateTotal);
 
 // Función para capturar los valores de los inputs
 function readText(e) {
-	if (e.target.classList.contains("insumeName")) {
+	if (e.target.classList.contains("form__input--insume-name")) {
 		insumoData.insumeName = e.target.value;
-	} else if (e.target.classList.contains("insumeType")) {
+	} else if (e.target.classList.contains("form__input--insume-type")) {
 		insumoData.insumeType = e.target.value;
-	} else if (e.target.classList.contains("insumeImage")) {
+	} else if (e.target.classList.contains("form__file--insume-image")) {
 		insumoData.insumeImage = e.target.value;
-	} else if (e.target.classList.contains("insumeExtent")) {
+	} else if (e.target.classList.contains("form__select--insume-extent")) {
 		insumoData.insumeExtent = e.target.value;
-	} else if (e.target.classList.contains("insumeDescription")) {
+	} else if (e.target.classList.contains("form__textarea--insume-description")) {
 		insumoData.insumeDescription = e.target.value;
-	} else if (e.target.classList.contains("insumePrice")) {
+	} else if (e.target.classList.contains("form__input--insume-price")) {
 		insumoData.insumePrice = e.target.value;
-	} else if (e.target.classList.contains("insumeAmount")) {
+	} else if (e.target.classList.contains("form__input--insume-amount")) {
 		insumoData.insumeAmount = e.target.value;
-	} else if (e.target.classList.contains("totalValue")) {
+	} else if (e.target.classList.contains("form__input--total-value")) {
 		insumoData.totalValue = e.target.value;
 	}
 

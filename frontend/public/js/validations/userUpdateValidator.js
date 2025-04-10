@@ -11,13 +11,13 @@ const usuario = {
 
 // Mapeo entre los IDs de los inputs y las propiedades reales del objeto
 const mapeoInputs = {
-	"tipo-documento": "tipoDocumento",
-	nombre: "nombre",
-	"numero-documento": "numeroDocumento",
-	telefono: "telefono",
-	correo: "correo",
-	"confirmar-correo": "confirmarCorreo",
-	rol: "rol",
+	"form__select--user-type": "tipoDocumento",
+	"form__input--user-name": "nombre",
+	"form__input--user-id": "numeroDocumento",
+	"form__input--user-tel": "telefono",
+	"form__input--user-email": "correo",
+	"form__input--user-confirm-email": "confirmarCorreo",
+	"form__select--user-rol": "rol",
 };
 
 // Función para leer valores de los inputs y asignarlos al objeto correctamente
@@ -32,14 +32,14 @@ function readText(event) {
 }
 
 // Seleccionar elementos del formulario
-const form = document.querySelector(".userForm");
-const tipoDocumento = document.querySelector("#tipo-documento");
-const nombre = document.querySelector("#nombre");
-const numeroDocumento = document.querySelector("#numero-documento");
-const telefono = document.querySelector("#telefono");
-const correo = document.querySelector("#correo");
-const confirmarCorreo = document.querySelector("#confirmar-correo");
-const rol = document.querySelector("#rol");
+const form = document.querySelector(".form__container");
+const tipoDocumento = document.querySelector(".form__select--user-type");
+const nombre = document.querySelector(".form__input--user-name");
+const numeroDocumento = document.querySelector(".form__input--user-id");
+const telefono = document.querySelector(".form__input--user-tel");
+const correo = document.querySelector(".form__input--user-email");
+const confirmarCorreo = document.querySelector(".form__input--user-confirm-email");
+const rol = document.querySelector(".form__select--user-rol");
 const estadoRadios = document.querySelectorAll(
 	'input[name="estado-habilitado"]'
 );

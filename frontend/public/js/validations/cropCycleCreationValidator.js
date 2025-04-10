@@ -1,11 +1,9 @@
 // Bloquear números en los campos 'cycleName'
-document.querySelectorAll(".cycleName").forEach(function (element) {
-	element.addEventListener("keydown", function (e) {
-		if (e.key >= "0" && e.key <= "9") {
-			e.preventDefault();
-			console.log("Número bloqueado en el campo");
-		}
-	});
+document.querySelector(".form__input--cycle-name").addEventListener("keydown", function (e) {
+    if (e.key >= "0" && e.key <= "9") {
+        e.preventDefault();
+        console.log("Número bloqueado en el campo");
+    }
 });
 
 // Bloquear Enter en el botón para evitar recargas accidentales
@@ -33,11 +31,11 @@ const cycleData = {
 const cultivationCycleForm = document.querySelector(".form__container");
 
 // Definir variables para los campos del formulario
-const cycleName = document.querySelector(".cycleName");
-const cycleDescription = document.querySelector(".cycleDescription");
-const cycleStartDate = document.querySelector(".cycleStartDate");
-const cycleEndDate = document.querySelector(".cycleEndDate");
-const cycleUpdates = document.querySelector(".cycleUpdates");
+const cycleName = document.querySelector(".form__input--cycle-name");
+const cycleDescription = document.querySelector(".form__textarea--cycle-description");
+const cycleStartDate = document.querySelector(".form__input--cycle-start-date");
+const cycleEndDate = document.querySelector(".form__input--cycle-end-date");
+const cycleUpdates = document.querySelector(".form__textarea--cycle-updates");
 const estadoRadios = document.querySelectorAll(
     'input[name="estado-habilitado"]'
 );
@@ -60,15 +58,15 @@ estadoRadios.forEach((radio) => {
 
 // Función para capturar los valores de los inputs
 function readText(e) {
-	if (e.target.classList.contains("cycleName")) {
+	if (e.target.classList.contains("form__input--cycle-name")) {
 		cycleData.cycleName = e.target.value;
-	} else if (e.target.classList.contains("cycleDescription")) {
+	} else if (e.target.classList.contains("form__textarea--cycle-description")) {
 		cycleData.cycleDescription = e.target.value;
-	} else if (e.target.classList.contains("cycleStartDate")) {
+	} else if (e.target.classList.contains("form__input--cycle-start-date")) {
 		cycleData.cycleStartDate = e.target.value;
-	} else if (e.target.classList.contains("cycleEndDate")) {
+	} else if (e.target.classList.contains("form__input--cycle-end-date")) {
 		cycleData.cycleEndDate = e.target.value;
-	} else if (e.target.classList.contains("cycleUpdates")) {
+	} else if (e.target.classList.contains("form__textarea--cycle-updates")) {
 		cycleData.cycleUpdates = e.target.value;
 	}
 	console.log(cycleData); // Ver los valores almacenados en cycleData

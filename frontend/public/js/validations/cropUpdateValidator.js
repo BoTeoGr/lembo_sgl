@@ -8,15 +8,15 @@ const cultivoActualizado = {
 	estado: "habilitado",
 };
 
-// Selección del formulario y campos
-const userForm = document.querySelector(".userForm");
-const nombre = document.querySelector("#nombre");
-const tipo = document.querySelector("#tipo");
-const imagen = document.querySelector("#imagen");
-const tamano = document.querySelector("#tamano");
-const id = document.querySelector("#id");
-const ubicacion = document.querySelector("#ubicacion");
-const descripcion = document.querySelector("#descripcion");
+// Selección del formulario y campos usando clases BEM
+const form = document.querySelector(".form__container");
+const nombre = document.querySelector(".form__input--cultive-name");
+const tipo = document.querySelector(".form__input--cultive-type");
+const imagen = document.querySelector(".form__file--cultive-image");
+const tamano = document.querySelector(".form__input--cultive-size");
+const id = document.querySelector(".form__input--cultive-id");
+const ubicacion = document.querySelector(".form__input--cultive-location");
+const descripcion = document.querySelector(".form__textarea--cultive-description");
 const estadoRadios = document.querySelectorAll(
 	'input[name="estado-habilitado"]'
 );
@@ -50,7 +50,7 @@ id.addEventListener("keydown", (e) => {
 });
 
 // Validar y enviar el formulario
-userForm.addEventListener("submit", function (e) {
+form.addEventListener("submit", function (e) {
 	e.preventDefault(); // Prevenir la recarga de la página
 
 	const { nombre, tipo, imagen, id, ubicacion, descripcion, tamano, estado } =
@@ -91,7 +91,7 @@ function showAlert(message, error = null) {
 	} else {
 		alert.classList.add("correct");
 	}
-	userForm.appendChild(alert);
+	form.appendChild(alert);
 
 	// Eliminar la alerta después de 5 segundos
 	setTimeout(() => {
@@ -99,18 +99,21 @@ function showAlert(message, error = null) {
 	}, 5000);
 }
 
-// Función para capturar los valores de los inputs
+// Función para capturar los valores de los inputs usando clases BEM
 function readText(e) {
-	const field = e.target.id || e.target.name; // Obtener el id o name del input
-
-	if (field === "estado-habilitado") {
+    const className = e.target.classList;
+    if (className.contains("form__input--cultive-name")) cultivoActualizado.nombre = e.target.value;
+    if (className.contains("form__input--cultive-type")) cultivoActualizado.tipo = e.target.value;
+    if (className.contains("form__file--cultive-image")) cultivoActualizado.imagen = e.target.files[0].name;
+    if (className.contains("form__input--cultive-id")) cultivoActualizado.id = e.target.value;
+    if (className.contains("form__input--cultive-location")) cultivoActualizado.ubicacion = e.target.value;
+    if (className.contains("form__input--cultive-size")) cultivoActualizado.tamano = e.target.value;
+    if (className.contains("form__textarea--cultive-description")) cultivoActualizado.descripcion = e.target.value;
+    if (className.contains("estado-habilitado")) {
 		cultivoActualizado.estado = document.querySelector(
 			'input[name="estado-habilitado"]:checked'
 		).value;
-	} else if (field === "imagen") {
-		cultivoActualizado.imagen = e.target.files[0].name; // Capturar el nombre del archivo
-	} else if (field in cultivoActualizado) {
-		cultivoActualizado[field] = e.target.value;
 	}
-	console.log(cultivoActualizado); // Ver los valores almacenados en cultivoActualizado para asegurarte de que se actualicen correctamente
+    
+    console.log(cultivoActualizado);
 }

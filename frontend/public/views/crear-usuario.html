@@ -32,8 +32,7 @@
 								>Tipo de documento</label
 							>
 							<select
-								id="tipo-documento"
-								class="userTypeId form__select"
+								class="form__select form__select--user-type-id"
 								required
 							>
 								<option value="default">Seleccione una Opción</option>
@@ -48,8 +47,7 @@
 							<label for="nombre" class="form__label">Nombre completo</label>
 							<input
 								type="text"
-								id="nombre"
-								class="userName form__input"
+								class="form__input form__input--user-name"
 								placeholder="Ingrese el nombre completo"
 								required
 							/>
@@ -63,8 +61,7 @@
 							>
 							<input
 								type="text"
-								id="numero-documento"
-								class="userId form__input"
+								class="form__input form__input--user-id"
 								placeholder="Ingrese el número de documento"
 								required
 							/>
@@ -75,8 +72,7 @@
 							>
 							<input
 								type="text"
-								id="telefono"
-								class="userTel form__input"
+								class="form__input form__input--user-tel"
 								placeholder="Ingrese el número de Teléfono"
 								required
 							/>
@@ -87,8 +83,7 @@
 						<label for="correo" class="form__label">Correo electrónico</label>
 						<input
 							type="email"
-							id="correo"
-							class="userEmail form__input"
+							class="form__input form__input--user-email"
 							placeholder="Ingrese el correo electrónico"
 							required
 						/>
@@ -100,8 +95,7 @@
 						>
 						<input
 							type="email"
-							id="confirmar-correo"
-							class="userConfirmEmail form__input"
+							class="form__input form__input--user-confirm-email"
 							placeholder="Ingrese nuevamente el Correo electrónico"
 							required
 						/>
@@ -110,7 +104,7 @@
 					<div class="form__group">
 						<label for="rol" class="form__label">Rol</label>
 						<div class="form__rol">
-							<select id="rol" class="userRol form__select" required>
+							<select id="rol" class="form__select form__select--user-rol" required>
 								<option value="default" selected>Seleccione una Opción</option>
 								<option value="superadmin">Super administrador</option>
 								<option value="admin">Administrador</option>

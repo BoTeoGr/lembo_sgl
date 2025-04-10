@@ -1,10 +1,10 @@
-document.querySelector(".userName").addEventListener("keydown", function (e) {
+document.querySelector(".form__input--user-name").addEventListener("keydown", function (e) {
 	if (e.key >= "0" && e.key <= "9") {
 		e.preventDefault();
 		console.log("Número bloqueado");
 	}
 });
-document.querySelector(".userId").addEventListener("keydown", function (e) {
+document.querySelector(".form__input--user-id").addEventListener("keydown", function (e) {
 	if (
 		e.key === "Backspace" ||
 		e.key === "Tab" ||
@@ -30,7 +30,7 @@ document.querySelector(".button").addEventListener("keydown", function (e) {
 });
 
 //Solo permita números y bloquee la letra
-document.querySelector(".userTel").addEventListener("keydown", function (e) {
+document.querySelector(".form__input--user-tel").addEventListener("keydown", function (e) {
 	if (
 		e.key === "Backspace" ||
 		e.key === "Tab" ||
@@ -63,13 +63,13 @@ const userData = {
 const userForm = document.querySelector(".form__container");
 
 // Definir variables sin espacios incorrectos
-const userTypeId = document.querySelector(".userTypeId");
-const userName = document.querySelector(".userName");
-const userId = document.querySelector(".userId");
-const userTel = document.querySelector(".userTel");
-const userEmail = document.querySelector(".userEmail");
-const userConfirmEmail = document.querySelector(".userConfirmEmail");
-const userRol = document.querySelector(".userRol");
+const userTypeId = document.querySelector(".form__select--user-type-id");
+const userName = document.querySelector(".form__input--user-name");
+const userId = document.querySelector(".form__input--user-id");
+const userTel = document.querySelector(".form__input--user-tel");
+const userEmail = document.querySelector(".form__input--user-email");
+const userConfirmEmail = document.querySelector(".form__input--user-confirm-email");
+const userRol = document.querySelector(".form__select--user-rol");
 const estadoRadios = document.querySelectorAll(
 	'input[name="estado-habilitado"]'
 );
@@ -204,19 +204,19 @@ submitButton.addEventListener("click", async () => {
 });
 
 function readText(e) {
-	if (e.target.classList.contains("userTypeId")) {
+	if (e.target.classList.contains("form__select--user-type-id")) {
         userData.userTypeId = e.target.value;
-    } else if (e.target.classList.contains("userName")) {
+    } else if (e.target.classList.contains("form__input--user-name")) {
         userData.userName = e.target.value;
-    } else if (e.target.classList.contains("userId")) {
+    } else if (e.target.classList.contains("form__input--user-id")) {
         userData.userId = e.target.value;
-    } else if (e.target.classList.contains("userTel")) {
+    } else if (e.target.classList.contains("form__input--user-tel")) {
         userData.userTel = e.target.value;
-    } else if (e.target.classList.contains("userEmail")) {
+    } else if (e.target.classList.contains("form__input--user-email")) {
         userData.userEmail = e.target.value;
-    } else if (e.target.classList.contains("userConfirmEmail")) {
+    } else if (e.target.classList.contains("form__input--user-confirm-email")) {
         userData.userConfirmEmail = e.target.value;
-    } else if (e.target.classList.contains("userRol")) {
+    } else if (e.target.classList.contains("form__select--user-rol")) {
         userData.userRol = e.target.value;
     }
 	console.log(userData); // Ver los valores almacenados en userData para asegurarte de que se actualicen correctamente
