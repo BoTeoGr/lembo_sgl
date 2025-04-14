@@ -1,42 +1,63 @@
 export default function MenuNav() {
-	const menu = document.querySelector(".nav__dropdown-side-menu");
-	const menuBtn = document.querySelector(".nav__menu-btn");
-	const navList = document.querySelector(".nav__right-content");
+    // Selectores principales
+    const mobileMenuBtn = document.querySelector('.nav__mobile-menu');
+    const mobileMenuContainer = document.querySelector('.nav__mobile-menu-container');
+    const overlay = document.querySelector('.nav__overlay');
+    const userDropdown = document.querySelector('.nav__user');
+    const dropdownBtns = document.querySelectorAll('.nav__dropdown-btn');
 
-	// Función para alternar la visibilidad del menú desplegable
-	const toggleMenu = () => {
-		if (menu.style.display === "none" || menu.style.display === "") {
-			menu.style.display = "flex"; // Mostrar el menú desplegable
-			menuBtn.textContent = "close"; // Cambiar el ícono/texto del botón
-		} else {
-			menu.style.display = "none"; // Ocultar el menú desplegable
-			menuBtn.textContent = "menu"; // Cambiar el ícono/texto del botón
-		}
-	};
+    // Toggle menú móvil
+    const toggleMobileMenu = () => {
+        mobileMenuContainer.classList.toggle('active');
+        document.body.style.overflow = mobileMenuContainer.classList.contains('active') ? 'hidden' : '';
+        mobileMenuBtn.querySelector('span').textContent = 
+            mobileMenuContainer.classList.contains('active') ? 'close' : 'menu';
+    };
 
-	// Evento para abrir/cerrar el menú desplegable al hacer clic en el botón
-	menuBtn.addEventListener("click", toggleMenu);
+    // Cerrar menú móvil
+    const closeMenu = () => {
+        mobileMenuContainer.classList.remove('active');
+        document.body.style.overflow = '';
+        mobileMenuBtn.querySelector('span').textContent = 'menu';
+    };
 
-	// Función para manejar el cambio de tamaño de la ventana
-	const handleResize = () => {
-		if (window.innerWidth > 767) {
-			// Pantallas grandes
-			menu.style.display = "none"; // Ocultar el menú desplegable
-			menuBtn.style.display = "none"; // Ocultar el botón del menú
-			navList.style.display = "flex"; // Mostrar el menú normal
-		} else {
-			// Pantallas pequeñas
-			menuBtn.style.display = "block"; // Mostrar el botón del menú
-			navList.style.display = "none"; // Ocultar el menú normal
-		}
-	};
+    // Toggle dropdown del usuario
+    const toggleUserDropdown = (e) => {
+        e.stopPropagation();
+        const dropdown = userDropdown.querySelector('.nav__user-dropdown');
+        dropdown.classList.toggle('nav__user-dropdown--active');
+    };
 
-	// Evento para manejar el cambio de tamaño de la ventana
-	window.addEventListener("resize", handleResize);
+    // Cerrar dropdowns al hacer click fuera
+    const closeDropdowns = (e) => {
+        if (!e.target.closest('.nav__user')) {
+            userDropdown.querySelector('.nav__user-dropdown')
+                ?.classList.remove('nav__user-dropdown--active');
+        }
+    };
 
-	// Evento para manejar el tamaño de la ventana al cargar la página
-	window.addEventListener("DOMContentLoaded", handleResize);
+    // Manejador de resize
+    const handleResize = () => {
+        if (window.innerWidth > 768) {
+            closeMenu();
+        }
+    };
 
-	// Inicializar el estado del menú y el botón al cargar la página
-	handleResize();
+    // Cerrar menú al hacer click en un enlace
+    const handleLinkClick = (e) => {
+        if (e.target.closest('.nav__overlay-link')) {
+            closeMenu();
+        }
+    };
+
+    // Event Listeners
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    overlay.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', handleLinkClick);
+    userDropdown.addEventListener('click', toggleUserDropdown);
+    document.addEventListener('click', closeDropdowns);
+    window.addEventListener('resize', handleResize);
+
+    // Inicialización
+    handleResize();
 }

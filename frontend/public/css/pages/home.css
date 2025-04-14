@@ -58,7 +58,7 @@ body {
 	flex-direction: column;
 	gap: 1rem;
 	flex: 1;
-	padding-top: 1.5rem;
+	padding: 0.5rem;
 }
 
 .main__section {

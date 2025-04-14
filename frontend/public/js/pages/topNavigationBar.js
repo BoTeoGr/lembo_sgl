@@ -1,136 +1,153 @@
 export default function Navbar() {
-	// Obtener la ruta actual
-	const currentPath = window.location.pathname.split("/").pop();
-	// .split('/') divide el pathname en un array usando / como separador
-	//.pop() obtiene el último elemento del array, que normalmente es el nombre del archivo actual.
+    const currentPath = window.location.pathname.split("/").pop();
+    
+    const isSelected = (linkPath) => {
+        return currentPath === linkPath ? "nav__link--selected" : "";
+    };
 
-	// Función para verificar si un enlace debe estar seleccionado
-	const isSelected = (linkPath) => {
-		return currentPath === linkPath ? "nav__link--selected" : "";
-	};
+    return `
+        <div class="nav">
+            <div class="nav__left">
+                <img src="../imgs/logoSena.svg" alt="Logo Sena" class="nav__logo" />
+                
+                <nav class="nav__menu">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="home.html" class="nav__link ${isSelected("home.html")}">
+                                <span class="material-symbols-outlined">home</span>
+                                <span>Inicio</span>
+                            </a>
+                        </li>
+                        
+                        <li class="nav__item nav__item--dropdown">
+                            <button class="nav__dropdown-btn ${isSelected("listar-sensores.html")}">
+                                <span class="material-symbols-outlined">sensors</span>
+                                <span>Sensores</span>
+                                <span class="material-symbols-outlined nav__arrow">expand_more</span>
+                            </button>
+                            <div class="nav__dropdown-content">
+                                <a href="listar-sensores.html" class="nav__dropdown-link">Lista de Sensores</a>
+                                <a href="crear-sensor.html" class="nav__dropdown-link">Agregar Sensor</a>
+                            </div>
+                        </li>
 
-	return `
-        <img
-    src="../imgs/logoSena.svg"
-    alt="Logo Sena"
-    class="nav__logo"
-    width="60px"
-    height="60px"
-    />
-    <div class="nav__aside">
-    <span class="nav__menu-btn material-symbols-outlined"> menu </span>
-    <div class="nav__dropdown-side-menu">
-        <a href="home.html" class="nav__link ${isSelected(
-					"home.html"
-				)}">Inicio</a>
-        <a href="listar-sensores.html" class="nav__link ${isSelected(
-					"listar-sensores.html"
-				)}">Lista de Sensores</a>
-        <a href="crear-sensor.html" class="nav__link ${isSelected(
-					"crear-sensor.html"
-				)}">Agregar Sensor</a>
-        <a href="listar-usuarios.html" class="nav__link ${isSelected(
-					"listar-usuarios.html"
-				)}">Lista de Usuarios</a>
-        <a href="crear-usuario.html" class="nav__link ${isSelected(
-					"crear-usuario.html"
-				)}">Registrar Usuario</a>
-        <a href="listar-insumos.html" class="nav__link ${isSelected(
-					"listar-insumos.html"
-				)}">Lista de Insumos</a>
-        <a href="crear-insumo.html" class="nav__link ${isSelected(
-					"crear-insumo.html"
-				)}">Agregar Insumo</a>
-        <a href="listar-cultivos.html" class="nav__link ${isSelected(
-					"listar-cultivos.html"
-				)}">Lista de Cultivos</a>
-        <a href="listar-ciclo-cultivos.html" class="nav__link ${isSelected(
-					"listar-ciclo-cultivos.html"
-				)}">Lista de Ciclos</a>
-        <a href="crear-cultivo.html" class="nav__link ${isSelected(
-					"crear-cultivo.html"
-				)}">Agregar Cultivo</a>
-        <a href="crear-ciclo-cultivo.html" class="nav__link ${isSelected(
-					"crear-ciclo-cultivo.html"
-				)}">Agregar Ciclo</a>
-        <a href="index.html" class="nav__link ${isSelected(
-					"index.html"
-				)}">Cerrar Sesión</a>
-    </div>
-    </div>
-    <div class="nav__right-content">
-    <ul class="nav__list">
-        <li class="nav__item">
-            <a href="home.html" class="nav__link ${isSelected(
-							"home.html"
-						)}">Inicio</a>
-        </li>
-        <li class="nav__item nav__item--dropdown">
-            <a href="#" class="nav__link ${isSelected("listar-sensores.html")}">
-                Sensores
-                <span class="nav__icon material-symbols-outlined">keyboard_arrow_down</span>
-            </a>
-            <div class="nav__dropdown-content">
-                <a href="listar-sensores.html" class="nav__link ${isSelected(
-									"listar-sensores.html"
-								)}">Lista de Sensores</a>
-                <a href="crear-sensor.html" class="nav__link">Agregar Sensor</a>
-            </div>
-        </li>
-        <li class="nav__item nav__item--dropdown">
-            <a href="#" class="nav__link ${isSelected("listar-usuarios.html")}">
-                Usuarios
-                <span class="nav__icon material-symbols-outlined">keyboard_arrow_down</span>
-            </a>
-            <div class="nav__dropdown-content">
-                <a href="listar-usuarios.html" class="nav__link ${isSelected(
-									"listar-usuarios.html"
-								)}">Lista de Usuarios</a>
-                <a href="crear-usuario.html" class="nav__link">Registrar Usuario</a>
-            </div>
-        </li>
-        <li class="nav__item nav__item--dropdown">
-            <a href="#" class="nav__link ${isSelected("listar-insumos.html")}">
-                Insumos
-                <span class="nav__icon material-symbols-outlined">keyboard_arrow_down</span>
-            </a>
-            <div class="nav__dropdown-content">
-                <a href="listar-insumos.html" class="nav__link ${isSelected(
-									"listar-insumos.html"
-								)}">Lista de Insumos</a>
-                <a href="crear-insumo.html" class="nav__link">Agregar Insumo</a>
-            </div>
-        </li>
-        <li class="nav__item nav__item--dropdown">
-            <a href="#" class="nav__link ${isSelected(
-							"listar-cultivos.html"
-						)} ${isSelected("listar-ciclo-cultivos.html")}">
-                Cultivos
-                <span class="nav__icon material-symbols-outlined">keyboard_arrow_down</span>
-            </a>
-            <div class="nav__dropdown-content">
-                <a href="listar-cultivos.html" class="nav__link ${isSelected(
-									"listar-cultivos.html"
-								)}">Lista de Cultivos</a>
-                <a href="listar-ciclo-cultivos.html" class="nav__link ${isSelected(
-									"listar-ciclo-cultivos.html"
-								)}">Lista de Ciclos</a>
-                <a href="crear-cultivo.html" class="nav__link">Agregar Cultivo</a>
-                <a href="crear-ciclo-cultivo.html" class="nav__link">Agregar Ciclo</a>
-            </div>
-        </li>
-        <li class="nav__item">
-            <a href="index.html" class="nav__link ${isSelected(
-							"index.html"
-						)}">Cerrar Sesión</a>
-        </li>
-    </ul>
-    <img
-        src="../imgs/profile-img.jpg"
-        alt="profile-image"
-        class="nav__user-image"
-    />
-    </div>
+                        <li class="nav__item nav__item--dropdown">
+                            <button class="nav__dropdown-btn ${isSelected("listar-usuarios.html")}">
+                                <span class="material-symbols-outlined">group</span>
+                                <span>Usuarios</span>
+                                <span class="material-symbols-outlined nav__arrow">expand_more</span>
+                            </button>
+                            <div class="nav__dropdown-content">
+                                <a href="listar-usuarios.html" class="nav__dropdown-link">Lista de Usuarios</a>
+                                <a href="crear-usuario.html" class="nav__dropdown-link">Registrar Usuario</a>
+                            </div>
+                        </li>
 
+                        <li class="nav__item nav__item--dropdown">
+                            <button class="nav__dropdown-btn ${isSelected("listar-insumos.html")}">
+                                <span class="material-symbols-outlined">inventory</span>
+                                <span>Insumos</span>
+                                <span class="material-symbols-outlined nav__arrow">expand_more</span>
+                            </button>
+                            <div class="nav__dropdown-content">
+                                <a href="listar-insumos.html" class="nav__dropdown-link">Lista de Insumos</a>
+                                <a href="crear-insumo.html" class="nav__dropdown-link">Agregar Insumo</a>
+                            </div>
+                        </li>
+
+                        <li class="nav__item nav__item--dropdown">
+                            <button class="nav__dropdown-btn ${isSelected("listar-cultivos.html")}">
+                                <span class="material-symbols-outlined">agriculture</span>
+                                <span>Cultivos</span>
+                                <span class="material-symbols-outlined nav__arrow">expand_more</span>
+                            </button>
+                            <div class="nav__dropdown-content">
+                                <a href="listar-cultivos.html" class="nav__dropdown-link">Lista de Cultivos</a>
+                                <a href="listar-ciclo-cultivos.html" class="nav__dropdown-link">Lista de Ciclos</a>
+                                <a href="crear-cultivo.html" class="nav__dropdown-link">Agregar Cultivo</a>
+                                <a href="crear-ciclo-cultivo.html" class="nav__dropdown-link">Agregar Ciclo</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="nav__right">
+                <div class="nav__user">
+                    <img src="../imgs/profile-img.jpg" alt="Usuario" class="nav__user-image" />
+                    <div class="nav__user-dropdown">
+                        <a href="perfil.html" class="nav__dropdown-link">
+                            <span class="material-symbols-outlined">person</span>
+                            <span>Perfil</span>
+                        </a>
+                        <a href="index.html" class="nav__dropdown-link">
+                            <span class="material-symbols-outlined">logout</span>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <button class="nav__mobile-menu">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="nav__mobile-menu-container">
+            <div class="nav__overlay"></div>
+            <nav class="nav__mobile-nav">
+                <div class="nav__mobile-header">
+                    <img src="../imgs/logoSena.svg" alt="Logo Sena" class="nav__logo" />
+                  </div>
+                <a href="home.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">home</span>
+                    <span>Inicio</span>
+                </a>
+                <a href="listar-sensores.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">sensors</span>
+                    <span>Lista de Sensores</span>
+                </a>
+                <a href="crear-sensor.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    <span>Agregar Sensor</span>
+                </a>
+                <a href="listar-usuarios.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">group</span>
+                    <span>Lista de Usuarios</span>
+                </a>
+                <a href="crear-usuario.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">person_add</span>
+                    <span>Registrar Usuario</span>
+                </a>
+                <a href="listar-insumos.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">inventory</span>
+                    <span>Lista de Insumos</span>
+                </a>
+                <a href="crear-insumo.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">add_box</span>
+                    <span>Agregar Insumo</span>
+                </a>
+                <a href="listar-cultivos.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">agriculture</span>
+                    <span>Lista de Cultivos</span>
+                </a>
+                <a href="listar-ciclo-cultivos.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">cycle</span>
+                    <span>Lista de Ciclos</span>
+                </a>
+                <a href="crear-cultivo.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">add</span>
+                    <span>Agregar Cultivo</span>
+                </a>
+                <a href="crear-ciclo-cultivo.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    <span>Agregar Ciclo</span>
+                </a>
+                <a href="index.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </nav>
+        </div>
     `;
 }

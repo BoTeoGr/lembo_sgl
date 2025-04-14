@@ -8,7 +8,7 @@ if (footer) {
 	footer.innerHTML = Footer();
 }
 
-const nav = document.querySelector(".nav");
+const nav = document.querySelector(".nav-render");
 if (nav) {
 	nav.innerHTML = Navbar();
 	MenuNav();
