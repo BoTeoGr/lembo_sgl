@@ -1,17 +1,56 @@
 // Función para obtener todos los sensores
 import db from './../db/config.db.js';
 
+// Función para obtener sensores con paginación
 export function VerSensores(req, res) {
     try {
-        const query = 'SELECT * FROM sensores';
+        // Obtener los parámetros de paginación desde la solicitud
+        const { page = 1, limit = 6 } = req.query; // Cambiar el límite predeterminado a 8
 
-        db.query(query, (err, results) => {
+        // Convertir los parámetros a números
+        const pageNumber = parseInt(page, 10);
+        const limitNumber = parseInt(limit, 10);
+
+        // Validar los parámetros
+        if (isNaN(pageNumber) || pageNumber < 1) {
+            return res.status(400).json({ error: 'El parámetro "page" debe ser un número mayor o igual a 1' });
+        }
+        if (isNaN(limitNumber) || limitNumber < 1) {
+            return res.status(400).json({ error: 'El parámetro "limit" debe ser un número mayor o igual a 1' });
+        }
+
+        // Calcular el índice inicial para la consulta
+        const offset = (pageNumber - 1) * limitNumber;
+
+        // Consulta para obtener los sensores con paginación
+        const query = 'SELECT * FROM sensores LIMIT ? OFFSET ?';
+        const countQuery = 'SELECT COUNT(*) AS total FROM sensores';
+
+        // Obtener el total de sensores
+        db.query(countQuery, (err, countResults) => {
             if (err) {
-                console.error('Error al obtener sensores:', err.message); // Imprime el mensaje del error
-                return res.status(500).json({ error: 'Error al obtener sensores' });
+                console.error('Error al contar sensores:', err);
+                return res.status(500).json({ error: 'Error al contar sensores' });
             }
-            console.log('Resultados obtenidos:', results); // Verifica los resultados obtenidos
-            res.status(200).json(results);
+
+            const totalSensores = countResults[0].total;
+            const totalPages = Math.ceil(totalSensores / limitNumber);
+
+            // Obtener los sensores con paginación
+            db.query(query, [limitNumber, offset], (err, results) => {
+                if (err) {
+                    console.error('Error al obtener sensores:', err);
+                    return res.status(500).json({ error: 'Error al obtener sensores' });
+                }
+
+                // Responder con los datos paginados
+                res.status(200).json({
+                    sensores: results,
+                    totalSensores,
+                    totalPages,
+                    currentPage: pageNumber,
+                });
+            });
         });
     } catch (error) {
         console.error('Error en VerSensores:', error);

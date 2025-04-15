@@ -1,368 +1,92 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700"
-			rel="stylesheet"
-		/>
-		<title>Lista de Cultivos</title>
-		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
-		<link rel="stylesheet" href="../css/pages/listar.css" />
-		<link rel="stylesheet" href="../css/components/navbar.css" />
-		
-		<script type="module" src="../js/pages/componentLoader.js"></script>
-	</head>
 
-	<body>
-		<nav class="nav-render"></nav>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700" rel="stylesheet" />
+	<title>Lista de Cultivos</title>
+	<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+	<link rel="stylesheet" href="../css/pages/listar.css" />
+	<link rel="stylesheet" href="../css/components/navbar.css" />
 
-		<!-- Bloque: main -->
-		<main class="main">
-			<div class="element-display">
-				<!-- Header -->
-				<div class="element-display__header">
-					<h3 class="element-display__title">Visualización Cultivo</h3>
-					<span class="element-display__close-icon material-symbols-outlined">
-						close
-					</span>
+	<script type="module" src="../js/pages/componentLoader.js"></script>
+</head>
+
+<body>
+	<nav class="nav-render"></nav>
+
+	<!-- Bloque: main -->
+	<main class="main">
+		<!-- Bloque: table -->
+		<div class="table">
+			<div class="table__title">
+				<div class="table__title-column">
+					<h2 class="table__title">Lista de Cultivos</h2>
+					<p class="table__description">
+						Resumen de los cultivos de la granja
+					</p>
 				</div>
-
-				<!-- Grid Container -->
-				<div class="element-display__grid-container">
-					<!-- Image Section -->
-					<div class="element-display__image">
-						<img
-							src="https://www.rocalba.es/blog/wp-content/uploads/cultivos-cosecha-rapida-950x500.jpg"
-							alt="Cultivo de Tomate"
-						/>
-					</div>
-
-					<!-- Data Section -->
-					<div class="element-display__data">
-						<label for="nombre" class="element-display__label">Nombre</label>
-						<input
-							type="text"
-							name="nombre"
-							id="nombre"
-							value="Cultivo de Tomate"
-							disabled
-							class="element-display__input"
-						/>
-						<label for="id" class="element-display__label">ID</label>
-						<input
-							type="number"
-							name="id"
-							id="id"
-							value="1032321"
-							disabled
-							class="element-display__input"
-						/>
-						<label for="tipo" class="element-display__label">Tipo</label>
-						<input
-							type="text"
-							name="tipo"
-							id="tipo"
-							value="Tomate"
-							disabled
-							class="element-display__input"
-						/>
-					</div>
-					<div class="element-display__field-container">
-						<label for="tamanio" class="element-display__label">Tamaño</label>
-						<input
-							type="number"
-							name="tamanio"
-							id="tamanio"
-							value="10"
-							disabled
-							class="element-display__input"
-						/>
-					</div>
-					<div class="element-display__field-container">
-						<label for="ubicacion" class="element-display__label"
-							>Ubicación</label
-						>
-						<input
-							type="text"
-							name="ubicacion"
-							id="ubicacion"
-							value="Parcela 1"
-							disabled
-							class="element-display__input"
-						/>
-					</div>
-					<!-- Description Section -->
-
-					<label
-						for="descripcion"
-						class="element-display__label textarea__label"
-						>Descripción del cultivo</label
-					>
-					<textarea
-						name="descripcion"
-						id="descripcion"
-						cols="30"
-						rows="10"
-						disabled
-						class="element-display__textarea"
-					>
-Descripción del cultivo</textarea
-					>
-
-					<!-- Status Section -->
-					<div class="element-display__field-container colspan-2">
-						<label for="status" class="element-display__label">Estado</label>
-						<div class="element-display__status-container">
-							<div class="element-display__radio-container">
-								<label for="habilitado" class="element-display__radio-label"
-									>Habilitado</label
-								>
-								<input
-									type="radio"
-									name="status"
-									id="habilitado"
-									checked
-									class="element-display__radio-input active"
-								/>
-							</div>
-							<div class="element-display__radio-container">
-								<label for="deshabilitado" class="element-display__radio-label"
-									>Deshabilitado</label
-								>
-								<input
-									type="radio"
-									name="status"
-									id="deshabilitado"
-									disabled
-									class="element-display__radio-input"
-								/>
-							</div>
-						</div>
-					</div>
-					<div class="element-display__button-container">
-						<button class="element-display__button">
-							<a href="integraciones-cultivo.html">Ver Integraciones</a>
-						</button>
-						<button class="element-display__button">
-							<a href="actualizar-cultivo.html">Actualizar</a>
-						</button>
-					</div>
+				<div class="table__title-side">
+					<span class="table__icon material-symbols-outlined"> search </span>
+					<input type="search" class="table__search" placeholder="Buscar..." id="searchInput" />
 				</div>
 			</div>
-			<!-- Bloque: table -->
-			<div class="table">
-				<div class="table__title">
-					<div class="table__title-column">
-						<h2 class="table__title">Lista de Cultivos</h2>
-						<p class="table__description">
-							Resumen de los cultivos de la granja
-						</p>
-					</div>
-					<div class="table__title-side">
-						<span class="table__icon material-symbols-outlined"> search </span>
-						<input
-							type="search"
-							class="table__search"
-							placeholder="Buscar..."
-							id="searchInput"
-						/>
-					</div>
-				</div>
-				<table class="table__content" id="dataTable">
-					<thead class="table__header">
-						<tr class="table__row">
-							<th class="table__header-cell">Nombre</th>
-							<th class="table__header-cell">Tipo</th>
-							<th class="table__header-cell">Identificador</th>
-							<th class="table__header-cell">Ubicación</th>
-							<th class="table__header-cell">Tamaño</th>
-						</tr>
-					</thead>
-					<tbody class="table__body">
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Maíz</td>
-							<td class="table__cell" data-Label="Tipo">Cereal</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-MAIZ-001
-							</td>
-							<td class="table__cell" data-Label="Ubicación">Lote A</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good"
-									>2 hectáreas</span
-								>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Frijol</td>
-							<td class="table__cell" data-Label="Tipo">Leguminosa</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-FRIJ-002
-							</td>
-							<td class="table__cell" data-Label="Ubicación">Lote B</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good"
-									>1.5 hectáreas</span
-								>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Tomate</td>
-							<td class="table__cell" data-Label="Tipo">Hortaliza</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-TOM-003
-							</td>
-							<td class="table__cell" data-Label="Ubicación">Invernadero 1</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good"
-									>0.5 hectáreas</span
-								>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Papa</td>
-							<td class="table__cell" data-Label="Tipo">Tubérculo</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-PAPA-004
-							</td>
-							<td class="table__cell" data-Label="Ubicación">Lote C</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--warning"
-									>3 hectáreas</span
-								>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Caña de Azúcar</td>
-							<td class="table__cell" data-Label="Tipo">Gramínea</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-CAÑA-005
-							</td>
-							<td class="table__cell" data-Label="Ubicación">Lote D</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--warning"
-									>5 hectáreas</span
-								>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Zanahoria</td>
-							<td class="table__cell" data-Label="Tipo">Hortaliza</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-ZAN-006
-							</td>
-							<td class="table__cell" data-Label="Ubicación">Invernadero 2</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good"
-									>0.3 hectáreas</span
-								>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Café</td>
-							<td class="table__cell" data-Label="Tipo">Cultivo Permanente</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-CAFE-007
-							</td>
-							<td class="table__cell" data-Label="Ubicación">
-								Finca Experimental
-							</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--expired"
-									>10 hectáreas</span
-								>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Arroz</td>
-							<td class="table__cell" data-Label="Tipo">Cereal</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-ARROZ-008
-							</td>
-							<td class="table__cell" data-Label="Ubicación">Lote E</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good"
-									>4 hectáreas</span
-								>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Lechuga</td>
-							<td class="table__cell" data-Label="Tipo">Hortaliza</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-LECH-009
-							</td>
-							<td class="table__cell" data-Label="Ubicación">Invernadero 3</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good"
-									>0.2 hectáreas</span
-								>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Trigo</td>
-							<td class="table__cell" data-Label="Tipo">Cereal</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-TRIGO-010
-							</td>
-							<td class="table__cell" data-Label="Ubicación">Lote F</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--warning"
-									>6 hectáreas</span
-								>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Cebolla</td>
-							<td class="table__cell" data-Label="Tipo">Hortaliza</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-CEB-011
-							</td>
-							<td class="table__cell" data-Label="Ubicación">Invernadero 4</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--good"
-									>0.8 hectáreas</span
-								>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Plátano</td>
-							<td class="table__cell" data-Label="Tipo">Cultivo Permanente</td>
-							<td class="table__cell" data-Label="Identificador">
-								CULT-PLAT-012
-							</td>
-							<td class="table__cell" data-Label="Ubicación">Lote G</td>
-							<td class="table__cell" data-Label="Tamaño">
-								<span class="table__status table__status--expired"
-									>8 hectáreas</span
-								>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+			<table class="table__content" id="dataTable">
+				<thead class="table__header">
+					<tr class="table__row">
+						<th class="table__header-cell">Identificador</th>
+						<th class="table__header-cell">Nombre</th>
+						<th class="table__header-cell">Tipo</th>
+						<th class="table__header-cell">Ubicación</th>
+						<th class="table__header-cell">Tamaño</th>
+						<th class="table__header-cell">Estado</th>
+					</tr>
+				</thead>
+				<tbody class="table__body">
 
-				<p class="table__count">
-					Cantidad neta de cultivos:
-					<span id="elements-count-cout" class="table__count-number">12</span>
-				</p>
+				</tbody>
+			</table>
+
+			<!-- Controles de paginación -->
+			<div class="pagination">
+				<button class="pagination__button pagination__button--prev" id="prevPage">Anterior</button>
+				<span class="pagination__info" id="paginationInfo"></span>
+				<button class="pagination__button pagination__button--next" id="nextPage">Siguiente</button>
 			</div>
+
+			<p class="table__count">
+				Cantidad neta de sensores:
+				<span id="elements-count-cout" class="table__count-number">0</span>
+			</p>
 
 			<!-- Bloque: buttons -->
-			<div class="buttons">
-				<button class="buttons__button buttons__button--primary">
-					Descargar Reporte
+			<div class="actions">
+				<button class="actions__button actions__button--primary">Descargar Reporte</button>
+				<button class="actions__button actions__button--secondary">
+					<a href="crear-usuario.html" class="actions__link">
+						<span class="actions__icon material-symbols-outlined">add</span>Agregar
+					</a>
 				</button>
-				<button class="buttons__button buttons__button--secondary">
-					<a href="crear-cultivo.html" class="buttons__link-plus">
-						<span class="buttons__icon material-symbols-outlined">add</span
-						>Agregar</a
-					>
-				</button>
+			</div>
+
+
+			<!-- Modal para mostrar información del usuario -->
+			<div class="modal modal--hidden">
+				<div class="modal__content">
+					<span class="modal__close">&times;</span>
+					<h2 class="modal__title">Información del insumo</h2>
+					<div class="modal__body">
+						<!-- El contenido dinámico se renderizará aquí -->
+					</div>
+					<a href="actualizar-insumo.html" class="modal__link">Actualizar</a>
+				</div>
 			</div>
 		</main>
 	</body>
 
 	<script src="../js/pages/tableSearchFilter.js"></script>
+	<script src="../js/pages/tablePaginationCultivo.js"></script>
 	<script src="../js/pages/itemDetailsPopup.js"></script>
+
 </html>

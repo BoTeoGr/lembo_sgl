@@ -1,337 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700"
-			rel="stylesheet"
-		/>
-		<title>Lista de Usuarios</title>
-		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
-		<link rel="stylesheet" href="../css/pages/listar.css" />
-		<link rel="stylesheet" href="../css/components/navbar.css" />
-		<script type="module" src="../js/pages/componentLoader.js"></script>
-	</head>
 
-	<body>
-		<nav class="nav-render"></nav>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700" rel="stylesheet" />
+    <title>Lista de Usuarios</title>
+    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/pages/listar.css" />
+    <link rel="stylesheet" href="../css/components/navbar.css" />
+    <script type="module" src="../js/pages/componentLoader.js"></script>
+</head>
 
-		<!-- Bloque: main -->
-		<main class="main">
-			<div class="element-display">
-				<!-- Header -->
-				<div class="element-display__header">
-					<h3 class="element-display__title">Visualización Usuario</h3>
-					<span class="element-display__close-icon material-symbols-outlined">
-						close
-					</span>
-				</div>
+<body>
+    <nav class="nav-render"></nav>
 
-				<!-- Grid Container -->
-				<div class="element-display__grid-container">
-					<!-- Image Section -->
-					<div class="element-display__image">
-						<img
-							src="https://dimensionst.com/wp-content/uploads/2023/05/DIOMEDES.jpg"
-							alt="imagen-display"
-						/>
-					</div>
+    <main class="main">
 
-					<!-- Data Section -->
-					<div class="element-display__data">
-						<label for="nombre" class="element-display__label">Nombre</label>
-						<input
-							type="text"
-							name="nombre"
-							id="nombre"
-							value="Marco Antonio"
-							disabled
-							class="element-display__input"
-						/>
-						<label for="id" class="element-display__label">ID</label>
-						<input
-							type="number"
-							name="id"
-							id="id"
-							value="564654"
-							disabled
-							class="element-display__input"
-						/>
-						<label for="tipo-documento" class="element-display__label"
-							>Tipo de documento</label
-						>
-						<input
-							type="text"
-							name="tipo-documento"
-							id="tipo-documento"
-							value="C.C"
-							disabled
-							class="element-display__input"
-						/>
-					</div>
-					<div class="element-display__field-container">
-						<label for="tipo-usuario" class="element-display__label"
-							>Tipo de Usuario</label
-						>
-						<input
-							type="text"
-							name="tipo-usuario"
-							id="tipo-usuario"
-							value="Administrador"
-							disabled
-							class="element-display__input"
-						/>
-					</div>
-					<div class="element-display__field-container">
-						<label for="numero-telefono" class="element-display__label"
-							>Teléfono</label
-						>
-						<input
-							type="tel"
-							name="numero-telefono"
-							id="numero-telefono"
-							value="+57 321 654 987"
-							disabled
-							class="element-display__input"
-						/>
-					</div>
-					<!-- Description Section -->
+        <div class="table">
+            <div class="table__title">
+                <div class="table__title-column">
+                    <h2 class="table__title">Lista de Usuarios</h2>
+                    <p class="table__description">Resumen de los usuarios de la granja</p>
+                </div>
+                <div class="table__title-side">
+                    <span class="table__icon material-symbols-outlined"> search </span>
+                    <input type="search" class="table__search" placeholder="Buscar..." />
+                </div>
+            </div>
+            <table class="table__content">
+                <thead class="table__header">
+                    <tr class="table__row">
+                        <th class="table__header-cell">ID</th>
+                        <th class="table__header-cell">Nombre</th>
+                        <th class="table__header-cell">Numero de documento</th>
+                        <th class="table__header-cell">Tipo de Usuario</th>
+                        <th class="table__header-cell">Estado</th>
+                    </tr>
+                </thead>
+                <tbody class="table__body">
+                    <!-- Las filas se generarán dinámicamente con JavaScript -->
+                </tbody>
+            </table>
 
-					<div class="element-display__field-container colspan-2">
-						<label for="correo" class="element-display__label"
-							>Correo electrónico</label
-						>
-						<input
-							type="email"
-							name="correo"
-							id="correo"
-							value="antnio@gmail.com"
-							disabled
-							class="element-display__input"
-						/>
-					</div>
+            <!-- Controles de paginación -->
+            <div class="pagination">
+                <button class="pagination__button pagination__button--prev">Anterior</button>
+                <span class="pagination__info"></span>
+                <button class="pagination__button pagination__button--next">Siguiente</button>
+            </div>
 
-					<!-- Status Section -->
-					<div class="element-display__field-container colspan-2">
-						<label for="status" class="element-display__label">Estado</label>
-						<div class="element-display__status-container">
-							<div class="element-display__radio-container">
-								<label for="habilitado" class="element-display__radio-label"
-									>Habilitado</label
-								>
-								<input
-									type="radio"
-									name="status"
-									id="habilitado"
-									checked
-									class="element-display__radio-input active"
-								/>
-							</div>
-							<div class="element-display__radio-container">
-								<label for="deshabilitado" class="element-display__radio-label"
-									>Deshabilitado</label
-								>
-								<input
-									type="radio"
-									name="status"
-									id="deshabilitado"
-									disabled
-									class="element-display__radio-input"
-								/>
-							</div>
-						</div>
-					</div>
+            <p class="table__count">
+                Cantidad neta de usuarios:
+                <span class="table__count-number">0</span>
+            </p>
+        </div>
 
-					<!-- Update Button -->
-					<button class="element-display__button">
-						<a href="actualizar-usuario.html">Actualizar</a>
-					</button>
-				</div>
-			</div>
-			<!-- Bloque: table -->
-			<div class="table">
-				<div class="table__title">
-					<div class="table__title-column">
-						<h2 class="table__title">Lista de Usuarios</h2>
-						<p class="table__description">
-							Resumen de los usuarios de la granja
-						</p>
-					</div>
-					<div class="table__title-side">
-						<span class="table__icon material-symbols-outlined"> search </span>
-						<input
-							type="search"
-							class="table__search"
-							placeholder="Buscar..."
-							id="searchInput"
-						/>
-					</div>
-				</div>
-				<table class="table__content" id="dataTable">
-					<thead class="table__header">
-						<tr class="table__row">
-							<th class="table__header-cell">Nombre</th>
-							<th class="table__header-cell">ID</th>
-							<th class="table__header-cell">Tipo de Usuario</th>
-							<th class="table__header-cell">Teléfono</th>
-							<th class="table__header-cell">Estado</th>
-						</tr>
-					</thead>
-					<tbody class="table__body">
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Juan Pérez</td>
-							<td class="table__cell" data-Label="ID">1</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">
-								Administrador
-							</td>
-							<td class="table__cell" data-Label="Teléfono">+57 321 456 789</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--enabled"></span>
-								<span class="status-text">Activo</span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">María Gómez</td>
-							<td class="table__cell" data-Label="ID">2</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">Operador</td>
-							<td class="table__cell" data-Label="Teléfono">+57 315 789 123</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--enabled"></span>
-								<span class="status-text">Activo</span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Carlos Ramírez</td>
-							<td class="table__cell" data-Label="ID">3</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">
-								Supervisor
-							</td>
-							<td class="table__cell" data-Label="Teléfono">+57 300 123 456</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--disabled"></span>
-								<span class="status-text">Inactivo</span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Ana Torres</td>
-							<td class="table__cell" data-Label="ID">4</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">Cliente</td>
-							<td class="table__cell" data-Label="Teléfono">+57 301 234 567</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--disabled"></span>
-								<span class="status-text">Inactivo</span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Luis Fernández</td>
-							<td class="table__cell" data-Label="ID">5</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">
-								Proveedor
-							</td>
-							<td class="table__cell" data-Label="Teléfono">+57 302 345 678</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--enabled"></span>
-								<span class="status-text">Activo</span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Sofía Herrera</td>
-							<td class="table__cell" data-Label="ID">6</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">Cliente</td>
-							<td class="table__cell" data-Label="Teléfono">+57 303 456 789</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--disabled"></span>
-								<span class="status-text">Inactivo</span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Diego Martínez</td>
-							<td class="table__cell" data-Label="ID">7</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">Técnico</td>
-							<td class="table__cell" data-Label="Teléfono">+57 304 567 890</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--enabled"></span>
-								<span class="status-text">Activo</span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Laura Jiménez</td>
-							<td class="table__cell" data-Label="ID">8</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">Analista</td>
-							<td class="table__cell" data-Label="Teléfono">+57 305 678 901</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--enabled"></span>
-								<span class="status-text">Activo</span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Pedro Sánchez</td>
-							<td class="table__cell" data-Label="ID">9</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">Cliente</td>
-							<td class="table__cell" data-Label="Teléfono">+57 306 789 012</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--disabled"></span>
-								<span class="status-text">Inactivo</span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Elena Ruiz</td>
-							<td class="table__cell" data-Label="ID">10</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">
-								Supervisor
-							</td>
-							<td class="table__cell" data-Label="Teléfono">+57 307 890 123</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--enabled"></span>
-								<span class="status-text">Activo</span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Jorge Mendoza</td>
-							<td class="table__cell" data-Label="ID">11</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">Operador</td>
-							<td class="table__cell" data-Label="Teléfono">+57 308 901 234</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--disabled"></span>
-								<span class="status-text">Inactivo</span>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell" data-Label="Nombre">Carmen Vargas</td>
-							<td class="table__cell" data-Label="ID">12</td>
-							<td class="table__cell" data-Label="Tipo de Usuario">Cliente</td>
-							<td class="table__cell" data-Label="Teléfono">+57 309 012 345</td>
-							<td class="table__cell table__cell--status" data-Label="Estado">
-								<span class="table__status table__status--enabled"></span>
-								<span class="status-text">Activo</span>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+        <div class="actions">
+            <button class="actions__button actions__button--primary">Descargar Reporte</button>
+            <button class="actions__button actions__button--secondary">
+                <a href="crear-usuario.html" class="actions__link">
+                    <span class="actions__icon material-symbols-outlined">add</span>Agregar
+                </a>
+            </button>
+        </div>
 
-				<p class="table__count">
-					Cantidad neta de usuarios:
-					<span id="elements-count-cout" class="table__count-number">12</span>
-				</p>
-			</div>
+        <!-- Modal para mostrar información del usuario -->
+        <div class="modal modal--hidden">
+            <div class="modal__content">
+                <span class="modal__close">&times;</span>
+                <h2 class="modal__title">Información del usuario</h2>
+                <div class="modal__body">
+                    <!-- El contenido dinámico se renderizará aquí -->
+                </div>
+                <a href="actualizar-usuario.html" class="modal__link">Actualizar</a>
+            </div>
+        </div>
+    </main>
+</body>
 
-			<!-- Bloque: buttons -->
-			<div class="buttons">
-				<button class="buttons__button buttons__button--primary">
-					Descargar Reporte
-				</button>
+<script src="../js/pages/tablePagination.js"></script>
+<script src="../js/pages/tableSearchFilter.js"></script>
+<script src="../js/pages/detailsPopup.js"></script>
 
-				<button class="buttons__button buttons__button--secondary">
-					<a href="crear-usuario.html" class="buttons__link-plus">
-						<span class="buttons__icon material-symbols-outlined">add</span
-						>Agregar</a
-					>
-				</button>
-			</div>
-		</main>
-	</body>
-
-	<script src="../js/pages/tableSearchFilter.js"></script>
-	<script src="../js/pages/itemDetailsPopup.js"></script>
 </html>
