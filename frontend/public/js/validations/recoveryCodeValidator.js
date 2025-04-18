@@ -1,92 +1,75 @@
-// Objeto para almacenar el código ingresado
-const codigoRecuperar = {
-	codigo: "",
-};
+document.addEventListener("DOMContentLoaded", () => {
+	const codeInputs = document.querySelectorAll(".login-code__input");
+	const form = document.querySelector("#form-recovery-code");
+	const alertContainer = document.querySelector("#alert-container");
 
-// Seleccionar todos los inputs de código
-const inputs = document.querySelectorAll(".inputCode");
-const form = document.querySelector(".form");
+	// Mover al siguiente input
+	codeInputs.forEach((input, index) => {
+		input.addEventListener("input", (e) => {
+			const value = e.target.value;
 
-// Función para mover entre inputs automáticamente
-function moveToNext(input, index) {
-	if (input.value.length === 1 && index < inputs.length - 1) {
-		inputs[index + 1].focus(); // Ir al siguiente input
-	} else if (input.value.length === 0 && index > 0) {
-		inputs[index - 1].focus(); // Volver al anterior si se borra
-	}
-}
+			// Asegurar que solo se escriba un número
+			if (!/^\d$/.test(value)) {
+				input.value = "";
+				return;
+			}
 
-// Bloquear letras y manejar desplazamiento entre inputs
-inputs.forEach((input, index) => {
-	input.addEventListener("input", function () {
-		moveToNext(input, index);
-		readText(); // Actualizar el código ingresado
+			if (value && index < codeInputs.length - 1) {
+				codeInputs[index + 1].focus();
+			}
+
+			// Eliminamos esta línea para que no muestre el mensaje mientras se completa el código
+			// showAlert("Completando el código...");
+		});
+
+		input.addEventListener("keydown", (e) => {
+			if (e.key === "Backspace" && !input.value && index > 0) {
+				codeInputs[index - 1].focus();
+			}
+		});
 	});
 
-	input.addEventListener("keydown", function (e) {
-		// Permitir teclas de navegación y eliminación
-		if (
-			e.key === "Backspace" ||
-			e.key === "Tab" ||
-			e.key === "Enter" ||
-			e.key === "ArrowLeft" ||
-			e.key === "ArrowRight"
-		) {
-			return;
-		}
-
-		// Bloquear cualquier tecla que NO sea un número
-		if (e.key < "0" || e.key > "9") {
-			e.preventDefault();
-			console.log("Solo se permiten números");
-		}
-	});
-});
-
-// Capturar el código ingresado de todos los inputs
-function readText() {
-	let codigoIngresado = "";
-	inputs.forEach((input) => {
-		codigoIngresado += input.value; // Concatenar valores de los 6 inputs
-	});
-	codigoRecuperar.codigo = codigoIngresado;
-	console.log(codigoRecuperar);
-}
-
-// Función para mostrar alertas
-function showAlert(message, error = false) {
-	const alert = document.createElement("p");
-	alert.textContent = message;
-	alert.classList.add("alert"); // Clase base para la alerta
-
-	if (error) {
-		alert.classList.add("error"); // Agregar clase de error si es necesario
-	} else {
-		alert.classList.add("correct"); // Clase de éxito
-	}
-
-	form.appendChild(alert);
-
-	setTimeout(() => {
-		alert.remove();
-	}, 5000);
-}
-
-// Evento submit del formulario
-if (form) {
-	form.addEventListener("submit", function (e) {
+	// Validar código al enviar
+	form.addEventListener("submit", (e) => {
 		e.preventDefault();
 
-		if (codigoRecuperar.codigo.length < 6) {
-			showAlert("Debes ingresar los 6 dígitos", true);
+		const code = Array.from(codeInputs).map((input) => input.value).join("");
+
+		// Si no se completaron los 6 dígitos
+		if (code.length < 6) {
+			showAlert("Por favor, completa los 6 dígitos del código.", true);
 			return;
 		}
 
-		showAlert("Tu correo ha sido enviado satisfactoriamente");
+		// Si el código tiene 6 dígitos
+		showAlert("Datos enviados satisfactoriamente!", false);
+
+		// Redirigir a la página de actualización de contraseña
 		setTimeout(() => {
 			window.location.href = "actualizacion-contraseña.html";
-		}, 500);
+		}, 2000); // Damos un poco más de tiempo para que el usuario vea el mensaje
 	});
-} else {
-	console.error("No se encontró el formulario en el HTML.");
-}
+
+	// Función para mostrar alertas
+	function showAlert(message, error = false) {
+		const alert = document.createElement("p");
+		alert.textContent = message;
+		alert.classList.add("login-code__alert");
+
+		if (error) {
+			alert.classList.add("login-code__alert--error");
+		} else {
+			alert.classList.add("login-code__alert--success");
+		}
+
+		alertContainer.innerHTML = ""; // Limpiar alertas anteriores
+		alertContainer.appendChild(alert);
+
+		// Eliminar la alerta después de 5 segundos (solo para alertas de error)
+		if (error) {
+			setTimeout(() => {
+				alert.remove();
+			}, 5000);
+		}
+	}
+});

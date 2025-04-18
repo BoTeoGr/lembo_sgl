@@ -3,12 +3,11 @@ const contraseñaRecuperar = {
 	contraseñaConfirm: "",
 };
 
-// Seleccionando elementos
-const form = document.querySelector(".form");
+const form = document.querySelector(".form--password");
 const password = document.querySelector("#password");
 const password2 = document.querySelector("#password2");
 
-// Añadir eventos de input
+// Leer texto en inputs
 form.addEventListener("input", readText);
 password.addEventListener("input", readText);
 password2.addEventListener("input", readText);
@@ -29,21 +28,21 @@ form.addEventListener("submit", function (e) {
 	}
 
 	showAlert("Contraseña actualizada satisfactoriamente");
+
 	setTimeout(() => {
 		window.location.href = "index.html";
 	}, 1000);
 });
 
-// Función para mostrar alertas
 function showAlert(message, error = null) {
-	const alert = document.createElement("P");
+	const alert = document.createElement("p");
 	alert.textContent = message;
-	alert.classList.add("alert"); // Añadir clase 'alert'
+	alert.classList.add("form__alert");
 
 	if (error) {
-		alert.classList.add("error");
+		alert.classList.add("form__alert--error");
 	} else {
-		alert.classList.add("correct");
+		alert.classList.add("form__alert--success");
 	}
 	form.appendChild(alert);
 
@@ -52,7 +51,6 @@ function showAlert(message, error = null) {
 	}, 5000);
 }
 
-// Función para leer el texto del input
 function readText(e) {
 	if (e.target.id === "password") {
 		contraseñaRecuperar.contraseña = e.target.value;

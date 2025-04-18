@@ -1,50 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700"
-			rel="stylesheet"
-		/>
-		<title>Olvide mi contraseña</title>
-		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
-		<link rel="stylesheet" href="../css/pages/log.css" />
-	</head>
+<html lang="es">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700" rel="stylesheet" />
+	<title>Olvidé mi contraseña</title>
+	<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+	<link rel="stylesheet" href="../css/pages/log.css" />
+</head>
 
-	<body>
-		<div class="container">	
-			<main class="mainForgetPassword">
-				<section class="login">
-					<header class="header">
-						<h2 class="header__h2">
-							A tu correo se enviará un código para que recuperes tu contraseña
-						</h2>
-					</header>
-					<form class="form">
-						<div class="fields">
-							<input
-								type="email"
-								placeholder="Correo electrónico"
-								class="fields__input"
-								id="emailRecuperar"
-							/>
-						</div>
-						<div class="actions">
-							<button class="actions__button" type="submit">
-								Enviar código
-							</button>
-						</div>
-					</form>
-				</section>
-			</main>
+<body>
+	<div class="layout">
+		<main class="layout__main main main--forget">
+			<section class="main__login login login--forget">
+				<header class="login__header">
+					<h2 class="login__title">
+						A tu correo se enviará un código para que recuperes tu contraseña
+					</h2>
+				</header>
+				<form class="login__form form form--forget">
+					<div class="form__group">
+						<input
+							type="email"
+							placeholder="Correo electrónico"
+							class="form__input"
+							id="emailRecuperar"
+						/>
+					</div>
+					<div class="form__actions">
+						<button class="form__button" type="submit">Enviar código</button>
+					</div>
+				</form>
+			</section>
+		</main>
 
-			<aside class="rightAside">
-				<img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="aside__logo" />
-			</aside>
-		</div>
-		<!--container-->
+		<aside class="layout__aside aside">
+			<img src="../imgs/sgal.jpeg" alt="Logo SGAL" class="aside__logo" />
+		</aside>
+	</div>
 
-		<script src="../js/validations/passwordRecoveryValidator.js"></script>
-	</body>
+	<script src="../js/validations/passwordRecoveryValidator.js"></script>
+</body>
 </html>

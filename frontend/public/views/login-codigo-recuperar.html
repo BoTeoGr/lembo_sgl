@@ -13,58 +13,54 @@
 	</head>
 
 	<body>
-		<main class="mainCode">
-			<section class="loginCode">
-				<header class="header">
-					<h2 class="header__fontSize">Ingresa el código de 6 dígitos</h2>
+		<main class="main-code">
+			<section class="login-code">
+				<header class="login-code__header">
+					<h2 class="login-code__title">Ingresa el código de 6 dígitos</h2>
 				</header>
-				<form class="form">
-					<div class="containerCode">
+				<form class="login-code__form" id="form-recovery-code">
+					<div class="login-code__container">
 						<input
 							type="text"
-							class="inputCode"
+							class="login-code__input"
 							maxlength="1"
 							oninput="moveToNext(this, 0)"
 						/>
-
 						<input
 							type="text"
-							class="inputCode"
+							class="login-code__input"
 							maxlength="1"
 							oninput="moveToNext(this, 1)"
 						/>
-
 						<input
 							type="text"
-							class="inputCode"
+							class="login-code__input"
 							maxlength="1"
 							oninput="moveToNext(this, 2)"
 						/>
-
 						<input
 							type="text"
-							class="inputCode"
+							class="login-code__input"
 							maxlength="1"
 							oninput="moveToNext(this, 3)"
 						/>
-
 						<input
 							type="text"
-							class="inputCode"
+							class="login-code__input"
 							maxlength="1"
 							oninput="moveToNext(this, 4)"
 						/>
-
 						<input
 							type="text"
-							class="inputCode"
+							class="login-code__input"
 							maxlength="1"
 							oninput="moveToNext(this, 5)"
 						/>
 					</div>
-					<div class="actions">
-						<button type="submit" class="actions__button">Enviar</button>
+					<div class="login-code__actions">
+						<button type="submit" class="login-code__button">Enviar</button>
 					</div>
+					<div id="alert-container" class="login-code__alert-container"></div>
 				</form>
 			</section>
 		</main>

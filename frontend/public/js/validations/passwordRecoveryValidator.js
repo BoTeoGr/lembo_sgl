@@ -1,25 +1,23 @@
 const recuperar = {
 	emailRecuperar: "",
 };
-// oSelelcciono los elementos
-const emailRecuperar = document.querySelector("#emailRecuperar");
-const form = document.querySelector(".form");
 
-// guardo los valores de los input que seran usando por el callback readText
+const emailRecuperar = document.querySelector("#emailRecuperar");
+const form = document.querySelector(".form--forget");
+
 form.addEventListener("input", readText);
 emailRecuperar.addEventListener("input", readText);
 
-//Evento submit
+// Evento submit
 form.addEventListener("submit", function (e) {
 	e.preventDefault();
-	const { emailRecuperar } = recuperar; // Cambiado a recuperar.emailRecuperar
+	const { emailRecuperar } = recuperar;
 
 	if (emailRecuperar === "") {
 		showAlert("Este campo es obligatorio", true);
 		return;
 	}
 
-	// Uso la funcion validarEmail para verificar que si sea un correo
 	if (!validarEmail(emailRecuperar)) {
 		showAlert("El correo no es válido", true);
 		return;
@@ -28,25 +26,26 @@ form.addEventListener("submit", function (e) {
 	showAlert("Tu correo ha sido enviado satisfactoriamente");
 
 	setTimeout(() => {
-		window.location.href = "login-codigo-recuperar.html"; // Asegúrate de que la ruta sea correcta
+		window.location.href = "login-codigo-recuperar.html";
 	}, 1000);
 });
 
-// Esta funcion valida que sea un correo y que cumpla con el formato de uno
 function validarEmail(emailRecuperar) {
 	const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 	return regex.test(emailRecuperar);
 }
 
 function showAlert(message, error = null) {
-	const alert = document.createElement("P");
+	const alert = document.createElement("p");
 	alert.textContent = message;
+	alert.classList.add("form__alert");
 
 	if (error) {
-		alert.classList.add("error");
+		alert.classList.add("form__alert--error");
 	} else {
-		alert.classList.add("correct");
+		alert.classList.add("form__alert--success");
 	}
+
 	form.appendChild(alert);
 
 	setTimeout(() => {
@@ -54,7 +53,6 @@ function showAlert(message, error = null) {
 	}, 5000);
 }
 
-//Collback o funcion
 function readText(e) {
 	if (e.target.id === "emailRecuperar") {
 		recuperar.emailRecuperar = e.target.value;
