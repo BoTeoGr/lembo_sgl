@@ -8,12 +8,13 @@
 }
 
 .footer__text {
-	font-size: 0.9rem;
-	color: var(--green-950);
+	font-size: 0.8rem;
+	color: var(--gray-100);
 	font-weight: 500;
+	text-align: center;
 }
 
 .footer__icons {
 	display: flex;
-	gap: 1.5rem;
+	gap: 1rem;
 }
