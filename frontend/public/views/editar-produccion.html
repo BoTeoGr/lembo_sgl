@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Editar Producción</title>
+		<link rel="stylesheet" href="../css/pages/gestiones.css">
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
+		/>
+		<script src="../js/pages/EditProduction.js"></script>
+	</head>
+	<body>
+		<main class="create-form">
+			<header class="create-header">
+				<h1 class="create-header__title">Editar Producción</h1>
+				<div class="create-header__buttons">
+					<button class="button button--outline" id="saveDraftBtn">
+						<span class="material-symbols-outlined button__icon">save</span>
+						Guardar Borrador
+					</button>
+					<button class="button button--primary" id="saveBtn">
+						<span class="material-symbols-outlined button__icon">check_circle</span>
+						Guardar Cambios
+					</button>
+				</div>
+			</header>
+
+			<div class="create-tabs">
+				<div class="create-tab create-tab--active">Detalles Principales</div>
+				<div class="create-tab">Sensores</div>
+				<div class="create-tab">Insumos</div>
+			</div>
+
+			<!-- Tab 1: Detalles Principales -->
+			<div class="create-tab-content tab-details">
+				<div class="form-section">
+					<h2 class="form-section__title">Información Básica</h2>
+					<p class="form-section__description">
+						Información básica de la producción
+					</p>
+
+					<div class="form-row">
+						<div class="form-field">
+							<label class="form-field__label"
+								>Identificador de Producción</label
+							>
+							<input
+								type="text"
+								class="form-field__input"
+								id="productionId"
+								value="PROD-16042025-0001"
+								readonly
+							/>
+							<span class="form-field__helper">Identificador único</span>
+						</div>
+						<div class="form-field">
+							<label class="form-field__label">Responsable</label>
+							<div class="form-field__select-container">
+								<select class="form-field__select" id="responsibleSelect">
+									<option value="juan">Juan Pérez</option>
+									<option value="maria">María López</option>
+									<option value="carlos">Carlos Rodríguez</option>
+								</select>
+								<button class="form-field__action-button">
+									<span class="material-symbols-outlined">add_circle</span>
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-field form-field--full">
+						<label class="form-field__label">Nombre de Producción</label>
+						<input
+							type="text"
+							class="form-field__input"
+							id="productionName"
+							value="Maíz Orgánico Zona Norte"
+							placeholder="Ingrese el nombre de la producción"
+						/>
+						<span class="form-field__helper"
+							>Entre 3 y 100 caracteres, debe contener al menos una letra</span
+						>
+					</div>
+
+					<div class="form-row">
+						<div class="form-field">
+							<label class="form-field__label">Cultivo</label>
+							<div class="form-field__select-container">
+								<select class="form-field__select" id="cropSelect">
+									<option value="maiz" selected>Maíz</option>
+									<option value="trigo">Trigo</option>
+									<option value="papa">Papa</option>
+								</select>
+								<button class="form-field__action-button">
+									<span class="material-symbols-outlined">add_circle</span>
+								</button>
+							</div>
+						</div>
+						<div class="form-field">
+							<label class="form-field__label">Ciclo de Cultivo</label>
+							<div class="form-field__select-container">
+								<select class="form-field__select" id="cycleSelect">
+									<option value="primavera" selected>Primavera - Verano</option>
+									<option value="otono">Otoño - Invierno</option>
+								</select>
+								<button class="form-field__action-button">
+									<span class="material-symbols-outlined">add_circle</span>
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-field">
+							<label class="form-field__label">Fecha de Inicio</label>
+							<input type="date" class="form-field__date" id="startDate" value="2025-04-16" />
+						</div>
+						<div class="form-field">
+							<label class="form-field__label">Fecha de Fin (Estimada)</label>
+							<input type="date" class="form-field__date" id="endDate" value="2025-09-15" />
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-field">
+							<label class="form-field__label">Inversión</label>
+							<div class="form-field__currency-container">
+								<span class="form-field__currency-symbol">$</span>
+								<input
+									type="number"
+									class="form-field__currency"
+									id="investment"
+									value="58000"
+									min="0"
+									step="1000"
+								/>
+							</div>
+							<span class="form-field__helper"
+								>Calculado automáticamente en base a los insumos</span
+							>
+						</div>
+						<div class="form-field">
+							<label class="form-field__label"
+								>Meta (Estimación de Ganancias)</label
+							>
+							<div class="form-field__currency-container">
+								<span class="form-field__currency-symbol">$</span>
+								<input
+									type="number"
+									class="form-field__currency"
+									id="expectedReturn"
+									value="92800"
+									min="0"
+									step="1000"
+								/>
+							</div>
+							<span class="form-field__helper">Calculado automáticamente</span>
+						</div>
+					</div>
+					
+					<div class="form-row">
+						<div class="form-field">
+							<label class="form-field__label">Área Total (ha)</label>
+							<input
+								type="number"
+								class="form-field__input"
+								id="totalArea"
+								value="45"
+								min="1"
+								step="0.1"
+							/>
+						</div>
+						<div class="form-field">
+							<label class="form-field__label">Estado</label>
+							<div class="form-field__select-container">
+								<select class="form-field__select" id="statusSelect">
+									<option value="activo" selected>Activo</option>
+									<option value="pausado">Pausado</option>
+									<option value="finalizado">Finalizado</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-section">
+					<h2 class="form-section__title">Personal Asignado</h2>
+					<p class="form-section__description">
+						Personal adicional asignado a esta producción
+					</p>
+
+					<div class="form-row">
+						<div class="form-field">
+							<label class="form-field__label">Supervisor</label>
+							<div class="form-field__select-container">
+								<select class="form-field__select" id="supervisorSelect">
+									<option value="maria" selected>María García</option>
+									<option value="juan">Juan López</option>
+									<option value="ana">Ana Martínez</option>
+								</select>
+								<button class="form-field__action-button">
+									<span class="material-symbols-outlined">add_circle</span>
+								</button>
+							</div>
+						</div>
+						<div class="form-field">
+							<label class="form-field__label">Técnico</label>
+							<div class="form-field__select-container">
+								<select class="form-field__select" id="technicianSelect">
+									<option value="carlos" selected>Carlos Rodríguez</option>
+									<option value="pedro">Pedro Martínez</option>
+									<option value="laura">Laura Sánchez</option>
+								</select>
+								<button class="form-field__action-button">
+									<span class="material-symbols-outlined">add_circle</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Tab 2: Sensores (Inicialmente oculto) -->
+			<div class="create-tab-content tab-sensors hidden">
+				<div class="form-section">
+					<h2 class="form-section__title">Sensores</h2>
+					<p class="form-section__description">
+						Seleccione los sensores asignados a esta producción
+					</p>
+
+					<div class="form-field form-field--full">
+						<label class="form-field__label">Sensores</label>
+						<div class="form-field__select-container">
+							<select class="form-field__select" id="sensorSelect">
+								<option value="">-- Seleccionar sensor --</option>
+								<option value="sensor1">Sensor de Lluvia - Precipitación (RainTech)</option>
+								<option value="sensor2">Sensor de Viento - Velocidad (WindMax)</option>
+								<option value="sensor3">Sensor UV - Radiación (SunSense)</option>
+								<option value="sensor4">Sensor de Humedad - Humedad (AgroTech)</option>
+								<option value="sensor5">Sensor de Temperatura - Temperatura (TempSense)</option>
+								<option value="sensor6">Sensor de pH - pH (SoilTech)</option>
+							</select>
+							<button class="form-field__action-button" id="addSensorBtn">
+								<span class="material-symbols-outlined">add_circle</span>
+							</button>
+						</div>
+						<span class="form-field__helper">3 sensores seleccionados</span>
+					</div>
+				</div>
+
+				<!-- Sensores seleccionados -->
+				<div class="sensors-grid">
+					<div class="sensor-card sensor-card--blue">
+						<div class="sensor-card__header">
+							<div class="sensor-card__title">Sensor de Humedad</div>
+							<div class="sensor-card__type">Humedad</div>
+						</div>
+						<div class="sensor-card__content">
+							<div class="sensor-card__item">
+								<span class="sensor-card__label">Fabricante:</span>
+								<span class="sensor-card__value">AgroTech</span>
+							</div>
+							<div class="sensor-card__item">
+								<span class="sensor-card__label">Precisión:</span>
+								<span class="sensor-card__value">±2%</span>
+							</div>
+							<div class="sensor-card__item">
+								<span class="sensor-card__label">Rango:</span>
+								<span class="sensor-card__value">0-100%</span>
+							</div>
+						</div>
+						<button class="sensor-card__remove">
+							<span class="material-symbols-outlined">delete</span>
+						</button>
+					</div>
+
+					<div class="sensor-card sensor-card--yellow">
+						<div class="sensor-card__header">
+							<div class="sensor-card__title">Sensor de Temperatura</div>
+							<div class="sensor-card__type">Temperatura</div>
+						</div>
+						<div class="sensor-card__content">
+							<div class="sensor-card__item">
+								<span class="sensor-card__label">Fabricante:</span>
+								<span class="sensor-card__value">TempSense</span>
+							</div>
+							<div class="sensor-card__item">
+								<span class="sensor-card__label">Precisión:</span>
+								<span class="sensor-card__value">±0.5°C</span>
+							</div>
+							<div class="sensor-card__item">
+								<span class="sensor-card__label">Rango:</span>
+								<span class="sensor-card__value">-30 a +60°C</span>
+							</div>
+						</div>
+						<button class="sensor-card__remove">
+							<span class="material-symbols-outlined">delete</span>
+						</button>
+					</div>
+
+					<div class="sensor-card sensor-card--green">
+						<div class="sensor-card__header">
+							<div class="sensor-card__title">Sensor de pH</div>
+							<div class="sensor-card__type">pH</div>
+						</div>
+						<div class="sensor-card__content">
+							<div class="sensor-card__item">
+								<span class="sensor-card__label">Fabricante:</span>
+								<span class="sensor-card__value">SoilTech</span>
+							</div>
+							<div class="sensor-card__item">
+								<span class="sensor-card__label">Precisión:</span>
+								<span class="sensor-card__value">±0.1 pH</span>
+							</div>
+							<div class="sensor-card__item">
+								<span class="sensor-card__label">Rango:</span>
+								<span class="sensor-card__value">0-14 pH</span>
+							</div>
+						</div>
+						<button class="sensor-card__remove">
+							<span class="material-symbols-outlined">delete</span>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Tab 3: Insumos (Inicialmente oculto) -->
+			<div class="create-tab-content tab-insumos hidden">
+				<div class="form-section">
+					<h2 class="form-section__title">Insumos Utilizados</h2>
+					<p class="form-section__description">
+						Gestione los insumos asignados a esta producción
+					</p>
+
+					<div class="form-field form-field--full">
+						<label class="form-field__label">Insumos</label>
+						<div class="form-field__select-container">
+							<select class="form-field__select" id="insumoSelect">
+								<option value="">-- Seleccionar insumo --</option>
+								<option value="insumo1">Semilla Premium Híbrida - Semilla ($1,500/kg)</option>
+								<option value="insumo2">Fertilizante NPK Orgánico - Fertilizante ($650/kg)</option>
+								<option value="insumo3">Fungicida Protector - Protección ($1,800/lt)</option>
+								<option value="insumo4">Estimulante de Crecimiento Natural - Estimulante ($2,100/lt)</option>
+								<option value="insumo5">Semilla Premium Maíz Orgánico - Semilla ($1,200/kg)</option>
+								<option value="insumo6">Herbicida Selectivo - Protección ($2,300/lt)</option>
+							</select>
+							<button class="form-field__action-button" id="addInsumoBtn">
+								<span class="material-symbols-outlined">add_circle</span>
+							</button>
+						</div>
+						<span class="form-field__helper">2 insumos asignados</span>
+					</div>
+				</div>
+
+				<!-- Insumos seleccionados -->
+				<div class="sensors-grid">
+					<div class="insumo-card insumo-card--green">
+						<div class="insumo-card__header">
+							<div>
+								<div class="insumo-card__title">Semilla Premium Maíz Orgánico</div>
+								<div class="insumo-card__type">
+									<span class="insumo-tag">Semilla</span>
+								</div>
+							</div>
+							<div class="insumo-card__price">
+								$1,200
+								<span class="insumo-card__price-unit">/kg</span>
+							</div>
+						</div>
+						<div class="insumo-card__content">
+							<div class="insumo-card__item">
+								<span class="insumo-card__label">Proveedor:</span>
+								<span class="insumo-card__value">AgroSemillas S.A.</span>
+							</div>
+							<div class="insumo-card__item">
+								<span class="insumo-card__label">Cantidad:</span>
+								<div class="insumo-card__value">
+									<input type="number" value="25" min="1" style="width: 3.75rem;" /> kg
+								</div>
+							</div>
+							<div class="insumo-card__item">
+								<span class="insumo-card__label">Costo Total:</span>
+								<span class="insumo-card__value">$30,000</span>
+							</div>
+						</div>
+						<button class="insumo-card__remove">
+							<span class="material-symbols-outlined">delete</span>
+						</button>
+					</div>
+
+					<div class="insumo-card insumo-card--blue">
+						<div class="insumo-card__header">
+							<div>
+								<div class="insumo-card__title">Fertilizante NPK Plus</div>
+								<div class="insumo-card__type">
+									<span class="insumo-tag">Fertilizante</span>
+								</div>
+							</div>
+							<div class="insumo-card__price">
+								$700
+								<span class="insumo-card__price-unit">/kg</span>
+							</div>
+						</div>
+						<div class="insumo-card__content">
+							<div class="insumo-card__item">
+								<span class="insumo-card__label">Proveedor:</span>
+								<span class="insumo-card__value">AgroQuímicos del Norte</span>
+							</div>
+							<div class="insumo-card__item">
+								<span class="insumo-card__label">Cantidad:</span>
+								<div class="insumo-card__value">
+									<input type="number" value="40" min="1" style="width: 3.75rem;" /> kg
+								</div>
+							</div>
+							<div class="insumo-card__item">
+								<span class="insumo-card__label">Costo Total:</span>
+								<span class="insumo-card__value">$28,000</span>
+							</div>
+						</div>
+						<button class="insumo-card__remove">
+							<span class="material-symbols-outlined">delete</span>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Botones de navegación inferiores -->
+			<div class="create-header__buttons" style="margin-top: 2rem;">
+				<button class="button button--outline" id="prevBtn">
+					<span class="material-symbols-outlined button__icon">arrow_back</span>
+					Anterior
+				</button>
+				<button class="button button--primary" id="nextBtn">
+					Siguiente
+					<span class="material-symbols-outlined button__icon">arrow_forward</span>
+				</button>
+			</div>
+		</main>
+
+		<script src="backup/Management.js"></script>
+		<script src="backup/EditProduction.js"></script>
+	</body>
+</html> 

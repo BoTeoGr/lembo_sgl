@@ -1,11 +1,11 @@
 export default function Navbar() {
-    const currentPath = window.location.pathname.split("/").pop();
-    
-    const isSelected = (linkPath) => {
-        return currentPath === linkPath ? "nav__link--selected" : "";
-    };
+	const currentPath = window.location.pathname.split("/").pop();
 
-    return `
+	const isSelected = (linkPath) => {
+		return currentPath === linkPath ? "nav__link--selected" : "";
+	};
+
+	return `
         <div class="nav">
             <div class="nav__left">
                 <img src="../imgs/logoSena.svg" alt="Logo Sena" class="nav__logo" />
@@ -13,14 +13,18 @@ export default function Navbar() {
                 <nav class="nav__menu">
                     <ul class="nav__list">
                         <li class="nav__item">
-                            <a href="home.html" class="nav__link ${isSelected("home.html")}">
+                            <a href="home.html" class="nav__link ${isSelected(
+															"home.html"
+														)}">
                                 <span class="material-symbols-outlined">home</span>
                                 <span>Inicio</span>
                             </a>
                         </li>
                         
                         <li class="nav__item nav__item--dropdown">
-                            <button class="nav__dropdown-btn ${isSelected("listar-sensores.html")}">
+                            <button class="nav__dropdown-btn ${isSelected(
+															"listar-sensores.html"
+														)}">
                                 <span class="material-symbols-outlined">sensors</span>
                                 <span>Sensores</span>
                                 <span class="material-symbols-outlined nav__arrow">expand_more</span>
@@ -32,7 +36,9 @@ export default function Navbar() {
                         </li>
 
                         <li class="nav__item nav__item--dropdown">
-                            <button class="nav__dropdown-btn ${isSelected("listar-usuarios.html")}">
+                            <button class="nav__dropdown-btn ${isSelected(
+															"listar-usuarios.html"
+														)}">
                                 <span class="material-symbols-outlined">group</span>
                                 <span>Usuarios</span>
                                 <span class="material-symbols-outlined nav__arrow">expand_more</span>
@@ -44,7 +50,9 @@ export default function Navbar() {
                         </li>
 
                         <li class="nav__item nav__item--dropdown">
-                            <button class="nav__dropdown-btn ${isSelected("listar-insumos.html")}">
+                            <button class="nav__dropdown-btn ${isSelected(
+															"listar-insumos.html"
+														)}">
                                 <span class="material-symbols-outlined">inventory</span>
                                 <span>Insumos</span>
                                 <span class="material-symbols-outlined nav__arrow">expand_more</span>
@@ -56,7 +64,9 @@ export default function Navbar() {
                         </li>
 
                         <li class="nav__item nav__item--dropdown">
-                            <button class="nav__dropdown-btn ${isSelected("listar-cultivos.html")}">
+                            <button class="nav__dropdown-btn ${isSelected(
+															"listar-cultivos.html"
+														)}">
                                 <span class="material-symbols-outlined">agriculture</span>
                                 <span>Cultivos</span>
                                 <span class="material-symbols-outlined nav__arrow">expand_more</span>
@@ -66,6 +76,32 @@ export default function Navbar() {
                                 <a href="listar-ciclo-cultivos.html" class="nav__dropdown-link">Lista de Ciclos</a>
                                 <a href="crear-cultivo.html" class="nav__dropdown-link">Agregar Cultivo</a>
                                 <a href="crear-ciclo-cultivo.html" class="nav__dropdown-link">Agregar Ciclo</a>
+                            </div>
+                        </li>
+
+                        <li class="nav__item nav__item--dropdown">
+                            <button class="nav__dropdown-btn ${isSelected(
+															"producciones.html"
+														)}">
+                                <span class="material-symbols-outlined">manufacturing</span>
+                                <span>Producciones</span>
+                                <span class="material-symbols-outlined nav__arrow">expand_more</span>
+                            </button>
+                            <div class="nav__dropdown-content">
+                                <a href="producciones.html" class="nav__dropdown-link">Lista de Producciones</a>
+                                <a href="crear-produccion.html" class="nav__dropdown-link">Agregar Producción</a>
+                            </div>
+                        </li>
+                        <li class="nav__item nav__item--dropdown">
+                            <button class="nav__dropdown-btn ${isSelected(
+															"asociaciones.html"
+														)}">
+                                <span class="material-symbols-outlined">analytics</span>
+                                <span>Asociaciones</span>
+                                <span class="material-symbols-outlined nav__arrow">expand_more</span>
+                            </button>
+                            <div class="nav__dropdown-content">
+                                <a href="asociaciones.html" class="nav__dropdown-link">Lista de Asociaciones</a>
                             </div>
                         </li>
                     </ul>
@@ -143,6 +179,19 @@ export default function Navbar() {
                     <span class="material-symbols-outlined">add_circle</span>
                     <span>Agregar Ciclo</span>
                 </a>
+                <a href="producciones.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">manufacturing</span>
+                    <span>Lista de Producciones</span>
+                </a>
+                <a href="crear-produccion.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    <span>Agregar Producción</span>
+                </a>
+                <a href="asociaciones.html" class="nav__mobile-link">
+                    <span class="material-symbols-outlined">analytics</span>
+                    <span>Lista de Asociaciones</span>
+                </a>
+
                 <a href="index.html" class="nav__mobile-link">
                     <span class="material-symbols-outlined">logout</span>
                     <span>Cerrar Sesión</span>

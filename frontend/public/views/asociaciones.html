@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Gestión de Asociaciones</title>
+		<link rel="stylesheet" href="../css/pages/gestiones.css">
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
+		/>
+		<script src="../js/pages/Productions.js"></script>
+		<script src="../js/pages/Management.js"></script>
+		<link rel="stylesheet" href="../css/components/navbar.css" />
+		<script type="module" src="../js/pages/componentLoader.js"></script>
+	</head>
+	<body>
+		<nav class="nav-render"></nav>
+		<main>
+			<header>
+				<h1 class="header__title">Gestión de Asociaciones</h1>
+				<div class="header__buttons">
+					<button class="button button--filter">
+						<span class="material-symbols-outlined button__icon"
+							>filter_alt</span
+						>
+						Filtros
+					</button>
+					<button class="button button--secondary button--create">
+						<span class="material-symbols-outlined button__icon"
+							>add_circle</span
+						>
+						Crear asociación
+					</button>
+				</div>
+			</header>
+
+			<div class="filters hidden">
+				<div class="filters__header">
+					<div class="filters__title-container">
+						<h2 class="filters__title">Filtros</h2>
+						<p class="filters__subtitle">
+							Filtre las opciones por diferentes criterios
+						</p>
+					</div>
+					<span class="material-symbols-outlined filters__close">close</span>
+				</div>
+				<div class="filters__content">
+					<input
+						type="text"
+						class="filters__search"
+						placeholder="Buscar por nombre o ID"
+					/>
+					<select class="filters__select" placeholder="Estado">
+						<option value="">Todos</option>
+						<option value="Activo">Activo</option>
+						<option value="Inactivo">Inactivo</option>
+					</select>
+					<select class="filters__select" placeholder="Ciclo">
+						<option value="">Todos</option>
+						<option value="">Primavera - Verano</option>
+						<option value="">Otoño - Invierno</option>
+					</select>
+					<button class="button button--clear">Limpiar</button>
+				</div>
+			</div>
+
+			<div class="actions-bar">
+				<div class="actions-bar__selection">
+					<input type="checkbox" class="actions-bar__checkbox" id="actionsBarCheckbox" />
+					<p class="actions-bar__count">
+						<span class="actions-bar__count--selected">0</span> de
+						<span class="actions-bar__count--total">0</span> Seleccionados
+					</p>
+				</div>
+				<button class="button button--enable">
+					<span class="material-symbols-outlined button__icon">power_settings_new</span>
+					Habilitar
+				</button>
+				<button class="button button--disable">
+					<span class="material-symbols-outlined button__icon">power_settings_new</span>
+					Deshabilitar
+				</button>
+				<button class="button button--report">
+					<span class="material-symbols-outlined button__icon">download</span>
+					Generar Reporte
+				</button>
+			</div>
+
+			<div class="table-container">
+				<table class="table">
+					<thead class="table__head">
+						<tr class="table__row table__row--header">
+							<th class="table__cell table__cell--header table__cell--checkbox">
+								<input
+									type="checkbox"
+									class="table__checkbox-header"
+									id="tableCheckboxHeader"
+								/>
+							</th>
+							<th class="table__cell table__cell--header">ID</th>
+							<th class="table__cell table__cell--header">Cultivo</th>
+							<th class="table__cell table__cell--header">Tipo</th>
+							<th class="table__cell table__cell--header">Área (ha)</th>
+							<th class="table__cell table__cell--header">Encargado</th>
+							<th class="table__cell table__cell--header">Fecha Siembra</th>
+							<th class="table__cell table__cell--header">Estado</th>
+							<th class="table__cell table__cell--header table__cell--actions">
+								Acciones
+							</th>
+						</tr>
+					</thead>
+					<tbody class="table__body">
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2025-0001</td>
+							<td class="table__cell table__cell--name">Maíz Híbrido</td>
+							<td class="table__cell table__cell--type">Cereal</td>
+							<td class="table__cell table__cell--members">15.5</td>
+							<td class="table__cell table__cell--representative">
+								Carlos Mendoza
+							</td>
+							<td class="table__cell table__cell--date">15/03/2025</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">En crecimiento</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2025-0002</td>
+							<td class="table__cell table__cell--name">Café Arábica</td>
+							<td class="table__cell table__cell--type">Permanente</td>
+							<td class="table__cell table__cell--members">8.2</td>
+							<td class="table__cell table__cell--representative">
+								María González
+							</td>
+							<td class="table__cell table__cell--date">10/01/2025</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Producción</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2024-0015</td>
+							<td class="table__cell table__cell--name">Arroz Secano</td>
+							<td class="table__cell table__cell--type">Cereal</td>
+							<td class="table__cell table__cell--members">22.0</td>
+							<td class="table__cell table__cell--representative">
+								Jorge Ramírez
+							</td>
+							<td class="table__cell table__cell--date">20/11/2024</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--inactive">Cosechado</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--enable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2025-0003</td>
+							<td class="table__cell table__cell--name">Aguacate Hass</td>
+							<td class="table__cell table__cell--type">Frutal</td>
+							<td class="table__cell table__cell--members">12.5</td>
+							<td class="table__cell table__cell--representative">
+								Luisa Fernández
+							</td>
+							<td class="table__cell table__cell--date">05/02/2025</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Desarrollo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2024-0018</td>
+							<td class="table__cell table__cell--name">Banano Orgánico</td>
+							<td class="table__cell table__cell--type">Frutal</td>
+							<td class="table__cell table__cell--members">18.7</td>
+							<td class="table__cell table__cell--representative">
+								Roberto Sánchez
+							</td>
+							<td class="table__cell table__cell--date">15/12/2024</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Producción</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2025-0004</td>
+							<td class="table__cell table__cell--name">Tomate Industrial</td>
+							<td class="table__cell table__cell--type">Hortaliza</td>
+							<td class="table__cell table__cell--members">5.3</td>
+							<td class="table__cell table__cell--representative">
+								Patricia Ramírez
+							</td>
+							<td class="table__cell table__cell--date">10/03/2025</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Floración</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2024-0019</td>
+							<td class="table__cell table__cell--name">Caña de Azúcar</td>
+							<td class="table__cell table__cell--type">Industrial</td>
+							<td class="table__cell table__cell--members">35.0</td>
+							<td class="table__cell table__cell--representative">
+								Carmen Vega
+							</td>
+							<td class="table__cell table__cell--date">20/11/2024</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--inactive">Cosechado</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--enable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2025-0005</td>
+							<td class="table__cell table__cell--name">Fresa</td>
+							<td class="table__cell table__cell--type">Hortaliza</td>
+							<td class="table__cell table__cell--members">2.8</td>
+							<td class="table__cell table__cell--representative">
+								Fernando Díaz
+							</td>
+							<td class="table__cell table__cell--date">15/02/2025</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Maduración</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2024-0020</td>
+							<td class="table__cell table__cell--name">Papa Andina</td>
+							<td class="table__cell table__cell--type">Tubérculo</td>
+							<td class="table__cell table__cell--members">9.5</td>
+							<td class="table__cell table__cell--representative">
+								Elena Suárez
+							</td>
+							<td class="table__cell table__cell--date">05/12/2024</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Cosecha</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2025-0006</td>
+							<td class="table__cell table__cell--name">Cacao Fino</td>
+							<td class="table__cell table__cell--type">Permanente</td>
+							<td class="table__cell table__cell--members">14.3</td>
+							<td class="table__cell table__cell--representative">
+								Ana Torres
+							</td>
+							<td class="table__cell table__cell--date">10/01/2025</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Desarrollo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2024-0018</td>
+							<td class="table__cell table__cell--name">Quinua Orgánica</td>
+							<td class="table__cell table__cell--type">Cereal</td>
+							<td class="table__cell table__cell--members">7.8</td>
+							<td class="table__cell table__cell--representative">
+								Pablo Vargas
+							</td>
+							<td class="table__cell table__cell--date">25/09/2024</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Cosecha</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2025-0007</td>
+							<td class="table__cell table__cell--name">Yuca Criolla</td>
+							<td class="table__cell table__cell--type">Tubérculo</td>
+							<td class="table__cell table__cell--members">11.1</td>
+							<td class="table__cell table__cell--representative">
+								Julián Torres
+							</td>
+							<td class="table__cell table__cell--date">28/02/2025</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Siembra</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2025-0008</td>
+							<td class="table__cell table__cell--name">Piña Dorada</td>
+							<td class="table__cell table__cell--type">Frutal</td>
+							<td class="table__cell table__cell--members">16.0</td>
+							<td class="table__cell table__cell--representative">
+								Lorena Beltrán
+							</td>
+							<td class="table__cell table__cell--date">25/01/2025</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Floración</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2024-0021</td>
+							<td class="table__cell table__cell--name">Trigo Duro</td>
+							<td class="table__cell table__cell--type">Cereal</td>
+							<td class="table__cell table__cell--members">20.4</td>
+							<td class="table__cell table__cell--representative">
+								Esteban Ruiz
+							</td>
+							<td class="table__cell table__cell--date">01/11/2024</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--inactive">Cosechado</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--enable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2025-0009</td>
+							<td class="table__cell table__cell--name">Mango Tommy</td>
+							<td class="table__cell table__cell--type">Frutal</td>
+							<td class="table__cell table__cell--members">13.6</td>
+							<td class="table__cell table__cell--representative">
+								Raúl Martínez
+							</td>
+							<td class="table__cell table__cell--date">12/03/2025</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Cosecha</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">CUL-2025-0010</td>
+							<td class="table__cell table__cell--name">Zanahoria Criolla</td>
+							<td class="table__cell table__cell--type">Hortaliza</td>
+							<td class="table__cell table__cell--members">4.9</td>
+							<td class="table__cell table__cell--representative">
+								Daniela López
+							</td>
+							<td class="table__cell table__cell--date">20/03/2025</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">En crecimiento</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">visibility</span>
+									</a>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<a href="integraciones-cultivo.html">
+										<span class="material-symbols-outlined">edit</span>
+									</a>
+								</button>
+								<button
+									class="table__action-button table__action-button--disable"
+								>
+									<span class="material-symbols-outlined"
+										>power_settings_new</span
+									>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="pagination">
+					<div class="pagination__info">
+						Mostrando <span class="pagination__current-page">1</span> a <span class="pagination__items-per-page">10</span> de <span class="pagination__total-items">18</span> resultados
+					</div>
+					<div class="pagination__controls">
+						<button class="pagination__button pagination__button--prev">
+							<span class="material-symbols-outlined">navigate_before</span>
+						</button>
+						<button class="pagination__button pagination__button--active">1</button>
+						<button class="pagination__button">2</button>
+						<button class="pagination__button pagination__button--next">
+							<span class="material-symbols-outlined">navigate_next</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- Modal de Visualización -->
+		<div class="modal" id="viewModal">
+			<div class="modal__content">
+				<div class="modal__header">
+					<div class="modal__header-top">
+						<div class="modal__titles">
+							<h2 class="modal__title">Información de la Asociación</h2>
+							<p class="modal__subtitle">ID: <span id="viewId"></span></p>
+						</div>
+						<button class="modal__close">
+							<span class="material-symbols-outlined">close</span>
+						</button>
+					</div>
+					<div class="modal__tabs">
+						<button class="modal__tab modal__tab--active" data-tab="details">
+							General
+						</button>
+						<button class="modal__tab" data-tab="members">
+							Miembros
+						</button>
+					</div>
+				</div>
+
+				<div class="modal__body">
+					<!-- Panel General -->
+					<div class="modal__panel modal__panel--active" data-panel="details">
+						<div class="modal__panel-content">
+							<!-- El contenido se carga dinámicamente -->
+						</div>
+					</div>
+
+					<!-- Panel de Miembros -->
+					<div class="modal__panel" data-panel="members">
+						<div class="modal__panel-content">
+							<!-- El contenido se carga dinámicamente -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal de Reporte -->
+		<div class="modal" id="reportModal">
+			<div class="modal__content">
+				<div class="modal__header">
+					<h2 class="modal__title">Generar Reporte</h2>
+					<span class="modal__close" id="closeReportModal">
+						<span class="material-symbols-outlined">close</span>
+					</span>
+				</div>
+				<div class="modal__body">
+					<form id="reportForm" class="form">
+						<div class="form-field">
+							<label class="form-field__label">Formato</label>
+							<select class="form-field__select" id="reportFormat">
+								<option value="excel">Excel (.xlsx)</option>
+								<option value="pdf">PDF</option>
+								<option value="csv">CSV</option>
+							</select>
+						</div>
+						<div class="form-field">
+							<label class="form-field__label">Incluir</label>
+							<div class="form-field__checkbox-group">
+								<label class="checkbox">
+									<input type="checkbox" checked id="includeInactive">
+									Asociaciones inactivas
+								</label>
+								<label class="checkbox">
+									<input type="checkbox" checked id="includeDetails">
+									Detalles completos
+								</label>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal__footer">
+					<button class="button button--secondary" id="cancelReportBtn">Cancelar</button>
+					<button class="button button--primary" id="generateReportBtn">Generar</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
