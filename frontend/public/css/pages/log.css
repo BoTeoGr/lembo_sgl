@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quicksand:wght@300..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 :root {
 	/* variables globals */
 	/* colors */
@@ -145,6 +146,7 @@ h6 {
 
 .main--update-password {
 	width: 100%;
+	background: var(--green-950);
 }
 
 .main-code {
@@ -288,9 +290,18 @@ h6 {
 	max-width: 60rem;
 	animation: fadeIn 0.3s ease-in-out;
 	position: absolute;
-	bottom: -5rem;
+	bottom: -6rem;
 	left: 50%;
 	transform: translateX(-50%);
+}
+
+/* Alerta específica para el formulario de actualización de contraseña */
+.form--password .form__alert {
+	bottom: -5.5rem; /* Ajuste específico para la página de actualizar contraseña */
+	padding: 0.6rem; /* Reducimos el padding para que el cuadro sea más pequeño */
+	font-size: clamp(1.1rem, 1vw, 1.4rem); /* Reducimos ligeramente el tamaño de fuente */
+	max-width: 50rem; /* Reducimos el ancho máximo */
+	width: 90%; /* Aseguramos que no ocupe todo el ancho */
 }
 
 .form__alert--error {
@@ -462,7 +473,7 @@ h6 {
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 2rem;
+    margin-top: 3rem; /* Ajustado de 4rem a 3rem para que no quede tan abajo */
     position: relative; /* Para posicionar las alertas de forma absoluta */
     overflow: hidden; /* Evita desbordamiento */
 }
@@ -701,6 +712,14 @@ h6 {
 		transform: none;
 		margin-top: 2rem;
 	}
+	
+	/* Ajuste específico para la alerta en móviles */
+	.form--password .form__alert {
+		position: static;
+		transform: none;
+		margin-top: 2rem;
+		width: 100%;
+	}
 }
 
 @media (max-width: 480px) {
@@ -710,6 +729,7 @@ h6 {
 	
 	.layout__main {
 		height: 90%;
+		background: var(--green-950); /* Aseguramos que el fondo sea verde */
 	}
 	
 	.aside__logo {
@@ -731,5 +751,17 @@ h6 {
 		width: 40px;
 		height: 40px;
 		font-size: 18px;
+	}
+	
+	/* Aseguramos que la página de actualización de contraseña tenga fondo verde */
+	.main--update-password {
+		background: var(--green-950);
+		min-height: 100vh;
+	}
+	
+	/* Ajustamos el tamaño del contenedor para que no quede espacio blanco */
+	.update--password {
+		height: auto;
+		min-height: 80vh;
 	}
 }
