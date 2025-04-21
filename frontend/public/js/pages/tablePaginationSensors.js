@@ -45,10 +45,13 @@ async function fetchSensors(page) {
 // Función para renderizar los datos de un sensor en el modal
 function renderSensorDetails(container, sensor) {
     container.innerHTML = `
-        <p><strong>Nombre:</strong> ${sensor.nombre_sensor}</p>
         <p><strong>ID:</strong> ${sensor.id}</p>
+        <p><strong>Nombre:</strong> ${sensor.nombre_sensor}</p>
         <p><strong>Tipo de Sensor:</strong> ${sensor.tipo_sensor}</p>
         <p><strong>Unidad de Medida:</strong> ${sensor.unidad_medida}</p>
+        <p><strong>descripcion:</strong> ${sensor.descripcion}</p>
+        <p><strong>tiempo de escaneo:</strong> ${sensor.tiempo_escaneo}</p>
+        <p><strong>Usuario:</strong> ${sensor.usuario_id}</p>
         <p><strong>Estado:</strong> ${sensor.estado}</p>
     `;
 }
