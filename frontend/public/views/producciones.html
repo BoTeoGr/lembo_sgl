@@ -1,1093 +1,1113 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Sistema de Gestión Agrícola - Producciones</title>
-		<link rel="stylesheet" href="../css/pages/gestiones.css">
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
-		/>
-		<script src="../js/pages/Productions.js"></script>
-		<script src="../js/pages/Management.js"></script>
-		
-		<link rel="stylesheet" href="../css/components/navbar.css" />
-		<script type="module" src="../js/pages/componentLoader.js"></script>
-	</head>
-	<body>
-		<nav class="nav-render"></nav>
-		<main>
-			<header>
-				<h1 class="header__title">Gestión de Producciones</h1>
-				<div class="header__buttons">
-					<button class="button button--filter">
-						<span class="material-symbols-outlined button__icon"
-							>filter_alt</span
-						>
-						Filtros
-					</button>
-					<button class="button button--secondary button--create">
-						<a href="crear-produccion.html" class="button__link">
-							<span class="material-symbols-outlined button__icon"
-								>add_circle</span
-							>
-							Crear produccion
-						</a>
-					</button>
-				</div>
-			</header>
 
-			<div class="filters hidden">
-				<div class="filters__header">
-					<div class="filters__title-container">
-						<h2 class="filters__title">Filtros</h2>
-						<p class="filters__subtitle">
-							Filtre las opciones por diferentes criterios
-						</p>
-					</div>
-					<span class="material-symbols-outlined filters__close">close</span>
-				</div>
-				<div class="filters__content">
-					<input
-						type="text"
-						class="filters__search"
-						placeholder="Buscar por nombre o ID"
-					/>
-					<select class="filters__select" placeholder="Estado">
-						<option value="">Todos</option>
-						<option value="Activo">Activo</option>
-						<option value="Inactivo">Inactivo</option>
-					</select>
-					<select class="filters__select" placeholder="Ciclo">
-						<option value="">Todos</option>
-						<option value="">Primavera - Verano</option>
-						<option value="">Otoño - Invierno</option>
-					</select>
-					<div class="filters__date-container">
-						<label class="filters__date-label">Fecha de inicio:</label>
-						<input type="date" class="filters__date" />
-					</div>
-					<div class="filters__date-container">
-						<label class="filters__date-label">Fecha de fin:</label>
-						<input type="date" class="filters__date" />
-					</div>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Sistema de Gestión Agrícola - Producciones</title>
+	<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+	<link rel="stylesheet" href="../css/pages/gestiones.css">
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
+	<script src="../js/pages/Productions.js"></script>
+	<script src="../js/pages/Management.js"></script>
 
-					<button class="button button--clear">Limpiar filtros</button>
-				</div>
+	<link rel="stylesheet" href="../css/components/navbar.css" />
+	<script type="module" src="../js/pages/componentLoader.js"></script>
+</head>
+
+<body>
+	<nav class="nav-render"></nav>
+	<main>
+		<header>
+			<h1 class="header__title">Gestión de Producciones</h1>
+			<div class="header__buttons">
+				<button class="button button--filter">
+					<span class="material-symbols-outlined button__icon">filter_alt</span>
+					Filtros
+				</button>
+				<button class="button button--secondary button--create">
+					<a href="crear-produccion.html" class="button__link">
+						<span class="material-symbols-outlined button__icon">add_circle</span>
+						Crear produccion
+					</a>
+				</button>
 			</div>
+		</header>
 
-			<div class="actions-bar">
-				<div class="actions-bar__selection">
-					<input type="checkbox" class="actions-bar__checkbox" />
-					<p class="actions-bar__count">
-						<span class="actions-bar__count--selected">5</span> de
-						<span class="actions-bar__count--total">10</span> Seleccionados
+		<div class="filters hidden">
+			<div class="filters__header">
+				<div class="filters__title-container">
+					<h2 class="filters__title">Filtros</h2>
+					<p class="filters__subtitle">
+						Filtre las opciones por diferentes criterios
 					</p>
 				</div>
-				<button class="button button--enable">
-					<span class="material-symbols-outlined button__icon"
-						>power_settings_new</span
-					>
-					Habilitar
-				</button>
-				<button class="button button--disable">
-					<span class="material-symbols-outlined button__icon"
-						>power_settings_new</span
-					>
-					Deshabilitar
-				</button>
-				<button class="button button--report">
-					<span class="material-symbols-outlined button__icon">download</span>
-					Generar Reporte
-				</button>
+				<span class="material-symbols-outlined filters__close">close</span>
 			</div>
-			<!-- Modal de Visualización -->
-			<div class="modal" id="viewModal">
-				<div class="modal__content">
-					<div class="modal__header">
-						<div class="modal__header-top">
-							<div class="modal__titles">
-								<h2 class="modal__title">Información de la Producción</h2>
-								<p class="modal__subtitle">ID: <span id="viewId"></span></p>
-							</div>
-							<button class="modal__close">
-								<span class="material-symbols-outlined">close</span>
-							</button>
-						</div>
-						<div class="modal__tabs">
-							<button
-								class="modal__tab modal__tab--active"
-								data-tab="general"
-							>
-								General
-							</button>
-							<button class="modal__tab" data-tab="sensores">Sensores</button>
-							<button class="modal__tab" data-tab="insumos">Insumos</button>
-						</div>
-					</div>
-
-					<div class="modal__body">
-						<!-- Panel General -->
-						<div
-							class="modal__panel modal__panel--active"
-							data-panel="general"
-						>
-							<div class="modal-grid">
-								<div class="modal-column">
-									<div class="info-section">
-										<h3 class="info-section__title">
-											<span class="material-symbols-outlined info-section__icon">info</span>
-											Información General
-										</h3>
-										<div class="info-section__content">
-											<div class="info-item">
-												<span class="info-item__label">ID</span>
-												<span class="info-item__value" id="viewId">PROD-01042025-0001</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Nombre</span>
-												<span class="info-item__value" id="viewName">Maíz Orgánico Zona Norte</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Estado</span>
-												<span class="badge badge--active" id="viewStatus">Activo</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Tipo de Cultivo</span>
-												<span class="info-item__value" id="viewCropType">Maíz</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Área Total</span>
-												<span class="info-item__value" id="viewArea">45 hectáreas</span>
-											</div>
-										</div>
-									</div>
-									<div class="info-section">
-										<h3 class="info-section__title">
-											<span class="material-symbols-outlined info-section__icon">group</span>
-											Personal
-										</h3>
-										<div class="info-section__content">
-											<div class="info-item">
-												<span class="info-item__label">Responsable</span>
-												<span class="info-item__value" id="viewResponsible">Juan Pérez</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Supervisor</span>
-												<span class="info-item__value" id="viewSupervisor">María García</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Técnico</span>
-												<span class="info-item__value" id="viewTechnician">Carlos Rodríguez</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Personal Asignado</span>
-												<span class="info-item__value" id="viewWorkers">8 personas</span>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="modal-column">
-									<div class="info-section">
-										<h3 class="info-section__title">
-											<span class="material-symbols-outlined info-section__icon">calendar_month</span>
-											Fechas
-										</h3>
-										<div class="info-section__content">
-											<div class="info-item">
-												<span class="info-item__label">Inicio</span>
-												<span class="info-item__value" id="viewStartDate">01/04/2025</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Fin esperado</span>
-												<span class="info-item__value" id="viewEndDate">15/09/2025</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Duración Total</span>
-												<span class="info-item__value" id="viewDuration">168 días</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Días Restantes</span>
-												<span class="info-item__value" id="viewDaysLeft">120 días</span>
-											</div>
-										</div>
-									</div>
-									<div class="info-section">
-										<h3 class="info-section__title">
-											<span class="material-symbols-outlined info-section__icon">attach_money</span>
-											Financiero
-										</h3>
-										<div class="info-section__content">
-											<div class="info-item">
-												<span class="info-item__label">Inversión</span>
-												<span class="info-item__value" id="viewInvestment">$58,000</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Retorno esperado</span>
-												<span class="info-item__value" id="viewExpectedReturn">$92,800</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">ROI estimado</span>
-												<span class="info-item__value" id="viewROI">60%</span>
-											</div>
-											<div class="info-item">
-												<span class="info-item__label">Costo por Hectárea</span>
-												<span class="info-item__value" id="viewCostPerHectare">$1,289</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<!-- Panel de Sensores -->
-						<div class="modal__panel" data-panel="sensores">
-							<div class="sensors-grid" id="sensoresContent">
-								<!-- Se llenará dinámicamente -->
-							</div>
-						</div>
-
-						<!-- Panel de Insumos -->
-						<div class="modal__panel" data-panel="insumos">
-							<div class="supplies-grid" id="insumosContent">
-								<!-- Se llenará dinámicamente -->
-							</div>
-						</div>
-					</div>
+			<div class="filters__content">
+				<input type="text" class="filters__search" placeholder="Buscar por nombre o ID" />
+				<select class="filters__select" placeholder="Estado">
+					<option value="">Todos</option>
+					<option value="Activo">Activo</option>
+					<option value="Inactivo">Inactivo</option>
+				</select>
+				<select class="filters__select" placeholder="Ciclo">
+					<option value="">Todos</option>
+					<option value="">Primavera - Verano</option>
+					<option value="">Otoño - Invierno</option>
+				</select>
+				<div class="filters__date-container">
+					<label class="filters__date-label">Fecha de inicio:</label>
+					<input type="date" class="filters__date" />
 				</div>
+				<div class="filters__date-container">
+					<label class="filters__date-label">Fecha de fin:</label>
+					<input type="date" class="filters__date" />
+				</div>
+
+				<button class="button button--clear">Limpiar filtros</button>
 			</div>
-			
-			<!-- Modal de Reporte -->
-			<div class="modal" id="reportModal">
-				<div class="modal__content">
-					<div class="modal__header modal__header--confirm">
-						<h2 class="modal__title">Generar Reporte</h2>
-						<span class="modal__close" id="closeReportModal">
+		</div>
+
+		<div class="actions-bar">
+			<div class="actions-bar__selection">
+				<input type="checkbox" class="actions-bar__checkbox" />
+				<p class="actions-bar__count">
+					<span class="actions-bar__count--selected">5</span> de
+					<span class="actions-bar__count--total">10</span> Seleccionados
+				</p>
+			</div>
+			<button class="button button--enable">
+				<span class="material-symbols-outlined button__icon">power_settings_new</span>
+				Habilitar
+			</button>
+			<button class="button button--disable">
+				<span class="material-symbols-outlined button__icon">power_settings_new</span>
+				Deshabilitar
+			</button>
+			<button class="button button--report">
+				<span class="material-symbols-outlined button__icon">download</span>
+				Generar Reporte
+			</button>
+		</div>
+		<!-- Modal de Visualización -->
+		<div class="modal" id="viewModal">
+			<div class="modal__content">
+				<div class="modal__header">
+					<div class="modal__header-top">
+						<div class="modal__titles">
+							<h2 class="modal__title">Información de la Producción</h2>
+							<p class="modal__subtitle">ID: <span id="viewId"></span></p>
+						</div>
+						<button class="modal__close">
 							<span class="material-symbols-outlined">close</span>
-						</span>
+						</button>
 					</div>
-					<div class="modal__body">
-						<form id="reportForm" class="form">
-							<div class="form-field">
-								<label class="form-field__label">Formato</label>
-								<select class="form-field__select" id="reportFormat">
-									<option value="excel">Excel (.xlsx)</option>
-									<option value="pdf">PDF</option>
-									<option value="csv">CSV</option>
-								</select>
-							</div>
-							<div class="form-field">
-								<label class="form-field__label">Incluir</label>
-								<div class="form-field__checkbox-group">
-									<label class="checkbox">
-										<input type="checkbox" checked id="includeInactive" />
-										Producciones inactivas
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" checked id="includeDetails" />
-										Detalles completos
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" id="includeSensors" />
-										Datos de sensores
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" id="includeSupplies" />
-										Uso de insumos
-									</label>
+					<div class="modal__tabs">
+						<button class="modal__tab modal__tab--active" data-tab="general">
+							General
+						</button>
+						<button class="modal__tab" data-tab="sensores">Sensores</button>
+						<button class="modal__tab" data-tab="insumos">Insumos</button>
+					</div>
+				</div>
+
+				<div class="modal__body">
+					<!-- Panel General -->
+					<div class="modal__panel modal__panel--active" data-panel="general">
+						<div class="modal-grid">
+							<div class="modal-column">
+								<div class="info-section">
+									<h3 class="info-section__title">
+										<span class="material-symbols-outlined info-section__icon">info</span>
+										Información General
+									</h3>
+									<div class="info-section__content">
+										<div class="info-item">
+											<span class="info-item__label">ID</span>
+											<span class="info-item__value" id="viewId">PROD-01042025-0001</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Nombre</span>
+											<span class="info-item__value" id="viewName">Maíz Orgánico Zona Norte</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Estado</span>
+											<span class="badge badge--active" id="viewStatus">Activo</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Tipo de Cultivo</span>
+											<span class="info-item__value" id="viewCropType">Maíz</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Área Total</span>
+											<span class="info-item__value" id="viewArea">45 hectáreas</span>
+										</div>
+									</div>
+								</div>
+								<div class="info-section">
+									<h3 class="info-section__title">
+										<span class="material-symbols-outlined info-section__icon">group</span>
+										Personal
+									</h3>
+									<div class="info-section__content">
+										<div class="info-item">
+											<span class="info-item__label">Responsable</span>
+											<span class="info-item__value" id="viewResponsible">Juan Pérez</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Supervisor</span>
+											<span class="info-item__value" id="viewSupervisor">María García</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Técnico</span>
+											<span class="info-item__value" id="viewTechnician">Carlos Rodríguez</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Personal Asignado</span>
+											<span class="info-item__value" id="viewWorkers">8 personas</span>
+										</div>
+									</div>
 								</div>
 							</div>
-							<div class="form-field">
-								<p id="confirmMessage" class="modal__confirm-message">
-									¿Está seguro que desea generar el reporte con estas configuraciones?
-								</p>
-							</div>
-						</form>
-					</div>
-					<div class="modal__footer modal__footer--confirm">
-						<button class="button button--secondary" id="cancelReportBtn">
-							Cancelar
-						</button>
-						<button class="button button--primary" id="generateReportBtn">
-							Generar
-						</button>
-					</div>
-				</div>
-			</div>
-			<div class="table-container">
-				<table class="table">
-					<thead class="table__head">
-						<tr class="table__row table__row--header">
-							<th class="table__cell table__cell--header table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox-header" />
-							</th>
-							<th class="table__cell table__cell--header">ID</th>
-							<th class="table__cell table__cell--header">Nombre</th>
-							<th class="table__cell table__cell--header">Cultivo</th>
-							<th class="table__cell table__cell--header">Ciclo</th>
-							<th class="table__cell table__cell--header">Responsable</th>
-							<th class="table__cell table__cell--header">Inversión</th>
-							<th class="table__cell table__cell--header">Fecha Inicio</th>
-							<th class="table__cell table__cell--header">Estado</th>
-							<th class="table__cell table__cell--header table__cell--actions">
-								Acciones
-							</th>
-						</tr>
-					</thead>
-					<tbody class="table__body">
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-01042025-0001</td>
-							<td class="table__cell table__cell--name">
-								Maíz Orgánico Zona Norte
-							</td>
-							<td class="table__cell table__cell--crop">Maíz</td>
-							<td class="table__cell table__cell--cycle">Primavera-Verano</td>
-							<td class="table__cell table__cell--responsible">Juan Pérez</td>
-							<td class="table__cell table__cell--investment">$58,000</td>
-							<td class="table__cell table__cell--date">01/04/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-15032025-0002</td>
-							<td class="table__cell table__cell--name">
-								Trigo Premium Lote 5
-							</td>
-							<td class="table__cell table__cell--crop">Trigo</td>
-							<td class="table__cell table__cell--cycle">Otoño-Invierno</td>
-							<td class="table__cell table__cell--responsible">María García</td>
-							<td class="table__cell table__cell--investment">$72,000</td>
-							<td class="table__cell table__cell--date">15/03/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-10022025-0003</td>
-							<td class="table__cell table__cell--name">Soja Experimental</td>
-							<td class="table__cell table__cell--crop">Soja</td>
-							<td class="table__cell table__cell--cycle">Anual</td>
-							<td class="table__cell table__cell--responsible">
-								Carlos Rodríguez
-							</td>
-							<td class="table__cell table__cell--investment">$95,000</td>
-							<td class="table__cell table__cell--date">10/02/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--inactive">Inactivo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--enable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-20012025-0004</td>
-							<td class="table__cell table__cell--name">Girasol Híbrido</td>
-							<td class="table__cell table__cell--crop">Girasol</td>
-							<td class="table__cell table__cell--cycle">Primavera-Verano</td>
-							<td class="table__cell table__cell--responsible">Juan Pérez</td>
-							<td class="table__cell table__cell--investment">$45,000</td>
-							<td class="table__cell table__cell--date">20/01/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-05122024-0005</td>
-							<td class="table__cell table__cell--name">Arroz Irrigado</td>
-							<td class="table__cell table__cell--crop">Arroz</td>
-							<td class="table__cell table__cell--cycle">Anual</td>
-							<td class="table__cell table__cell--responsible">María García</td>
-							<td class="table__cell table__cell--investment">$110,000</td>
-							<td class="table__cell table__cell--date">05/12/2024</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-28022025-0006</td>
-							<td class="table__cell table__cell--name">Algodón Orgánico</td>
-							<td class="table__cell table__cell--crop">Algodón</td>
-							<td class="table__cell table__cell--cycle">Primavera-Verano</td>
-							<td class="table__cell table__cell--responsible">
-								Roberto Torres
-							</td>
-							<td class="table__cell table__cell--investment">$86,500</td>
-							<td class="table__cell table__cell--date">28/02/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-15112024-0007</td>
-							<td class="table__cell table__cell--name">Avena Premium</td>
-							<td class="table__cell table__cell--crop">Avena</td>
-							<td class="table__cell table__cell--cycle">Otoño-Invierno</td>
-							<td class="table__cell table__cell--responsible">
-								Laura Fernández
-							</td>
-							<td class="table__cell table__cell--investment">$42,800</td>
-							<td class="table__cell table__cell--date">15/11/2024</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--inactive">Inactivo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--enable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-10032025-0008</td>
-							<td class="table__cell table__cell--name">Olivo Ecológico</td>
-							<td class="table__cell table__cell--crop">Olivo</td>
-							<td class="table__cell table__cell--cycle">Anual</td>
-							<td class="table__cell table__cell--responsible">
-								Miguel Sánchez
-							</td>
-							<td class="table__cell table__cell--investment">$125,000</td>
-							<td class="table__cell table__cell--date">10/03/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-22012025-0009</td>
-							<td class="table__cell table__cell--name">Papa Andina</td>
-							<td class="table__cell table__cell--crop">Papa</td>
-							<td class="table__cell table__cell--cycle">Primavera-Verano</td>
-							<td class="table__cell table__cell--responsible">Ana Martínez</td>
-							<td class="table__cell table__cell--investment">$38,900</td>
-							<td class="table__cell table__cell--date">22/01/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-05042025-0010</td>
-							<td class="table__cell table__cell--name">Café de Altura</td>
-							<td class="table__cell table__cell--crop">Café</td>
-							<td class="table__cell table__cell--cycle">Anual</td>
-							<td class="table__cell table__cell--responsible">Javier López</td>
-							<td class="table__cell table__cell--investment">$94,200</td>
-							<td class="table__cell table__cell--date">05/04/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-17032025-0011</td>
-							<td class="table__cell table__cell--name">
-								Cítricos de Exportación
-							</td>
-							<td class="table__cell table__cell--crop">Naranja</td>
-							<td class="table__cell table__cell--cycle">Anual</td>
-							<td class="table__cell table__cell--responsible">
-								Diana Morales
-							</td>
-							<td class="table__cell table__cell--investment">$105,800</td>
-							<td class="table__cell table__cell--date">17/03/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-09122024-0012</td>
-							<td class="table__cell table__cell--name">Frutillas del Valle</td>
-							<td class="table__cell table__cell--crop">Frutilla</td>
-							<td class="table__cell table__cell--cycle">Primavera-Verano</td>
-							<td class="table__cell table__cell--responsible">Lucía Valdez</td>
-							<td class="table__cell table__cell--investment">$63,700</td>
-							<td class="table__cell table__cell--date">09/12/2024</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--inactive">Inactivo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--enable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-18022025-0013</td>
-							<td class="table__cell table__cell--name">Maní Selecto</td>
-							<td class="table__cell table__cell--crop">Maní</td>
-							<td class="table__cell table__cell--cycle">Otoño-Invierno</td>
-							<td class="table__cell table__cell--responsible">
-								Ramón Fuentes
-							</td>
-							<td class="table__cell table__cell--investment">$54,200</td>
-							<td class="table__cell table__cell--date">18/02/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-30102024-0014</td>
-							<td class="table__cell table__cell--name">Palto Orgánico</td>
-							<td class="table__cell table__cell--crop">Palta</td>
-							<td class="table__cell table__cell--cycle">Anual</td>
-							<td class="table__cell table__cell--responsible">
-								Carolina Vega
-							</td>
-							<td class="table__cell table__cell--investment">$148,300</td>
-							<td class="table__cell table__cell--date">30/10/2024</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-15022025-0015</td>
-							<td class="table__cell table__cell--name">Algodón Premium</td>
-							<td class="table__cell table__cell--crop">Algodón</td>
-							<td class="table__cell table__cell--cycle">Primavera-Verano</td>
-							<td class="table__cell table__cell--responsible">
-								Sofía Mendoza
-							</td>
-							<td class="table__cell table__cell--investment">$87,400</td>
-							<td class="table__cell table__cell--date">15/02/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-03032025-0016</td>
-							<td class="table__cell table__cell--name">Girasol Zona Este</td>
-							<td class="table__cell table__cell--crop">Girasol</td>
-							<td class="table__cell table__cell--cycle">Primavera-Verano</td>
-							<td class="table__cell table__cell--responsible">Daniel Rojas</td>
-							<td class="table__cell table__cell--investment">$42,300</td>
-							<td class="table__cell table__cell--date">03/03/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-18122024-0017</td>
-							<td class="table__cell table__cell--name">Cítricos del Valle</td>
-							<td class="table__cell table__cell--crop">Naranja</td>
-							<td class="table__cell table__cell--cycle">Anual</td>
-							<td class="table__cell table__cell--responsible">Valeria Soto</td>
-							<td class="table__cell table__cell--investment">$67,100</td>
-							<td class="table__cell table__cell--date">18/12/2024</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-05012025-0018</td>
-							<td class="table__cell table__cell--name">Tomate Hidropónico</td>
-							<td class="table__cell table__cell--crop">Tomate</td>
-							<td class="table__cell table__cell--cycle">Primavera-Verano</td>
-							<td class="table__cell table__cell--responsible">
-								Ricardo Paredes
-							</td>
-							<td class="table__cell table__cell--investment">$76,500</td>
-							<td class="table__cell table__cell--date">05/01/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--inactive">Inactivo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--enable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-20022025-0019</td>
-							<td class="table__cell table__cell--name">Quinua Orgánica</td>
-							<td class="table__cell table__cell--crop">Quinua</td>
-							<td class="table__cell table__cell--cycle">Otoño-Invierno</td>
-							<td class="table__cell table__cell--responsible">
-								Gloria Herrera
-							</td>
-							<td class="table__cell table__cell--investment">$52,800</td>
-							<td class="table__cell table__cell--date">20/02/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-10032025-0020</td>
-							<td class="table__cell table__cell--name">Frutillas Premium</td>
-							<td class="table__cell table__cell--crop">Fresa</td>
-							<td class="table__cell table__cell--cycle">Primavera-Verano</td>
-							<td class="table__cell table__cell--responsible">
-								Martina Torres
-							</td>
-							<td class="table__cell table__cell--investment">$43,900</td>
-							<td class="table__cell table__cell--date">10/03/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-15122024-0021</td>
-							<td class="table__cell table__cell--name">Arándanos Selectos</td>
-							<td class="table__cell table__cell--crop">Arándano</td>
-							<td class="table__cell table__cell--cycle">Anual</td>
-							<td class="table__cell table__cell--responsible">
-								Luisa Morales
-							</td>
-							<td class="table__cell table__cell--investment">$94,200</td>
-							<td class="table__cell table__cell--date">15/12/2024</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-25012025-0022</td>
-							<td class="table__cell table__cell--name">Frijoles Orgánicos</td>
-							<td class="table__cell table__cell--crop">Frijol</td>
-							<td class="table__cell table__cell--cycle">Otoño-Invierno</td>
-							<td class="table__cell table__cell--responsible">Marco Vega</td>
-							<td class="table__cell table__cell--investment">$35,600</td>
-							<td class="table__cell table__cell--date">25/01/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--inactive">Inactivo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--enable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-						<tr class="table__row">
-							<td class="table__cell table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox" />
-							</td>
-							<td class="table__cell table__cell--id">PROD-08032025-0023</td>
-							<td class="table__cell table__cell--name">Aguacate Premium</td>
-							<td class="table__cell table__cell--crop">Aguacate</td>
-							<td class="table__cell table__cell--cycle">Anual</td>
-							<td class="table__cell table__cell--responsible">
-								Patricia Guzmán
-							</td>
-							<td class="table__cell table__cell--investment">$128,400</td>
-							<td class="table__cell table__cell--date">08/03/2025</td>
-							<td class="table__cell table__cell--status">
-								<span class="badge badge--active">Activo</span>
-							</td>
-							<td class="table__cell table__cell--actions">
-								<button class="table__action-button table__action-button--view">
-									<span class="material-symbols-outlined">visibility</span>
-								</button>
-								<button class="table__action-button table__action-button--edit">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button
-									class="table__action-button table__action-button--disable"
-								>
-									<span class="material-symbols-outlined"
-										>power_settings_new</span
-									>
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
 
-				
-				<div class="pagination">
-					<div class="pagination__info">
-						Mostrando <span class="pagination__current-page">1</span> a
-						<span class="pagination__items-per-page">10</span> de
-						<span class="pagination__total-items">24</span> resultados
+							<div class="modal-column">
+								<div class="info-section">
+									<h3 class="info-section__title">
+										<span class="material-symbols-outlined info-section__icon">calendar_month</span>
+										Fechas
+									</h3>
+									<div class="info-section__content">
+										<div class="info-item">
+											<span class="info-item__label">Inicio</span>
+											<span class="info-item__value" id="viewStartDate">01/04/2025</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Fin esperado</span>
+											<span class="info-item__value" id="viewEndDate">15/09/2025</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Duración Total</span>
+											<span class="info-item__value" id="viewDuration">168 días</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Días Restantes</span>
+											<span class="info-item__value" id="viewDaysLeft">120 días</span>
+										</div>
+									</div>
+								</div>
+								<div class="info-section">
+									<h3 class="info-section__title">
+										<span class="material-symbols-outlined info-section__icon">attach_money</span>
+										Financiero
+									</h3>
+									<div class="info-section__content">
+										<div class="info-item">
+											<span class="info-item__label">Inversión</span>
+											<span class="info-item__value" id="viewInvestment">$58,000</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Retorno esperado</span>
+											<span class="info-item__value" id="viewExpectedReturn">$92,800</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">ROI estimado</span>
+											<span class="info-item__value" id="viewROI">60%</span>
+										</div>
+										<div class="info-item">
+											<span class="info-item__label">Costo por Hectárea</span>
+											<span class="info-item__value" id="viewCostPerHectare">$1,289</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="pagination__controls">
-						<button
-							class="pagination__button pagination__button--prev"
-						>
-							<span class="material-symbols-outlined">navigate_before</span>
-						</button>
-						<button class="pagination__button pagination__button--active">
-							1
-						</button>
-						<button class="pagination__button">2</button>
-						<button class="pagination__button">3</button>
-						<button class="pagination__button">4</button>
-						<button class="pagination__button">5</button>
-						<button class="pagination__button pagination__button--next">
-							<span class="material-symbols-outlined">navigate_next</span>
-						</button>
+
+					<!-- Panel de Sensores -->
+					<div class="modal__panel" data-panel="sensores">
+						<div class="sensors-grid" id="sensoresContent">
+							<!-- Se llenará dinámicamente -->
+						</div>
+					</div>
+
+					<!-- Panel de Insumos -->
+					<div class="modal__panel" data-panel="insumos">
+						<div class="supplies-grid" id="insumosContent">
+							<!-- Se llenará dinámicamente -->
+						</div>
 					</div>
 				</div>
 			</div>
-		</main>
-	</body>
+		</div>
+
+		<!-- Modal de Reporte -->
+		<div class="modal" id="reportModal">
+			<div class="modal__content">
+				<div class="modal__header modal__header--confirm">
+					<h2 class="modal__title">Generar Reporte</h2>
+					<span class="modal__close" id="closeReportModal">
+						<span class="material-symbols-outlined">close</span>
+					</span>
+				</div>
+				<div class="modal__body">
+					<form id="reportForm" class="form">
+						<div class="form-field">
+							<label class="form-field__label">Formato</label>
+							<select class="form-field__select" id="reportFormat">
+								<option value="excel">Excel (.xlsx)</option>
+								<option value="pdf">PDF</option>
+								<option value="csv">CSV</option>
+							</select>
+						</div>
+						<div class="form-field">
+							<label class="form-field__label">Incluir</label>
+							<div class="form-field__checkbox-group">
+								<label class="checkbox">
+									<input type="checkbox" checked id="includeInactive" />
+									Producciones inactivas
+								</label>
+								<label class="checkbox">
+									<input type="checkbox" checked id="includeDetails" />
+									Detalles completos
+								</label>
+								<label class="checkbox">
+									<input type="checkbox" id="includeSensors" />
+									Datos de sensores
+								</label>
+								<label class="checkbox">
+									<input type="checkbox" id="includeSupplies" />
+									Uso de insumos
+								</label>
+							</div>
+						</div>
+						<div class="form-field">
+							<p id="confirmMessage" class="modal__confirm-message">
+								¿Está seguro que desea generar el reporte con estas configuraciones?
+							</p>
+						</div>
+					</form>
+				</div>
+				<div class="modal__footer modal__footer--confirm">
+					<button class="button button--secondary" id="cancelReportBtn">
+						Cancelar
+					</button>
+					<button class="button button--primary" id="generateReportBtn">
+						Generar
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="table-container">
+			<table class="table">
+				<thead class="table__head">
+					<tr class="table__row table__row--header">
+						<th class="table__cell table__cell--header table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox-header" />
+						</th>
+						<th class="table__cell table__cell--header">ID</th>
+						<th class="table__cell table__cell--header">Nombre</th>
+						<th class="table__cell table__cell--header">Cultivo</th>
+						<th class="table__cell table__cell--header">Ciclo</th>
+						<th class="table__cell table__cell--header">Responsable</th>
+						<th class="table__cell table__cell--header">Inversión</th>
+						<th class="table__cell table__cell--header">Fecha Inicio</th>
+						<th class="table__cell table__cell--header">Estado</th>
+						<th class="table__cell table__cell--header table__cell--actions">
+							Acciones
+						</th>
+					</tr>
+				</thead>
+				<tbody class="table__body">
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-01042025-0001</td>
+						<td class="table__cell table__cell--name">
+							Maíz Orgánico Zona Norte
+						</td>
+						<td class="table__cell table__cell--crop">Maíz</td>
+						<td class="table__cell table__cell--cycle">Primavera-Verano</td>
+						<td class="table__cell table__cell--responsible">Juan Pérez</td>
+						<td class="table__cell table__cell--investment">$58,000</td>
+						<td class="table__cell table__cell--date">01/04/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-15032025-0002</td>
+						<td class="table__cell table__cell--name">
+							Trigo Premium Lote 5
+						</td>
+						<td class="table__cell table__cell--crop">Trigo</td>
+						<td class="table__cell table__cell--cycle">Otoño-Invierno</td>
+						<td class="table__cell table__cell--responsible">María García</td>
+						<td class="table__cell table__cell--investment">$72,000</td>
+						<td class="table__cell table__cell--date">15/03/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-10022025-0003</td>
+						<td class="table__cell table__cell--name">Soja Experimental</td>
+						<td class="table__cell table__cell--crop">Soja</td>
+						<td class="table__cell table__cell--cycle">Anual</td>
+						<td class="table__cell table__cell--responsible">
+							Carlos Rodríguez
+						</td>
+						<td class="table__cell table__cell--investment">$95,000</td>
+						<td class="table__cell table__cell--date">10/02/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--inactive">Inactivo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--enable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-20012025-0004</td>
+						<td class="table__cell table__cell--name">Girasol Híbrido</td>
+						<td class="table__cell table__cell--crop">Girasol</td>
+						<td class="table__cell table__cell--cycle">Primavera-Verano</td>
+						<td class="table__cell table__cell--responsible">Juan Pérez</td>
+						<td class="table__cell table__cell--investment">$45,000</td>
+						<td class="table__cell table__cell--date">20/01/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-05122024-0005</td>
+						<td class="table__cell table__cell--name">Arroz Irrigado</td>
+						<td class="table__cell table__cell--crop">Arroz</td>
+						<td class="table__cell table__cell--cycle">Anual</td>
+						<td class="table__cell table__cell--responsible">María García</td>
+						<td class="table__cell table__cell--investment">$110,000</td>
+						<td class="table__cell table__cell--date">05/12/2024</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-28022025-0006</td>
+						<td class="table__cell table__cell--name">Algodón Orgánico</td>
+						<td class="table__cell table__cell--crop">Algodón</td>
+						<td class="table__cell table__cell--cycle">Primavera-Verano</td>
+						<td class="table__cell table__cell--responsible">
+							Roberto Torres
+						</td>
+						<td class="table__cell table__cell--investment">$86,500</td>
+						<td class="table__cell table__cell--date">28/02/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-15112024-0007</td>
+						<td class="table__cell table__cell--name">Avena Premium</td>
+						<td class="table__cell table__cell--crop">Avena</td>
+						<td class="table__cell table__cell--cycle">Otoño-Invierno</td>
+						<td class="table__cell table__cell--responsible">
+							Laura Fernández
+						</td>
+						<td class="table__cell table__cell--investment">$42,800</td>
+						<td class="table__cell table__cell--date">15/11/2024</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--inactive">Inactivo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--enable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-10032025-0008</td>
+						<td class="table__cell table__cell--name">Olivo Ecológico</td>
+						<td class="table__cell table__cell--crop">Olivo</td>
+						<td class="table__cell table__cell--cycle">Anual</td>
+						<td class="table__cell table__cell--responsible">
+							Miguel Sánchez
+						</td>
+						<td class="table__cell table__cell--investment">$125,000</td>
+						<td class="table__cell table__cell--date">10/03/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-22012025-0009</td>
+						<td class="table__cell table__cell--name">Papa Andina</td>
+						<td class="table__cell table__cell--crop">Papa</td>
+						<td class="table__cell table__cell--cycle">Primavera-Verano</td>
+						<td class="table__cell table__cell--responsible">Ana Martínez</td>
+						<td class="table__cell table__cell--investment">$38,900</td>
+						<td class="table__cell table__cell--date">22/01/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-05042025-0010</td>
+						<td class="table__cell table__cell--name">Café de Altura</td>
+						<td class="table__cell table__cell--crop">Café</td>
+						<td class="table__cell table__cell--cycle">Anual</td>
+						<td class="table__cell table__cell--responsible">Javier López</td>
+						<td class="table__cell table__cell--investment">$94,200</td>
+						<td class="table__cell table__cell--date">05/04/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-17032025-0011</td>
+						<td class="table__cell table__cell--name">
+							Cítricos de Exportación
+						</td>
+						<td class="table__cell table__cell--crop">Naranja</td>
+						<td class="table__cell table__cell--cycle">Anual</td>
+						<td class="table__cell table__cell--responsible">
+							Diana Morales
+						</td>
+						<td class="table__cell table__cell--investment">$105,800</td>
+						<td class="table__cell table__cell--date">17/03/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-09122024-0012</td>
+						<td class="table__cell table__cell--name">Frutillas del Valle</td>
+						<td class="table__cell table__cell--crop">Frutilla</td>
+						<td class="table__cell table__cell--cycle">Primavera-Verano</td>
+						<td class="table__cell table__cell--responsible">Lucía Valdez</td>
+						<td class="table__cell table__cell--investment">$63,700</td>
+						<td class="table__cell table__cell--date">09/12/2024</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--inactive">Inactivo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--enable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-18022025-0013</td>
+						<td class="table__cell table__cell--name">Maní Selecto</td>
+						<td class="table__cell table__cell--crop">Maní</td>
+						<td class="table__cell table__cell--cycle">Otoño-Invierno</td>
+						<td class="table__cell table__cell--responsible">
+							Ramón Fuentes
+						</td>
+						<td class="table__cell table__cell--investment">$54,200</td>
+						<td class="table__cell table__cell--date">18/02/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-30102024-0014</td>
+						<td class="table__cell table__cell--name">Palto Orgánico</td>
+						<td class="table__cell table__cell--crop">Palta</td>
+						<td class="table__cell table__cell--cycle">Anual</td>
+						<td class="table__cell table__cell--responsible">
+							Carolina Vega
+						</td>
+						<td class="table__cell table__cell--investment">$148,300</td>
+						<td class="table__cell table__cell--date">30/10/2024</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-15022025-0015</td>
+						<td class="table__cell table__cell--name">Algodón Premium</td>
+						<td class="table__cell table__cell--crop">Algodón</td>
+						<td class="table__cell table__cell--cycle">Primavera-Verano</td>
+						<td class="table__cell table__cell--responsible">
+							Sofía Mendoza
+						</td>
+						<td class="table__cell table__cell--investment">$87,400</td>
+						<td class="table__cell table__cell--date">15/02/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-03032025-0016</td>
+						<td class="table__cell table__cell--name">Girasol Zona Este</td>
+						<td class="table__cell table__cell--crop">Girasol</td>
+						<td class="table__cell table__cell--cycle">Primavera-Verano</td>
+						<td class="table__cell table__cell--responsible">Daniel Rojas</td>
+						<td class="table__cell table__cell--investment">$42,300</td>
+						<td class="table__cell table__cell--date">03/03/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-18122024-0017</td>
+						<td class="table__cell table__cell--name">Cítricos del Valle</td>
+						<td class="table__cell table__cell--crop">Naranja</td>
+						<td class="table__cell table__cell--cycle">Anual</td>
+						<td class="table__cell table__cell--responsible">Valeria Soto</td>
+						<td class="table__cell table__cell--investment">$67,100</td>
+						<td class="table__cell table__cell--date">18/12/2024</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-05012025-0018</td>
+						<td class="table__cell table__cell--name">Tomate Hidropónico</td>
+						<td class="table__cell table__cell--crop">Tomate</td>
+						<td class="table__cell table__cell--cycle">Primavera-Verano</td>
+						<td class="table__cell table__cell--responsible">
+							Ricardo Paredes
+						</td>
+						<td class="table__cell table__cell--investment">$76,500</td>
+						<td class="table__cell table__cell--date">05/01/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--inactive">Inactivo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--enable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-20022025-0019</td>
+						<td class="table__cell table__cell--name">Quinua Orgánica</td>
+						<td class="table__cell table__cell--crop">Quinua</td>
+						<td class="table__cell table__cell--cycle">Otoño-Invierno</td>
+						<td class="table__cell table__cell--responsible">
+							Gloria Herrera
+						</td>
+						<td class="table__cell table__cell--investment">$52,800</td>
+						<td class="table__cell table__cell--date">20/02/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-10032025-0020</td>
+						<td class="table__cell table__cell--name">Frutillas Premium</td>
+						<td class="table__cell table__cell--crop">Fresa</td>
+						<td class="table__cell table__cell--cycle">Primavera-Verano</td>
+						<td class="table__cell table__cell--responsible">
+							Martina Torres
+						</td>
+						<td class="table__cell table__cell--investment">$43,900</td>
+						<td class="table__cell table__cell--date">10/03/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-15122024-0021</td>
+						<td class="table__cell table__cell--name">Arándanos Selectos</td>
+						<td class="table__cell table__cell--crop">Arándano</td>
+						<td class="table__cell table__cell--cycle">Anual</td>
+						<td class="table__cell table__cell--responsible">
+							Luisa Morales
+						</td>
+						<td class="table__cell table__cell--investment">$94,200</td>
+						<td class="table__cell table__cell--date">15/12/2024</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-25012025-0022</td>
+						<td class="table__cell table__cell--name">Frijoles Orgánicos</td>
+						<td class="table__cell table__cell--crop">Frijol</td>
+						<td class="table__cell table__cell--cycle">Otoño-Invierno</td>
+						<td class="table__cell table__cell--responsible">Marco Vega</td>
+						<td class="table__cell table__cell--investment">$35,600</td>
+						<td class="table__cell table__cell--date">25/01/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--inactive">Inactivo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--enable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="table__row">
+						<td class="table__cell table__cell--checkbox">
+							<input type="checkbox" class="table__checkbox" />
+						</td>
+						<td class="table__cell table__cell--id">PROD-08032025-0023</td>
+						<td class="table__cell table__cell--name">Aguacate Premium</td>
+						<td class="table__cell table__cell--crop">Aguacate</td>
+						<td class="table__cell table__cell--cycle">Anual</td>
+						<td class="table__cell table__cell--responsible">
+							Patricia Guzmán
+						</td>
+						<td class="table__cell table__cell--investment">$128,400</td>
+						<td class="table__cell table__cell--date">08/03/2025</td>
+						<td class="table__cell table__cell--status">
+							<span class="badge badge--active">Activo</span>
+						</td>
+						<td class="table__cell table__cell--actions">
+							<button class="table__action-button table__action-button--view">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+							<button class="table__action-button table__action-button--edit">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="table__action-button table__action-button--disable">
+								<span class="material-symbols-outlined">power_settings_new</span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- Controles de paginación -->
+			<div class="pagination">
+				<button class="pagination__button pagination__button--prev">Anterior</button>
+				<span class="pagination__info"></span>
+				<button class="pagination__button pagination__button--next">Siguiente</button>
+			</div>
+
+			<p class="table__count">
+				Cantidad neta de usuarios:
+				<span class="table__count-number">0</span>
+			</p>
+		</div>
+		</div>
+		<!-- Modal de Edición -->
+		<div class="modal" id="editModal">
+			<div class="modal__content">
+				<div class="modal__header">
+					<div class="modal__header-top">
+						<div class="modal__titles">
+							<h2 class="modal__title">Editar Producción</h2>
+							<p class="modal__subtitle">ID: <span id="editId"></span></p>
+						</div>
+						<button class="modal__close" id="closeEditModal">
+							<span class="material-symbols-outlined">close</span>
+						</button>
+					</div>
+				</div>
+
+				<div class="modal__body">
+					<form id="editForm" class="form">
+						<div class="form-grid">
+							<!-- Información General -->
+							<div class="form-section">
+								<h3 class="form-section__title">
+									<span class="material-symbols-outlined form-section__icon">info</span>
+									Información General
+								</h3>
+								<div class="form-section__content">
+									<div class="form-field">
+										<label class="form-field__label" for="editName">Nombre</label>
+										<input type="text" id="editName" class="form-field__input" required>
+									</div>
+									<div class="form-field">
+										<label class="form-field__label" for="editCropType">Tipo de Cultivo</label>
+										<select id="editCropType" class="form-field__select" required>
+											<option value="">Seleccionar...</option>
+											<option value="Maíz">Maíz</option>
+											<option value="Trigo">Trigo</option>
+											<option value="Soja">Soja</option>
+											<option value="Girasol">Girasol</option>
+											<option value="Arroz">Arroz</option>
+											<option value="Algodón">Algodón</option>
+											<option value="Café">Café</option>
+											<option value="Caña">Caña de Azúcar</option>
+										</select>
+									</div>
+									<div class="form-field">
+										<label class="form-field__label" for="editCycle">Ciclo</label>
+										<select id="editCycle" class="form-field__select" required>
+											<option value="">Seleccionar...</option>
+											<option value="Primavera-Verano">Primavera-Verano</option>
+											<option value="Otoño-Invierno">Otoño-Invierno</option>
+											<option value="Anual">Anual</option>
+										</select>
+									</div>
+									<div class="form-field">
+										<label class="form-field__label" for="editArea">Área Total (hectáreas)</label>
+										<input type="number" id="editArea" class="form-field__input" min="0" step="0.1"
+											required>
+									</div>
+									<div class="form-field">
+										<label class="form-field__label" for="editStatus">Estado</label>
+										<select id="editStatus" class="form-field__select" required>
+											<option value="Activo">Activo</option>
+											<option value="Inactivo">Inactivo</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<!-- Personal -->
+							<div class="form-section">
+								<h3 class="form-section__title">
+									<span class="material-symbols-outlined form-section__icon">group</span>
+									Personal
+								</h3>
+								<div class="form-section__content">
+									<div class="form-field">
+										<label class="form-field__label" for="editResponsible">Responsable</label>
+										<input type="text" id="editResponsible" class="form-field__input" required>
+									</div>
+									<div class="form-field">
+										<label class="form-field__label" for="editSupervisor">Supervisor</label>
+										<input type="text" id="editSupervisor" class="form-field__input">
+									</div>
+									<div class="form-field">
+										<label class="form-field__label" for="editTechnician">Técnico</label>
+										<input type="text" id="editTechnician" class="form-field__input">
+									</div>
+									<div class="form-field">
+										<label class="form-field__label" for="editWorkers">Personal Asignado</label>
+										<input type="number" id="editWorkers" class="form-field__input" min="0">
+									</div>
+								</div>
+							</div>
+
+							<!-- Fechas -->
+							<div class="form-section">
+								<h3 class="form-section__title">
+									<span class="material-symbols-outlined form-section__icon">calendar_month</span>
+									Fechas
+								</h3>
+								<div class="form-section__content">
+									<div class="form-field">
+										<label class="form-field__label" for="editStartDate">Fecha de Inicio</label>
+										<input type="date" id="editStartDate" class="form-field__input" required>
+									</div>
+									<div class="form-field">
+										<label class="form-field__label" for="editEndDate">Fecha de Fin Esperada</label>
+										<input type="date" id="editEndDate" class="form-field__input">
+									</div>
+								</div>
+							</div>
+
+							<!-- Financiero -->
+							<div class="form-section">
+								<h3 class="form-section__title">
+									<span class="material-symbols-outlined form-section__icon">attach_money</span>
+									Financiero
+								</h3>
+								<div class="form-section__content">
+									<div class="form-field">
+										<label class="form-field__label" for="editInvestment">Inversión ($)</label>
+										<input type="number" id="editInvestment" class="form-field__input" min="0"
+											step="0.01" required>
+									</div>
+									<div class="form-field">
+										<label class="form-field__label" for="editExpectedReturn">Retorno Esperado
+											($)</label>
+										<input type="number" id="editExpectedReturn" class="form-field__input" min="0"
+											step="0.01">
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="modal__footer">
+					<button class="button button--secondary" id="cancelEditBtn">Cancelar</button>
+					<button class="button button--primary" id="saveEditBtn">Guardar Cambios</button>
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+
 </html>
