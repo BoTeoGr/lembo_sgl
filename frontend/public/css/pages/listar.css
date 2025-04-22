@@ -222,6 +222,11 @@ tbody tr {
 	font-size: var(--button-icon-size);
 }
 
+.actions__button a{
+	text-decoration: none;
+	color: var(--white);
+}
+
 .actions__button--secondary {
 	padding: 0.6rem 1.2rem;
 	border: 1px solid var(--gray-40);
