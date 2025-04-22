@@ -15,7 +15,7 @@ export function VerCiclosCultivo(req, res) {
 
         const offset = (pageNumber - 1) * limitNumber;
 
-        const countQuery = "SELECT COUNT(*) AS total FROM ciclo_cultivo WHERE estado = 'habilitado'";
+        const countQuery = "SELECT COUNT(*) AS total FROM ciclo_cultivo ";
 
         db.query(countQuery, (err, countResults) => {
             if (err) {
@@ -32,8 +32,7 @@ export function VerCiclosCultivo(req, res) {
 
             const query = `
                 SELECT * FROM ciclo_cultivo 
-                WHERE estado = 'habilitado' 
-                ORDER BY fecha_creacion DESC 
+                ORDER BY id ASC
                 LIMIT ? OFFSET ?`;
 
             db.query(query, [limitNumber, offset], (err, results) => {
