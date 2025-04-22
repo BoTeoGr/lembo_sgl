@@ -470,8 +470,15 @@ tbody tr {
     text-align: left;
 }
 
+.modal__links{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
 .modal__link{
 	text-decoration: none;
+	margin: 1rem;
 	/* Las propiedad de modal__link son las mismas de .actions__button*/
 }
 .modal__link:hover {
