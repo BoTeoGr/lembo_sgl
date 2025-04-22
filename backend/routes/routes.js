@@ -21,4 +21,8 @@ router.post('/cultivos', crearCultivo);
 // Rutas para ciclos de cultivo
 router.get('/ciclo_cultivo', VerCiclosCultivo);
 router.post('/ciclo_cultivo', crearCicloCultivo);
+// Rutas para producciones
+router.get('/producciones', VerProducciones);
+router.post('/producciones', crearProduccion);
+
 export default router
