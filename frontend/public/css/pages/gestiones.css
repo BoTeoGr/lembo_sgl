@@ -1263,7 +1263,7 @@ header {
 
 /* Table Styles */
 .table-container {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     border-radius: 0.5rem;
     overflow: hidden;
     border: 1px solid var(--gray-40);
@@ -1287,7 +1287,7 @@ header {
 }
 
 .table__row:hover {
-    background-color: var(--gray-20);
+    background-color: var(--green-50);
 }
 
 .table__cell {
@@ -1300,8 +1300,8 @@ header {
 .table__cell--header {
     padding: 0.75rem 1rem;
     font-weight: 600;
-    color: var(--gray-80);
-    background-color: var(--gray-20);
+    color: var(--secondary-green);
+    background-color: var(--green-200);
 }
 
 .table__body tr:last-child .table__cell {
@@ -1309,13 +1309,13 @@ header {
 }
 
 .table__cell--checkbox {
-    width: 40px;
+    width: 2.5rem;
     text-align: center;
 }
 
 .table__cell--actions {
     white-space: nowrap;
-    width: 120px;
+    width: 7.5rem;
     text-align: right;
 }
 
@@ -1365,7 +1365,7 @@ header {
 }
 
 .table__action-button:hover {
-    background-color: var(--gray-20);
+    background-color: var(--green-100);
 }
 
 .table__action-button--view span,
@@ -1374,6 +1374,24 @@ header {
 .table__action-button--disable span {
     font-size: 1.125rem;
     font-variation-settings: 'FILL' 0, 'wght' 300;
+}
+
+.button--enable{
+    background-color: var(--green-700);
+    color: var(--white);
+}
+
+.button--enable:hover{
+    background-color: var(--green-600);
+}
+
+.button--disable{
+    background-color: var(--warning);
+    color: var(--white);
+}
+
+.button--disable:hover{
+    background-color: rgb(250, 203, 50);
 }
 
 .table__action-button--view span {
@@ -1385,7 +1403,7 @@ header {
 }
 
 .table__action-button--disable span {
-    color: var(--gray-80);
+    color: var(--warning);
 }
 
 .table__action-button--enable span {
@@ -1989,8 +2007,8 @@ header {
 }
 
 .badge--active {
-    background-color: var(--green-50);
-    color: var(--green-700);
+    background-color: var(--green-100);
+    color: var(--green-950);
 }
 
 .badge--active::before {
@@ -2002,7 +2020,7 @@ header {
 }
 
 .badge--inactive {
-    background-color: var(--gray-20);
+    background-color: var(--warning);
     color: var(--gray-100);
 }
 
