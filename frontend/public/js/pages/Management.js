@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const paginationTotalItems = document.querySelector('.pagination__total-items');
     
     // Configuración de paginación
-    const ITEMS_PER_PAGE = 7; // Número máximo de elementos por página
+    const ITEMS_PER_PAGE = 6; // Número máximo de elementos por página
     
     // Obtener todas las filas de la tabla
     const totalItems = allTableRows.length;
