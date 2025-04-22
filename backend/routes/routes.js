@@ -19,6 +19,6 @@ router.post('/insumos', crearInsumo);
 router.get('/cultivos', VerCultivos);
 router.post('/cultivos', crearCultivo);
 // Rutas para ciclos de cultivo
-router.get('/ciclos-cultivos', VerCiclosCultivo);
-router.post('/ciclos-cultivos', crearCicloCultivo);
+router.get('/ciclo_cultivo', VerCiclosCultivo);
+router.post('/ciclo_cultivo', crearCicloCultivo);
 export default router
