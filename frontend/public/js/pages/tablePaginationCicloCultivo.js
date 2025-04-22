@@ -42,10 +42,12 @@ async function fetchCiclosCultivo(page) {
     }
 }
 
+
+
 // Función para renderizar los datos de un ciclo de cultivo en el modal
 function renderCicloDetails(container, ciclo) {
     container.innerHTML = `
-        <p><strong>ID:</strong> ${ciclo.id}</p>
+        <p><strong>ID:</strong> ${ciclo.cicloCultivoId}</p>
         <p><strong>Nombre:</strong> ${ciclo.nombre}</p>
         <p><strong>Descripción:</strong> ${ciclo.descripcion}</p>
         <p><strong>Periodo Inicio:</strong> ${ciclo.periodo_inicio}</p>
@@ -65,10 +67,11 @@ function renderTable(ciclos) {
         row.classList.add("table__row");
 
         row.innerHTML = `
-            <td class="table__cell" data-Label="ID">${ciclo.id}</td>
+            <td class="table__cell" data-Label="ID">${ciclo.cicloCultivoId}</td>
             <td class="table__cell" data-Label="Nombre">${ciclo.nombre}</td>
             <td class="table__cell" data-Label="Periodo Inicio">${ciclo.periodo_inicio}</td>
             <td class="table__cell" data-Label="Periodo Final">${ciclo.periodo_final}</td>
+            <td class="table__cell" data-Label="Novedad">${ciclo.novedades}</td>
             <td class="table__cell" data-Label="Estado">
                 <span class="table__status table__status--${ciclo.estado === "habilitado" ? "enabled" : "disabled"}"></span>
                 <span class="status-text">${ciclo.estado}</span>
