@@ -22,48 +22,47 @@
         <nav class="nav-render"></nav>
 		<main class="container">
 			<div class="card main-card">
-				<div class="card-header">
-					<h1>Asociación Cultivo: Tomate Roma</h1>
+				<div class="card__header">
+					<h1 class="card__header-title">Asociación Cultivo: Tomate Roma</h1>
 				</div>
-				<div class="card-content">
+				<div class="card__content">
 					<div class="grid-layout">
 						<!-- Columna de imagen -->
 						<div class="image-column">
-							<div class="crop-image">
+							<div class="crop__image">
 								<img
+									class="crop__image-img"
 									src="https://www.rocalba.es/blog/wp-content/uploads/cultivos-cosecha-rapida-950x500.jpg"
 									alt="Imagen del cultivo"
 								/>
 							</div>
-							<button id="btnAgregarIntegracion" class="btn btn-primary">
-								<i class="fas fa-plus-circle"></i> Agregar Integración
-							</button>
-
-							<button id="btnEliminarIntegracion" class="btn btn-danger">
-								<i class="fas fa-trash-alt"></i> Eliminar Integración
+							<button id="btnAgregarIntegracion" class="btn btn--primary">
+								<i class="fas fa-plus-circle btn--primary-icon"></i> Agregar Integración
 							</button>
 						</div>
 
 						<!-- Columna de listas -->
 						<div class="lists-column">
-							<div class="tabs">
-								<div class="tab-buttons">
-									<button class="tab-button" data-tab="insumos">
-										Lista Insumo
+							<div class="tab">
+								<div class="tab__buttons">
+									<!-- Cambiar el orden y el estado activo inicial -->
+									<button class="tab__button tab__button--active" data-tab="sensores">
+										Lista Sensores
 									</button>
-									<button class="tab-button active" data-tab="sensores">
-										Lista Sensor
+									<button class="tab__button" data-tab="insumos">
+										Lista Insumos
 									</button>
 								</div>
-								<div class="tab-content">
-									<div id="insumos" class="tab-pane">
-										<ul class="integration-list" id="insumosList">
-											<!-- Los insumos se cargarán dinámicamente aquí -->
+								<div class="tab__content">
+									<!-- Cambiar el orden para que coincida con los botones -->
+									<div id="sensores" class="tab__pane tab__pane--active">
+										<ul class="integration__list" id="sensoresList">
+											<!-- Los sensores se cargarán dinámicamente aquí -->
 										</ul>
 									</div>
-									<div id="sensores" class="tab-pane active">
-										<ul class="integration-list" id="sensoresList">
-											<!-- Los sensores se cargarán dinámicamente aquí -->
+									<div id="insumos" class="tab__pane">
+										<ul class="integration__list" id="insumosList">
+											<!-- Los insumos se cargarán dinámicamente aquí -->
 										</ul>
 									</div>
 								</div>
@@ -73,10 +72,10 @@
 
 					<!-- Sección de lecturas de sensores -->
 					<div class="card sensor-readings">
-						<div class="card-header">
-							<h2>Lecturas Sensores</h2>
+						<div class="card__header">
+							<h2 class="card__header-title">Lecturas Sensores</h2>
 						</div>
-						<div class="card-content">
+						<div class="card__content">
 							<div class="readings-grid" id="lecturasGrid">
 								<!-- Las lecturas se cargarán dinámicamente aquí -->
 							</div>
@@ -85,55 +84,55 @@
 
 					<!-- Sección de ciclo de cultivo -->
 					<div class="card crop-cycle">
-						<div class="card-header">
-							<h2>Ciclo de Cultivo</h2>
+						<div class="card__header">
+							<h2 class="card__header-title">Ciclo de Cultivo</h2>
 						</div>
-						<div class="card-content">
+						<div class="card__content">
 							<div class="cycle-info">
-								<div class="cycle-status">
-									<div class="cycle-phase">
-										<span class="phase-label">Fase actual:</span>
-										<span class="phase-value" id="currentPhase">Crecimiento</span>
+								<div class="cycle__status">
+									<div class="cycle__phase">
+										<span class="cycle__status-phase-label">Fase actual:</span>
+										<span class="cycle__status-phase-value" id="currentPhase">Crecimiento</span>
 									</div>
-									<div class="cycle-progress">
-										<div class="progress-bar">
-											<div class="progress-fill" id="cycleProgress" style="width: 45%"></div>
+									<div class="cycle__progress">
+										<div class="progress__bar">
+											<div class="progress__fill" id="cycleProgress" style="width: 45%"></div>
 										</div>
-										<div class="progress-labels">
-											<span>Siembra</span>
-											<span>Crecimiento</span>
-											<span>Floración</span>
-											<span>Fructificación</span>
-											<span>Cosecha</span>
+										<div class="progress__labels">
+											<span class="progress__labels-item">Siembra</span>
+											<span class="progress__labels-item">Crecimiento</span>
+											<span class="progress__labels-item">Floración</span>
+											<span class="progress__labels-item">Fructificación</span>
+											<span class="progress__labels-item">Cosecha</span>
 										</div>
 									</div>
 								</div>
-								<div class="cycle-details">
-									<div class="cycle-detail">
-										<i class="fas fa-calendar-alt"></i>
+								<div class="cycle__details">
+									<div class="cycle__detail">
+										<i class="fas fa-calendar-alt cycle__detail-icon"></i>
 										<div>
-											<span class="detail-label">Fecha de siembra:</span>
-											<span class="detail-value" id="seedingDate">15/01/2023</span>
+											<span class="cycle__detail-label">Fecha de siembra:</span>
+											<span class="cycle__detail-value" id="seedingDate">15/01/2023</span>
 										</div>
 									</div>
-									<div class="cycle-detail">
-										<i class="fas fa-hourglass-half"></i>
+									<div class="cycle__detail">
+										<i class="fas fa-hourglass-half cycle__detail-icon"></i>
 										<div>
-											<span class="detail-label">Días transcurridos:</span>
-											<span class="detail-value" id="daysPassed">75 días</span>
+											<span class="cycle__detail-label">Días transcurridos:</span>
+											<span class="cycle__detail-value" id="daysPassed">75 días</span>
 										</div>
 									</div>
-									<div class="cycle-detail">
-										<i class="fas fa-calendar-check"></i>
+									<div class="cycle__detail">
+										<i class="fas fa-calendar-check cycle__detail-icon"></i>
 										<div>
-											<span class="detail-label">Cosecha estimada:</span>
-											<span class="detail-value" id="harvestDate">30/05/2023</span>
+											<span class="cycle__detail-label">Cosecha estimada:</span>
+											<span class="cycle__detail-value" id="harvestDate">30/05/2023</span>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="cycle-actions">
-								<button id="btnUpdateCycle" class="btn btn-primary">
+							<div class="cycle__actions">
+								<button id="btnUpdateCycle" class="btn btn--primary">
 									<i class="fas fa-sync-alt"></i> Actualizar Ciclo
 								</button>
 							</div>
@@ -145,69 +144,72 @@
 
 		<!-- Modal para agregar integración -->
 		<div id="integrationModal" class="modal">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h2>Agregar Nueva Integración</h2>
-					<span class="close">&times;</span>
+			<div class="modal__content">
+				<div class="modal__header">
+					<h2 class="modal__header-title">Agregar Nueva Integración</h2>
+					<span class="modal__close">&times;</span>
 				</div>
-				<div class="modal-body">
+				<div class="modal__body">
 					<form id="integrationForm">
 						<!-- Selector de tipo de integración -->
 						<div class="radio-group">
 							<div class="radio-option">
 								<input
+									class="radio-option__input"
 									type="radio"
 									id="sensorType"
 									name="integrationType"
 									value="sensor"
 									checked
 								/>
-								<label for="sensorType">
-									<i class="fas fa-thermometer-half"></i>
+								<label class="radio-option__label" for="sensorType">
+									<i class="fas fa-thermometer-half radio-option__label-icon radio-option__label-icon--sensor"></i>
 									<span>Sensor</span>
 								</label>
 							</div>
 							<div class="radio-option">
 								<input
+									class="radio-option__input"
 									type="radio"
 									id="insumoType"
 									name="integrationType"
 									value="insumo"
 								/>
-								<label for="insumoType">
-									<i class="fas fa-leaf"></i>
+								<label class="radio-option__label" for="insumoType">
+									<i class="fas fa-leaf radio-option__label-icon radio-option__label-icon--insumo"></i>
 									<span>Insumo</span>
 								</label>
 							</div>
 						</div>
 
 						<!-- Buscador -->
-						<div class="search-container">
-							<i class="fas fa-search"></i>
+						<div class="search__container">
+							<i class="fas fa-search search__icon"></i>
 							<input
 								type="text"
 								id="searchInput"
+								class="search__input"
 								placeholder="Buscar sensor por nombre, tipo o modelo..."
 							/>
 						</div>
 
 						<!-- Lista de elementos disponibles -->
-						<div class="selection-list" id="selectionList">
+						<div class="selection__list" id="selectionList">
 							<!-- Los elementos se cargarán dinámicamente aquí -->
 						</div>
 
 						<!-- Información del elemento seleccionado -->
 						<div id="selectedItemInfo" class="selected-item-info hidden">
-							<p class="title">Elemento seleccionado:</p>
-							<p id="selectedItemName" class="name"></p>
-							<p id="selectedItemDescription" class="description"></p>
+							<p class="selected-item-info__title">Elemento seleccionado:</p>
+							<p id="selectedItemName" class="selected-item-info__name"></p>
+							<p id="selectedItemDescription" class="selected-item-info__description"></p>
 						</div>
 
-						<div class="form-actions">
-							<button type="button" id="btnCancel" class="btn btn-secondary">
+						<div class="form__actions">
+							<button type="button" id="btnCancel" class="btn btn--secondary">
 								Cancelar
 							</button>
-							<button type="submit" id="btnSave" class="btn btn-primary">
+							<button type="submit" id="btnSave" class="btn btn--primary">
 								Guardar
 							</button>
 						</div>
@@ -218,52 +220,53 @@
 
 		<!-- Toast para notificaciones -->
 		<div id="toast" class="toast hidden">
-			<div class="toast-content">
-				<i id="toastIcon" class="fas fa-check-circle"></i>
-				<div class="toast-message">
-					<span id="toastTitle" class="toast-title"></span>
-					<span id="toastDescription" class="toast-description"></span>
+			<div class="toast__content">
+				<i id="toastIcon" class="fas fa-check-circle toast__icon toast__icon--success"></i>
+				<div class="toast__message">
+					<span id="toastTitle" class="toast__title"></span>
+					<span id="toastDescription" class="toast__description"></span>
 				</div>
 			</div>
-			<div class="toast-progress"></div>
+			<div class="toast__progress"></div>
 		</div>
 
 		<!-- Modal para seleccionar ciclo de cultivo -->
 		<div id="cycleModal" class="modal">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h2>Seleccionar Ciclo de Cultivo</h2>
-					<span class="close">&times;</span>
+			<div class="modal__content">
+				<div class="modal__header">
+					<h2 class="modal__header-title">Seleccionar Ciclo de Cultivo</h2>
+					<span class="modal__close">&times;</span>
 				</div>
-				<div class="modal-body">
+				<div class="modal__body">
 					<form id="cycleForm">
 						<!-- Buscador -->
-						<div class="search-container">
-							<i class="fas fa-search"></i>
+						<div class="search__container">
+							<i class="fas fa-search search__icon"></i>
 							<input
 								type="text"
 								id="searchCycleInput"
+								class="search__input"
 								placeholder="Buscar ciclo por nombre, tipo o variedad..."
 							/>
 						</div>
 
 						<!-- Lista de ciclos disponibles -->
-						<div class="selection-list" id="cycleSelectionList">
+						<div class="selection__list" id="cycleSelectionList">
 							<!-- Los ciclos se cargarán dinámicamente aquí -->
 						</div>
 
 						<!-- Información del ciclo seleccionado -->
 						<div id="selectedCycleInfo" class="selected-item-info hidden">
-							<p class="title">Ciclo seleccionado:</p>
-							<p id="selectedCycleName" class="name"></p>
-							<p id="selectedCycleDescription" class="description"></p>
+							<p class="selected-item-info__title">Ciclo seleccionado:</p>
+							<p id="selectedCycleName" class="selected-item-info__name"></p>
+							<p id="selectedCycleDescription" class="selected-item-info__description"></p>
 						</div>
 
-						<div class="form-actions">
-							<button type="button" id="btnCancelCycle" class="btn btn-secondary">
+						<div class="form__actions">
+							<button type="button" id="btnCancelCycle" class="btn btn--secondary">
 								Cancelar
 							</button>
-							<button type="submit" id="btnSaveCycle" class="btn btn-primary">
+							<button type="submit" id="btnSaveCycle" class="btn btn--primary">
 								Aplicar Ciclo
 							</button>
 						</div>

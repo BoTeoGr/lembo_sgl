@@ -46,7 +46,7 @@ body {
 }
 
 main {
-    padding: 1.5rem;
+    padding: 1rem;
     margin: 0 auto;
 }
 
@@ -957,6 +957,199 @@ header {
     font-size: 0.75rem;
 }
 
+/* Sensor Item */
+.sensor-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--gray-40);
+  gap: 1rem;
+}
+
+.sensor-item__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--gray-20);
+}
+
+.sensor-item__details {
+  flex: 1;
+}
+
+.sensor-item__name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--gray-100);
+  margin-bottom: 0.25rem;
+}
+
+.sensor-item__meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--gray-80);
+}
+
+.sensor-item__location,
+.sensor-item__interval {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sensor-item__status {
+  text-align: right;
+}
+
+.sensor-item__badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.sensor-item__badge--activo {
+  background-color: var(--green-100);
+  color: var(--green-950);
+}
+
+.sensor-item__badge--inactivo {
+  background-color: var(--gray-20);
+  color: var(--gray-80);
+}
+
+.sensor-item__date {
+  font-size: 0.75rem;
+  color: var(--gray-60);
+  margin-top: 0.25rem;
+}
+
+/* Insumo Item */
+.insumo-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--gray-40);
+  gap: 1rem;
+}
+
+.insumo-item__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--gray-20);
+}
+
+.insumo-item__details {
+  flex: 1;
+}
+
+.insumo-item__name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--gray-100);
+  margin-bottom: 0.25rem;
+}
+
+.insumo-item__meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--gray-80);
+}
+
+.insumo-item__model,
+.insumo-item__presentation,
+.insumo-item__unit {
+  display: inline-block;
+}
+
+.insumo-item__status {
+  text-align: right;
+}
+
+.insumo-item__usage {
+  font-size: 0.875rem;
+  color: var(--gray-80);
+  margin-bottom: 0.25rem;
+}
+
+.insumo-item__date {
+  font-size: 0.75rem;
+  color: var(--gray-60);
+}
+
+/* Reading Card */
+.reading-card {
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reading-card__icon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--gray-20);
+}
+
+.reading-card__details {
+  flex: 1;
+}
+
+.reading-card__name {
+  font-size: 0.875rem;
+  color: var(--gray-80);
+  margin-bottom: 0.25rem;
+}
+
+.reading-card__value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--gray-100);
+  margin-bottom: 0.25rem;
+}
+
+.reading-card__time {
+  font-size: 0.75rem;
+  color: var(--gray-60);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .sensor-item,
+  .insumo-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sensor-item__status,
+  .insumo-item__status {
+    text-align: left;
+    margin-top: 0.5rem;
+  }
+
+  .reading-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
 /* Estilos para Modales */
 .modal {
     position: fixed;
@@ -1415,7 +1608,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 0.5rem;
     border-top: 1px solid var(--gray-40);
     font-size: 0.875rem;
 }
@@ -2125,34 +2318,34 @@ header {
 }
 
 /* Estilos mejorados para modal de reporte */
-#reportModal .modal__content {
+.modal--report .modal__content {
     border-radius: 12px;
     background: linear-gradient(to bottom, var(--white), var(--gray-20));
     max-width: 550px;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
-#reportModal .modal__header {
+.modal--report .modal__header {
     background-color: var(--gray-20);
     border-bottom: 1px solid var(--gray-40);
     border-radius: 12px 12px 0 0;
     padding: 18px 20px;
 }
 
-#reportModal .modal__title {
+.modal--report .modal__title {
     font-size: 1.4rem;
     color: var(--gray-100);
 }
 
-#reportModal .modal__body {
+.modal--report .modal__body {
     padding: 25px;
 }
 
-#reportModal .form-field {
+.modal--report .form-field {
     margin-bottom: 20px;
 }
 
-#reportModal .form-field__label {
+.modal--report .form-field__label {
     font-size: 1rem;
     font-weight: 500;
     color: var(--gray-100);
@@ -2160,7 +2353,7 @@ header {
     display: block;
 }
 
-#reportModal .form-field__select {
+.modal--report .form-field__select {
     width: 100%;
     padding: 12px;
     border-radius: 6px;
@@ -2176,20 +2369,20 @@ header {
     background-size: 16px;
 }
 
-#reportModal .form-field__select:focus {
+.modal--report .form-field__select:focus {
     border-color: var(--secondary-blue);
     box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.15);
     outline: none;
 }
 
-#reportModal .form-field__checkbox-group {
+.modal--report .form-field__checkbox-group {
     display: flex;
     flex-direction: column;
     gap: 12px;
     margin-top: 5px;
 }
 
-#reportModal .checkbox {
+.checkbox {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -2198,7 +2391,7 @@ header {
     color: var(--gray-100);
 }
 
-#reportModal .checkbox input[type="checkbox"] {
+.checkbox__input {
     width: 18px;
     height: 18px;
     border-radius: 4px;
@@ -2211,12 +2404,12 @@ header {
     transition: all 0.2s;
 }
 
-#reportModal .checkbox input[type="checkbox"]:checked {
+.checkbox__input:checked {
     background-color: var(--green-950);
     border-color: var(--green-950);
 }
 
-#reportModal .checkbox input[type="checkbox"]:checked::after {
+.checkbox__input:checked::after {
     content: "";
     position: absolute;
     top: 40%;
@@ -2228,11 +2421,11 @@ header {
     border-bottom: 2px solid var(--white);
 }
 
-#reportModal .checkbox input[type="checkbox"]:focus {
+.checkbox__input:focus {
     box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.15);
 }
 
-#reportModal .modal__footer {
+.modal__footer {
     border-top: 1px solid var(--gray-40);
     padding: 20px;
     display: flex;
@@ -2240,7 +2433,7 @@ header {
     gap: 15px;
 }
 
-#cancelReportBtn {
+.button--cancel-report {
     background-color: var(--gray-20);
     color: var(--gray-80);
     padding: 10px 20px;
@@ -2250,11 +2443,11 @@ header {
     border: 1px solid var(--gray-40);
 }
 
-#cancelReportBtn:hover {
+.button--cancel-report:hover {
     background-color: var(--gray-40);
 }
 
-#generateReportBtn {
+.button--generate-report {
     background-color: var(--green-950);
     color: var(--white);
     padding: 10px 25px;
@@ -2265,29 +2458,13 @@ header {
     box-shadow: 0 2px 5px rgba(57, 169, 0, 0.3);
 }
 
-#generateReportBtn:hover {
+.button--generate-report:hover {
     background-color: var(--green-900);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(57, 169, 0, 0.4);
 }
 
-.modal__header--confirm {
-    background-color: var(--gray-20);
-    border-bottom: 1px solid var(--gray-40);
-    border-radius: 12px 12px 0 0;
-    padding: 18px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.modal__header--confirm .modal__title {
-    font-size: 1.3rem;
-    color: var(--gray-100);
-    margin: 0;
-}
-
-#closeConfirmModal {
+.modal__close--confirm {
     background-color: var(--gray-20);
     border-radius: 50%;
     width: 32px;
@@ -2299,12 +2476,12 @@ header {
     transition: all 0.2s;
 }
 
-#closeConfirmModal:hover {
+.modal__close--confirm:hover {
     background-color: var(--gray-40);
     transform: rotate(90deg);
 }
 
-#closeConfirmModal .material-symbols-outlined {
+.modal__close--confirm .material-symbols-outlined {
     font-size: 18px;
     color: var(--gray-80);
 }
@@ -2436,140 +2613,42 @@ header {
     overflow: hidden;
 }
 
-/* Media Queries */
+/* Responsive Design */
 @media screen and (max-width: 1200px) {
+
+    
     .modal-grid {
         grid-template-columns: 1fr;
+    }
+
+    .sensors-grid,
+    .supplies-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .button {
+        width: 100%;
+    }
+    .header {
+        flex-direction: column;
         gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .header__buttons {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
     }
 
     .form-row {
         flex-direction: column;
     }
 
-    .table-container {
-        overflow-x: auto;
-    }
-}
-
-@media screen and (max-width: 992px) {
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .header__buttons {
-        width: 100%;
-        justify-content: flex-start;
-    }
-
     .filters__content {
         flex-direction: column;
-    }
-
-    .sensors-grid,
-    .supplies-grid,
-    .selected-sensors,
-    .selected-insumos {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    }
-
-    .table {
-        font-size: 0.8125rem;
-    }
-
-    .table__cell {
-        padding: 0.75rem 0.5rem;
-    }
-
-    .table__cell--actions {
-        width: 100px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    main {
-        padding: 1rem;
-    }
-
-    .actions-bar {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-
-    .actions-bar__selection {
-        width: 100%;
-        margin-bottom: 0.5rem;
-    }
-
-    .pagination {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .form-section {
-        padding: 1rem;
-    }
-
-    .modal__content {
-        width: 95%;
-        margin: 1rem;
-    }
-
-    .table-container {
-        margin-top: 1rem;
-        border-radius: 0.375rem;
-    }
-
-    .table {
-        display: block;
-        white-space: nowrap;
-    }
-
-    .table__head {
-        position: sticky;
-        left: 0;
-        z-index: 1;
-    }
-
-    .table__cell {
-        min-width: 120px;
-        max-width: 200px;
-    }
-
-    .table__cell--checkbox {
-        position: sticky;
-        left: 0;
-        background: var(--white);
-        min-width: 40px;
-        z-index: 2;
-    }
-
-    .table__cell--id {
-        position: sticky;
-        left: 40px;
-        background: var(--white);
-        z-index: 2;
-    }
-
-    .table__cell--actions {
-        position: sticky;
-        right: 0;
-        background: var(--white);
-        z-index: 2;
-    }
-}
-
-@media screen and (max-width: 576px) {
-    .header__buttons {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .button {
-        width: 100%;
     }
 
     .filters__date-container {
@@ -2577,128 +2656,190 @@ header {
         align-items: flex-start;
     }
 
-    .filters__date {
-        width: 100%;
-    }
-
-    .table__cell {
-        padding: 0.5rem;
-    }
-
-    .table__action-button {
-        width: 24px;
-        height: 24px;
-    }
-
-    .table__action-button span {
-        font-size: 1rem;
-    }
-
     .actions-bar {
         flex-direction: column;
-        align-items: stretch;
+        gap: 0.75rem;
     }
 
-    .actions-bar button {
+    .actions-bar__selection {
         width: 100%;
     }
 
-    .sensor-card,
-    .insumo-card {
-        margin: 0.5rem 0;
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .table {
+        min-width: 768px;
+    }
+
+    .modal__content {
+        width: 95%;
+        margin: 1rem;
+        max-height: 90vh;
+    }
+
+    .create-tabs {
+        flex-wrap: wrap;
+    }
+
+    .selected-sensors,
+    .selected-insumos {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .button {
+        width: 100%;
+    }
+
+    .button__link {
+        width: 100%;
+        justify-content: center;
     }
 
     .modal__header {
-        padding: 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
     }
 
     .modal__title {
         font-size: 1.25rem;
     }
 
-    .modal__tabs {
-        overflow-x: auto;
-        padding-bottom: 0.5rem;
+    .pagination {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
     }
 
-    .modal__tab {
-        padding: 0.5rem;
-        white-space: nowrap;
+    .pagination__controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .sensor-card-modal,
+    .supply-card-modal {
+        padding: 1rem;
+    }
+
+    .sensor-card-modal__reading-value {
+        font-size: 1.5rem;
     }
 }
 
-@media screen and (max-width: 400px) {
-    .header__title {
-        font-size: 1.25rem;
-    }
-
-    .filters__title {
-        font-size: 1rem;
-    }
-
-    .table__cell {
-        font-size: 0.75rem;
-        padding: 0.5rem 0.375rem;
-        min-width: 100px;
-    }
-
-    .badge {
-        font-size: 0.7rem;
-        padding: 0.25rem 0.5rem;
-    }
-
-    .modal__content {
-        margin: 0.5rem;
-    }
-
-    .info-section {
-        padding: 0.75rem;
-    }
-
-    .info-section__title {
-        font-size: 1rem;
-    }
+/* Estilos para la lista de integraciones */
+.integration__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-@media (hover: none) {
-    .button:hover,
-    .table__row:hover,
-    .sensor-card:hover,
-    .insumo-card:hover {
-        transform: none;
-    }
+.integration__item {
+  margin-bottom: 1rem;
 }
 
-@media print {
-    .header__buttons,
-    .filters,
-    .actions-bar,
-    .pagination,
-    .table__action-button,
-    .table__checkbox,
-    .table__checkbox-header {
-        display: none;
-    }
+.integration__item--empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--gray-60);
+}
 
-    .modal {
-        position: relative;
-        display: block;
-    }
+/* Estilos para las tarjetas de sensores */
+.sensor__card,
+.insumo__card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-    .modal__content {
-        box-shadow: none;
-    }
+.sensor__card:hover,
+.insumo__card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
 
-    .table-container {
-        border: none;
-        box-shadow: none;
-    }
+.sensor__icon,
+.insumo__icon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gray-20);
+  border-radius: 50%;
+}
 
-    .table__cell {
-        border-color: #000;
-    }
+.sensor__info,
+.insumo__info {
+  flex: 1;
+}
 
-    body {
-        background-color: white;
-    }
+.sensor__name,
+.insumo__name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-100);
+  margin: 0 0 0.5rem;
+}
+
+.sensor__meta,
+.insumo__meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--gray-80);
+  margin-bottom: 0.25rem;
+}
+
+.sensor__location,
+.sensor__interval,
+.insumo__type,
+.insumo__presentation,
+.insumo__unit {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.sensor__details {
+  font-size: 0.75rem;
+  color: var(--gray-60);
+}
+
+.sensor__status,
+.insumo__status {
+  text-align: right;
+}
+
+.sensor__badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.sensor__badge--active {
+  background-color: var(--green-100);
+  color: var(--green-950);
+}
+
+.sensor__badge--inactive {
+  background-color: var(--gray-20);
+  color: var(--gray-80);
+}
+
+.sensor__date,
+.insumo__date {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--gray-60);
 }

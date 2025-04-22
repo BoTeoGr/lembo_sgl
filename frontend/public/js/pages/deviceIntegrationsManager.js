@@ -107,7 +107,7 @@ const sensoresDisponibles = [
     icono: "tint",
     iconoColor: "#3b82f6",
     unidadMedida: "%",
-  }
+  },
 ]
 
 // Datos de insumos disponibles
@@ -252,19 +252,6 @@ let sensoresIntegrados = [
     icono: "wind",
     iconoColor: "#8b5cf6",
   },
-  {
-    id: "sd-009",
-    nombre: "Sensor de Humedad del Suelo",
-    tipo: "humedad",
-    ubicacion: "Parcela 1",
-    modelo: "YL-69",
-    fabricante: "Generic",
-    descripcion: "Sensor de humedad del suelo",
-    icono: "tint",
-    iconoColor: "#3b82f6",
-    unidadMedida: "%",
-    fechaCreacion: "15/01/2023",
-  }
 ]
 
 // Datos iniciales de insumos integrados
@@ -313,21 +300,6 @@ let insumosIntegrados = [
     insumoId: "id-005",
     icono: "tint",
     iconoColor: "#3b82f6",
-  },
-  {
-    id: "ins-4",
-    nombre: "Fertilizante NPK 20-20-20",
-    tipo: "fertilizante",
-    tipoIntegracion: "insumo",
-    modelo: "GrowPlus",
-    presentacion: "Granulado",
-    unidad: "kg",
-    ultimoUso: "12/03/2023",
-    fechaCreacion: "01/01/2023",
-    estado: "activo",
-    insumoId: "id-001",
-    icono: "leaf",
-    iconoColor: "#22c55e",
   },
 ]
 
@@ -398,10 +370,10 @@ const ciclosDisponibles = [
       { nombre: "Crecimiento", duracionDias: 30 },
       { nombre: "Floración", duracionDias: 25 },
       { nombre: "Fructificación", duracionDias: 35 },
-      { nombre: "Cosecha", duracionDias: 15 }
+      { nombre: "Cosecha", duracionDias: 15 },
     ],
     icono: "seedling",
-    iconoColor: "#22c55e"
+    iconoColor: "#22c55e",
   },
   {
     id: "ciclo-002",
@@ -419,10 +391,10 @@ const ciclosDisponibles = [
       { nombre: "Crecimiento", duracionDias: 28 },
       { nombre: "Floración", duracionDias: 20 },
       { nombre: "Fructificación", duracionDias: 35 },
-      { nombre: "Cosecha", duracionDias: 15 }
+      { nombre: "Cosecha", duracionDias: 15 },
     ],
     icono: "sun",
-    iconoColor: "#f59e0b"
+    iconoColor: "#f59e0b",
   },
   {
     id: "ciclo-003",
@@ -440,10 +412,10 @@ const ciclosDisponibles = [
       { nombre: "Crecimiento", duracionDias: 35 },
       { nombre: "Floración", duracionDias: 25 },
       { nombre: "Fructificación", duracionDias: 40 },
-      { nombre: "Cosecha", duracionDias: 15 }
+      { nombre: "Cosecha", duracionDias: 15 },
     ],
     icono: "leaf",
-    iconoColor: "#d97706"
+    iconoColor: "#d97706",
   },
   {
     id: "ciclo-004",
@@ -461,10 +433,10 @@ const ciclosDisponibles = [
       { nombre: "Crecimiento", duracionDias: 25 },
       { nombre: "Floración", duracionDias: 20 },
       { nombre: "Fructificación", duracionDias: 30 },
-      { nombre: "Cosecha", duracionDias: 15 }
+      { nombre: "Cosecha", duracionDias: 15 },
     ],
     icono: "seedling",
-    iconoColor: "#10b981"
+    iconoColor: "#10b981",
   },
   {
     id: "ciclo-005",
@@ -482,12 +454,12 @@ const ciclosDisponibles = [
       { nombre: "Crecimiento", duracionDias: 28 },
       { nombre: "Floración", duracionDias: 22 },
       { nombre: "Fructificación", duracionDias: 38 },
-      { nombre: "Cosecha", duracionDias: 15 }
+      { nombre: "Cosecha", duracionDias: 15 },
     ],
     icono: "seedling",
-    iconoColor: "#059669"
-  }
-];
+    iconoColor: "#059669",
+  },
+]
 
 // Modificar la variable cicloCultivo para incluir el ID del ciclo actual
 const cicloCultivo = {
@@ -497,7 +469,7 @@ const cicloCultivo = {
   faseActual: "Crecimiento",
   progresoFase: 35, // porcentaje
   fechaCosechaEstimada: "30/05/2023",
-  fases: ["Siembra", "Crecimiento", "Floración", "Fructificación", "Cosecha"]
+  fases: ["Siembra", "Crecimiento", "Floración", "Fructificación", "Cosecha"],
 }
 
 // Variables globales
@@ -505,93 +477,174 @@ let selectedSensor = null
 let selectedInsumo = null
 let currentIntegrationType = "sensor"
 let isDeleteMode = false
-let selectedCycle = null;
+let selectedCycle = null
 
-// Elementos DOM
-const modal = document.getElementById("integrationModal")
-const btnAgregarIntegracion = document.getElementById("btnAgregarIntegracion")
-const btnCancel = document.getElementById("btnCancel")
-const btnSave = document.getElementById("btnSave")
-const closeBtn = document.querySelector(".close")
-const searchInput = document.getElementById("searchInput")
-const selectionList = document.getElementById("selectionList")
-const selectedItemInfo = document.getElementById("selectedItemInfo")
-const selectedItemName = document.getElementById("selectedItemName")
-const selectedItemDescription = document.getElementById("selectedItemDescription")
-const integrationForm = document.getElementById("integrationForm")
-const toast = document.getElementById("toast")
-const toastTitle = document.getElementById("toastTitle")
-const toastDescription = document.getElementById("toastDescription")
-const toastIcon = document.getElementById("toastIcon")
-const sensoresList = document.getElementById("sensoresList")
-const insumosList = document.getElementById("insumosList")
-const lecturasGrid = document.getElementById("lecturasGrid")
-const btnEliminarIntegracion = document.getElementById("btnEliminarIntegracion")
-const modalTitle = document.querySelector(".modal-header h2")
+// Función para obtener elementos del DOM de forma segura
+function getElement(selector) {
+  const element = document.querySelector(selector)
+  if (!element) {
+    console.warn(`Elemento no encontrado: ${selector}`)
+    return null
+  }
+  return element
+}
 
-// Añadir después de la declaración de elementos DOM existentes
-
-// Elementos DOM para el modal de ciclo
-const cycleModal = document.getElementById("cycleModal")
-const btnUpdateCycle = document.getElementById("btnUpdateCycle")
-const btnCancelCycle = document.getElementById("btnCancelCycle")
-const btnSaveCycle = document.getElementById("btnSaveCycle")
-const closeCycleBtn = document.querySelector("#cycleModal .close")
-const searchCycleInput = document.getElementById("searchCycleInput")
-const cycleSelectionList = document.getElementById("cycleSelectionList")
-const selectedCycleInfo = document.getElementById("selectedCycleInfo")
-const selectedCycleName = document.getElementById("selectedCycleName")
-const selectedCycleDescription = document.getElementById("selectedCycleDescription")
-const cycleForm = document.getElementById("cycleForm")
+// Inicializar elementos DOM
+let modal,
+  btnAgregarIntegracion,
+  btnCancel,
+  btnSave,
+  closeBtn,
+  searchInput,
+  selectionList,
+  selectedItemInfo,
+  selectedItemName,
+  selectedItemDescription,
+  integrationForm,
+  toast,
+  toastTitle,
+  toastDescription,
+  toastIcon,
+  sensoresList,
+  insumosList,
+  lecturasGrid,
+  btnEliminarIntegracion,
+  modalTitle,
+  cycleModal,
+  btnUpdateCycle,
+  btnCancelCycle,
+  btnSaveCycle,
+  closeCycleBtn,
+  searchCycleInput,
+  cycleSelectionList,
+  selectedCycleInfo,
+  selectedCycleName,
+  selectedCycleDescription,
+  cycleForm
 
 // Inicializar la aplicación
 document.addEventListener("DOMContentLoaded", () => {
+  // Inicializar referencias a elementos DOM
+  initializeElements()
+
+  // Verificar si se encontraron los elementos necesarios
+  if (!sensoresList || !insumosList || !lecturasGrid) {
+    console.error("No se encontraron los elementos necesarios en el DOM")
+    return
+  }
+
   // Cargar datos iniciales
   renderSensoresIntegrados()
   renderInsumosIntegrados()
   renderLecturasSensores()
   renderCicloCultivo()
 
-  // Configurar eventos de tabs
+  // Configurar eventos
   setupTabs()
-
-  // Configurar eventos del modal
   setupModalEvents()
-
-  // Configurar evento para eliminar integraciones
   setupDeleteIntegrationEvent()
-  
-  // Configurar evento para actualizar ciclo
   setupUpdateCycleEvent()
 })
 
+// Función para inicializar referencias a elementos DOM
+function initializeElements() {
+  modal = getElement(".modal")
+  btnAgregarIntegracion = getElement("#btnAgregarIntegracion")
+  btnCancel = getElement("#btnCancel")
+  btnSave = getElement("#btnSave")
+  closeBtn = getElement(".modal__close")
+  searchInput = getElement("#searchInput")
+  selectionList = getElement("#selectionList")
+  selectedItemInfo = getElement("#selectedItemInfo")
+  selectedItemName = getElement("#selectedItemName")
+  selectedItemDescription = getElement("#selectedItemDescription")
+  integrationForm = getElement("#integrationForm")
+  toast = getElement("#toast")
+  toastTitle = getElement("#toastTitle")
+  toastDescription = getElement("#toastDescription")
+  toastIcon = getElement("#toastIcon")
+  sensoresList = getElement("#sensoresList")
+  insumosList = getElement("#insumosList")
+  lecturasGrid = getElement("#lecturasGrid")
+  btnEliminarIntegracion = getElement("#btnEliminarIntegracion")
+  modalTitle = getElement(".modal__header-title")
+
+  // Elementos para el modal de ciclo
+  cycleModal = getElement("#cycleModal")
+  btnUpdateCycle = getElement("#btnUpdateCycle")
+  btnCancelCycle = getElement("#btnCancelCycle")
+  btnSaveCycle = getElement("#btnSaveCycle")
+  closeCycleBtn = getElement("#cycleModal .modal__close")
+  searchCycleInput = getElement("#searchCycleInput")
+  cycleSelectionList = getElement("#cycleSelectionList")
+  selectedCycleInfo = getElement("#selectedCycleInfo")
+  selectedCycleName = getElement("#selectedCycleName")
+  selectedCycleDescription = getElement("#selectedCycleDescription")
+  cycleForm = getElement("#cycleForm")
+}
+
 // Función para renderizar sensores integrados
 function renderSensoresIntegrados() {
+  if (!sensoresList) return
+
   sensoresList.innerHTML = ""
+
+  if (sensoresIntegrados.length === 0) {
+    sensoresList.innerHTML = `
+      <li class="integration__item integration__item--empty">
+        <p>No hay sensores integrados</p>
+      </li>`
+    return
+  }
 
   sensoresIntegrados.forEach((sensor) => {
     const li = document.createElement("li")
-    li.className = "integration-item"
+    li.className = "integration__item sensor"
     li.dataset.id = sensor.id
 
     li.innerHTML = `
-            <div class="integration-icon sensor">
-                <i class="fas fa-${sensor.icono}" style="color: ${sensor.iconoColor}"></i>
-            </div>
-            <div class="integration-details">
-                <div class="integration-name">${sensor.nombre}</div>
-                <div class="integration-meta">
-                    <span><strong>Ubicación:</strong> ${sensor.ubicacion}</span>
-                    <span><i class="fas fa-clock"></i> ${formatIntervalo(sensor.intervalo)}</span>
-                </div>
-            </div>
-            <div class="integration-status">
-                <span class="status-badge ${sensor.estado === "activo" ? "active" : "inactive"}">
-                    ${sensor.estado === "activo" ? "Activo" : "Inactivo"}
-                </span>
-                <div class="integration-date">Desde: ${sensor.fechaCreacion}</div>
-            </div>
-        `
+      <div class="sensor__card">
+        <div class="sensor__icon">
+          <i class="fas fa-${sensor.icono}" style="color: ${sensor.iconoColor}"></i>
+        </div>
+        <div class="sensor__info">
+          <h3 class="sensor__name">${sensor.nombre}</h3>
+          <div class="sensor__meta">
+            <span class="sensor__location">
+              <i class="fas fa-map-marker-alt"></i> ${sensor.ubicacion}
+            </span>
+            <span class="sensor__interval">
+              <i class="fas fa-clock"></i> ${formatIntervalo(sensor.intervalo)}
+            </span>
+          </div>
+          <div class="sensor__details">
+            <span class="sensor__model">${sensor.modelo}</span>
+            <span class="sensor__manufacturer">${sensor.fabricante}</span>
+          </div>
+        </div>
+        <div class="sensor__status">
+          <span class="sensor__badge ${sensor.estado === "activo" ? "sensor__badge--active" : "sensor__badge--inactive"}">
+            ${sensor.estado === "activo" ? "Activo" : "Inactivo"}
+          </span>
+          <span class="sensor__date">Desde: ${sensor.fechaCreacion}</span>
+          <button class="btn btn--danger btn--small delete-integration" data-id="${sensor.id}">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    `
+
+    // Agregar evento de eliminación
+    const deleteBtn = li.querySelector('.delete-integration')
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      const sensorId = e.target.closest('.delete-integration').dataset.id
+      if (confirm('¿Está seguro de eliminar esta integración?')) {
+        sensoresIntegrados = sensoresIntegrados.filter(s => s.id !== sensorId)
+        renderSensoresIntegrados()
+        showToast("Integración eliminada", "El sensor ha sido eliminado correctamente.", "success")
+      }
+    })
 
     sensoresList.appendChild(li)
   })
@@ -599,32 +652,57 @@ function renderSensoresIntegrados() {
 
 // Función para renderizar insumos integrados
 function renderInsumosIntegrados() {
+  if (!insumosList) return
+
   insumosList.innerHTML = ""
+
+  if (insumosIntegrados.length === 0) {
+    insumosList.innerHTML = `
+      <li class="integration__item integration__item--empty">
+        <p>No hay insumos integrados</p>
+      </li>`
+    return
+  }
 
   insumosIntegrados.forEach((insumo) => {
     const li = document.createElement("li")
-    li.className = "integration-item"
+    li.className = "integration__item insumo"
     li.dataset.id = insumo.id
 
     li.innerHTML = `
-            <div class="integration-icon insumo">
-                <i class="fas fa-${insumo.icono}" style="color: ${insumo.iconoColor}"></i>
-            </div>
-            <div class="integration-details">
-                <div class="integration-name">
-                    ${insumo.nombre}
-                </div>
-                <div class="integration-meta">
-                    <span>${insumo.modelo}</span>
-                    ${insumo.presentacion ? `<span>${insumo.presentacion}</span>` : ""}
-                    ${insumo.unidad ? `<span>Unidad: ${insumo.unidad}</span>` : ""}
-                </div>
-            </div>
-            <div class="integration-status">
-                <div class="integration-usage">Último uso: ${insumo.ultimoUso || "No usado"}</div>
-                <div class="integration-date">Desde: ${insumo.fechaCreacion}</div>
-            </div>
-        `
+      <div class="insumo__card">
+        <div class="insumo__icon">
+          <i class="fas fa-${insumo.icono}" style="color: ${insumo.iconoColor}"></i>
+        </div>
+        <div class="insumo__info">
+          <h3 class="insumo__name">${insumo.nombre}</h3>
+          <div class="insumo__meta">
+            <span class="insumo__type">${insumo.tipo}</span>
+            <span class="insumo__presentation">${insumo.presentacion}</span>
+            ${insumo.unidad ? `<span class="insumo__unit">${insumo.unidad}</span>` : ""}
+          </div>
+        </div>
+        <div class="insumo__status">
+          <span class="insumo__usage">Último uso: ${insumo.ultimoUso || "No usado"}</span>
+          <span class="insumo__date">Desde: ${insumo.fechaCreacion}</span>
+          <button class="btn btn--danger btn--small delete-integration" data-id="${insumo.id}">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    `
+
+    // Agregar evento de eliminación
+    const deleteBtn = li.querySelector('.delete-integration')
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      const insumoId = e.target.closest('.delete-integration').dataset.id
+      if (confirm('¿Está seguro de eliminar esta integración?')) {
+        insumosIntegrados = insumosIntegrados.filter(i => i.id !== insumoId)
+        renderInsumosIntegrados()
+        showToast("Integración eliminada", "El insumo ha sido eliminado correctamente.", "success")
+      }
+    })
 
     insumosList.appendChild(li)
   })
@@ -632,6 +710,9 @@ function renderInsumosIntegrados() {
 
 // Renderizar lista de elementos integrados para eliminar
 function renderIntegratedSelectionList() {
+  // Verificar si el elemento existe
+  if (!selectionList) return
+
   selectionList.innerHTML = ""
 
   if (currentIntegrationType === "sensor") {
@@ -642,15 +723,14 @@ function renderIntegratedSelectionList() {
         div.dataset.id = sensor.id
 
         div.innerHTML = `
-                    <div class="selection-icon">
-                        <i class="fas fa-${sensor.icono}" style="color: ${sensor.iconoColor}"></i>
-                    </div>
-                    <div class="selection-details">
-                        <div class="selection-name">${sensor.nombre}</div>
-                        <div class="selection-meta">${sensor.modelo} | ${sensor.ubicacion}</div>
-                    </div>
-                    <div class="selection-unit">${sensor.unidadMedida}</div>
-                `
+          <div class="selection-icon">
+            <i class="fas fa-${sensor.icono}" style="color: ${sensor.iconoColor}"></i>
+          </div>
+          <div class="selection-details">
+            <div class="selection-name">${sensor.nombre}</div>
+            <div class="selection-meta">${sensor.modelo} | ${sensor.ubicacion}</div>
+          </div>
+        `
 
         div.addEventListener("click", () => {
           selectedSensor = sensor
@@ -663,9 +743,11 @@ function renderIntegratedSelectionList() {
           div.classList.add("selected")
 
           // Mostrar información del elemento seleccionado
-          selectedItemInfo.classList.remove("hidden")
-          selectedItemName.textContent = sensor.nombre
-          selectedItemDescription.textContent = `Ubicación: ${sensor.ubicacion}, Intervalo: ${formatIntervalo(sensor.intervalo)}`
+          if (selectedItemInfo) {
+            selectedItemInfo.classList.remove("hidden")
+            selectedItemName.textContent = sensor.nombre
+            selectedItemDescription.textContent = `Ubicación: ${sensor.ubicacion}, Intervalo: ${formatIntervalo(sensor.intervalo)}`
+          }
         })
 
         selectionList.appendChild(div)
@@ -681,15 +763,15 @@ function renderIntegratedSelectionList() {
         div.dataset.id = insumo.id
 
         div.innerHTML = `
-                    <div class="selection-icon">
-                        <i class="fas fa-${insumo.icono}" style="color: ${insumo.iconoColor}"></i>
-                    </div>
-                    <div class="selection-details">
-                        <div class="selection-name">${insumo.nombre}</div>
-                        <div class="selection-meta">${insumo.modelo} | ${insumo.presentacion}</div>
-                    </div>
-                    <div class="selection-unit">${insumo.unidad}</div>
-                `
+          <div class="selection-icon">
+            <i class="fas fa-${insumo.icono}" style="color: ${insumo.iconoColor}"></i>
+          </div>
+          <div class="selection-details">
+            <div class="selection-name">${insumo.nombre}</div>
+            <div class="selection-meta">${insumo.modelo} | ${insumo.presentacion}</div>
+          </div>
+          <div class="selection-unit">${insumo.unidad}</div>
+        `
 
         div.addEventListener("click", () => {
           selectedInsumo = insumo
@@ -702,9 +784,11 @@ function renderIntegratedSelectionList() {
           div.classList.add("selected")
 
           // Mostrar información del elemento seleccionado
-          selectedItemInfo.classList.remove("hidden")
-          selectedItemName.textContent = insumo.nombre
-          selectedItemDescription.textContent = `Presentación: ${insumo.presentacion}, Último uso: ${insumo.ultimoUso || "No usado"}`
+          if (selectedItemInfo) {
+            selectedItemInfo.classList.remove("hidden")
+            selectedItemName.textContent = insumo.nombre
+            selectedItemDescription.textContent = `Presentación: ${insumo.presentacion}, Último uso: ${insumo.ultimoUso || "No usado"}`
+          }
         })
 
         selectionList.appendChild(div)
@@ -717,16 +801,18 @@ function renderIntegratedSelectionList() {
 
 // Configurar evento para el botón "Eliminar Integración"
 function setupDeleteIntegrationEvent() {
+  if (!btnEliminarIntegracion) return
+
   btnEliminarIntegracion.addEventListener("click", () => {
     isDeleteMode = true
-    modal.style.display = "block" // Mostrar el modal
+    if (modal) modal.style.display = "block" // Mostrar el modal
     resetForm() // Reiniciar el formulario
 
     // Cambiar el título del modal para eliminar
-    modalTitle.textContent = "Eliminar Integración"
+    if (modalTitle) modalTitle.textContent = "Eliminar Integración"
 
     // Ocultar el botón de guardar
-    btnSave.style.display = "none"
+    if (btnSave) btnSave.style.display = "none"
 
     // Crear botón de eliminar si no existe
     let btnDelete = document.getElementById("btnDelete")
@@ -739,7 +825,7 @@ function setupDeleteIntegrationEvent() {
 
       // Agregar el botón al contenedor de acciones del formulario
       const formActions = document.querySelector(".form-actions")
-      formActions.appendChild(btnDelete)
+      if (formActions) formActions.appendChild(btnDelete)
     } else {
       btnDelete.style.display = "inline-block"
     }
@@ -774,7 +860,7 @@ function setupDeleteIntegrationEvent() {
       }
 
       // Cerrar modal
-      modal.style.display = "none"
+      if (modal) modal.style.display = "none"
       isDeleteMode = false
     }
   })
@@ -782,6 +868,8 @@ function setupDeleteIntegrationEvent() {
 
 // Función para renderizar lecturas de sensores
 function renderLecturasSensores() {
+  if (!lecturasGrid) return
+
   lecturasGrid.innerHTML = ""
 
   lecturasSensores.forEach((lectura) => {
@@ -789,15 +877,15 @@ function renderLecturasSensores() {
     div.className = "reading-card"
 
     div.innerHTML = `
-            <div class="reading-icon">
-                <i class="fas fa-${lectura.icono}" style="color: ${lectura.iconoColor}"></i>
-            </div>
-            <div class="reading-details">
-                <div class="reading-name">${lectura.nombre}</div>
-                <div class="reading-value">${lectura.valor} ${lectura.unidad}</div>
-                <div class="reading-time">${lectura.actualizado}</div>
-            </div>
-        `
+      <div class="reading-card__icon">
+        <i class="fas fa-${lectura.icono}" style="color: ${lectura.iconoColor}"></i>
+      </div>
+      <div class="reading-card__details">
+        <div class="reading-card__name">${lectura.nombre}</div>
+        <div class="reading-card__value">${lectura.valor} ${lectura.unidad}</div>
+        <div class="reading-card__time">${lectura.actualizado}</div>
+      </div>
+    `
 
     lecturasGrid.appendChild(div)
   })
@@ -805,26 +893,33 @@ function renderLecturasSensores() {
 
 // Configurar eventos de tabs
 function setupTabs() {
-  const tabButtons = document.querySelectorAll(".tab-button")
-  const tabPanes = document.querySelectorAll(".tab-pane")
+  const tabButtons = document.querySelectorAll(".tab__button")
+  const tabPanes = document.querySelectorAll(".tab__pane")
+
+  if (!tabButtons.length || !tabPanes.length) return
 
   tabButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const tabId = button.getAttribute("data-tab")
+      if (!tabId) return
 
       // Desactivar todos los tabs
-      tabButtons.forEach((btn) => btn.classList.remove("active"))
-      tabPanes.forEach((pane) => pane.classList.remove("active"))
+      tabButtons.forEach((btn) => btn.classList.remove("tab__button--active"))
+      tabPanes.forEach((pane) => pane.classList.remove("tab__pane--active"))
 
       // Activar el tab seleccionado
-      button.classList.add("active")
-      document.getElementById(tabId).classList.add("active")
+      button.classList.add("tab__button--active")
+      const targetPane = document.getElementById(tabId)
+      if (targetPane) targetPane.classList.add("tab__pane--active")
     })
   })
 }
 
 // Configurar eventos del modal
 function setupModalEvents() {
+  // Verificar si los elementos existen
+  if (!btnAgregarIntegracion || !modal || !closeBtn || !btnCancel || !integrationForm) return
+
   // Abrir modal para agregar
   btnAgregarIntegracion.addEventListener("click", () => {
     isDeleteMode = false
@@ -854,15 +949,31 @@ function setupModalEvents() {
 
   // Cambiar tipo de integración
   const radioOptions = document.querySelectorAll('input[name="integrationType"]')
-  radioOptions.forEach((option) => {
-    option.addEventListener("change", (e) => {
-      currentIntegrationType = e.target.value
-      selectedSensor = null
-      selectedInsumo = null
-      selectedItemInfo.classList.add("hidden")
-      searchInput.value = ""
-      searchInput.placeholder = `Buscar ${currentIntegrationType === "sensor" ? "sensor" : "insumo"} por nombre, tipo o ${currentIntegrationType === "sensor" ? "modelo" : "marca"}...`
+  if (radioOptions.length) {
+    radioOptions.forEach((option) => {
+      option.addEventListener("change", (e) => {
+        currentIntegrationType = e.target.value
+        selectedSensor = null
+        selectedInsumo = null
+        if (selectedItemInfo) selectedItemInfo.classList.add("hidden")
+        if (searchInput) {
+          searchInput.value = ""
+          searchInput.placeholder = `Buscar ${currentIntegrationType === "sensor" ? "sensor" : "insumo"} por nombre, tipo o ${currentIntegrationType === "sensor" ? "modelo" : "marca"}...`
+        }
 
+        // Determinar qué lista renderizar según el contexto
+        if (isDeleteMode) {
+          renderIntegratedSelectionList() // Estamos en modo eliminación
+        } else {
+          renderSelectionList() // Estamos en modo agregar
+        }
+      })
+    })
+  }
+
+  // Buscar elementos
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
       // Determinar qué lista renderizar según el contexto
       if (isDeleteMode) {
         renderIntegratedSelectionList() // Estamos en modo eliminación
@@ -870,17 +981,7 @@ function setupModalEvents() {
         renderSelectionList() // Estamos en modo agregar
       }
     })
-  })
-
-  // Buscar elementos
-  searchInput.addEventListener("input", () => {
-    // Determinar qué lista renderizar según el contexto
-    if (isDeleteMode) {
-      renderIntegratedSelectionList() // Estamos en modo eliminación
-    } else {
-      renderSelectionList() // Estamos en modo agregar
-    }
-  })
+  }
 
   // Enviar formulario para agregar
   integrationForm.addEventListener("submit", (e) => {
@@ -960,14 +1061,17 @@ function resetForm() {
   selectedSensor = null
   selectedInsumo = null
   currentIntegrationType = "sensor"
-  document.getElementById("sensorType").checked = true
-  searchInput.value = ""
-  selectedItemInfo.classList.add("hidden")
+
+  const sensorTypeRadio = document.getElementById("sensorType")
+  if (sensorTypeRadio) sensorTypeRadio.checked = true
+
+  if (searchInput) searchInput.value = ""
+  if (selectedItemInfo) selectedItemInfo.classList.add("hidden")
 
   // Restaurar el estado normal del modal para agregar si no estamos en modo eliminación
   if (!isDeleteMode) {
-    modalTitle.textContent = "Agregar Nueva Integración"
-    btnSave.style.display = "inline-block"
+    if (modalTitle) modalTitle.textContent = "Agregar Nueva Integración"
+    if (btnSave) btnSave.style.display = "inline-block"
 
     // Ocultar el botón de eliminar si existe
     const btnDelete = document.getElementById("btnDelete")
@@ -979,6 +1083,8 @@ function resetForm() {
 
 // Renderizar lista de selección
 function renderSelectionList() {
+  if (!selectionList || !searchInput) return
+
   selectionList.innerHTML = ""
   const searchTerm = searchInput.value.toLowerCase()
 
@@ -1003,7 +1109,6 @@ function renderSelectionList() {
               <div class="selection-name">${sensor.nombre}</div>
               <div class="selection-meta">${sensor.modelo} | ${sensor.fabricante}</div>
           </div>
-          <div class="selection-unit">${sensor.unidadMedida}</div>
         `
 
         div.addEventListener("click", () => {
@@ -1017,48 +1122,50 @@ function renderSelectionList() {
           div.classList.add("selected")
 
           // Mostrar información detallada del sensor
-          selectedItemInfo.classList.remove("hidden")
-          selectedItemName.textContent = sensor.nombre
-          selectedItemDescription.innerHTML = `
-            <div class="detail-grid">
-              <div class="detail-item">
-                <span class="detail-label">Tipo:</span>
-                <span class="detail-value">${sensor.tipo}</span>
+          if (selectedItemInfo && selectedItemName && selectedItemDescription) {
+            selectedItemInfo.classList.remove("hidden")
+            selectedItemName.textContent = sensor.nombre
+            selectedItemDescription.innerHTML = `
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <span class="detail-label">Tipo:</span>
+                  <span class="detail-value">${sensor.tipo}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Modelo:</span>
+                  <span class="detail-value">${sensor.modelo}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Fabricante:</span>
+                  <span class="detail-value">${sensor.fabricante}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Ubicación:</span>
+                  <span class="detail-value">${sensor.ubicacion}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Unidad de medida:</span>
+                  <span class="detail-value">${sensor.unidadMedida}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Frecuencia de lectura:</span>
+                  <span class="detail-value">Cada ${formatIntervalo(15)}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Rango de medición:</span>
+                  <span class="detail-value">${getRangoMedicion(sensor.tipo)}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Precisión:</span>
+                  <span class="detail-value">${getPrecision(sensor.tipo, sensor.modelo)}</span>
+                </div>
+                <div class="detail-item descripcion">
+                  <span class="detail-label">Descripción:</span>
+                  <span class="detail-value">${sensor.descripcion}</span>
+                </div>
               </div>
-              <div class="detail-item">
-                <span class="detail-label">Modelo:</span>
-                <span class="detail-value">${sensor.modelo}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Fabricante:</span>
-                <span class="detail-value">${sensor.fabricante}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Ubicación:</span>
-                <span class="detail-value">${sensor.ubicacion}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Unidad de medida:</span>
-                <span class="detail-value">${sensor.unidadMedida}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Frecuencia de lectura:</span>
-                <span class="detail-value">Cada ${formatIntervalo(15)}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Rango de medición:</span>
-                <span class="detail-value">${getRangoMedicion(sensor.tipo)}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Precisión:</span>
-                <span class="detail-value">${getPrecision(sensor.tipo, sensor.modelo)}</span>
-              </div>
-              <div class="detail-item descripcion">
-                <span class="detail-label">Descripción:</span>
-                <span class="detail-value">${sensor.descripcion}</span>
-              </div>
-            </div>
-          `
+            `
+          }
         })
 
         selectionList.appendChild(div)
@@ -1087,7 +1194,6 @@ function renderSelectionList() {
               <div class="selection-name">${insumo.nombre}</div>
               <div class="selection-meta">${insumo.marca} | ${insumo.presentacion}</div>
           </div>
-          <div class="selection-unit">${insumo.unidad}</div>
         `
 
         div.addEventListener("click", () => {
@@ -1101,48 +1207,50 @@ function renderSelectionList() {
           div.classList.add("selected")
 
           // Mostrar información detallada del insumo
-          selectedItemInfo.classList.remove("hidden")
-          selectedItemName.textContent = insumo.nombre
-          selectedItemDescription.innerHTML = `
-            <div class="detail-grid">
-              <div class="detail-item">
-                <span class="detail-label">Tipo:</span>
-                <span class="detail-value">${insumo.tipo}</span>
+          if (selectedItemInfo && selectedItemName && selectedItemDescription) {
+            selectedItemInfo.classList.remove("hidden")
+            selectedItemName.textContent = insumo.nombre
+            selectedItemDescription.innerHTML = `
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <span class="detail-label">Tipo:</span>
+                  <span class="detail-value">${insumo.tipo}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Marca:</span>
+                  <span class="detail-value">${insumo.marca}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Presentación:</span>
+                  <span class="detail-value">${insumo.presentacion}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Unidad:</span>
+                  <span class="detail-value">${insumo.unidad}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Método de aplicación:</span>
+                  <span class="detail-value">${getMetodoAplicacion(insumo.tipo)}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Frecuencia recomendada:</span>
+                  <span class="detail-value">${getFrecuenciaAplicacion(insumo.tipo)}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Personal requerido:</span>
+                  <span class="detail-value">${getPersonalRequerido(insumo.tipo)}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Precauciones:</span>
+                  <span class="detail-value">${getPrecauciones(insumo.tipo)}</span>
+                </div>
+                <div class="detail-item descripcion">
+                  <span class="detail-label">Descripción:</span>
+                  <span class="detail-value">${insumo.descripcion}</span>
+                </div>
               </div>
-              <div class="detail-item">
-                <span class="detail-label">Marca:</span>
-                <span class="detail-value">${insumo.marca}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Presentación:</span>
-                <span class="detail-value">${insumo.presentacion}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Unidad:</span>
-                <span class="detail-value">${insumo.unidad}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Método de aplicación:</span>
-                <span class="detail-value">${getMetodoAplicacion(insumo.tipo)}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Frecuencia recomendada:</span>
-                <span class="detail-value">${getFrecuenciaAplicacion(insumo.tipo)}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Personal requerido:</span>
-                <span class="detail-value">${getPersonalRequerido(insumo.tipo)}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Precauciones:</span>
-                <span class="detail-value">${getPrecauciones(insumo.tipo)}</span>
-              </div>
-              <div class="detail-item descripcion">
-                <span class="detail-label">Descripción:</span>
-                <span class="detail-value">${insumo.descripcion}</span>
-              </div>
-            </div>
-          `
+            `
+          }
         })
 
         selectionList.appendChild(div)
@@ -1155,13 +1263,15 @@ function renderSelectionList() {
 
 // Mostrar toast
 function showToast(title, message, type = "success") {
+  if (!toast || !toastTitle || !toastDescription || !toastIcon) return
+
   toastTitle.textContent = title
   toastDescription.textContent = message
 
   if (type === "success") {
-    toastIcon.className = "fas fa-check-circle"
+    toastIcon.className = "fas fa-check-circle toast__icon toast__icon--success"
   } else {
-    toastIcon.className = "fas fa-exclamation-circle"
+    toastIcon.className = "fas fa-exclamation-circle toast__icon toast__icon--error"
   }
 
   toast.classList.remove("hidden")
@@ -1174,17 +1284,25 @@ function showToast(title, message, type = "success") {
 
 // Función para renderizar datos del ciclo de cultivo
 function renderCicloCultivo() {
-  document.getElementById("currentPhase").textContent = cicloCultivo.faseActual
-  document.getElementById("cycleProgress").style.width = `${cicloCultivo.progresoFase}%`
-  document.getElementById("seedingDate").textContent = cicloCultivo.fechaSiembra
-  document.getElementById("daysPassed").textContent = `${cicloCultivo.diasTranscurridos} días`
-  document.getElementById("harvestDate").textContent = cicloCultivo.fechaCosechaEstimada
-}
+  const currentPhase = getElement("#currentPhase")
+  const cycleProgress = getElement("#cycleProgress")
+  const seedingDate = getElement("#seedingDate")
+  const daysPassed = getElement("#daysPassed")
+  const harvestDate = getElement("#harvestDate")
 
-// Reemplazar la función setupUpdateCycleEvent() existente con esta nueva versión
+  if (!currentPhase || !cycleProgress || !seedingDate || !daysPassed || !harvestDate) return
+
+  currentPhase.textContent = cicloCultivo.faseActual
+  cycleProgress.style.width = `${cicloCultivo.progresoFase}%`
+  seedingDate.textContent = cicloCultivo.fechaSiembra
+  daysPassed.textContent = `${cicloCultivo.diasTranscurridos} días`
+  harvestDate.textContent = cicloCultivo.fechaCosechaEstimada
+}
 
 // Configurar evento para el botón "Actualizar Ciclo"
 function setupUpdateCycleEvent() {
+  if (!btnUpdateCycle || !cycleModal || !closeCycleBtn || !btnCancelCycle || !cycleForm) return
+
   btnUpdateCycle.addEventListener("click", () => {
     // Mostrar el modal de selección de ciclo
     cycleModal.style.display = "block"
@@ -1209,9 +1327,11 @@ function setupUpdateCycleEvent() {
   })
 
   // Buscar ciclos
-  searchCycleInput.addEventListener("input", () => {
-    renderCycleSelectionList()
-  })
+  if (searchCycleInput) {
+    searchCycleInput.addEventListener("input", () => {
+      renderCycleSelectionList()
+    })
+  }
 
   // Enviar formulario para aplicar ciclo
   cycleForm.addEventListener("submit", (e) => {
@@ -1250,12 +1370,14 @@ function aplicarCiclo(ciclo) {
 // Resetear formulario de ciclo
 function resetCycleForm() {
   selectedCycle = null
-  searchCycleInput.value = ""
-  selectedCycleInfo.classList.add("hidden")
+  if (searchCycleInput) searchCycleInput.value = ""
+  if (selectedCycleInfo) selectedCycleInfo.classList.add("hidden")
 }
 
 // Renderizar lista de selección de ciclos
 function renderCycleSelectionList() {
+  if (!cycleSelectionList || !searchCycleInput) return
+
   cycleSelectionList.innerHTML = ""
   const searchTerm = searchCycleInput.value.toLowerCase()
 
@@ -1263,7 +1385,7 @@ function renderCycleSelectionList() {
     (ciclo) =>
       ciclo.nombre.toLowerCase().includes(searchTerm) ||
       ciclo.tipo.toLowerCase().includes(searchTerm) ||
-      ciclo.variedad.toLowerCase().includes(searchTerm)
+      ciclo.variedad.toLowerCase().includes(searchTerm),
   )
 
   if (filteredCiclos.length > 0) {
@@ -1292,9 +1414,11 @@ function renderCycleSelectionList() {
         div.classList.add("selected")
 
         // Mostrar información del ciclo seleccionado
-        selectedCycleInfo.classList.remove("hidden")
-        selectedCycleName.textContent = ciclo.nombre
-        selectedCycleDescription.textContent = ciclo.descripcion
+        if (selectedCycleInfo && selectedCycleName && selectedCycleDescription) {
+          selectedCycleInfo.classList.remove("hidden")
+          selectedCycleName.textContent = ciclo.nombre
+          selectedCycleDescription.textContent = ciclo.descripcion
+        }
       })
 
       cycleSelectionList.appendChild(div)
@@ -1313,7 +1437,7 @@ function formatIntervalo(minutos) {
   return "24 horas"
 }
 
-// Agregar estas nuevas funciones auxiliares
+// Funciones auxiliares
 function getRangoMedicion(tipo) {
   const rangos = {
     temperatura: "-40°C a 80°C",
@@ -1321,19 +1445,19 @@ function getRangoMedicion(tipo) {
     viento: "0 km/h a 160 km/h",
     aire: "0 ppm a 5000 ppm",
     luz: "0 a 65535 lux",
-    quimico: "0 a 14 pH"
+    quimico: "0 a 14 pH",
   }
   return rangos[tipo] || "No especificado"
 }
 
 function getPrecision(tipo, modelo) {
   const precisiones = {
-    "DHT22": "±0.5°C, ±2-5% HR",
+    DHT22: "±0.5°C, ±2-5% HR",
     "FC-28": "±5%",
     "WS-3000": "±2 km/h",
     "MG-811": "±50 ppm",
-    "BH1750": "±20%",
-    "PH-4502C": "±0.1 pH"
+    BH1750: "±20%",
+    "PH-4502C": "±0.1 pH",
   }
   return precisiones[modelo] || "±5%"
 }
@@ -1345,7 +1469,7 @@ function getMetodoAplicacion(tipo) {
     agua: "Sistema de riego",
     bioestimulante: "Aplicación foliar o radicular",
     micronutriente: "Aplicación al suelo o foliar",
-    regulador: "Aplicación directa al ambiente"
+    regulador: "Aplicación directa al ambiente",
   }
   return metodos[tipo] || "No especificado"
 }
@@ -1357,7 +1481,7 @@ function getFrecuenciaAplicacion(tipo) {
     agua: "Diariamente según necesidad",
     bioestimulante: "Cada 15 días",
     micronutriente: "Mensualmente",
-    regulador: "Según ciclo de cultivo"
+    regulador: "Según ciclo de cultivo",
   }
   return frecuencias[tipo] || "Según especificaciones"
 }
@@ -1369,7 +1493,7 @@ function getPersonalRequerido(tipo) {
     agua: "Operador de riego",
     bioestimulante: "Técnico agrícola",
     micronutriente: "Técnico agrícola",
-    regulador: "Especialista agrícola"
+    regulador: "Especialista agrícola",
   }
   return personal[tipo] || "Personal capacitado"
 }
@@ -1381,7 +1505,7 @@ function getPrecauciones(tipo) {
     agua: "Verificar pH y calidad del agua",
     bioestimulante: "Usar protección básica",
     micronutriente: "Evitar contacto con piel y ojos",
-    regulador: "Mantener condiciones ambientales controladas"
+    regulador: "Mantener condiciones ambientales controladas",
   }
   return precauciones[tipo] || "Seguir instrucciones del fabricante"
 }

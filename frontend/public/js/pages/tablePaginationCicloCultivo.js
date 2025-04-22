@@ -11,19 +11,18 @@ const paginationInfo = document.querySelector(".pagination__info");
 const elementsCount = document.querySelector(".table__count-number");
 
 // URL de la API
-const apiUrl = "http://localhost:5000/ciclo_cultivo"; // Cambia esta URL según tu backend
+const apiUrl = "http://localhost:5000/ciclos-cultivos"; // Cambia esta URL según tu backend
 
 // Función para obtener los ciclos de cultivo desde la API
 async function fetchCiclosCultivo(page) {
     try {
-        // Realizar la solicitud a la API con la página actual y el número de filas por página
         const response = await fetch(`${apiUrl}?page=${page}&limit=${rowsPerPage}`);
         if (!response.ok) {
             throw new Error(`Error en la API: ${response.statusText}`);
         }
 
         const data = await response.json();
-
+        
         // Verificar si hay datos
         if (!data.ciclos || data.ciclos.length === 0) {
             showAlert("No se encontraron ciclos de cultivo.", true);
@@ -33,8 +32,9 @@ async function fetchCiclosCultivo(page) {
 
         // Actualizar la tabla y la información de la paginación
         renderTable(data.ciclos);
-        totalPages = data.totalPages; // Total de páginas devuelto por la API
-        elementsCount.textContent = data.totalCiclos; // Total de ciclos de cultivo
+        currentPage = data.currentPage; // Cambiado de data.page a data.currentPage
+        totalPages = data.totalPages;
+        elementsCount.textContent = data.totalCiclos;
         updatePaginationInfo();
     } catch (error) {
         console.error("Error al obtener los ciclos de cultivo:", error);
@@ -93,8 +93,11 @@ function updatePaginationInfo() {
 
 // Función para cambiar de página
 function changePage(direction) {
-    currentPage += direction;
-    fetchCiclosCultivo(currentPage);
+    const newPage = currentPage + direction;
+    if (newPage >= 1 && newPage <= totalPages) {
+        currentPage = newPage;
+        fetchCiclosCultivo(currentPage);
+    }
 }
 
 // Eventos de los botones de paginación
