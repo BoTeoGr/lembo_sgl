@@ -45,16 +45,17 @@ async function fetchCultivos(page) {
 // Función para renderizar los datos de un cultivo en el modal
 function renderCultivoDetails(container, cultivo) {
     container.innerHTML = `
-        <p><strong>ID:</strong> ${cultivo.id}</p>
+        <p><strong>ID:</strong> ${cultivo.cultivoId}</p>
         <p><strong>Nombre:</strong> ${cultivo.nombre}</p>
         <p><strong>Tipo:</strong> ${cultivo.tipo}</p>
         <p><strong>Ubicación:</strong> ${cultivo.ubicacion}</p>
         <p><strong>Tamaño:</strong> ${cultivo.tamano}</p>
         <p><strong>Descripción:</strong> ${cultivo.descripcion}</p>
         <p><strong>Estado:</strong> ${cultivo.estado}</p>
-        <p><strong>Fecha de Creación:</strong> ${cultivo.fecha_creacion}</p>
+        <p><strong>Fecha de Creación:</strong> ${cultivo.fechaCreacion}</p>
     `;
 }
+
 
 // Función para renderizar la tabla
 function renderTable(cultivos) {
