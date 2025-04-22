@@ -73,6 +73,26 @@ CREATE TABLE IF NOT EXISTS insumos (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );
+-- Tabla de Producciones
+CREATE TABLE IF NOT EXISTS producciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
+    imagen VARCHAR(255) NOT NULL,
+    ubicacion VARCHAR(100) NOT NULL,
+    descripcion TEXT NOT NULL,
+    usuario_id INT,
+    cantidad DECIMAL(10, 2) NOT NULL,
+    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    cultivo_id INT,
+    ciclo_id INT,
+    insumos_ids TEXT,
+    sensores_ids TEXT,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL,
+    FOREIGN KEY (cultivo_id) REFERENCES cultivos(id) ON DELETE SET NULL,
+    FOREIGN KEY (ciclo_id) REFERENCES ciclo_cultivo(id) ON DELETE SET NULL
+);
 
 -- Trigger para calcular automáticamente el valor total al insertar un insumo
 DELIMITER //
@@ -151,6 +171,14 @@ INSERT INTO insumos (nombre, tipo, imagen, unidad_medida, valor_unitario, cantid
 ('Insecticida', 'Químico', 'insecticida.jpg', 'litro', 25.00, 100, 2500.00, 'Insecticida para control de plagas', 4),
 ('Abono Orgánico', 'Orgánico', 'abono_organico.jpg', 'kilo', 8.00, 500, 4000.00, 'Abono orgánico para mejorar la tierra', 5),
 ('Riego por Goteo', 'Equipo', 'riego_goteo.jpg', 'kilo', 200.00, 10, 2000.00, 'Sistema de riego por goteo', 6);
+
+
+-- Insertar datos de ejemplo en la tabla producciones
+INSERT INTO producciones (nombre, tipo, imagen, ubicacion, descripcion, usuario_id, cantidad, estado, cultivo_id, ciclo_id, insumos_ids, sensores_ids) VALUES
+('Producción de Tomates 2025', 'Orgánica', 'tomate_produccion.jpg', 'Invernadero 1', 'Producción de tomates orgánicos', 1, 500.00, 'habilitado', 1, 1, '1,3', '1,5'),
+('Producción de Maíz Verano', 'Tradicional', 'maiz_produccion.jpg', 'Campo 3', 'Producción de maíz para temporada de verano', 3, 1200.00, 'habilitado', 3, 2, '1,4,6', '2,7'),
+('Producción de Fresas', 'Hidropónica', 'fresa_produccion.jpg', 'Invernadero 2', 'Producción de fresas en sistema hidropónico', 8, 300.00, 'habilitado', 8, 8, '2,5,7', '3,8'),
+('Producción de Café Premium', 'Orgánica', 'cafe_produccion.jpg', 'Plantación 1', 'Producción de café de alta calidad', 5, 800.00, 'habilitado', 5, 5, '6,7', '4,5');
 
 ALTER TABLE insumos
 ADD CONSTRAINT fk_usuario_id

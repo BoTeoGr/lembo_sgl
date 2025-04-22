@@ -1363,14 +1363,14 @@ header {
 }
 
 .info-section__icon {
-    color: var(--secondary-blue);
+    color: var(--green-900);
     margin-right: 8px;
     font-size: 1.2rem;
     vertical-align: middle;
 }
 
 .info-section:nth-child(1) {
-    border-left-color: var(--secondary-blue);
+    border-left-color: var(--green-900);
 }
 
 .info-section:nth-child(2) {
@@ -2239,7 +2239,7 @@ header {
 }
 
 .info-section:nth-child(1) .info-section__icon {
-    color: var(--secondary-blue);
+    color: var(--green-900);
 }
 
 .info-section:nth-child(2) .info-section__icon {

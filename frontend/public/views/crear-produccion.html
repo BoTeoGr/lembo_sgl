@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../css/pages/produccion.css">
 </head>
 <body>
     <div class="main-content">
@@ -19,171 +20,186 @@
             <h1 class="form__title">Crear Producción</h1>
 
             <form id="productionForm" class="form__container">
-                <!-- Primera fila: ID y Responsable -->
-                <div class="form__row">
-                    <div class="form__group">
-                        <label for="productionId" class="form__label">Identificador de producción</label>
-                        <input type="text" id="productionId" class="form__input form__input--disabled" disabled>
+                <!-- Sección de información básica -->
+                <div class="form__section">
+                    <h2 class="form__section-title"><i class="fas fa-info-circle"></i> Información Básica</h2>
+                    
+                    <!-- Primera fila: ID y Responsable -->
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="productionId" class="form__label"><i class="fas fa-hashtag"></i> Identificador de producción</label>
+                            <input type="text" id="productionId" class="form__input form__input--disabled" disabled>
+                        </div>
+                        <div class="form__group">
+                            <label for="responsible" class="form__label"><i class="fas fa-user"></i> Responsable</label>
+                            <div class="select-group">
+                                <select id="responsible" class="select-group__select form__select">
+                                    <option value="">Seleccionar responsable</option>
+                                    <!-- Se llenará dinámicamente -->
+                                </select>
+                                <button type="button" class="select-group__button" id="addResponsibleBtn">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <small id="responsibleError" class="error hidden"></small>
+                        </div>
                     </div>
-                    <div class="form__group">
-                        <label for="responsible" class="form__label">Responsable</label>
-                        <div class="select-group">
-                            <select id="responsible" class="select-group__select form__select">
-                                <option value="">Seleccionar responsable</option>
-                                <option value="1">Juan Pérez</option>
-                                <option value="2">María López</option>
-                                <option value="3">Carlos Rodríguez</option>
-                            </select>
-                            <button type="button" class="select-group__button" id="addResponsibleBtn">
-                                <i class="select-group__icon fas fa-plus"></i>
-                            </button>
+
+                    <!-- Segunda fila: Nombre de producción -->
+                    <div class="form__row">
+                        <div class="form__group form__group--full-width">
+                            <label for="productionName" class="form__label"><i class="fas fa-tag"></i> Nombre de producción</label>
+                            <input type="text" id="productionName" class="form__input" placeholder="Ingrese el nombre de la producción">
+                            <small id="productionNameError" class="error hidden"></small>
+                        </div>
+                    </div>
+
+                    <!-- Tercera fila: Cultivo y Ciclo de cultivo -->
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="crop" class="form__label"><i class="fas fa-seedling"></i> Cultivo</label>
+                            <div class="select-with-button">
+                                <select id="crop" class="form__select">
+                                    <option value="">Seleccionar cultivo</option>
+                                    <!-- Se llenará dinámicamente -->
+                                </select>
+                                <button type="button" class="button--add" id="addCropBtn">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <small id="cropError" class="error hidden"></small>
+                        </div>
+                        <div class="form__group">
+                            <label for="cropCycle" class="form__label"><i class="fas fa-sync-alt"></i> Ciclo de cultivo</label>
+                            <div class="select-with-button">
+                                <select id="cropCycle" class="form__select">
+                                    <option value="">Seleccionar ciclo</option>
+                                    <!-- Se llenará dinámicamente -->
+                                </select>
+                                <button type="button" class="button--add" id="addCycleBtn">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <small id="cycleError" class="error hidden"></small>
                         </div>
                     </div>
                 </div>
 
-                <!-- Segunda fila: Nombre de producción -->
-                <div class="form__row">
-                    <div class="form__group form__group--full-width">
-                        <label for="productionName" class="form__label">Nombre de producción</label>
-                        <input type="text" id="productionName" class="form__input" placeholder="Ingrese el nombre de la producción">
-                        <small id="productionNameError" class="error hidden"></small>
-                    </div>
-                </div>
-
-                <!-- Tercera fila: Cultivo y Ciclo de cultivo -->
-                <div class="form__row">
-                    <div class="form__group">
-                        <label for="crop" class="form__label">Cultivo</label>
-                        <div class="select-with-button">
-                            <select id="crop" class="form__select">
-                                <option value="">Seleccionar cultivo</option>
-                                <option value="1">Maíz</option>
-                                <option value="2">Frijol</option>
-                                <option value="3">Tomate</option>
-                            </select>
-                            <button type="button" class="button--add" id="addCropBtn">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                <!-- Sección de sensores -->
+                <div class="form__section">
+                    <h2 class="form__section-title"><i class="fas fa-microchip"></i> Sensores y Monitoreo</h2>
+                    
+                    <!-- Cuarta fila: Sensores -->
+                    <div class="form__row">
+                        <div class="form__group form__group--full-width">
+                            <label for="sensors" class="form__label"><i class="fas fa-thermometer-half"></i> Sensores (máximo 3)</label>
+                            <div class="select-with-button">
+                                <select id="sensors" class="form__select" multiple size="4">
+                                    <!-- Se llenará dinámicamente -->
+                                </select>
+                                <button type="button" class="button--add" id="addSensorBtn">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <small id="sensorsError" class="error hidden"></small>
                         </div>
                     </div>
-                    <div class="form__group">
-                        <label for="cropCycle" class="form__label">Ciclo de cultivo</label>
-                        <div class="select-with-button">
-                            <select id="cropCycle" class="form__select">
-                                <option value="">Seleccionar ciclo</option>
-                                <option value="1">Primavera-Verano</option>
-                                <option value="2">Otoño-Invierno</option>
-                                <option value="3">Anual</option>
-                            </select>
-                            <button type="button" class="button--add" id="addCycleBtn">
-                                <i class="fas fa-plus"></i>
-                            </button>
+
+                    <!-- Visualización de lecturas de sensores -->
+                    <div class="production-readings">
+                        <h3 class="production-readings__title"><i class="fas fa-chart-line"></i> Visualización de lecturas de sensores</h3>
+                        <div class="production-readings__charts" id="sensorCharts">
+                            <div style="height: 200px; width: 100%;">
+                                <canvas id="sensorChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Cuarta fila: Sensores -->
-                <div class="form__row">
-                    <div class="form__group form__group--full-width">
-                        <label for="sensors" class="form__label">Sensores (máximo 3)</label>
-                        <div class="select-with-button">
-                            <select id="sensors" class="form__select" multiple size="4">
-                                <option value="1">Sensor de humedad</option>
-                                <option value="2">Sensor de temperatura</option>
-                                <option value="3">Sensor de pH</option>
-                                <option value="4">Sensor de luz</option>
-                                <option value="5">Sensor de CO2</option>
-                            </select>
-                            <button type="button" class="button--add" id="addSensorBtn">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <small id="sensorsError" class="error hidden"></small>
-                    </div>
-                </div>
-
-                <!-- Visualización de lecturas de sensores -->
-                <div class="production-readings">
-                    <h3 class="production-readings__title">Visualización de lecturas de sensores</h3>
-                    <div class="production-readings__charts" id="sensorCharts">
-                        <div style="height: 200px; width: 100%;">
-                            <canvas id="sensorChart"></canvas>
+                <!-- Sección de insumos -->
+                <div class="form__section">
+                    <h2 class="form__section-title"><i class="fas fa-box-open"></i> Insumos y Recursos</h2>
+                    
+                    <!-- Quinta fila: Insumos -->
+                    <div class="form__row">
+                        <div class="form__group form__group--full-width">
+                            <label for="supplies" class="form__label"><i class="fas fa-leaf"></i> Insumos</label>
+                            <div class="select-with-button">
+                                <select id="supplies" class="form__select" multiple size="4">
+                                    <!-- Se llenará dinámicamente -->
+                                </select>
+                                <button type="button" class="button--add" id="addSupplyBtn">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Tabla de insumos utilizados -->
+                    <div class="production-supplies">
+                        <h3 class="production-supplies__title"><i class="fas fa-clipboard-list"></i> Insumos utilizados</h3>
+                        <div class="production-supplies__table-container">
+                            <table class="production-supplies__table" id="suppliesTable">
+                                <thead>
+                                    <tr>
+                                        <th class="production-supplies__cell production-supplies__header">Insumo</th>
+                                        <th class="production-supplies__cell production-supplies__header">Fecha de uso</th>
+                                        <th class="production-supplies__cell production-supplies__header">Cantidad</th>
+                                        <th class="production-supplies__cell production-supplies__header">Responsable</th>
+                                        <th class="production-supplies__cell production-supplies__header">Valor unitario</th>
+                                        <th class="production-supplies__cell production-supplies__header">Valor total</th>
+                                        <th class="production-supplies__cell production-supplies__header">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="suppliesTableBody">
+                                    <!-- Las filas se agregarán dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <button type="button" class="production-supplies__button" id="addSupplyRowBtn">
+                            <i class="fas fa-plus"></i> Agregar insumo
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Quinta fila: Insumos -->
-                <div class="form__row">
-                    <div class="form__group form__group--full-width">
-                        <label for="supplies" class="form__label">Insumos</label>
-                        <div class="select-with-button">
-                            <select id="supplies" class="form__select" multiple size="4">
-                                <option value="1">Fertilizante NPK</option>
-                                <option value="2">Semillas certificadas</option>
-                                <option value="3">Insecticida orgánico</option>
-                                <option value="4">Fungicida</option>
-                                <option value="5">Herbicida</option>
-                            </select>
-                            <button type="button" class="button--add" id="addSupplyBtn">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                <!-- Sección financiera y fechas -->
+                <div class="form__section">
+                    <h2 class="form__section-title"><i class="fas fa-dollar-sign"></i> Información Financiera y Fechas</h2>
+                    
+                    <!-- Sexta fila: Inversión y Meta -->
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="investment" class="form__label"><i class="fas fa-coins"></i> Inversión</label>
+                            <input type="text" id="investment" class="form__input form__input--disabled" disabled>
+                        </div>
+                        <div class="form__group">
+                            <label for="goal" class="form__label"><i class="fas fa-bullseye"></i> Meta (Estimación de ganancias)</label>
+                            <input type="text" id="goal" class="form__input form__input--disabled" disabled>
                         </div>
                     </div>
-                </div>
 
-                <!-- Tabla de insumos utilizados -->
-                <div class="production-supplies">
-                    <h3 class="production-supplies__title">Insumos utilizados</h3>
-                    <table class="production-supplies__table" id="suppliesTable">
-                        <thead>
-                            <tr>
-                                <th class="production-supplies__cell production-supplies__header">Insumo</th>
-                                <th class="production-supplies__cell production-supplies__header">Fecha de uso</th>
-                                <th class="production-supplies__cell production-supplies__header">Cantidad</th>
-                                <th class="production-supplies__cell production-supplies__header">Responsable</th>
-                                <th class="production-supplies__cell production-supplies__header">Valor unitario</th>
-                                <th class="production-supplies__cell production-supplies__header">Valor total</th>
-                                <th class="production-supplies__cell production-supplies__header">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="suppliesTableBody">
-                            <!-- Las filas se agregarán dinámicamente -->
-                        </tbody>
-                    </table>
-                    <button type="button" class="production-supplies__button" id="addSupplyRowBtn">
-                        <i class="fas fa-plus"></i> Agregar insumo
-                    </button>
-                </div>
-
-                <!-- Sexta fila: Inversión y Meta -->
-                <div class="form__row">
-                    <div class="form__group">
-                        <label for="investment" class="form__label">Inversión</label>
-                        <input type="text" id="investment" class="form__input form__input--disabled" disabled>
-                    </div>
-                    <div class="form__group">
-                        <label for="goal" class="form__label">Meta (Estimación de ganancias)</label>
-                        <input type="text" id="goal" class="form__input form__input--disabled" disabled>
-                    </div>
-                </div>
-
-                <!-- Séptima fila: Fechas -->
-                <div class="form__row">
-                    <div class="form__group">
-                        <label for="startDate" class="form__label">Fecha de inicio</label>
-                        <input type="date" id="startDate" class="form__input">
-                    </div>
-                    <div class="form__group">
-                        <label for="endDate" class="form__label">Fecha de fin (estimada)</label>
-                        <input type="date" id="endDate" class="form__input">
-                        <small id="dateError" class="error hidden"></small>
+                    <!-- Séptima fila: Fechas -->
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="startDate" class="form__label"><i class="fas fa-calendar-alt"></i> Fecha de inicio</label>
+                            <input type="date" id="startDate" class="form__input">
+                        </div>
+                        <div class="form__group">
+                            <label for="endDate" class="form__label"><i class="fas fa-calendar-check"></i> Fecha de fin (estimada)</label>
+                            <input type="date" id="endDate" class="form__input">
+                            <small id="dateError" class="error hidden"></small>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Botones de acción -->
                 <div class="form__button-container">
-                    <button type="button" class="button--secondary" id="saveDraftBtn">Guardar borrador</button>
-                    <button type="submit" class="button--submit" id="createBtn" disabled>Crear</button>
+                    <button type="button" class="button--secondary" id="saveDraftBtn">
+                        <i class="fas fa-save"></i> Guardar borrador
+                    </button>
+                    <button type="submit" class="button--submit" id="createBtn" disabled>
+                        <i class="fas fa-check-circle"></i> Crear
+                    </button>
                 </div>
             </form>
         </div>
@@ -193,14 +209,14 @@
     <div id="responsibleModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Agregar Responsable</h2>
+            <h2><i class="fas fa-user-plus"></i> Agregar Responsable</h2>
             <form id="responsibleForm">
                 <div class="form__group">
-                    <label for="newResponsibleName" class="form__label">Nombre completo</label>
+                    <label for="newResponsibleName" class="form__label"><i class="fas fa-user"></i> Nombre completo</label>
                     <input type="text" id="newResponsibleName" class="form__input" required>
                 </div>
                 <div class="form__group">
-                    <label for="newResponsibleEmail" class="form__label">Correo electrónico</label>
+                    <label for="newResponsibleEmail" class="form__label"><i class="fas fa-envelope"></i> Correo electrónico</label>
                     <input type="email" id="newResponsibleEmail" class="form__input" required>
                 </div>
                 <div class="form__button-container">
@@ -214,14 +230,14 @@
     <div id="cropModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Agregar Cultivo</h2>
+            <h2><i class="fas fa-seedling"></i> Agregar Cultivo</h2>
             <form id="cropForm">
                 <div class="form__group">
-                    <label for="newCropName" class="form__label">Nombre del cultivo</label>
+                    <label for="newCropName" class="form__label"><i class="fas fa-leaf"></i> Nombre del cultivo</label>
                     <input type="text" id="newCropName" class="form__input" required>
                 </div>
                 <div class="form__group">
-                    <label for="newCropDescription" class="form__label">Descripción</label>
+                    <label for="newCropDescription" class="form__label"><i class="fas fa-align-left"></i> Descripción</label>
                     <textarea id="newCropDescription" class="form__textarea"></textarea>
                 </div>
                 <div class="form__button-container">
@@ -235,14 +251,14 @@
     <div id="cycleModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Agregar Ciclo de Cultivo</h2>
+            <h2><i class="fas fa-sync-alt"></i> Agregar Ciclo de Cultivo</h2>
             <form id="cycleForm">
                 <div class="form__group">
-                    <label for="newCycleName" class="form__label">Nombre del ciclo</label>
+                    <label for="newCycleName" class="form__label"><i class="fas fa-tag"></i> Nombre del ciclo</label>
                     <input type="text" id="newCycleName" class="form__input" required>
                 </div>
                 <div class="form__group">
-                    <label for="newCycleDuration" class="form__label">Duración (días)</label>
+                    <label for="newCycleDuration" class="form__label"><i class="fas fa-clock"></i> Duración (días)</label>
                     <input type="number" id="newCycleDuration" class="form__input" required min="1">
                 </div>
                 <div class="form__button-container">
@@ -256,14 +272,14 @@
     <div id="sensorModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Agregar Sensor</h2>
+            <h2><i class="fas fa-microchip"></i> Agregar Sensor</h2>
             <form id="sensorForm">
                 <div class="form__group">
-                    <label for="newSensorName" class="form__label">Nombre del sensor</label>
+                    <label for="newSensorName" class="form__label"><i class="fas fa-tag"></i> Nombre del sensor</label>
                     <input type="text" id="newSensorName" class="form__input" required>
                 </div>
                 <div class="form__group">
-                    <label for="newSensorType" class="form__label">Tipo de sensor</label>
+                    <label for="newSensorType" class="form__label"><i class="fas fa-thermometer-half"></i> Tipo de sensor</label>
                     <select id="newSensorType" class="form__select" required>
                         <option value="">Seleccionar tipo</option>
                         <option value="temperatura">Temperatura</option>
@@ -274,7 +290,7 @@
                     </select>
                 </div>
                 <div class="form__group">
-                    <label for="newSensorUnit" class="form__label">Unidad de medida</label>
+                    <label for="newSensorUnit" class="form__label"><i class="fas fa-ruler"></i> Unidad de medida</label>
                     <input type="text" id="newSensorUnit" class="form__input" required>
                 </div>
                 <div class="form__button-container">
@@ -288,14 +304,14 @@
     <div id="supplyModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Agregar Insumo</h2>
+            <h2><i class="fas fa-box-open"></i> Agregar Insumo</h2>
             <form id="supplyForm">
                 <div class="form__group">
-                    <label for="newSupplyName" class="form__label">Nombre del insumo</label>
+                    <label for="newSupplyName" class="form__label"><i class="fas fa-tag"></i> Nombre del insumo</label>
                     <input type="text" id="newSupplyName" class="form__input" required>
                 </div>
                 <div class="form__group">
-                    <label for="newSupplyType" class="form__label">Tipo de insumo</label>
+                    <label for="newSupplyType" class="form__label"><i class="fas fa-list"></i> Tipo de insumo</label>
                     <select id="newSupplyType" class="form__select" required>
                         <option value="">Seleccionar tipo</option>
                         <option value="fertilizante">Fertilizante</option>
@@ -306,7 +322,7 @@
                     </select>
                 </div>
                 <div class="form__group">
-                    <label for="newSupplyUnit" class="form__label">Unidad de medida</label>
+                    <label for="newSupplyUnit" class="form__label"><i class="fas fa-ruler"></i> Unidad de medida</label>
                     <select id="newSupplyUnit" class="form__select" required>
                         <option value="">Seleccionar unidad</option>
                         <option value="kg">Kilogramo (kg)</option>
@@ -317,8 +333,8 @@
                     </select>
                 </div>
                 <div class="form__group">
-                    <label for="newSupplyPrice" class="form__label">Precio unitario</label>
-                    <input type="number" id="newSupplyPrice" class="form__input" required min="0" step="0.01">
+                    <label for="newSupplyPrice" class="form__label"><i class="fas fa-dollar-sign"></i> Precio unitario</label>
+                    <input type="number" id="newSupplyPrice" class="form__input" required min="0" step="1">
                 </div>
                 <div class="form__button-container">
                     <button type="submit" class="button--submit">Guardar</button>
@@ -331,40 +347,40 @@
     <div id="supplyRowModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Agregar Uso de Insumo</h2>
+            <h2><i class="fas fa-plus-circle"></i> Agregar Uso de Insumo</h2>
             <form id="supplyRowForm">
                 <div class="form__group">
-                    <label for="supplySelect" class="form__label">Insumo</label>
+                    <label for="supplySelect" class="form__label"><i class="fas fa-box"></i> Insumo</label>
                     <select id="supplySelect" class="form__select" required>
                         <option value="">Seleccionar insumo</option>
                         <!-- Se llenará dinámicamente -->
                     </select>
                 </div>
                 <div class="form__group">
-                    <label for="supplyDate" class="form__label">Fecha de uso</label>
+                    <label for="supplyDate" class="form__label"><i class="fas fa-calendar-day"></i> Fecha de uso</label>
                     <input type="date" id="supplyDate" class="form__input" required>
                 </div>
                 <div class="form__group">
-                    <label for="supplyQuantity" class="form__label">Cantidad</label>
-                    <input type="number" id="supplyQuantity" class="form__input" required min="0.01" step="0.01">
+                    <label for="supplyQuantity" class="form__label"><i class="fas fa-weight"></i> Cantidad</label>
+                    <input type="number" id="supplyQuantity" class="form__input" required min="1" step="1">
                 </div>
                 <div class="form__group">
-                    <label for="supplyResponsible" class="form__label">Responsable</label>
+                    <label for="supplyResponsible" class="form__label"><i class="fas fa-user"></i> Responsable</label>
                     <select id="supplyResponsible" class="form__select" required>
                         <option value="">Seleccionar responsable</option>
                         <!-- Se llenará dinámicamente -->
                     </select>
                 </div>
                 <div class="form__group">
-                    <label for="supplyUnitValue" class="form__label">Valor unitario</label>
-                    <input type="number" id="supplyUnitValue" class="form__input" required min="0" step="0.01">
+                    <label for="supplyUnitValue" class="form__label"><i class="fas fa-tag"></i> Valor unitario</label>
+                    <input type="number" id="supplyUnitValue" class="form__input" required min="0" step="1">
                 </div>
                 <div class="form__group">
-                    <label for="supplyTotalValue" class="form__label">Valor total</label>
+                    <label for="supplyTotalValue" class="form__label"><i class="fas fa-calculator"></i> Valor total</label>
                     <input type="text" id="supplyTotalValue" class="form__input" readonly>
                 </div>
                 <div class="form__group">
-                    <label for="supplyObservations" class="form__label">Observaciones</label>
+                    <label for="supplyObservations" class="form__label"><i class="fas fa-comment"></i> Observaciones</label>
                     <textarea id="supplyObservations" class="form__textarea"></textarea>
                 </div>
                 <div class="form__button-container">
@@ -386,748 +402,6 @@
         <div class="toast-progress"></div>
     </div>
 
-    <style>
-        /* Estilos adicionales para modales */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal.hidden {
-            display: none;
-        }
-
-        .modal:not(.hidden) {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background-color: var(--white);
-            margin: auto;
-            padding: 2.5rem;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 50rem;
-            position: relative;
-            animation: modalFadeIn 0.3s;
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .close-modal {
-            position: absolute;
-            right: 2rem;
-            top: 1.5rem;
-            color: var(--gray-60);
-            font-size: 2.4rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close-modal:hover {
-            color: var(--gray-100);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-    </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Generar ID de producción automáticamente
-            function generateProductionId() {
-                const now = new Date();
-                const year = now.getFullYear();
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const day = String(now.getDate()).padStart(2, '0');
-                
-                // Formato: PROD-DDMMYYYY-XXXX (donde XXXX es un número secuencial)
-                // En un entorno real, este número vendría del backend
-                const sequentialNumber = Math.floor(1000 + Math.random() * 9000); // Simulación
-                
-                return `PROD-${day}${month}${year}-${sequentialNumber}`;
-            }
-            
-            // Establecer ID de producción
-            document.getElementById('productionId').value = generateProductionId();
-            
-            // Establecer fecha de inicio por defecto (hoy)
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('startDate').value = today;
-            
-            // Referencias a elementos del DOM
-            const productionForm = document.getElementById('productionForm');
-            const productionNameInput = document.getElementById('productionName');
-            const productionNameError = document.getElementById('productionNameError');
-            const sensorsSelect = document.getElementById('sensors');
-            const sensorsError = document.getElementById('sensorsError');
-            const startDateInput = document.getElementById('startDate');
-            const endDateInput = document.getElementById('endDate');
-            const dateError = document.getElementById('dateError');
-            const createBtn = document.getElementById('createBtn');
-            const saveDraftBtn = document.getElementById('saveDraftBtn');
-            const responsibleSelect = document.getElementById('responsible');
-            const cropSelect = document.getElementById('crop');
-            const cropCycleSelect = document.getElementById('cropCycle');
-            const suppliesSelect = document.getElementById('supplies');
-            const investmentInput = document.getElementById('investment');
-            const goalInput = document.getElementById('goal');
-            
-            // Referencias a botones de modal
-            const addResponsibleBtn = document.getElementById('addResponsibleBtn');
-            const addCropBtn = document.getElementById('addCropBtn');
-            const addCycleBtn = document.getElementById('addCycleBtn');
-            const addSensorBtn = document.getElementById('addSensorBtn');
-            const addSupplyBtn = document.getElementById('addSupplyBtn');
-            const addSupplyRowBtn = document.getElementById('addSupplyRowBtn');
-            
-            // Referencias a modales
-            const responsibleModal = document.getElementById('responsibleModal');
-            const cropModal = document.getElementById('cropModal');
-            const cycleModal = document.getElementById('cycleModal');
-            const sensorModal = document.getElementById('sensorModal');
-            const supplyModal = document.getElementById('supplyModal');
-            const supplyRowModal = document.getElementById('supplyRowModal');
-            
-            // Referencias a formularios de modal
-            const responsibleForm = document.getElementById('responsibleForm');
-            const cropForm = document.getElementById('cropForm');
-            const cycleForm = document.getElementById('cycleForm');
-            const sensorForm = document.getElementById('sensorForm');
-            const supplyForm = document.getElementById('supplyForm');
-            const supplyRowForm = document.getElementById('supplyRowForm');
-            
-            // Tabla de insumos
-            const suppliesTableBody = document.getElementById('suppliesTableBody');
-            
-            // Arreglo para almacenar los insumos utilizados
-            let usedSupplies = [];
-            
-            // Función para mostrar toast
-            function showToast(title, message, type = 'success') {
-                const toast = document.getElementById('toast');
-                const toastTitle = document.getElementById('toastTitle');
-                const toastDescription = document.getElementById('toastDescription');
-                const toastIcon = document.getElementById('toastIcon');
-                const toastProgress = document.querySelector('.toast-progress');
-                
-                // Establecer el contenido del toast
-                toastTitle.textContent = title;
-                toastDescription.textContent = message;
-                
-                // Establecer el icono según el tipo
-                switch(type) {
-                    case 'success':
-                        toastIcon.className = 'fas fa-check-circle';
-                        break;
-                    case 'error':
-                        toastIcon.className = 'fas fa-exclamation-circle';
-                        break;
-                    case 'warning':
-                        toastIcon.className = 'fas fa-exclamation-triangle';
-                        break;
-                    case 'info':
-                        toastIcon.className = 'fas fa-info-circle';
-                        break;
-                }
-                
-                // Mostrar el toast
-                toast.classList.remove('hidden');
-                
-                // Animación de la barra de progreso
-                toastProgress.style.width = '100%';
-                
-                // Ocultar el toast después de 5 segundos
-                setTimeout(() => {
-                    toast.classList.add('hidden');
-                    toastProgress.style.width = '0%';
-                }, 5000);
-            }
-            
-            // Función para abrir modal
-            function openModal(modal) {
-                modal.classList.remove('hidden');
-            }
-            
-            // Función para cerrar modal
-            function closeModal(modal) {
-                modal.classList.add('hidden');
-            }
-            
-            // Agregar eventos para cerrar modales
-            document.querySelectorAll('.close-modal').forEach(closeBtn => {
-                closeBtn.addEventListener('click', function() {
-                    const modal = this.closest('.modal');
-                    closeModal(modal);
-                });
-            });
-            
-            // Cerrar modal al hacer clic fuera del contenido
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        closeModal(this);
-                    }
-                });
-            });
-            
-            // Eventos para abrir modales
-            addResponsibleBtn.addEventListener('click', () => openModal(responsibleModal));
-            addCropBtn.addEventListener('click', () => openModal(cropModal));
-            addCycleBtn.addEventListener('click', () => openModal(cycleModal));
-            addSensorBtn.addEventListener('click', () => openModal(sensorModal));
-            addSupplyBtn.addEventListener('click', () => openModal(supplyModal));
-            addSupplyRowBtn.addEventListener('click', () => {
-                // Llenar el select de insumos con los insumos seleccionados
-                const supplySelect = document.getElementById('supplySelect');
-                supplySelect.innerHTML = '<option value="">Seleccionar insumo</option>';
-                
-                // Obtener los insumos seleccionados
-                const selectedSupplies = Array.from(suppliesSelect.selectedOptions);
-                
-                selectedSupplies.forEach(option => {
-                    const newOption = document.createElement('option');
-                    newOption.value = option.value;
-                    newOption.textContent = option.textContent;
-                    supplySelect.appendChild(newOption);
-                });
-                
-                // Llenar el select de responsables
-                const supplyResponsible = document.getElementById('supplyResponsible');
-                supplyResponsible.innerHTML = '<option value="">Seleccionar responsable</option>';
-                
-                // Copiar las opciones del select de responsables principal
-                Array.from(responsibleSelect.options).forEach(option => {
-                    if (option.value) { // Excluir la opción vacía
-                        const newOption = document.createElement('option');
-                        newOption.value = option.value;
-                        newOption.textContent = option.textContent;
-                        supplyResponsible.appendChild(newOption);
-                    }
-                });
-                
-                // Establecer la fecha actual por defecto
-                document.getElementById('supplyDate').value = today;
-                
-                openModal(supplyRowModal);
-            });
-            
-            // Validación del nombre de producción
-            productionNameInput.addEventListener('input', validateProductionName);
-            
-            function validateProductionName() {
-                const value = productionNameInput.value.trim();
-                const minLength = 3;
-                const maxLength = 100;
-                const regex = /[a-zA-ZáéíóúÁÉÍÓÚñÑ]/; // Al menos una letra
-                
-                if (!value) {
-                    productionNameError.textContent = 'El nombre de producción es obligatorio';
-                    productionNameError.classList.remove('hidden');
-                    return false;
-                } else if (value.length < minLength) {
-                    productionNameError.textContent = `El nombre debe tener al menos ${minLength} caracteres`;
-                    productionNameError.classList.remove('hidden');
-                    return false;
-                } else if (value.length > maxLength) {
-                    productionNameError.textContent = `El nombre no puede exceder los ${maxLength} caracteres`;
-                    productionNameError.classList.remove('hidden');
-                    return false;
-                } else if (!regex.test(value)) {
-                    productionNameError.textContent = 'El nombre debe contener al menos una letra';
-                    productionNameError.classList.remove('hidden');
-                    return false;
-                } else {
-                    productionNameError.classList.add('hidden');
-                    return true;
-                }
-            }
-            
-            // Validación de sensores (máximo 3)
-            sensorsSelect.addEventListener('change', validateSensors);
-            
-            function validateSensors() {
-                const selectedOptions = Array.from(sensorsSelect.selectedOptions);
-                
-                if (selectedOptions.length > 3) {
-                    sensorsError.textContent = 'Puede seleccionar máximo 3 sensores';
-                    sensorsError.classList.remove('hidden');
-                    return false;
-                } else {
-                    sensorsError.classList.add('hidden');
-                    
-                    // Si hay sensores seleccionados, generar gráfico de ejemplo
-                    if (selectedOptions.length > 0) {
-                        generateSensorChart(selectedOptions);
-                    }
-                    
-                    return true;
-                }
-            }
-            
-            // Validación de fechas
-            startDateInput.addEventListener('change', validateDates);
-            endDateInput.addEventListener('change', validateDates);
-            
-            function validateDates() {
-                const startDate = new Date(startDateInput.value);
-                const endDate = new Date(endDateInput.value);
-                
-                if (endDateInput.value && startDate >= endDate) {
-                    dateError.textContent = 'La fecha de fin debe ser posterior a la fecha de inicio';
-                    dateError.classList.remove('hidden');
-                    return false;
-                } else {
-                    dateError.classList.add('hidden');
-                    return true;
-                }
-            }
-            
-            // Función para validar todo el formulario
-            function validateForm() {
-                const isNameValid = validateProductionName();
-                const areSensorsValid = validateSensors();
-                const areDatesValid = validateDates();
-                const isResponsibleSelected = responsibleSelect.value !== '';
-                const isCropSelected = cropSelect.value !== '';
-                const isCropCycleSelected = cropCycleSelect.value !== '';
-                
-                // Habilitar/deshabilitar botón de crear
-                createBtn.disabled = !(
-                    isNameValid && 
-                    areSensorsValid && 
-                    areDatesValid && 
-                    isResponsibleSelected && 
-                    isCropSelected && 
-                    isCropCycleSelected &&
-                    usedSupplies.length > 0
-                );
-                
-                return (
-                    isNameValid && 
-                    areSensorsValid && 
-                    areDatesValid && 
-                    isResponsibleSelected && 
-                    isCropSelected && 
-                    isCropCycleSelected
-                );
-            }
-            
-            // Eventos para validar el formulario
-            productionForm.addEventListener('change', validateForm);
-            productionForm.addEventListener('input', validateForm);
-            
-            // Generar gráfico de ejemplo para sensores
-            function generateSensorChart(selectedSensors) {
-                const ctx = document.getElementById('sensorChart').getContext('2d');
-                
-                // Datos de ejemplo para el gráfico
-                const labels = [];
-                for (let i = 0; i < 7; i++) {
-                    const date = new Date();
-                    date.setDate(date.getDate() - i);
-                    labels.unshift(date.toLocaleDateString());
-                }
-                
-                const datasets = selectedSensors.map((sensor, index) => {
-                    // Generar datos aleatorios para cada sensor
-                    const data = Array.from({ length: 7 }, () => Math.floor(Math.random() * 100));
-                    
-                    // Colores para cada línea
-                    const colors = [
-                        'rgba(93, 209, 46, 1)',
-                        'rgba(57, 169, 0, 1)',
-                        'rgba(0, 120, 50, 1)'
-                    ];
-                    
-                    return {
-                        label: sensor.textContent,
-                        data: data,
-                        borderColor: colors[index % colors.length],
-                        backgroundColor: colors[index % colors.length].replace('1)', '0.1)'),
-                        tension: 0.3
-                    };
-                });
-                
-                // Destruir gráfico existente si hay uno
-                if (window.sensorChart) {
-                    window.sensorChart.destroy();
-                }
-                
-                // Crear nuevo gráfico
-                window.sensorChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: datasets
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            }
-            
-            // Calcular inversión y meta
-            function calculateInvestmentAndGoal() {
-                let totalInvestment = 0;
-                
-                // Sumar el valor total de todos los insumos utilizados
-                usedSupplies.forEach(supply => {
-                    totalInvestment += supply.totalValue;
-                });
-                
-                // Formatear con separador de miles y signo $
-                investmentInput.value = `$${totalInvestment.toLocaleString('es-CO')}`;
-                
-                // Calcular meta (estimación de ganancias) - ejemplo: 30% más que la inversión
-                const goal = totalInvestment * 1.3;
-                goalInput.value = `$${goal.toLocaleString('es-CO')}`;
-            }
-            
-            // Agregar insumo a la tabla
-            function addSupplyToTable(supply) {
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td class="supplies-table__cell">${supply.name}</td>
-                    <td class="supplies-table__cell">${supply.date}</td>
-                    <td class="supplies-table__cell">${supply.quantity}</td>
-                    <td class="supplies-table__cell">${supply.responsible}</td>
-                    <td class="supplies-table__cell">$${supply.unitValue.toLocaleString('es-CO')}</td>
-                    <td class="supplies-table__cell">$${supply.totalValue.toLocaleString('es-CO')}</td>
-                    <td class="supplies-table__cell">
-                        <span class="supplies-table__action" data-id="${supply.id}">
-                            <i class="fas fa-trash-alt"></i>
-                        </span>
-                    </td>
-                `;
-                
-                // Agregar evento para eliminar fila
-                const deleteAction = row.querySelector('.supplies-table__action');
-                deleteAction.addEventListener('click', function() {
-                    const supplyId = this.getAttribute('data-id');
-                    usedSupplies = usedSupplies.filter(s => s.id !== parseInt(supplyId));
-                    row.remove();
-                    calculateInvestmentAndGoal();
-                    validateForm();
-                });
-                
-                suppliesTableBody.appendChild(row);
-            }
-            
-            // Manejar formulario de agregar fila de insumo
-            supplyRowForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const supplySelect = document.getElementById('supplySelect');
-                const supplyDate = document.getElementById('supplyDate');
-                const supplyQuantity = document.getElementById('supplyQuantity');
-                const supplyResponsible = document.getElementById('supplyResponsible');
-                const supplyUnitValue = document.getElementById('supplyUnitValue');
-                const supplyObservations = document.getElementById('supplyObservations');
-                
-                // Validar campos
-                if (!supplySelect.value || !supplyDate.value || !supplyQuantity.value || 
-                    !supplyResponsible.value || !supplyUnitValue.value) {
-                    showToast('Error', 'Todos los campos son obligatorios', 'error');
-                    return;
-                }
-                
-                // Crear objeto de insumo
-                const supply = {
-                    id: Date.now(), // ID único basado en timestamp
-                    name: supplySelect.options[supplySelect.selectedIndex].text,
-                    date: supplyDate.value,
-                    quantity: parseFloat(supplyQuantity.value),
-                    responsible: supplyResponsible.options[supplyResponsible.selectedIndex].text,
-                    unitValue: parseFloat(supplyUnitValue.value),
-                    totalValue: parseFloat(supplyQuantity.value) * parseFloat(supplyUnitValue.value),
-                    observations: supplyObservations.value
-                };
-                
-                // Agregar a la lista y a la tabla
-                usedSupplies.push(supply);
-                addSupplyToTable(supply);
-                
-                // Recalcular inversión y meta
-                calculateInvestmentAndGoal();
-                
-                // Cerrar modal y limpiar formulario
-                closeModal(supplyRowModal);
-                supplyRowForm.reset();
-                
-                // Validar formulario principal
-                validateForm();
-                
-                showToast('Éxito', 'Insumo agregado correctamente', 'success');
-            });
-            
-            // Calcular valor total en tiempo real en el modal de insumo
-            document.getElementById('supplyUnitValue').addEventListener('input', calculateSupplyTotal);
-            document.getElementById('supplyQuantity').addEventListener('input', calculateSupplyTotal);
-            
-            function calculateSupplyTotal() {
-                const quantity = parseFloat(document.getElementById('supplyQuantity').value) || 0;
-                const unitValue = parseFloat(document.getElementById('supplyUnitValue').value) || 0;
-                const totalValue = quantity * unitValue;
-                
-                document.getElementById('supplyTotalValue').value = `$${totalValue.toLocaleString('es-CO')}`;
-            }
-            
-            // Manejar formulario de agregar responsable
-            responsibleForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('newResponsibleName').value;
-                const email = document.getElementById('newResponsibleEmail').value;
-                
-                // Validar campos
-                if (!name || !email) {
-                    showToast('Error', 'Todos los campos son obligatorios', 'error');
-                    return;
-                }
-                
-                // Crear nueva opción en el select
-                const newOption = document.createElement('option');
-                newOption.value = Date.now(); // ID único basado en timestamp
-                newOption.textContent = name;
-                responsibleSelect.appendChild(newOption);
-                
-                // Seleccionar la nueva opción
-                newOption.selected = true;
-                
-                // Cerrar modal y limpiar formulario
-                closeModal(responsibleModal);
-                responsibleForm.reset();
-                
-                // Validar formulario principal
-                validateForm();
-                
-                showToast('Éxito', 'Responsable agregado correctamente', 'success');
-            });
-            
-            // Manejar formulario de agregar cultivo
-            cropForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('newCropName').value;
-                
-                // Validar campos
-                if (!name) {
-                    showToast('Error', 'El nombre del cultivo es obligatorio', 'error');
-                    return;
-                }
-                
-                // Crear nueva opción en el select
-                const newOption = document.createElement('option');
-                newOption.value = Date.now(); // ID único basado en timestamp
-                newOption.textContent = name;
-                cropSelect.appendChild(newOption);
-                
-                // Seleccionar la nueva opción
-                newOption.selected = true;
-                
-                // Cerrar modal y limpiar formulario
-                closeModal(cropModal);
-                cropForm.reset();
-                
-                // Validar formulario principal
-                validateForm();
-                
-                showToast('Éxito', 'Cultivo agregado correctamente', 'success');
-            });
-            
-            // Manejar formulario de agregar ciclo de cultivo
-            cycleForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('newCycleName').value;
-                const duration = document.getElementById('newCycleDuration').value;
-                
-                // Validar campos
-                if (!name || !duration) {
-                    showToast('Error', 'Todos los campos son obligatorios', 'error');
-                    return;
-                }
-                
-                // Crear nueva opción en el select
-                const newOption = document.createElement('option');
-                newOption.value = Date.now(); // ID único basado en timestamp
-                newOption.textContent = name;
-                cropCycleSelect.appendChild(newOption);
-                
-                // Seleccionar la nueva opción
-                newOption.selected = true;
-                
-                // Cerrar modal y limpiar formulario
-                closeModal(cycleModal);
-                cycleForm.reset();
-                
-                // Validar formulario principal
-                validateForm();
-                
-                showToast('Éxito', 'Ciclo de cultivo agregado correctamente', 'success');
-            });
-            
-            // Manejar formulario de agregar sensor
-            sensorForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('newSensorName').value;
-                const type = document.getElementById('newSensorType').value;
-                const unit = document.getElementById('newSensorUnit').value;
-                
-                // Validar campos
-                if (!name || !type || !unit) {
-                    showToast('Error', 'Todos los campos son obligatorios', 'error');
-                    return;
-                }
-                
-                // Crear nueva opción en el select
-                const newOption = document.createElement('option');
-                newOption.value = Date.now(); // ID único basado en timestamp
-                newOption.textContent = name;
-                sensorsSelect.appendChild(newOption);
-                
-                // Seleccionar la nueva opción (manteniendo las selecciones actuales)
-                newOption.selected = true;
-                
-                // Cerrar modal y limpiar formulario
-                closeModal(sensorModal);
-                sensorForm.reset();
-                
-                // Validar sensores y formulario principal
-                validateSensors();
-                validateForm();
-                
-                showToast('Éxito', 'Sensor agregado correctamente', 'success');
-            });
-            
-            // Manejar formulario de agregar insumo
-            supplyForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('newSupplyName').value;
-                const type = document.getElementById('newSupplyType').value;
-                const unit = document.getElementById('newSupplyUnit').value;
-                const price = document.getElementById('newSupplyPrice').value;
-                
-                // Validar campos
-                if (!name || !type || !unit || !price) {
-                    showToast('Error', 'Todos los campos son obligatorios', 'error');
-                    return;
-                }
-                
-                // Crear nueva opción en el select
-                const newOption = document.createElement('option');
-                newOption.value = Date.now(); // ID único basado en timestamp
-                newOption.textContent = name;
-                suppliesSelect.appendChild(newOption);
-                
-                // Seleccionar la nueva opción (manteniendo las selecciones actuales)
-                newOption.selected = true;
-                
-                // Cerrar modal y limpiar formulario
-                closeModal(supplyModal);
-                supplyForm.reset();
-                
-                // Validar formulario principal
-                validateForm();
-                
-                showToast('Éxito', 'Insumo agregado correctamente', 'success');
-            });
-            
-            // Manejar envío del formulario principal
-            productionForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                if (!validateForm()) {
-                    showToast('Error', 'Por favor, complete todos los campos requeridos', 'error');
-                    return;
-                }
-                
-                // Recopilar datos del formulario
-                const productionData = {
-                    id: document.getElementById('productionId').value,
-                    responsible: responsibleSelect.options[responsibleSelect.selectedIndex].text,
-                    name: productionNameInput.value,
-                    crop: cropSelect.options[cropSelect.selectedIndex].text,
-                    cropCycle: cropCycleSelect.options[cropCycleSelect.selectedIndex].text,
-                    sensors: Array.from(sensorsSelect.selectedOptions).map(option => option.textContent),
-                    supplies: usedSupplies,
-                    investment: investmentInput.value,
-                    goal: goalInput.value,
-                    startDate: startDateInput.value,
-                    endDate: endDateInput.value
-                };
-                
-                console.log('Datos de producción:', productionData);
-                
-                // Aquí se enviarían los datos al servidor
-                // En este ejemplo, solo mostramos un toast de éxito
-                
-                showToast('Éxito', 'Producción creada correctamente', 'success');
-                
-                // Simular redirección después de 2 segundos
-                setTimeout(() => {
-                    alert('Producción creada con éxito. En un entorno real, serías redirigido a la lista de producciones.');
-                }, 2000);
-            });
-            
-            // Manejar guardado de borrador
-            saveDraftBtn.addEventListener('click', function() {
-                // Recopilar datos del formulario (incluso incompleto)
-                const draftData = {
-                    id: document.getElementById('productionId').value,
-                    responsible: responsibleSelect.value ? responsibleSelect.options[responsibleSelect.selectedIndex].text : '',
-                    name: productionNameInput.value,
-                    crop: cropSelect.value ? cropSelect.options[cropSelect.selectedIndex].text : '',
-                    cropCycle: cropCycleSelect.value ? cropCycleSelect.options[cropCycleSelect.selectedIndex].text : '',
-                    sensors: Array.from(sensorsSelect.selectedOptions).map(option => option.textContent),
-                    supplies: usedSupplies,
-                    investment: investmentInput.value,
-                    goal: goalInput.value,
-                    startDate: startDateInput.value,
-                    endDate: endDateInput.value,
-                    isDraft: true
-                };
-                
-                console.log('Borrador guardado:', draftData);
-                
-                // Aquí se enviarían los datos al servidor
-                // En este ejemplo, solo mostramos un toast de éxito
-                
-                showToast('Éxito', 'Borrador guardado correctamente', 'success');
-            });
-            
-            // Inicializar validación
-            validateForm();
-        });
-    </script>
+    <script src="../js/validations/productionCreationValidator.js"></script>
 </body>
 </html>
