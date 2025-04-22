@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Producción - SGAL</title>
-    <link rel="stylesheet" href="../css/pages/produccion.css">
-    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../css/pages/produccion.css">
 </head>
 <body>
     <div class="main-content">
-        <div class="form form--height">
-            <a href="producciones.html" class="form__back-link button--back">
-                <i class="fas fa-arrow-left"></i> Volver
-
-            </a>
-            <h1 class="form__title">Crear Producción</h1>
+        <div class="form">
+            <div class="form__header">
+                <a href="producciones.html" class="form__back-link">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+                <h1 class="form__title">Crear Producción</h1>
+                <p class="form__subtitle">Complete el formulario para registrar una nueva producción</p>
+            </div>
 
             <form id="productionForm" class="form__container">
                 <!-- Sección de información básica -->
@@ -28,12 +28,12 @@
                     <div class="form__row">
                         <div class="form__group">
                             <label for="productionId" class="form__label"><i class="fas fa-hashtag"></i> Identificador de producción</label>
-                            <input type="text" id="productionId" class="form__input form__input--disabled" disabled>
+                            <input type="text" id="productionId" class="form_input form_input--disabled" disabled>
                         </div>
                         <div class="form__group">
                             <label for="responsible" class="form__label"><i class="fas fa-user"></i> Responsable</label>
                             <div class="select-group">
-                                <select id="responsible" class="select-group__select form__select">
+                                <select id="responsible" class="select-group_select form_select">
                                     <option value="">Seleccionar responsable</option>
                                     <!-- Se llenará dinámicamente -->
                                 </select>
@@ -47,7 +47,7 @@
 
                     <!-- Segunda fila: Nombre de producción -->
                     <div class="form__row">
-                        <div class="form__group form__group--full-width">
+                        <div class="form_group form_group--full-width">
                             <label for="productionName" class="form__label"><i class="fas fa-tag"></i> Nombre de producción</label>
                             <input type="text" id="productionName" class="form__input" placeholder="Ingrese el nombre de la producción">
                             <small id="productionNameError" class="error hidden"></small>
@@ -91,7 +91,7 @@
                     
                     <!-- Cuarta fila: Sensores -->
                     <div class="form__row">
-                        <div class="form__group form__group--full-width">
+                        <div class="form_group form_group--full-width">
                             <label for="sensors" class="form__label"><i class="fas fa-thermometer-half"></i> Sensores (máximo 3)</label>
                             <div class="select-with-button">
                                 <select id="sensors" class="form__select" multiple size="4">
@@ -122,7 +122,7 @@
                     
                     <!-- Quinta fila: Insumos -->
                     <div class="form__row">
-                        <div class="form__group form__group--full-width">
+                        <div class="form_group form_group--full-width">
                             <label for="supplies" class="form__label"><i class="fas fa-leaf"></i> Insumos</label>
                             <div class="select-with-button">
                                 <select id="supplies" class="form__select" multiple size="4">
@@ -142,13 +142,13 @@
                             <table class="production-supplies__table" id="suppliesTable">
                                 <thead>
                                     <tr>
-                                        <th class="production-supplies__cell production-supplies__header">Insumo</th>
-                                        <th class="production-supplies__cell production-supplies__header">Fecha de uso</th>
-                                        <th class="production-supplies__cell production-supplies__header">Cantidad</th>
-                                        <th class="production-supplies__cell production-supplies__header">Responsable</th>
-                                        <th class="production-supplies__cell production-supplies__header">Valor unitario</th>
-                                        <th class="production-supplies__cell production-supplies__header">Valor total</th>
-                                        <th class="production-supplies__cell production-supplies__header">Acciones</th>
+                                        <th class="production-supplies_cell production-supplies_header">Insumo</th>
+                                        <th class="production-supplies_cell production-supplies_header">Fecha de uso</th>
+                                        <th class="production-supplies_cell production-supplies_header">Cantidad</th>
+                                        <th class="production-supplies_cell production-supplies_header">Responsable</th>
+                                        <th class="production-supplies_cell production-supplies_header">Valor unitario</th>
+                                        <th class="production-supplies_cell production-supplies_header">Valor total</th>
+                                        <th class="production-supplies_cell production-supplies_header">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="suppliesTableBody">
@@ -170,11 +170,11 @@
                     <div class="form__row">
                         <div class="form__group">
                             <label for="investment" class="form__label"><i class="fas fa-coins"></i> Inversión</label>
-                            <input type="text" id="investment" class="form__input form__input--disabled" disabled>
+                            <input type="text" id="investment" class="form_input form_input--disabled" disabled>
                         </div>
                         <div class="form__group">
                             <label for="goal" class="form__label"><i class="fas fa-bullseye"></i> Meta (Estimación de ganancias)</label>
-                            <input type="text" id="goal" class="form__input form__input--disabled" disabled>
+                            <input type="text" id="goal" class="form_input form_input--disabled" disabled>
                         </div>
                     </div>
 
@@ -403,5 +403,43 @@
     </div>
 
     <script src="../js/validations/productionCreationValidator.js"></script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
 </body>
 </html>

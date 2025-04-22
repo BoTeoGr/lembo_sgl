@@ -379,7 +379,7 @@ body {
     transition: background-color 0.2s ease;
 }
 
-.production-supplies__table tbody tr:hover .production-supplies__cell {
+.production-supplies_table tbody tr:hover .production-supplies_cell {
     background-color: var(--green-50);
 }
 

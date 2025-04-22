@@ -55,7 +55,7 @@ function generateProductionId() {
   const day = String(date.getDate()).padStart(2, "0");
   // El número secuencial debería venir del backend
   const sequence = "0001";
-  return `PROD-${day}${month}${year}-${sequence}`;
+  return PROD-${day}${month}${year}-${sequence};
 }
 
 // Inicialización del formulario
@@ -241,7 +241,7 @@ function validateForm() {
 // Funciones para cargar datos desde el backend
 async function loadResponsibles() {
   try {
-    const response = await fetch(`${API_URL}/users`);
+    const response = await fetch(${API_URL}/users);
     if (!response.ok) {
       throw new Error("Error al cargar responsables");
     }
@@ -305,7 +305,7 @@ async function loadResponsibles() {
 
 async function loadCrops() {
   try {
-    const response = await fetch(`${API_URL}/cultivos`);
+    const response = await fetch(${API_URL}/cultivos);
     if (!response.ok) {
       throw new Error("Error al cargar cultivos");
     }
@@ -351,7 +351,7 @@ async function loadCrops() {
 
 async function loadCycles() {
   try {
-    const response = await fetch(`${API_URL}/ciclo_cultivo`);
+    const response = await fetch(${API_URL}/ciclo_cultivo);
     if (!response.ok) {
       throw new Error("Error al cargar ciclos");
     }
@@ -397,7 +397,7 @@ async function loadCycles() {
 
 async function loadSensors() {
   try {
-    const response = await fetch(`${API_URL}/sensor`);
+    const response = await fetch(${API_URL}/sensor);
     if (!response.ok) {
       throw new Error("Error al cargar sensores");
     }
@@ -445,7 +445,7 @@ async function loadSensors() {
 
 async function loadSupplies() {
   try {
-    const response = await fetch(`${API_URL}/insumos`);
+    const response = await fetch(${API_URL}/insumos);
     if (!response.ok) {
       throw new Error("Error al cargar insumos");
     }
@@ -594,7 +594,7 @@ async function saveResponsible(e) {
   };
 
   try {
-    const response = await fetch(`${API_URL}/users`, {
+    const response = await fetch(${API_URL}/users, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -628,7 +628,7 @@ async function saveResponsible(e) {
     closeModal("responsibleModal");
     showToast(
       "Responsable agregado",
-      `${nombre} ha sido agregado como responsable`
+      ${nombre} ha sido agregado como responsable
     );
   } catch (error) {
     console.error("Error al guardar responsable:", error);
@@ -655,7 +655,7 @@ async function saveResponsible(e) {
     closeModal("responsibleModal");
     showToast(
       "Responsable agregado (local)",
-      `${nombre} ha sido agregado como responsable`,
+      ${nombre} ha sido agregado como responsable,
       "warning"
     );
   }
@@ -679,7 +679,7 @@ async function saveCrop(e) {
   };
 
   try {
-    const response = await fetch(`${API_URL}/cultivos`, {
+    const response = await fetch(${API_URL}/cultivos, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -704,7 +704,7 @@ async function saveCrop(e) {
     cropSelect.appendChild(option);
 
     closeModal("cropModal");
-    showToast("Cultivo agregado", `${nombre} ha sido agregado como cultivo`);
+    showToast("Cultivo agregado", ${nombre} ha sido agregado como cultivo);
   } catch (error) {
     console.error("Error al guardar cultivo:", error);
     showToast("Error", "No se pudo guardar el cultivo", "error");
@@ -723,7 +723,7 @@ async function saveCrop(e) {
     closeModal("cropModal");
     showToast(
       "Cultivo agregado (local)",
-      `${nombre} ha sido agregado como cultivo`,
+      ${nombre} ha sido agregado como cultivo,
       "warning"
     );
   }
@@ -743,7 +743,7 @@ async function saveCycle(e) {
   // Datos para enviar al backend
   const cycleData = {
     nombre,
-    descripcion: `Ciclo de cultivo con duración de ${duracion} días`,
+    descripcion: Ciclo de cultivo con duración de ${duracion} días,
     periodo_inicio: today.toISOString().split("T")[0],
     periodo_final: endDate.toISOString().split("T")[0],
     novedades: "Ninguna",
@@ -751,7 +751,7 @@ async function saveCycle(e) {
   };
 
   try {
-    const response = await fetch(`${API_URL}/ciclo_cultivo`, {
+    const response = await fetch(${API_URL}/ciclo_cultivo, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -778,7 +778,7 @@ async function saveCycle(e) {
     closeModal("cycleModal");
     showToast(
       "Ciclo agregado",
-      `${nombre} ha sido agregado como ciclo de cultivo`
+      ${nombre} ha sido agregado como ciclo de cultivo
     );
   } catch (error) {
     console.error("Error al guardar ciclo:", error);
@@ -798,7 +798,7 @@ async function saveCycle(e) {
     closeModal("cycleModal");
     showToast(
       "Ciclo agregado (local)",
-      `${nombre} ha sido agregado como ciclo de cultivo`,
+      ${nombre} ha sido agregado como ciclo de cultivo,
       "warning"
     );
   }
@@ -819,13 +819,13 @@ async function saveSensor(e) {
     nombre_sensor,
     unidad_medida,
     imagen: "sensor_default.jpg",
-    descripcion: `Sensor de ${tipo_sensor} para medir ${unidad_medida}`,
+    descripcion: Sensor de ${tipo_sensor} para medir ${unidad_medida},
     tiempo_escaneo: "Sensores de velocidad media",
     usuario_id: 1, // Usuario por defecto
   };
 
   try {
-    const response = await fetch(`${API_URL}/sensor`, {
+    const response = await fetch(${API_URL}/sensor, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -852,7 +852,7 @@ async function saveSensor(e) {
     closeModal("sensorModal");
     showToast(
       "Sensor agregado",
-      `${nombre_sensor} ha sido agregado como sensor`
+      ${nombre_sensor} ha sido agregado como sensor
     );
 
     // Validar sensores después de agregar uno nuevo
@@ -875,7 +875,7 @@ async function saveSensor(e) {
     closeModal("sensorModal");
     showToast(
       "Sensor agregado (local)",
-      `${nombre_sensor} ha sido agregado como sensor`,
+      ${nombre_sensor} ha sido agregado como sensor,
       "warning"
     );
 
@@ -901,12 +901,12 @@ async function saveSupply(e) {
     unidad_medida,
     valor_unitario: parseFloat(valor_unitario),
     cantidad: 1, // Valor por defecto
-    descripcion: `Insumo de tipo ${tipo}`,
+    descripcion: Insumo de tipo ${tipo},
     usuario_id: 1, // Usuario por defecto
   };
 
   try {
-    const response = await fetch(`${API_URL}/insumos`, {
+    const response = await fetch(${API_URL}/insumos, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -938,7 +938,7 @@ async function saveSupply(e) {
     }
 
     closeModal("supplyModal");
-    showToast("Insumo agregado", `${nombre} ha sido agregado como insumo`);
+    showToast("Insumo agregado", ${nombre} ha sido agregado como insumo);
   } catch (error) {
     console.error("Error al guardar insumo:", error);
     showToast("Error", "No se pudo guardar el insumo", "error");
@@ -964,7 +964,7 @@ async function saveSupply(e) {
     closeModal("supplyModal");
     showToast(
       "Insumo agregado (local)",
-      `${nombre} ha sido agregado como insumo`,
+      ${nombre} ha sido agregado como insumo,
       "warning"
     );
   }
@@ -1005,7 +1005,7 @@ function saveSupplyRow(e) {
   );
 
   closeModal("supplyRowModal");
-  showToast("Insumo agregado", `Se ha registrado el uso de ${supplyName}`);
+  showToast("Insumo agregado", Se ha registrado el uso de ${supplyName});
 
   // Actualizar totales
   updateTotals();
@@ -1079,7 +1079,7 @@ function updateTotals() {
 
   // Calcular meta de ganancias (ejemplo: 30% sobre la inversión)
   const profitGoal = totalInvestment * 1.3;
-  document.getElementById("goal").value = `$${profitGoal.toFixed(2)}`;
+  document.getElementById("goal").value = $${profitGoal.toFixed(2)};
 
   // Actualizar objeto de datos
   productionData.totalInvestment = totalInvestment;
@@ -1132,7 +1132,7 @@ async function createProduction(e) {
 
   try {
     console.log(produccionData);
-    const response = await fetch(`${API_URL}/producciones`, {
+    const response = await fetch(${API_URL}/producciones, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -1218,7 +1218,7 @@ function collectFormData() {
 // Funciones auxiliares
 function showError(element, message) {
   element.textContent = message;
-  element.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+  element.innerHTML = <i class="fas fa-exclamation-circle"></i> ${message};
   element.classList.remove("hidden");
 }
 
