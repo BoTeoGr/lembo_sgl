@@ -1,17 +1,51 @@
+// URL base para las peticiones al backend
+const API_URL = "http://localhost:5000";
+
 // Objeto para almacenar los datos de la producción
 const productionData = {
   id: "",
-  name: "",
-  responsible: "",
-  crop: "",
-  cycle: "",
-  sensors: [],
-  supplies: [],
-  totalInvestment: 0,
-  profitGoal: 0,
-  startDate: "",
-  endDate: "",
+  nombre: "",
+  tipo: "",
+  imagen: "",
+  ubicacion: "",
+  descripcion: "",
+  usuario_id: "",
+  cantidad: 0,
+  estado: "habilitado",
+  cultivo_id: "",
+  ciclo_id: "",
+  insumos_ids: [],
+  sensores_ids: [],
+  fecha_creacion: "",
 };
+
+// Función para asegurar que los datos sean un array
+function ensureArray(data) {
+  if (Array.isArray(data)) {
+    return data;
+  }
+  
+  if (data && typeof data === 'object') {
+    // Buscar propiedades comunes que podrían contener arrays
+    if (data.data && Array.isArray(data.data)) {
+      return data.data;
+    } else if (data.results && Array.isArray(data.results)) {
+      return data.results;
+    } else {
+      // Buscar cualquier propiedad que sea un array
+      const possibleArrays = Object.values(data).filter(val => Array.isArray(val));
+      if (possibleArrays.length > 0) {
+        return possibleArrays[0];
+      } else {
+        // Si no hay arrays, convertir a array si es un objeto único
+        return [data];
+      }
+    }
+  }
+  
+  // Si no es un objeto o es null/undefined, devolver array vacío
+  return [];
+}
 
 // Función para generar ID de producción
 function generateProductionId() {
@@ -32,18 +66,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Función para inicializar el formulario
-function initializeForm() {
+async function initializeForm() {
   // Establecer fecha actual por defecto
   const today = new Date().toISOString().split("T")[0];
   document.getElementById("startDate").value = today;
   document.getElementById("productionId").value = generateProductionId();
 
   // Cargar datos iniciales desde el backend
-  loadResponsibles();
-  loadCrops();
-  loadCycles();
-  loadSensors();
-  loadSupplies();
+  await loadResponsibles();
+  await loadCrops();
+  await loadCycles();
+  await loadSensors();
+  await loadSupplies();
 }
 
 // Función para configurar los event listeners
@@ -148,7 +182,7 @@ function validateProductionName() {
   }
 
   hideError(errorElement);
-  productionData.name = name;
+  productionData.nombre = name;
   return true;
 }
 
@@ -187,7 +221,7 @@ function validateSensors() {
   }
 
   hideError(errorElement);
-  productionData.sensors = selectedSensors;
+  productionData.sensores_ids = selectedSensors;
   return true;
 }
 
@@ -205,113 +239,275 @@ function validateForm() {
 }
 
 // Funciones para cargar datos desde el backend
-function loadResponsibles() {
-  // Simulación de carga desde el backend
-  const responsibles = [
-    { id: "1", name: "Juan Pérez" },
-    { id: "2", name: "María López" },
-    { id: "3", name: "Carlos Rodríguez" },
-  ];
+async function loadResponsibles() {
+  try {
+    const response = await fetch(`${API_URL}/users`);
+    if (!response.ok) {
+      throw new Error("Error al cargar responsables");
+    }
 
-  const responsibleSelect = document.getElementById("responsible");
-  const supplyResponsibleSelect = document.getElementById("supplyResponsible");
+    let responsibles = await response.json();
+    
+    // Asegurarse de que responsibles sea un array
+    responsibles = ensureArray(responsibles);
+    console.log("Responsables procesados:", responsibles);
 
-  responsibles.forEach((responsible) => {
-    const option = document.createElement("option");
-    option.value = responsible.id;
-    option.textContent = responsible.name;
+    const responsibleSelect = document.getElementById("responsible");
+    const supplyResponsibleSelect = document.getElementById("supplyResponsible");
 
-    const optionClone = option.cloneNode(true);
-
-    responsibleSelect.appendChild(option);
+    // Limpiar opciones existentes
+    responsibleSelect.innerHTML = '<option value="">Seleccionar responsable</option>';
     if (supplyResponsibleSelect) {
-      supplyResponsibleSelect.appendChild(optionClone);
+      supplyResponsibleSelect.innerHTML = '<option value="">Seleccionar responsable</option>';
     }
-  });
+
+    // Ahora responsibles es seguramente un array
+    responsibles.forEach((responsible) => {
+      const option = document.createElement("option");
+      option.value = responsible.id;
+      option.textContent = responsible.nombre;
+
+      const optionClone = option.cloneNode(true);
+
+      responsibleSelect.appendChild(option);
+      if (supplyResponsibleSelect) {
+        supplyResponsibleSelect.appendChild(optionClone);
+      }
+    });
+  } catch (error) {
+    console.error("Error al cargar responsables:", error);
+    showToast("Error", "No se pudieron cargar los responsables", "error");
+
+    // Cargar datos de respaldo en caso de error
+    const backupResponsibles = [
+      { id: "1", nombre: "Juan Pérez" },
+      { id: "2", nombre: "María López" },
+      { id: "3", nombre: "Carlos Rodríguez" },
+    ];
+
+    const responsibleSelect = document.getElementById("responsible");
+    const supplyResponsibleSelect = document.getElementById("supplyResponsible");
+
+    backupResponsibles.forEach((responsible) => {
+      const option = document.createElement("option");
+      option.value = responsible.id;
+      option.textContent = responsible.nombre;
+
+      const optionClone = option.cloneNode(true);
+
+      responsibleSelect.appendChild(option);
+      if (supplyResponsibleSelect) {
+        supplyResponsibleSelect.appendChild(optionClone);
+      }
+    });
+  }
 }
 
-function loadCrops() {
-  // Simulación de carga desde el backend
-  const crops = [
-    { id: "1", name: "Maíz" },
-    { id: "2", name: "Frijol" },
-    { id: "3", name: "Tomate" },
-  ];
+async function loadCrops() {
+  try {
+    const response = await fetch(`${API_URL}/cultivos`);
+    if (!response.ok) {
+      throw new Error("Error al cargar cultivos");
+    }
 
-  const cropSelect = document.getElementById("crop");
+    let crops = await response.json();
+    
+    // Asegurarse de que crops sea un array
+    crops = ensureArray(crops);
+    console.log("Cultivos procesados:", crops);
 
-  crops.forEach((crop) => {
-    const option = document.createElement("option");
-    option.value = crop.id;
-    option.textContent = crop.name;
-    cropSelect.appendChild(option);
-  });
+    const cropSelect = document.getElementById("crop");
+
+    // Limpiar opciones existentes
+    cropSelect.innerHTML = '<option value="">Seleccionar cultivo</option>';
+
+    crops.forEach((crop) => {
+      const option = document.createElement("option");
+      option.value = crop.id;
+      option.textContent = crop.nombre;
+      cropSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error al cargar cultivos:", error);
+    showToast("Error", "No se pudieron cargar los cultivos", "error");
+
+    // Cargar datos de respaldo en caso de error
+    const backupCrops = [
+      { id: "1", nombre: "Maíz" },
+      { id: "2", nombre: "Frijol" },
+      { id: "3", nombre: "Tomate" },
+    ];
+
+    const cropSelect = document.getElementById("crop");
+
+    backupCrops.forEach((crop) => {
+      const option = document.createElement("option");
+      option.value = crop.id;
+      option.textContent = crop.nombre;
+      cropSelect.appendChild(option);
+    });
+  }
 }
 
-function loadCycles() {
-  // Simulación de carga desde el backend
-  const cycles = [
-    { id: "1", name: "Primavera-Verano" },
-    { id: "2", name: "Otoño-Invierno" },
-    { id: "3", name: "Anual" },
-  ];
+async function loadCycles() {
+  try {
+    const response = await fetch(`${API_URL}/ciclo_cultivo`);
+    if (!response.ok) {
+      throw new Error("Error al cargar ciclos");
+    }
 
-  const cycleSelect = document.getElementById("cropCycle");
+    let cycles = await response.json();
+    
+    // Asegurarse de que cycles sea un array
+    cycles = ensureArray(cycles);
+    console.log("Ciclos procesados:", cycles);
 
-  cycles.forEach((cycle) => {
-    const option = document.createElement("option");
-    option.value = cycle.id;
-    option.textContent = cycle.name;
-    cycleSelect.appendChild(option);
-  });
+    const cycleSelect = document.getElementById("cropCycle");
+
+    // Limpiar opciones existentes
+    cycleSelect.innerHTML = '<option value="">Seleccionar ciclo</option>';
+
+    cycles.forEach((cycle) => {
+      const option = document.createElement("option");
+      option.value = cycle.id;
+      option.textContent = cycle.nombre;
+      cycleSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error al cargar ciclos:", error);
+    showToast("Error", "No se pudieron cargar los ciclos de cultivo", "error");
+
+    // Cargar datos de respaldo en caso de error
+    const backupCycles = [
+      { id: "1", nombre: "Primavera-Verano" },
+      { id: "2", nombre: "Otoño-Invierno" },
+      { id: "3", nombre: "Anual" },
+    ];
+
+    const cycleSelect = document.getElementById("cropCycle");
+
+    backupCycles.forEach((cycle) => {
+      const option = document.createElement("option");
+      option.value = cycle.id;
+      option.textContent = cycle.nombre;
+      cycleSelect.appendChild(option);
+    });
+  }
 }
 
-function loadSensors() {
-  // Simulación de carga desde el backend
-  const sensors = [
-    { id: "1", name: "Sensor de humedad" },
-    { id: "2", name: "Sensor de temperatura" },
-    { id: "3", name: "Sensor de pH" },
-    { id: "4", name: "Sensor de luz" },
-    { id: "5", name: "Sensor de CO2" },
-  ];
+async function loadSensors() {
+  try {
+    const response = await fetch(`${API_URL}/sensor`);
+    if (!response.ok) {
+      throw new Error("Error al cargar sensores");
+    }
 
-  const sensorsSelect = document.getElementById("sensors");
+    let sensors = await response.json();
+    
+    // Asegurarse de que sensors sea un array
+    sensors = ensureArray(sensors);
+    console.log("Sensores procesados:", sensors);
 
-  sensors.forEach((sensor) => {
-    const option = document.createElement("option");
-    option.value = sensor.id;
-    option.textContent = sensor.name;
-    sensorsSelect.appendChild(option);
-  });
+    const sensorsSelect = document.getElementById("sensors");
+
+    // Limpiar opciones existentes
+    sensorsSelect.innerHTML = "";
+
+    sensors.forEach((sensor) => {
+      const option = document.createElement("option");
+      option.value = sensor.id;
+      option.textContent = sensor.nombre_sensor;
+      sensorsSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error al cargar sensores:", error);
+    showToast("Error", "No se pudieron cargar los sensores", "error");
+
+    // Cargar datos de respaldo en caso de error
+    const backupSensors = [
+      { id: "1", nombre_sensor: "Sensor de humedad" },
+      { id: "2", nombre_sensor: "Sensor de temperatura" },
+      { id: "3", nombre_sensor: "Sensor de pH" },
+      { id: "4", nombre_sensor: "Sensor de luz" },
+      { id: "5", nombre_sensor: "Sensor de CO2" },
+    ];
+
+    const sensorsSelect = document.getElementById("sensors");
+
+    backupSensors.forEach((sensor) => {
+      const option = document.createElement("option");
+      option.value = sensor.id;
+      option.textContent = sensor.nombre_sensor;
+      sensorsSelect.appendChild(option);
+    });
+  }
 }
 
-function loadSupplies() {
-  // Simulación de carga desde el backend
-  const supplies = [
-    { id: "1", name: "Fertilizante NPK", price: 45.5 },
-    { id: "2", name: "Semillas certificadas", price: 120.0 },
-    { id: "3", name: "Insecticida orgánico", price: 85.75 },
-    { id: "4", name: "Fungicida", price: 65.3 },
-    { id: "5", name: "Herbicida", price: 78.9 },
-  ];
+async function loadSupplies() {
+  try {
+    const response = await fetch(`${API_URL}/insumos`);
+    if (!response.ok) {
+      throw new Error("Error al cargar insumos");
+    }
 
-  const suppliesSelect = document.getElementById("supplies");
-  const supplySelect = document.getElementById("supplySelect");
+    let supplies = await response.json();
+    
+    // Asegurarse de que supplies sea un array
+    supplies = ensureArray(supplies);
+    console.log("Insumos procesados:", supplies);
 
-  supplies.forEach((supply) => {
-    const option = document.createElement("option");
-    option.value = supply.id;
-    option.textContent = supply.name;
-    option.dataset.price = supply.price;
+    const suppliesSelect = document.getElementById("supplies");
+    const supplySelect = document.getElementById("supplySelect");
 
-    const optionClone = option.cloneNode(true);
-
-    suppliesSelect.appendChild(option);
+    // Limpiar opciones existentes
+    suppliesSelect.innerHTML = "";
     if (supplySelect) {
-      supplySelect.appendChild(optionClone);
+      supplySelect.innerHTML = '<option value="">Seleccionar insumo</option>';
     }
-  });
+
+    supplies.forEach((supply) => {
+      const option = document.createElement("option");
+      option.value = supply.id;
+      option.textContent = supply.nombre;
+      option.dataset.price = supply.valor_unitario;
+
+      const optionClone = option.cloneNode(true);
+
+      suppliesSelect.appendChild(option);
+      if (supplySelect) {
+        supplySelect.appendChild(optionClone);
+      }
+    });
+  } catch (error) {
+    console.error("Error al cargar insumos:", error);
+    showToast("Error", "No se pudieron cargar los insumos", "error");
+
+    // Cargar datos de respaldo en caso de error
+    const backupSupplies = [
+      { id: "1", nombre: "Fertilizante NPK", valor_unitario: 45.5 },
+      { id: "2", nombre: "Semillas certificadas", valor_unitario: 120.0 },
+      { id: "3", nombre: "Insecticida orgánico", valor_unitario: 85.75 },
+      { id: "4", nombre: "Fungicida", valor_unitario: 65.3 },
+      { id: "5", nombre: "Herbicida", valor_unitario: 78.9 },
+    ];
+
+    const suppliesSelect = document.getElementById("supplies");
+    const supplySelect = document.getElementById("supplySelect");
+
+    backupSupplies.forEach((supply) => {
+      const option = document.createElement("option");
+      option.value = supply.id;
+      option.textContent = supply.nombre;
+      option.dataset.price = supply.valor_unitario;
+
+      const optionClone = option.cloneNode(true);
+
+      suppliesSelect.appendChild(option);
+      if (supplySelect) {
+        supplySelect.appendChild(optionClone);
+      }
+    });
+  }
 }
 
 // Funciones para manejar modales
@@ -381,146 +577,397 @@ function closeModal(modalId) {
 }
 
 // Funciones para guardar datos de modales
-function saveResponsible(e) {
+async function saveResponsible(e) {
   e.preventDefault();
 
-  const name = document.getElementById("newResponsibleName").value;
-  const email = document.getElementById("newResponsibleEmail").value;
+  const nombre = document.getElementById("newResponsibleName").value;
+  const correo = document.getElementById("newResponsibleEmail").value;
 
-  // Aquí se enviaría al backend
-  console.log("Guardando responsable:", { name, email });
+  // Datos para enviar al backend
+  const responsibleData = {
+    tipo_documento: "cc", // Valor por defecto
+    numero_documento: Date.now().toString(), // Generamos un número único
+    nombre,
+    telefono: "000-0000", // Valor por defecto
+    correo,
+    rol: "apoyo", // Valor por defecto
+  };
 
-  // Simulación de respuesta del backend
-  const newId = Date.now().toString();
-  const responsibleSelect = document.getElementById("responsible");
-  const supplyResponsibleSelect = document.getElementById("supplyResponsible");
+  try {
+    const response = await fetch(`${API_URL}/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(responsibleData),
+    });
 
-  const option = document.createElement("option");
-  option.value = newId;
-  option.textContent = name;
-  option.selected = true;
+    if (!response.ok) {
+      throw new Error("Error al guardar el responsable");
+    }
 
-  const optionClone = option.cloneNode(true);
+    const result = await response.json();
 
-  responsibleSelect.appendChild(option);
-  if (supplyResponsibleSelect) {
-    supplyResponsibleSelect.appendChild(optionClone);
+    // Agregar el nuevo responsable a los selects
+    const responsibleSelect = document.getElementById("responsible");
+    const supplyResponsibleSelect =
+      document.getElementById("supplyResponsible");
+
+    const option = document.createElement("option");
+    option.value = result.id || Date.now().toString();
+    option.textContent = nombre;
+    option.selected = true;
+
+    const optionClone = option.cloneNode(true);
+
+    responsibleSelect.appendChild(option);
+    if (supplyResponsibleSelect) {
+      supplyResponsibleSelect.appendChild(optionClone);
+    }
+
+    closeModal("responsibleModal");
+    showToast(
+      "Responsable agregado",
+      `${nombre} ha sido agregado como responsable`
+    );
+  } catch (error) {
+    console.error("Error al guardar responsable:", error);
+    showToast("Error", "No se pudo guardar el responsable", "error");
+
+    // Simulación en caso de error
+    const newId = Date.now().toString();
+    const responsibleSelect = document.getElementById("responsible");
+    const supplyResponsibleSelect =
+      document.getElementById("supplyResponsible");
+
+    const option = document.createElement("option");
+    option.value = newId;
+    option.textContent = nombre;
+    option.selected = true;
+
+    const optionClone = option.cloneNode(true);
+
+    responsibleSelect.appendChild(option);
+    if (supplyResponsibleSelect) {
+      supplyResponsibleSelect.appendChild(optionClone);
+    }
+
+    closeModal("responsibleModal");
+    showToast(
+      "Responsable agregado (local)",
+      `${nombre} ha sido agregado como responsable`,
+      "warning"
+    );
   }
-
-  closeModal("responsibleModal");
-  showToast(
-    "Responsable agregado",
-    `${name} ha sido agregado como responsable`
-  );
 }
 
-function saveCrop(e) {
+async function saveCrop(e) {
   e.preventDefault();
 
-  const name = document.getElementById("newCropName").value;
-  const description = document.getElementById("newCropDescription").value;
+  const nombre = document.getElementById("newCropName").value;
+  const descripcion = document.getElementById("newCropDescription").value;
 
-  // Aquí se enviaría al backend
-  console.log("Guardando cultivo:", { name, description });
+  // Datos para enviar al backend
+  const cropData = {
+    nombre,
+    tipo: "Otro", // Valor por defecto
+    imagen: "default.jpg", // Valor por defecto
+    ubicacion: "Sin especificar", // Valor por defecto
+    descripcion,
+    usuario_id: 1, // Usuario por defecto
+    tamano: 100, // Valor por defecto
+  };
 
-  // Simulación de respuesta del backend
-  const newId = Date.now().toString();
-  const cropSelect = document.getElementById("crop");
+  try {
+    const response = await fetch(`${API_URL}/cultivos`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cropData),
+    });
 
-  const option = document.createElement("option");
-  option.value = newId;
-  option.textContent = name;
-  option.selected = true;
+    if (!response.ok) {
+      throw new Error("Error al guardar el cultivo");
+    }
 
-  cropSelect.appendChild(option);
+    const result = await response.json();
 
-  closeModal("cropModal");
-  showToast("Cultivo agregado", `${name} ha sido agregado como cultivo`);
-}
+    // Agregar el nuevo cultivo al select
+    const cropSelect = document.getElementById("crop");
 
-function saveCycle(e) {
-  e.preventDefault();
+    const option = document.createElement("option");
+    option.value = result.id || Date.now().toString();
+    option.textContent = nombre;
+    option.selected = true;
 
-  const name = document.getElementById("newCycleName").value;
-  const duration = document.getElementById("newCycleDuration").value;
+    cropSelect.appendChild(option);
 
-  // Aquí se enviaría al backend
-  console.log("Guardando ciclo:", { name, duration });
+    closeModal("cropModal");
+    showToast("Cultivo agregado", `${nombre} ha sido agregado como cultivo`);
+  } catch (error) {
+    console.error("Error al guardar cultivo:", error);
+    showToast("Error", "No se pudo guardar el cultivo", "error");
 
-  // Simulación de respuesta del backend
-  const newId = Date.now().toString();
-  const cycleSelect = document.getElementById("cropCycle");
+    // Simulación en caso de error
+    const newId = Date.now().toString();
+    const cropSelect = document.getElementById("crop");
 
-  const option = document.createElement("option");
-  option.value = newId;
-  option.textContent = name;
-  option.selected = true;
+    const option = document.createElement("option");
+    option.value = newId;
+    option.textContent = nombre;
+    option.selected = true;
 
-  cycleSelect.appendChild(option);
+    cropSelect.appendChild(option);
 
-  closeModal("cycleModal");
-  showToast("Ciclo agregado", `${name} ha sido agregado como ciclo de cultivo`);
-}
-
-function saveSensor(e) {
-  e.preventDefault();
-
-  const name = document.getElementById("newSensorName").value;
-  const type = document.getElementById("newSensorType").value;
-  const unit = document.getElementById("newSensorUnit").value;
-
-  // Aquí se enviaría al backend
-  console.log("Guardando sensor:", { name, type, unit });
-
-  // Simulación de respuesta del backend
-  const newId = Date.now().toString();
-  const sensorsSelect = document.getElementById("sensors");
-
-  const option = document.createElement("option");
-  option.value = newId;
-  option.textContent = name;
-  option.selected = true;
-
-  sensorsSelect.appendChild(option);
-
-  closeModal("sensorModal");
-  showToast("Sensor agregado", `${name} ha sido agregado como sensor`);
-
-  // Validar sensores después de agregar uno nuevo
-  validateSensors();
-}
-
-function saveSupply(e) {
-  e.preventDefault();
-
-  const name = document.getElementById("newSupplyName").value;
-  const type = document.getElementById("newSupplyType").value;
-  const unit = document.getElementById("newSupplyUnit").value;
-  const price = document.getElementById("newSupplyPrice").value;
-
-  // Aquí se enviaría al backend
-  console.log("Guardando insumo:", { name, type, unit, price });
-
-  // Simulación de respuesta del backend
-  const newId = Date.now().toString();
-  const suppliesSelect = document.getElementById("supplies");
-  const supplySelect = document.getElementById("supplySelect");
-
-  const option = document.createElement("option");
-  option.value = newId;
-  option.textContent = name;
-  option.dataset.price = price;
-  option.selected = true;
-
-  const optionClone = option.cloneNode(true);
-
-  suppliesSelect.appendChild(option);
-  if (supplySelect) {
-    supplySelect.appendChild(optionClone);
+    closeModal("cropModal");
+    showToast(
+      "Cultivo agregado (local)",
+      `${nombre} ha sido agregado como cultivo`,
+      "warning"
+    );
   }
+}
 
-  closeModal("supplyModal");
-  showToast("Insumo agregado", `${name} ha sido agregado como insumo`);
+async function saveCycle(e) {
+  e.preventDefault();
+
+  const nombre = document.getElementById("newCycleName").value;
+  const duracion = document.getElementById("newCycleDuration").value;
+
+  // Calcular fechas de inicio y fin
+  const today = new Date();
+  const endDate = new Date();
+  endDate.setDate(today.getDate() + parseInt(duracion));
+
+  // Datos para enviar al backend
+  const cycleData = {
+    nombre,
+    descripcion: `Ciclo de cultivo con duración de ${duracion} días`,
+    periodo_inicio: today.toISOString().split("T")[0],
+    periodo_final: endDate.toISOString().split("T")[0],
+    novedades: "Ninguna",
+    usuario_id: 1, // Usuario por defecto
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/ciclo_cultivo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cycleData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al guardar el ciclo");
+    }
+
+    const result = await response.json();
+
+    // Agregar el nuevo ciclo al select
+    const cycleSelect = document.getElementById("cropCycle");
+
+    const option = document.createElement("option");
+    option.value = result.id || Date.now().toString();
+    option.textContent = nombre;
+    option.selected = true;
+
+    cycleSelect.appendChild(option);
+
+    closeModal("cycleModal");
+    showToast(
+      "Ciclo agregado",
+      `${nombre} ha sido agregado como ciclo de cultivo`
+    );
+  } catch (error) {
+    console.error("Error al guardar ciclo:", error);
+    showToast("Error", "No se pudo guardar el ciclo de cultivo", "error");
+
+    // Simulación en caso de error
+    const newId = Date.now().toString();
+    const cycleSelect = document.getElementById("cropCycle");
+
+    const option = document.createElement("option");
+    option.value = newId;
+    option.textContent = nombre;
+    option.selected = true;
+
+    cycleSelect.appendChild(option);
+
+    closeModal("cycleModal");
+    showToast(
+      "Ciclo agregado (local)",
+      `${nombre} ha sido agregado como ciclo de cultivo`,
+      "warning"
+    );
+  }
+}
+
+async function saveSensor(e) {
+  e.preventDefault();
+
+  const nombre_sensor = document.getElementById("newSensorName").value;
+  const tipo_sensor =
+    document.getElementById("newSensorType").value || "Sensor de contacto";
+  const unidad_medida =
+    document.getElementById("newSensorUnit").value || "Temperatura";
+
+  // Datos para enviar al backend
+  const sensorData = {
+    tipo_sensor,
+    nombre_sensor,
+    unidad_medida,
+    imagen: "sensor_default.jpg",
+    descripcion: `Sensor de ${tipo_sensor} para medir ${unidad_medida}`,
+    tiempo_escaneo: "Sensores de velocidad media",
+    usuario_id: 1, // Usuario por defecto
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/sensor`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sensorData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al guardar el sensor");
+    }
+
+    const result = await response.json();
+
+    // Agregar el nuevo sensor al select
+    const sensorsSelect = document.getElementById("sensors");
+
+    const option = document.createElement("option");
+    option.value = result.id || Date.now().toString();
+    option.textContent = nombre_sensor;
+    option.selected = true;
+
+    sensorsSelect.appendChild(option);
+
+    closeModal("sensorModal");
+    showToast(
+      "Sensor agregado",
+      `${nombre_sensor} ha sido agregado como sensor`
+    );
+
+    // Validar sensores después de agregar uno nuevo
+    validateSensors();
+  } catch (error) {
+    console.error("Error al guardar sensor:", error);
+    showToast("Error", "No se pudo guardar el sensor", "error");
+
+    // Simulación en caso de error
+    const newId = Date.now().toString();
+    const sensorsSelect = document.getElementById("sensors");
+
+    const option = document.createElement("option");
+    option.value = newId;
+    option.textContent = nombre_sensor;
+    option.selected = true;
+
+    sensorsSelect.appendChild(option);
+
+    closeModal("sensorModal");
+    showToast(
+      "Sensor agregado (local)",
+      `${nombre_sensor} ha sido agregado como sensor`,
+      "warning"
+    );
+
+    // Validar sensores después de agregar uno nuevo
+    validateSensors();
+  }
+}
+
+async function saveSupply(e) {
+  e.preventDefault();
+
+  const nombre = document.getElementById("newSupplyName").value;
+  const tipo = document.getElementById("newSupplyType").value || "Otro";
+  const unidad_medida =
+    document.getElementById("newSupplyUnit").value || "kilo";
+  const valor_unitario = document.getElementById("newSupplyPrice").value;
+
+  // Datos para enviar al backend
+  const supplyData = {
+    nombre,
+    tipo,
+    imagen: "insumo_default.jpg",
+    unidad_medida,
+    valor_unitario: parseFloat(valor_unitario),
+    cantidad: 1, // Valor por defecto
+    descripcion: `Insumo de tipo ${tipo}`,
+    usuario_id: 1, // Usuario por defecto
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/insumos`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(supplyData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al guardar el insumo");
+    }
+
+    const result = await response.json();
+
+    // Agregar el nuevo insumo a los selects
+    const suppliesSelect = document.getElementById("supplies");
+    const supplySelect = document.getElementById("supplySelect");
+
+    const option = document.createElement("option");
+    option.value = result.id || Date.now().toString();
+    option.textContent = nombre;
+    option.dataset.price = valor_unitario;
+    option.selected = true;
+
+    const optionClone = option.cloneNode(true);
+
+    suppliesSelect.appendChild(option);
+    if (supplySelect) {
+      supplySelect.appendChild(optionClone);
+    }
+
+    closeModal("supplyModal");
+    showToast("Insumo agregado", `${nombre} ha sido agregado como insumo`);
+  } catch (error) {
+    console.error("Error al guardar insumo:", error);
+    showToast("Error", "No se pudo guardar el insumo", "error");
+
+    // Simulación en caso de error
+    const newId = Date.now().toString();
+    const suppliesSelect = document.getElementById("supplies");
+    const supplySelect = document.getElementById("supplySelect");
+
+    const option = document.createElement("option");
+    option.value = newId;
+    option.textContent = nombre;
+    option.dataset.price = valor_unitario;
+    option.selected = true;
+
+    const optionClone = option.cloneNode(true);
+
+    suppliesSelect.appendChild(option);
+    if (supplySelect) {
+      supplySelect.appendChild(optionClone);
+    }
+
+    closeModal("supplyModal");
+    showToast(
+      "Insumo agregado (local)",
+      `${nombre} ha sido agregado como insumo`,
+      "warning"
+    );
+  }
 }
 
 function saveSupplyRow(e) {
@@ -542,16 +989,10 @@ function saveSupplyRow(e) {
   const totalValue = document.getElementById("supplyTotalValue").value;
   const observations = document.getElementById("supplyObservations").value;
 
-  // Aquí se enviaría al backend
-  console.log("Guardando uso de insumo:", {
-    supplyId,
-    date,
-    quantity,
-    responsibleId,
-    unitValue,
-    totalValue,
-    observations,
-  });
+  // Agregar a la lista de insumos de la producción
+  if (!productionData.insumos_ids.includes(supplyId)) {
+    productionData.insumos_ids.push(supplyId);
+  }
 
   // Agregar fila a la tabla
   addSupplyRowToTable(
@@ -646,17 +1087,17 @@ function updateTotals() {
 }
 
 // Funciones para guardar y crear producción
-function saveDraft() {
+async function saveDraft() {
   // Recopilar todos los datos del formulario
   collectFormData();
 
-  // Aquí se enviaría al backend como borrador
-  console.log("Guardando borrador:", productionData);
+  // Guardar en localStorage para recuperar después
+  localStorage.setItem("productionDraft", JSON.stringify(productionData));
 
   showToast("Borrador guardado", "El borrador se ha guardado correctamente");
 }
 
-function createProduction(e) {
+async function createProduction(e) {
   e.preventDefault();
 
   if (!validateForm()) {
@@ -671,33 +1112,107 @@ function createProduction(e) {
   // Recopilar todos los datos del formulario
   collectFormData();
 
-  // Aquí se enviaría al backend para crear la producción
-  console.log("Creando producción:", productionData);
+  // Preparar datos para enviar al backend
+  const produccionData = {
+    nombre: productionData.nombre,
+    tipo: document.getElementById("crop").options[
+      document.getElementById("crop").selectedIndex
+    ].text,
+    imagen: "produccion_default.jpg",
+    ubicacion: "Ubicación por defecto",
+    descripcion: "Producción creada desde el formulario",
+    usuario_id: productionData.usuario_id || 1,
+    cantidad: productionData.totalInvestment || 0,
+    estado: "habilitado",
+    cultivo_id: productionData.crop,
+    ciclo_id: productionData.cycle,
+    insumos_ids: productionData.insumos_ids.join(","),
+    sensores_ids: productionData.sensores_ids.join(","),
+  };
 
-  showToast("Producción creada", "La producción se ha creado correctamente");
+  try {
+    console.log(produccionData);
+    const response = await fetch(`${API_URL}/producciones`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(produccionData),
+    });
 
-  // Simular redirección después de crear
-  setTimeout(() => {
-    alert(
-      "Producción creada con éxito. Redirigiendo a la lista de producciones..."
+    if (!response.ok) {
+      throw new Error("Error al crear la producción");
+    }
+
+    const result = await response.json();
+
+    showToast("Producción creada", "La producción se ha creado correctamente");
+
+    // Limpiar el borrador guardado
+    localStorage.removeItem("productionDraft");
+
+    // Redireccionar después de crear
+    setTimeout(() => {
+      window.location.href = "/producciones";
+    }, 2000);
+  } catch (error) {
+    console.error("Error al crear producción:", error);
+    showToast(
+      "Error",
+      "No se pudo crear la producción. Se guardará localmente",
+      "error"
     );
-  }, 2000);
+
+    // Guardar como borrador en caso de error
+    saveDraft();
+
+    // Simular redirección después de crear
+    setTimeout(() => {
+      alert(
+        "Producción guardada localmente. Redirigiendo a la lista de producciones..."
+      );
+    }, 2000);
+  }
 }
 
 // Función para recopilar todos los datos del formulario
 function collectFormData() {
   productionData.id = document.getElementById("productionId").value;
-  productionData.name = document.getElementById("productionName").value;
-  productionData.responsible = document.getElementById("responsible").value;
+  productionData.nombre = document.getElementById("productionName").value;
+  productionData.usuario_id = document.getElementById("responsible").value;
   productionData.crop = document.getElementById("crop").value;
   productionData.cycle = document.getElementById("cropCycle").value;
-  productionData.sensors = Array.from(
+  productionData.sensores_ids = Array.from(
     document.getElementById("sensors").selectedOptions
   ).map((option) => option.value);
-  productionData.startDate = document.getElementById("startDate").value;
-  productionData.endDate = document.getElementById("endDate").value;
 
-  // Los insumos y totales ya se actualizan en tiempo real
+  // Convertir fechas al formato adecuado
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
+
+  if (startDate) {
+    productionData.fecha_creacion = startDate;
+  }
+
+  // Asegurarse de que insumos_ids sea un array
+  if (!Array.isArray(productionData.insumos_ids)) {
+    productionData.insumos_ids = [];
+  }
+
+  // Recopilar insumos de la tabla si no están ya en el array
+  document.querySelectorAll("#suppliesTableBody tr").forEach((row) => {
+    const supplyName = row.cells[0].textContent;
+    const supplyOption = Array.from(
+      document.getElementById("supplies").options
+    ).find((option) => option.textContent === supplyName);
+
+    if (
+      supplyOption &&
+      !productionData.insumos_ids.includes(supplyOption.value)
+    ) {
+      productionData.insumos_ids.push(supplyOption.value);
+    }
+  });
 }
 
 // Funciones auxiliares
