@@ -104,6 +104,12 @@
                             <small id="sensorsError" class="error hidden"></small>
                         </div>
                     </div>
+                    <!-- Contenedor para mostrar los sensores seleccionados -->
+                    <div class="form__row">
+                        <div id="selectedSensorsDisplay" class="selected-sensors-display">
+                            <!-- Sensores seleccionados se mostrarán aquí con opción de eliminar -->
+                        </div>
+                    </div>
 
                     <!-- Visualización de lecturas de sensores -->
                     <div class="production-readings">
@@ -121,7 +127,7 @@
                     <h2 class="form__section-title"><i class="fas fa-box-open"></i> Insumos y Recursos</h2>
                     
                     <!-- Quinta fila: Insumos -->
-                    <div class="form__row">
+                    <div class="form__row hidden">
                         <div class="form_group form_group--full-width">
                             <label for="supplies" class="form__label"><i class="fas fa-leaf"></i> Insumos</label>
                             <div class="select-with-button">
@@ -403,43 +409,6 @@
     </div>
 
     <script src="../js/validations/productionCreationValidator.js"></script>
-<!-- Code injected by live-server -->
-<script>
-	// <![CDATA[  <-- For SVG support
-	if ('WebSocket' in window) {
-		(function () {
-			function refreshCSS() {
-				var sheets = [].slice.call(document.getElementsByTagName("link"));
-				var head = document.getElementsByTagName("head")[0];
-				for (var i = 0; i < sheets.length; ++i) {
-					var elem = sheets[i];
-					var parent = elem.parentElement || head;
-					parent.removeChild(elem);
-					var rel = elem.rel;
-					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-					}
-					parent.appendChild(elem);
-				}
-			}
-			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-			var address = protocol + window.location.host + window.location.pathname + '/ws';
-			var socket = new WebSocket(address);
-			socket.onmessage = function (msg) {
-				if (msg.data == 'reload') window.location.reload();
-				else if (msg.data == 'refreshcss') refreshCSS();
-			};
-			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-				console.log('Live reload enabled.');
-				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-			}
-		})();
-	}
-	else {
-		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-	}
-	// ]]>
-</script>
+
 </body>
 </html>

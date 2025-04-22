@@ -24,8 +24,8 @@ function ensureArray(data) {
   if (Array.isArray(data)) {
     return data;
   }
-  
-  if (data && typeof data === 'object') {
+
+  if (data && typeof data === "object") {
     // Buscar propiedades comunes que podrían contener arrays
     if (data.data && Array.isArray(data.data)) {
       return data.data;
@@ -33,7 +33,9 @@ function ensureArray(data) {
       return data.results;
     } else {
       // Buscar cualquier propiedad que sea un array
-      const possibleArrays = Object.values(data).filter(val => Array.isArray(val));
+      const possibleArrays = Object.values(data).filter((val) =>
+        Array.isArray(val)
+      );
       if (possibleArrays.length > 0) {
         return possibleArrays[0];
       } else {
@@ -42,7 +44,7 @@ function ensureArray(data) {
       }
     }
   }
-  
+
   // Si no es un objeto o es null/undefined, devolver array vacío
   return [];
 }
@@ -53,9 +55,8 @@ function generateProductionId() {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
-  // El número secuencial debería venir del backend
-  const sequence = "0001";
-  return PROD-${day}${month}${year}-${sequence};
+  const sequence = "0001"; // El número secuencial debería venir del backend
+  return `PROD-${day}${month}${year}-${sequence}`;
 }
 
 // Inicialización del formulario
@@ -222,7 +223,52 @@ function validateSensors() {
 
   hideError(errorElement);
   productionData.sensores_ids = selectedSensors;
+  updateSelectedSensorsDisplay(); // Actualizar la visualización
   return true;
+}
+
+// Función para actualizar la visualización de sensores seleccionados
+function updateSelectedSensorsDisplay() {
+  const sensorsSelect = document.getElementById("sensors");
+  const selectedSensorsDisplay = document.getElementById("selectedSensorsDisplay");
+
+  // Obtener los sensores seleccionados
+  const selectedSensors = Array.from(sensorsSelect.selectedOptions).map(
+    (option) => ({ id: option.value, name: option.textContent })
+  );
+
+  // Limpiar la visualización actual
+  selectedSensorsDisplay.innerHTML = "";
+
+  // Mostrar los sensores seleccionados con opción de eliminar
+  selectedSensors.forEach((sensor) => {
+    const sensorItem = document.createElement("div");
+    sensorItem.className = "selected-sensor-item";
+    sensorItem.textContent = sensor.name;
+
+    const removeButton = document.createElement("button");
+    removeButton.className = "remove-sensor-button";
+    removeButton.innerHTML = '<i class="fas fa-trash"></i>';
+    removeButton.addEventListener("click", () => removeSensor(sensor.id));
+
+    sensorItem.appendChild(removeButton);
+    selectedSensorsDisplay.appendChild(sensorItem);
+  });
+}
+
+// Función para eliminar un sensor de la selección
+function removeSensor(sensorId) {
+  const sensorsSelect = document.getElementById("sensors");
+
+  // Desmarcar el sensor en el select
+  Array.from(sensorsSelect.options).forEach((option) => {
+    if (option.value === sensorId) {
+      option.selected = false;
+    }
+  });
+
+  // Actualizar la visualización y validar
+  validateSensors();
 }
 
 function validateForm() {
@@ -241,24 +287,28 @@ function validateForm() {
 // Funciones para cargar datos desde el backend
 async function loadResponsibles() {
   try {
-    const response = await fetch(${API_URL}/users);
+    const response = await fetch(`${API_URL}/users`);
     if (!response.ok) {
       throw new Error("Error al cargar responsables");
     }
 
     let responsibles = await response.json();
-    
+
     // Asegurarse de que responsibles sea un array
     responsibles = ensureArray(responsibles);
     console.log("Responsables procesados:", responsibles);
 
     const responsibleSelect = document.getElementById("responsible");
-    const supplyResponsibleSelect = document.getElementById("supplyResponsible");
+    const supplyResponsibleSelect = document.getElementById(
+      "supplyResponsible"
+    );
 
     // Limpiar opciones existentes
-    responsibleSelect.innerHTML = '<option value="">Seleccionar responsable</option>';
+    responsibleSelect.innerHTML =
+      '<option value="">Seleccionar responsable</option>';
     if (supplyResponsibleSelect) {
-      supplyResponsibleSelect.innerHTML = '<option value="">Seleccionar responsable</option>';
+      supplyResponsibleSelect.innerHTML =
+        '<option value="">Seleccionar responsable</option>';
     }
 
     // Ahora responsibles es seguramente un array
@@ -286,7 +336,9 @@ async function loadResponsibles() {
     ];
 
     const responsibleSelect = document.getElementById("responsible");
-    const supplyResponsibleSelect = document.getElementById("supplyResponsible");
+    const supplyResponsibleSelect = document.getElementById(
+      "supplyResponsible"
+    );
 
     backupResponsibles.forEach((responsible) => {
       const option = document.createElement("option");
@@ -305,13 +357,13 @@ async function loadResponsibles() {
 
 async function loadCrops() {
   try {
-    const response = await fetch(${API_URL}/cultivos);
+    const response = await fetch(`${API_URL}/cultivos`);
     if (!response.ok) {
       throw new Error("Error al cargar cultivos");
     }
 
     let crops = await response.json();
-    
+
     // Asegurarse de que crops sea un array
     crops = ensureArray(crops);
     console.log("Cultivos procesados:", crops);
@@ -351,13 +403,13 @@ async function loadCrops() {
 
 async function loadCycles() {
   try {
-    const response = await fetch(${API_URL}/ciclo_cultivo);
+    const response = await fetch(`${API_URL}/ciclo_cultivo`);
     if (!response.ok) {
       throw new Error("Error al cargar ciclos");
     }
 
     let cycles = await response.json();
-    
+
     // Asegurarse de que cycles sea un array
     cycles = ensureArray(cycles);
     console.log("Ciclos procesados:", cycles);
@@ -397,13 +449,13 @@ async function loadCycles() {
 
 async function loadSensors() {
   try {
-    const response = await fetch(${API_URL}/sensor);
+    const response = await fetch(`${API_URL}/sensor`);
     if (!response.ok) {
       throw new Error("Error al cargar sensores");
     }
 
     let sensors = await response.json();
-    
+
     // Asegurarse de que sensors sea un array
     sensors = ensureArray(sensors);
     console.log("Sensores procesados:", sensors);
@@ -445,13 +497,13 @@ async function loadSensors() {
 
 async function loadSupplies() {
   try {
-    const response = await fetch(${API_URL}/insumos);
+    const response = await fetch(`${API_URL}/insumos`);
     if (!response.ok) {
       throw new Error("Error al cargar insumos");
     }
 
     let supplies = await response.json();
-    
+
     // Asegurarse de que supplies sea un array
     supplies = ensureArray(supplies);
     console.log("Insumos procesados:", supplies);
@@ -594,7 +646,7 @@ async function saveResponsible(e) {
   };
 
   try {
-    const response = await fetch(${API_URL}/users, {
+    const response = await fetch(`${API_URL}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -628,7 +680,7 @@ async function saveResponsible(e) {
     closeModal("responsibleModal");
     showToast(
       "Responsable agregado",
-      ${nombre} ha sido agregado como responsable
+      `${nombre} ha sido agregado como responsable`
     );
   } catch (error) {
     console.error("Error al guardar responsable:", error);
@@ -655,7 +707,7 @@ async function saveResponsible(e) {
     closeModal("responsibleModal");
     showToast(
       "Responsable agregado (local)",
-      ${nombre} ha sido agregado como responsable,
+      `${nombre} ha sido agregado como responsable`,
       "warning"
     );
   }
@@ -679,7 +731,7 @@ async function saveCrop(e) {
   };
 
   try {
-    const response = await fetch(${API_URL}/cultivos, {
+    const response = await fetch(`${API_URL}/cultivos`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -704,7 +756,7 @@ async function saveCrop(e) {
     cropSelect.appendChild(option);
 
     closeModal("cropModal");
-    showToast("Cultivo agregado", ${nombre} ha sido agregado como cultivo);
+    showToast("Cultivo agregado", `${nombre} ha sido agregado como cultivo`);
   } catch (error) {
     console.error("Error al guardar cultivo:", error);
     showToast("Error", "No se pudo guardar el cultivo", "error");
@@ -723,7 +775,7 @@ async function saveCrop(e) {
     closeModal("cropModal");
     showToast(
       "Cultivo agregado (local)",
-      ${nombre} ha sido agregado como cultivo,
+      `${nombre} ha sido agregado como cultivo`,
       "warning"
     );
   }
@@ -743,7 +795,7 @@ async function saveCycle(e) {
   // Datos para enviar al backend
   const cycleData = {
     nombre,
-    descripcion: Ciclo de cultivo con duración de ${duracion} días,
+    descripcion: `Ciclo de cultivo con duración de ${duracion} días`,
     periodo_inicio: today.toISOString().split("T")[0],
     periodo_final: endDate.toISOString().split("T")[0],
     novedades: "Ninguna",
@@ -751,7 +803,7 @@ async function saveCycle(e) {
   };
 
   try {
-    const response = await fetch(${API_URL}/ciclo_cultivo, {
+    const response = await fetch(`${API_URL}/ciclo_cultivo`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -778,7 +830,7 @@ async function saveCycle(e) {
     closeModal("cycleModal");
     showToast(
       "Ciclo agregado",
-      ${nombre} ha sido agregado como ciclo de cultivo
+      `${nombre} ha sido agregado como ciclo de cultivo`
     );
   } catch (error) {
     console.error("Error al guardar ciclo:", error);
@@ -798,7 +850,7 @@ async function saveCycle(e) {
     closeModal("cycleModal");
     showToast(
       "Ciclo agregado (local)",
-      ${nombre} ha sido agregado como ciclo de cultivo,
+      `${nombre} ha sido agregado como ciclo de cultivo`,
       "warning"
     );
   }
@@ -808,10 +860,8 @@ async function saveSensor(e) {
   e.preventDefault();
 
   const nombre_sensor = document.getElementById("newSensorName").value;
-  const tipo_sensor =
-    document.getElementById("newSensorType").value || "Sensor de contacto";
-  const unidad_medida =
-    document.getElementById("newSensorUnit").value || "Temperatura";
+  const tipo_sensor = document.getElementById("newSensorType").value || "Otro";
+  const unidad_medida = document.getElementById("newSensorUnit").value || "N/A";
 
   // Datos para enviar al backend
   const sensorData = {
@@ -819,13 +869,13 @@ async function saveSensor(e) {
     nombre_sensor,
     unidad_medida,
     imagen: "sensor_default.jpg",
-    descripcion: Sensor de ${tipo_sensor} para medir ${unidad_medida},
+    descripcion: `Sensor de ${tipo_sensor} para medir ${unidad_medida}`,
     tiempo_escaneo: "Sensores de velocidad media",
     usuario_id: 1, // Usuario por defecto
   };
 
   try {
-    const response = await fetch(${API_URL}/sensor, {
+    const response = await fetch(`${API_URL}/sensor`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -839,7 +889,7 @@ async function saveSensor(e) {
 
     const result = await response.json();
 
-    // Agregar el nuevo sensor al select
+    // Agregar el nuevo sensor a los selects
     const sensorsSelect = document.getElementById("sensors");
 
     const option = document.createElement("option");
@@ -850,10 +900,7 @@ async function saveSensor(e) {
     sensorsSelect.appendChild(option);
 
     closeModal("sensorModal");
-    showToast(
-      "Sensor agregado",
-      ${nombre_sensor} ha sido agregado como sensor
-    );
+    showToast("Sensor agregado", `${nombre_sensor} ha sido agregado como sensor`);
 
     // Validar sensores después de agregar uno nuevo
     validateSensors();
@@ -875,13 +922,37 @@ async function saveSensor(e) {
     closeModal("sensorModal");
     showToast(
       "Sensor agregado (local)",
-      ${nombre_sensor} ha sido agregado como sensor,
+      `${nombre_sensor} ha sido agregado como sensor`,
       "warning"
     );
 
     // Validar sensores después de agregar uno nuevo
     validateSensors();
   }
+}
+
+// Función para actualizar la visualización de sensores seleccionados
+function updateSelectedSensorsDisplay() {
+  const sensorsSelect = document.getElementById("sensors");
+  const selectedSensorsDisplay = document.getElementById(
+    "selectedSensorsDisplay"
+  );
+
+  // Obtener los sensores seleccionados
+  const selectedSensors = Array.from(sensorsSelect.selectedOptions).map(
+    (option) => option.textContent
+  );
+
+  // Limpiar la visualización actual
+  selectedSensorsDisplay.innerHTML = "";
+
+  // Mostrar los sensores seleccionados
+  selectedSensors.forEach((sensor) => {
+    const sensorItem = document.createElement("div");
+    sensorItem.className = "selected-sensor-item";
+    sensorItem.textContent = sensor;
+    selectedSensorsDisplay.appendChild(sensorItem);
+  });
 }
 
 async function saveSupply(e) {
@@ -901,12 +972,12 @@ async function saveSupply(e) {
     unidad_medida,
     valor_unitario: parseFloat(valor_unitario),
     cantidad: 1, // Valor por defecto
-    descripcion: Insumo de tipo ${tipo},
+    descripcion: `Insumo de tipo ${tipo}`,
     usuario_id: 1, // Usuario por defecto
   };
 
   try {
-    const response = await fetch(${API_URL}/insumos, {
+    const response = await fetch(`${API_URL}/insumos`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -938,7 +1009,7 @@ async function saveSupply(e) {
     }
 
     closeModal("supplyModal");
-    showToast("Insumo agregado", ${nombre} ha sido agregado como insumo);
+    showToast("Insumo agregado", `${nombre} ha sido agregado como insumo`);
   } catch (error) {
     console.error("Error al guardar insumo:", error);
     showToast("Error", "No se pudo guardar el insumo", "error");
@@ -964,7 +1035,7 @@ async function saveSupply(e) {
     closeModal("supplyModal");
     showToast(
       "Insumo agregado (local)",
-      ${nombre} ha sido agregado como insumo,
+      `${nombre} ha sido agregado como insumo`,
       "warning"
     );
   }
@@ -1005,7 +1076,7 @@ function saveSupplyRow(e) {
   );
 
   closeModal("supplyRowModal");
-  showToast("Insumo agregado", Se ha registrado el uso de ${supplyName});
+  showToast("Insumo agregado", `Se ha registrado el uso de ${supplyName}`);
 
   // Actualizar totales
   updateTotals();
@@ -1079,7 +1150,7 @@ function updateTotals() {
 
   // Calcular meta de ganancias (ejemplo: 30% sobre la inversión)
   const profitGoal = totalInvestment * 1.3;
-  document.getElementById("goal").value = $${profitGoal.toFixed(2)};
+  document.getElementById("goal").value = `$${profitGoal.toFixed(2)}`;
 
   // Actualizar objeto de datos
   productionData.totalInvestment = totalInvestment;
@@ -1128,11 +1199,11 @@ async function createProduction(e) {
     ciclo_id: productionData.cycle,
     insumos_ids: productionData.insumos_ids.join(","),
     sensores_ids: productionData.sensores_ids.join(","),
+    fecha_creacion: productionData.fecha_creacion,
   };
 
   try {
-    console.log(produccionData);
-    const response = await fetch(${API_URL}/producciones, {
+    const response = await fetch(`${API_URL}/producciones`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -1153,7 +1224,7 @@ async function createProduction(e) {
 
     // Redireccionar después de crear
     setTimeout(() => {
-      window.location.href = "/producciones";
+      window.location.href = "/producciones.html";
     }, 2000);
   } catch (error) {
     console.error("Error al crear producción:", error);
@@ -1165,13 +1236,6 @@ async function createProduction(e) {
 
     // Guardar como borrador en caso de error
     saveDraft();
-
-    // Simular redirección después de crear
-    setTimeout(() => {
-      alert(
-        "Producción guardada localmente. Redirigiendo a la lista de producciones..."
-      );
-    }, 2000);
   }
 }
 
@@ -1186,7 +1250,6 @@ function collectFormData() {
     document.getElementById("sensors").selectedOptions
   ).map((option) => option.value);
 
-  // Convertir fechas al formato adecuado
   const startDate = document.getElementById("startDate").value;
   const endDate = document.getElementById("endDate").value;
 
@@ -1194,12 +1257,10 @@ function collectFormData() {
     productionData.fecha_creacion = startDate;
   }
 
-  // Asegurarse de que insumos_ids sea un array
   if (!Array.isArray(productionData.insumos_ids)) {
     productionData.insumos_ids = [];
   }
 
-  // Recopilar insumos de la tabla si no están ya en el array
   document.querySelectorAll("#suppliesTableBody tr").forEach((row) => {
     const supplyName = row.cells[0].textContent;
     const supplyOption = Array.from(
@@ -1218,7 +1279,7 @@ function collectFormData() {
 // Funciones auxiliares
 function showError(element, message) {
   element.textContent = message;
-  element.innerHTML = <i class="fas fa-exclamation-circle"></i> ${message};
+  element.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
   element.classList.remove("hidden");
 }
 

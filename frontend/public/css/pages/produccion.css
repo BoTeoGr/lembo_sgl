@@ -192,6 +192,25 @@ body {
     position: relative;
 }
 
+.form_group--full-width{
+    flex: 1 1 100%;
+}
+
+
+.form_group--full-width input{
+    width: 100%;
+}
+.form__group select{
+    
+    font-size: var(--font-size-sm);
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--gray-40);
+    border-radius: 8px;
+    background-color: var(--white);
+    transition: all 0.2s ease;
+    height: 3rem;
+}
+
 .form__group--full-width {
     flex: 1 1 100%;
 }
@@ -212,6 +231,7 @@ body {
 }
 
 .form__input,
+input,
 .form__select,
 .form__textarea {
     font-size: var(--font-size-sm);
@@ -494,6 +514,12 @@ body {
     transform: translateY(-1px);
 }
 
+.form__input{
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--gray-40);
+    border-radius: 8px;
+    background-color: var(--white);
+}
 /* Modals */
 .modal {
     display: none;
@@ -524,7 +550,7 @@ body {
 .modal-content {
     background-color: var(--white);
     margin: auto;
-    padding: 2.5rem;
+    padding: 1.5rem;
     border-radius: 1rem;
     width: 90%;
     max-width: 50rem;
@@ -534,10 +560,6 @@ body {
     border: 1px solid rgba(0, 0, 0, 0.05);
     transform: scale(0.95);
     transition: transform 0.3s ease;
-}
-
-.modal-content:hover {
-    transform: scale(1);
 }
 
 .modal-content h2 {
@@ -725,4 +747,21 @@ body {
     .form__title {
         font-size: var(--font-size-xl);
     }
+}
+
+/* Selected Sensors Display */
+.selected-sensors-display {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.selected-sensor {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #333;
 }
