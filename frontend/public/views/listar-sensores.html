@@ -1,89 +1,735 @@
 <!DOCTYPE html>
 <html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Sistema de Gestión Agrícola - Sensores</title>
+		<link rel="stylesheet" href="../css/pages/listar.css">
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
+		/>
+		<link rel="stylesheet" href="../css/components/navbar.css" />
+		<script type="module" src="../js/data/sensorsData.js"></script>
+		<script type="module" src="../js/config/sensorsConfig.js"></script>
+		
+		<script type="module" src="../js/pages/componentLoader.js"></script>
+		<script type="module" src="../js/components/ViewModal.js"></script>
+		<script type="module" src="../js/pages/Sensors.js"></script>
+	</head>
+	<body>
+		<nav class="nav-render"></nav>
+		<main>
+			<header>
+				<h1 class="header__title">Gestión de Sensores</h1>
+				<div class="header__buttons">
+					<button class="button button--filter">
+						<span class="material-symbols-outlined button__icon"
+							>filter_alt</span
+						>
+						Filtros
+					</button>
+					<button class="button button--secondary button--create">
+						<a href="crear-sensor.html" class="button__link">
+							<span class="material-symbols-outlined button__icon"
+								>add_circle</span
+							>
+							Crear sensor
+						</a>
+					</button>
+				</div>
+			</header>
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700" rel="stylesheet" />
-	<title>Lista de Sensores</title>
-	<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
-	<link rel="stylesheet" href="../css/pages/listar.css" />
-	<link rel="stylesheet" href="../css/components/navbar.css" />
-	<script type="module" src="../js/pages/componentLoader.js"></script>
-</head>
+			<div class="filters hidden">
+				<div class="filters__header">
+					<div class="filters__title-container">
+						<h2 class="filters__title">Filtros</h2>
+						<p class="filters__subtitle">
+							Filtre las opciones por diferentes criterios
+						</p>
+					</div>
+					<span class="material-symbols-outlined filters__close">close</span>
+				</div>
+				<div class="filters__content">
+					<input
+						type="text"
+						class="filters__search"
+						placeholder="Buscar por nombre o ID"
+					/>
+					<select class="filters__select" placeholder="Estado">
+						<option value="">Todos</option>
+						<option value="Activo">Activo</option>
+						<option value="Inactivo">Inactivo</option>
+					</select>
+					<select class="filters__select" placeholder="Tipo de Sensor">
+						<option value="">Todos</option>
+						<option value="Temperatura">Temperatura</option>
+						<option value="Humedad">Humedad</option>
+						<option value="Luz">Luz</option>
+						<option value="Suelo">Suelo</option>
+					</select>
+					<select class="filters__select" placeholder="Ubicación">
+						<option value="">Todas</option>
+						<option value="Invernadero">Invernadero</option>
+						<option value="Campo">Campo</option>
+						<option value="Almacén">Almacén</option>
+					</select>
+					<button class="button button--clear">Limpiar filtros</button>
+				</div>
+			</div>
 
-<body>
-	<nav class="nav-render"></nav>
-
-	<!-- Bloque: main -->
-	<main class="main">
-		<!-- Bloque: table -->
-		<div class="table">
-			<div class="table__title">
-				<div class="table__title-column">
-					<h2 class="table__title">Lista de Sensores</h2>
-					<p class="table__description">
-						Resumen de los sensores de la granja
+			<div class="actions-bar">
+				<div class="actions-bar__selection">
+					<input type="checkbox" class="actions-bar__checkbox" />
+					<p class="actions-bar__count">
+						<span class="actions-bar__count--selected">0</span> de
+						<span class="actions-bar__count--total">0</span> Seleccionados
 					</p>
 				</div>
-				<div class="table__title-side">
-					<span class="table__icon material-symbols-outlined"> search </span>
-					<input type="search" class="table__search" placeholder="Buscar..." id="searchInput" />
-				</div>
-			</div>
-			<table class="table__content" >
-				<thead class="table__header">
-					<tr class="table__row">
-						<th class="table__header-cell">ID</th>
-						<th class="table__header-cell">Nombre</th>
-						<th class="table__header-cell">Tipo de Sensor</th>
-						<th class="table__header-cell">Unidad de medida</th>
-						<th class="table__header-cell">Estado</th>
-					</tr>
-				</thead>
-
-				<tbody class="table__body" id="tableBody">
-					<!-- Las filas se generarán dinámicamente con JavaScript -->
-				</tbody>
-			</table>
-
-			<!-- Controles de paginación -->
-			<div class="pagination">
-				<button class="pagination__button pagination__button--prev" id="prevPage">Anterior</button>
-				<span class="pagination__info" id="paginationInfo"></span>
-				<button class="pagination__button pagination__button--next" id="nextPage">Siguiente</button>
-			</div>
-
-			<p class="table__count">
-				Cantidad neta de sensores:
-				<span id="elements-count-cout" class="table__count-number">0</span>
-			</p>
-
-			<!-- Bloque: buttons -->
-			<div class="actions">
-				<button class="actions__button actions__button--primary">Descargar Reporte</button>
-				<button class="actions__button actions__button--secondary">
-					<a href="crear-usuario.html" class="actions__link">
-						<span class="actions__icon material-symbols-outlined">add</span>Agregar
-					</a>
+				<button class="button button--enable">
+					<span class="material-symbols-outlined button__icon"
+						>power_settings_new</span
+					>
+					Habilitar
+				</button>
+				<button class="button button--disable">
+					<span class="material-symbols-outlined button__icon"
+						>power_settings_new</span
+					>
+					Deshabilitar
+				</button>
+				<button class="button button--report">
+					<span class="material-symbols-outlined button__icon">download</span>
+					Generar Reporte
 				</button>
 			</div>
-	
-			<!-- Modal para mostrar información del usuario -->
-			<div class="modal modal--hidden">
+
+			<!-- Modal de Visualización -->
+			<div class="modal" id="viewModal">
 				<div class="modal__content">
-					<span class="modal__close">&times;</span>
-					<h2 class="modal__title">Información del sensor</h2>
-					<div class="modal__body">
-						<!-- El contenido dinámico se renderizará aquí -->
+					<div class="modal__header">
+						<div class="modal__header-top">
+							<div class="modal__titles">
+								<h2 class="modal__title">Información del Sensor</h2>
+								<p class="modal__subtitle">ID: <span id="viewId"></span></p>
+							</div>
+							<button class="modal__close">
+								<span class="material-symbols-outlined">close</span>
+							</button>
+						</div>
+						<div class="modal__tabs">
+							<button
+								class="modal__tab modal__tab--active"
+								data-tab="general"
+							>
+								General
+							</button>
+							<button class="modal__tab" data-tab="lecturas">Lecturas</button>
+							<button class="modal__tab" data-tab="mantenimiento">Mantenimiento</button>
+						</div>
 					</div>
-					<a href="actualizar-sensor.html" class="modal__link">Actualizar</a>
+
+					<div class="modal__body">
+						<!-- Panel General -->
+						<div
+							class="modal__panel modal__panel--active"
+							data-panel="general"
+						>
+							<div class="modal-grid">
+								<div class="modal-column">
+									<div class="info-section">
+										<h3 class="info-section__title">
+											<span class="material-symbols-outlined info-section__icon">info</span>
+											Información General
+										</h3>
+										<div class="info-section__content">
+											<div class="info-item">
+												<span class="info-item__label">ID</span>
+												<span class="info-item__value" id="viewId">SENS-01042025-0001</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Nombre</span>
+												<span class="info-item__value" id="viewName">Sensor de Temperatura Zona Norte</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Estado</span>
+												<span class="badge badge--active" id="viewStatus">Activo</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Tipo de Sensor</span>
+												<span class="info-item__value" id="viewSensorType">Temperatura</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Ubicación</span>
+												<span class="info-item__value" id="viewLocation">Invernadero Norte</span>
+											</div>
+										</div>
+									</div>
+									<div class="info-section">
+										<h3 class="info-section__title">
+											<span class="material-symbols-outlined info-section__icon">settings</span>
+											Configuración
+										</h3>
+										<div class="info-section__content">
+											<div class="info-item">
+												<span class="info-item__label">Frecuencia de Lectura</span>
+												<span class="info-item__value" id="viewFrequency">Cada 5 minutos</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Rango de Operación</span>
+												<span class="info-item__value" id="viewRange">-10°C a 50°C</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Precisión</span>
+												<span class="info-item__value" id="viewPrecision">±0.5°C</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Última Calibración</span>
+												<span class="info-item__value" id="viewLastCalibration">15/03/2025</span>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="modal-column">
+									<div class="info-section">
+										<h3 class="info-section__title">
+											<span class="material-symbols-outlined info-section__icon">monitoring</span>
+											Estado Actual
+										</h3>
+										<div class="info-section__content">
+											<div class="info-item">
+												<span class="info-item__label">Última Lectura</span>
+												<span class="info-item__value" id="viewLastReading">25.3°C</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Promedio 24h</span>
+												<span class="info-item__value" id="view24hAverage">24.8°C</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Máximo 24h</span>
+												<span class="info-item__value" id="view24hMax">28.1°C</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Mínimo 24h</span>
+												<span class="info-item__value" id="view24hMin">22.5°C</span>
+											</div>
+										</div>
+									</div>
+									<div class="info-section">
+										<h3 class="info-section__title">
+											<span class="material-symbols-outlined info-section__icon">battery_full</span>
+											Estado del Dispositivo
+										</h3>
+										<div class="info-section__content">
+											<div class="info-item">
+												<span class="info-item__label">Batería</span>
+												<span class="info-item__value" id="viewBattery">85%</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Señal</span>
+												<span class="info-item__value" id="viewSignal">Excelente</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Última Actualización</span>
+												<span class="info-item__value" id="viewLastUpdate">Hace 2 minutos</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Tiempo de Actividad</span>
+												<span class="info-item__value" id="viewUptime">45 días</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Panel de Lecturas -->
+						<div class="modal__panel" data-panel="lecturas">
+							<div class="readings-grid" id="lecturasContent">
+								<!-- Se llenará dinámicamente -->
+							</div>
+						</div>
+
+						<!-- Panel de Mantenimiento -->
+						<div class="modal__panel" data-panel="mantenimiento">
+							<div class="maintenance-grid" id="mantenimientoContent">
+								<!-- Se llenará dinámicamente -->
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-	</main>
-</body>
-<script src="../js/pages/tablePaginationSensors.js"></script>
-<script src="../js/pages/tableSearchFilter.js"></script>
-<script src="../js/pages/detailsPopup.js"></script>
 
+			<!-- Modal de Reporte -->
+			<div class="modal" id="reportModal">
+				<div class="modal__content">
+					<div class="modal__header modal__header--confirm">
+						<h2 class="modal__title">Generar Reporte</h2>
+						<span class="modal__close" id="closeReportModal">
+							<span class="material-symbols-outlined">close</span>
+						</span>
+					</div>
+					<div class="modal__body">
+						<form id="reportForm" class="form">
+							<div class="form-field">
+								<label class="form-field__label">Formato</label>
+								<select class="form-field__select" id="reportFormat">
+									<option value="excel">Excel (.xlsx)</option>
+									<option value="pdf">PDF</option>
+									<option value="csv">CSV</option>
+								</select>
+							</div>
+							<div class="form-field">
+								<label class="form-field__label">Incluir</label>
+								<div class="form-field__checkbox-group">
+									<label class="checkbox">
+										<input type="checkbox" checked id="includeInactive" />
+										Sensores inactivos
+									</label>
+									<label class="checkbox">
+										<input type="checkbox" checked id="includeReadings" />
+										Historial de lecturas
+									</label>
+									<label class="checkbox">
+										<input type="checkbox" id="includeMaintenance" />
+										Registro de mantenimiento
+									</label>
+									<label class="checkbox">
+										<input type="checkbox" id="includeAlerts" />
+										Alertas y eventos
+									</label>
+								</div>
+							</div>
+							<div class="form-field">
+								<label class="form-field__label">Período</label>
+								<div class="form-field__date-range">
+									<input type="date" id="reportStartDate" />
+									<span>a</span>
+									<input type="date" id="reportEndDate" />
+								</div>
+							</div>
+							<div class="form-field">
+								<p id="confirmMessage" class="modal__confirm-message">
+									¿Está seguro que desea generar el reporte con estas configuraciones?
+								</p>
+							</div>
+						</form>
+					</div>
+					<div class="modal__footer modal__footer--confirm">
+						<button class="button button--secondary" id="cancelReportBtn">
+							Cancelar
+						</button>
+						<button class="button button--primary" id="generateReportBtn">
+							Generar
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="table-container">
+				<table class="table">
+					<thead class="table__head">
+						<tr class="table__row table__row--header">
+							<th class="table__cell table__cell--header table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox-header" />
+							</th>
+							<th class="table__cell table__cell--header">ID</th>
+							<th class="table__cell table__cell--header">Nombre</th>
+							<th class="table__cell table__cell--header">Tipo</th>
+							<th class="table__cell table__cell--header">Unidad de Medida</th>
+							<th class="table__cell table__cell--header">Tiempo de Escaneo</th>
+							<th class="table__cell table__cell--header">Estado</th>
+							<th class="table__cell table__cell--header table__cell--actions">
+								Acciones
+							</th>
+						</tr>
+					</thead>
+					<tbody class="table__body">
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0001</td>
+							<td class="table__cell table__cell--name">Sensor de Temperatura Zona Norte</td>
+							<td class="table__cell table__cell--type">Temperatura</td>
+							<td class="table__cell table__cell--unit">°C</td>
+							<td class="table__cell table__cell--scan-interval">5 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Activo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--disable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0002</td>
+							<td class="table__cell table__cell--name">Sensor de Humedad Zona Sur</td>
+							<td class="table__cell table__cell--type">Humedad</td>
+							<td class="table__cell table__cell--unit">%</td>
+							<td class="table__cell table__cell--scan-interval">10 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Activo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--disable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0003</td>
+							<td class="table__cell table__cell--name">Sensor de Luz Exterior</td>
+							<td class="table__cell table__cell--type">Luz</td>
+							<td class="table__cell table__cell--unit">lux</td>
+							<td class="table__cell table__cell--scan-interval">15 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--inactive">Inactivo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--enable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0004</td>
+							<td class="table__cell table__cell--name">Sensor de Suelo Lote 5</td>
+							<td class="table__cell table__cell--type">Suelo</td>
+							<td class="table__cell table__cell--unit">%</td>
+							<td class="table__cell table__cell--scan-interval">30 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--inactive">Inactivo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--enable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0005</td>
+							<td class="table__cell table__cell--name">Sensor de CO2 Invernadero 1</td>
+							<td class="table__cell table__cell--type">CO2</td>
+							<td class="table__cell table__cell--unit">ppm</td>
+							<td class="table__cell table__cell--scan-interval">60 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Activo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--disable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0006</td>
+							<td class="table__cell table__cell--name">Sensor de Presión Atmosférica</td>
+							<td class="table__cell table__cell--type">Presión</td>
+							<td class="table__cell table__cell--unit">mbar</td>
+							<td class="table__cell table__cell--scan-interval">120 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Activo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--disable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0007</td>
+							<td class="table__cell table__cell--name">Sensor de Viento Zona Este</td>
+							<td class="table__cell table__cell--type">Viento</td>
+							<td class="table__cell table__cell--unit">m/s</td>
+							<td class="table__cell table__cell--scan-interval">180 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--inactive">Inactivo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--enable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0008</td>
+							<td class="table__cell table__cell--name">Sensor de Lluvia</td>
+							<td class="table__cell table__cell--type">Lluvia</td>
+							<td class="table__cell table__cell--unit">mm</td>
+							<td class="table__cell table__cell--scan-interval">240 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Activo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--disable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0009</td>
+							<td class="table__cell table__cell--name">Sensor de Temperatura Suelo</td>
+							<td class="table__cell table__cell--type">Temperatura</td>
+							<td class="table__cell table__cell--unit">°C</td>
+							<td class="table__cell table__cell--scan-interval">300 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--inactive">Inactivo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--enable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0010</td>
+							<td class="table__cell table__cell--name">Sensor de Humedad Hoja</td>
+							<td class="table__cell table__cell--type">Humedad</td>
+							<td class="table__cell table__cell--unit">%</td>
+							<td class="table__cell table__cell--scan-interval">360 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Activo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--disable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0011</td>
+							<td class="table__cell table__cell--name">Sensor de Temperatura Zona Este</td>
+							<td class="table__cell table__cell--type">Temperatura</td>
+							<td class="table__cell table__cell--unit">°C</td>
+							<td class="table__cell table__cell--scan-interval">420 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Activo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--disable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0012</td>
+							<td class="table__cell table__cell--name">Sensor de Humedad Zona Oeste</td>
+							<td class="table__cell table__cell--type">Humedad</td>
+							<td class="table__cell table__cell--unit">%</td>
+							<td class="table__cell table__cell--scan-interval">480 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Activo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--disable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0013</td>
+							<td class="table__cell table__cell--name">Sensor de Luz Interior</td>
+							<td class="table__cell table__cell--type">Luz</td>
+							<td class="table__cell table__cell--unit">lux</td>
+							<td class="table__cell table__cell--scan-interval">540 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--inactive">Inactivo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--enable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0014</td>
+							<td class="table__cell table__cell--name">Sensor de Suelo Lote 7</td>
+							<td class="table__cell table__cell--type">Suelo</td>
+							<td class="table__cell table__cell--unit">%</td>
+							<td class="table__cell table__cell--scan-interval">600 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--inactive">Inactivo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--enable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="table__row">
+							<td class="table__cell table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox" />
+							</td>
+							<td class="table__cell table__cell--id">SENS-01042025-0015</td>
+							<td class="table__cell table__cell--name">Sensor de CO2 Invernadero 2</td>
+							<td class="table__cell table__cell--type">CO2</td>
+							<td class="table__cell table__cell--unit">ppm</td>
+							<td class="table__cell table__cell--scan-interval">660 minutos</td>
+							<td class="table__cell table__cell--status">
+								<span class="badge badge--active">Activo</span>
+							</td>
+							<td class="table__cell table__cell--actions">
+								<button class="table__action-button table__action-button--view">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+								<button class="table__action-button table__action-button--edit">
+									<span class="material-symbols-outlined">edit</span>
+								</button>
+								<button class="table__action-button table__action-button--disable">
+									<span class="material-symbols-outlined">power_settings_new</span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="pagination">
+					<div class="pagination__info">
+						Mostrando <span class="pagination__current-page">1</span> a
+						<span class="pagination__items-per-page">10</span> de
+						<span class="pagination__total-items">15</span> resultados
+					</div>
+					<div class="pagination__controls">
+						<button class="pagination__button pagination__button--prev" disabled>
+							<span class="material-symbols-outlined">navigate_before</span>
+						</button>
+						<button class="pagination__button pagination__button--active">1</button>
+						<button class="pagination__button">2</button>
+						<button class="pagination__button" style="display: none;">3</button>
+						<button class="pagination__button" style="display: none;">4</button>
+						<button class="pagination__button" style="display: none;">5</button>
+						<button class="pagination__button pagination__button--next">
+							<span class="material-symbols-outlined">navigate_next</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</main>
+	</body>
 </html>

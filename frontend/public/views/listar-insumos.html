@@ -1,90 +1,299 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100;400;700" rel="stylesheet" />
-	<title>Lista de Insumos</title>
-	<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
-	<link rel="stylesheet" href="../css/pages/listar.css" />
-	<link rel="stylesheet" href="../css/components/navbar.css" />
-	<script type="module" src="../js/pages/componentLoader.js"></script>
-</head>
-
-<body>
-	<nav class="nav-render"></nav>
-
-	<!-- Bloque: main -->
-	<main class="main">
-
-		<!-- Bloque: table -->
-		<div class="table">
-			<div class="table__title">
-				<div class="table__title-column">
-					<h2 class="table__title">Lista de Insumos</h2>
-					<p class="table__description">
-						Resumen de los insumos de la granja
-					</p>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Sistema de Gestión Agrícola - Insumos</title>
+		<link rel="stylesheet" href="../css/pages/listar.css">
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
+		/>
+		<link rel="stylesheet" href="../css/components/navbar.css" />
+		<script type="module" src="../js/pages/componentLoader.js"></script>
+		<script type="module" src="../js/config/insumosConfig.js"></script>
+		<script type="module" src="../js/components/ViewModal.js"></script>
+	</head>
+	<body>
+		<nav class="nav-render"></nav>
+		<main>
+			<header>
+				<h1 class="header__title">Gestión de Insumos</h1>
+				<div class="header__buttons">
+					<button class="button button--filter">
+						<span class="material-symbols-outlined button__icon"
+							>filter_alt</span
+						>
+						Filtros
+					</button>
+					<button class="button button--secondary button--create">
+						<a href="crear-insumo.html" class="button__link">
+							<span class="material-symbols-outlined button__icon"
+								>add_circle</span
+							>
+							Crear insumo
+						</a>
+					</button>
 				</div>
-				<div class="table__title-side">
-					<span class="table__icon material-symbols-outlined"> search </span>
-					<input type="search" class="table__search" placeholder="Buscar..." id="searchInput" />
+			</header>
+
+			<div class="actions-bar">
+                <div class="actions-bar__selection">
+                    <input type="checkbox" class="actions-bar__checkbox" />
+                    <p class="actions-bar__count">
+                        <span class="actions-bar__count--selected">0</span> de
+                        <span class="actions-bar__count--total">0</span> Seleccionados
+                    </p>
+                </div>
+                <button class="button button--enable">
+                    <span class="material-symbols-outlined button__icon">power_settings_new</span>
+                    Habilitar
+                </button>
+                <button class="button button--disable">
+                    <span class="material-symbols-outlined button__icon">power_settings_new</span>
+                    Deshabilitar
+                </button>
+                <button class="button button--report">
+                    <span class="material-symbols-outlined button__icon">download</span>
+                    Generar Reporte
+                </button>
+            </div>
+
+			<div class="filters hidden">
+				<div class="filters__header">
+					<div class="filters__title-container">
+						<h2 class="filters__title">Filtros</h2>
+						<p class="filters__subtitle">
+							Filtre las opciones por diferentes criterios
+						</p>
+					</div>
+					<span class="material-symbols-outlined filters__close">close</span>
+				</div>
+				<div class="filters__content">
+					<input
+						type="text"
+						class="filters__search"
+						placeholder="Buscar por nombre o ID"
+					/>
+					<select class="filters__select" placeholder="Estado">
+						<option value="">Todos</option>
+						<option value="Activo">Activo</option>
+						<option value="Inactivo">Inactivo</option>
+					</select>
+					<select class="filters__select" placeholder="Tipo de Insumo">
+						<option value="">Todos</option>
+						<option value="Fertilizante">Fertilizante</option>
+						<option value="Pesticida">Pesticida</option>
+						<option value="Semilla">Semilla</option>
+						<option value="Herramienta">Herramienta</option>
+					</select>
+					<select class="filters__select" placeholder="Ubicación">
+						<option value="">Todas</option>
+						<option value="Almacén">Almacén</option>
+						<option value="Campo">Campo</option>
+						<option value="Invernadero">Invernadero</option>
+					</select>
+					<button class="button button--clear">Limpiar filtros</button>
 				</div>
 			</div>
-			<table class="table__content">
-				<thead class="table__header">
-					<tr class="table__row">
-						<th class="table__header-cell">Código</th>
-						<th class="table__header-cell">Nombre</th>
-						<th class="table__header-cell">Tipo</th>
-						<th class="table__header-cell">Cantidad</th>
-						<th class="table__header-cell">Estado</th>
-					</tr>
-				</thead>
-				<tbody class="table__body">
 
-				</tbody>
-			</table>
-			
-			<!-- Controles de paginación -->
-			<div class="pagination">
-				<button class="pagination__button pagination__button--prev" id="prevPage">Anterior</button>
-				<span class="pagination__info" id="paginationInfo"></span>
-				<button class="pagination__button pagination__button--next" id="nextPage">Siguiente</button>
-			</div>
+			<!-- Modal de Visualización -->
+			<div class="modal" id="viewModal">
+				<div class="modal__content">
+					<div class="modal__header">
+						<div class="modal__header-top">
+							<div class="modal__titles">
+								<h2 class="modal__title">Información del Insumo</h2>
+								<p class="modal__subtitle">ID: <span id="viewId"></span></p>
+							</div>
+							<button class="modal__close">
+								<span class="material-symbols-outlined">close</span>
+							</button>
+						</div>
+						<div class="modal__tabs">
+							<button
+								class="modal__tab modal__tab--active"
+								data-tab="general"
+							>
+								General
+							</button>
+							<button class="modal__tab" data-tab="detalles">Detalles</button>
+						</div>
+					</div>
 
-			<p class="table__count">
-				Cantidad neta de insumos:
-				<span id="elements-count-cout" class="table__count-number">0</span>
-			</p>
+					<div class="modal__body">
+						<!-- Panel General -->
+						<div
+							class="modal__panel modal__panel--active"
+							data-panel="general"
+						>
+							<div class="modal-grid">
+								<div class="modal-column">
+									<div class="info-section">
+										<h3 class="info-section__title">
+											<span class="material-symbols-outlined info-section__icon">info</span>
+											Información General
+										</h3>
+										<div class="info-section__content">
+											<div class="info-item">
+												<span class="info-item__label">ID</span>
+												<span class="info-item__value" id="viewId">INS-01042025-0001</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Nombre</span>
+												<span class="info-item__value" id="viewName">Fertilizante NPK 20-20-20</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Estado</span>
+												<span class="badge badge--active" id="viewStatus">Activo</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Tipo de Insumo</span>
+												<span class="info-item__value" id="viewInsumoType">Fertilizante</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Ubicación</span>
+												<span class="info-item__value" id="viewLocation">Almacén Principal</span>
+											</div>
+										</div>
+									</div>
+									<div class="info-section">
+										<h3 class="info-section__title">
+											<span class="material-symbols-outlined info-section__icon">settings</span>
+											Configuración
+										</h3>
+										<div class="info-section__content">
+											<div class="info-item">
+												<span class="info-item__label">Cantidad</span>
+												<span class="info-item__value" id="viewCantidad">100 kg</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Unidad de Medida</span>
+												<span class="info-item__value" id="viewUnit">kg</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Fecha de Caducidad</span>
+												<span class="info-item__value" id="viewExpirationDate">31/12/2025</span>
+											</div>
+										</div>
+									</div>
+								</div>
 
-			<!-- Bloque: buttons -->
-			<div class="actions">
-				<button class="actions__button actions__button--primary">Descargar Reporte</button>
-				<button class="actions__button actions__button--secondary">
-					<a href="crear-insumo.html" class="actions__link">
-						<span class="actions__icon material-symbols-outlined">add</span>Agregar
-					</a>
-				</button>
-			</div>
+								<div class="modal-column">
+									<div class="info-section">
+										<h3 class="info-section__title">
+											<span class="material-symbols-outlined info-section__icon">monitoring</span>
+											Estado Actual
+										</h3>
+										<div class="info-section__content">
+											<div class="info-item">
+												<span class="info-item__label">Último Inventario</span>
+												<span class="info-item__value" id="viewLastInventory">20/03/2025</span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Cantidad Disponible</span>
+												<span class="info-item__value" id="viewAvailableQuantity">80 kg</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 
-		<!-- Modal para mostrar información del usuario -->
-		<div class="modal modal--hidden">
-			<div class="modal__content">
-				<span class="modal__close">&times;</span>
-				<h2 class="modal__title">Información del insumo</h2>
-				<div class="modal__body">
-					<!-- El contenido dinámico se renderizará aquí -->
+						<!-- Panel de Detalles -->
+						<div class="modal__panel" data-panel="detalles">
+							<div class="details-grid" id="detallesContent">
+								<!-- Se llenará dinámicamente -->
+							</div>
+						</div>
+					</div>
 				</div>
-				<a href="actualizar-insumo.html" class="modal__link">Actualizar</a>
 			</div>
-		</div>
 
-	</main>
-</body>
-<script src="../js/pages/tableSearchFilter.js"></script>
-<script src="../js/pages/tablePaginationInsumos.js"></script>
-<script src="../js/pages/detailsPopup.js"></script>
+			<!-- Modal de Reporte -->
+			<div class="modal" id="reportModal">
+				<div class="modal__content">
+					<div class="modal__header">
+						<h2 class="modal__title">Generar Reporte</h2>
+						<span class="modal__close" id="closeReportModal">
+							<span class="material-symbols-outlined">close</span>
+						</span>
+					</div>
+					<div class="modal__body">
+						<form id="reportForm" class="form">
+							<div class="form-field">
+								<label class="form-field__label">Incluir</label>
+								<div class="form-field__checkbox-group">
+									<label class="checkbox">
+										<input type="checkbox" checked id="includeInactive" />
+										Insumos inactivos
+									</label>
+									<label class="checkbox">
+										<input type="checkbox" checked id="includeDetails" />
+										Detalles de insumos
+									</label>
+								</div>
+							</div>
+							<div class="form-field">
+								<p id="confirmMessage" class="modal__confirm-message">
+									¿Está seguro que desea generar el reporte con estas configuraciones?
+								</p>
+							</div>
+						</form>
+					</div>
+					<div class="modal__footer modal__footer--confirm">
+						<button class="button button--secondary" id="cancelReportBtn">
+							Cancelar
+						</button>
+						<button class="button button--primary" id="generateReportBtn">
+							Generar
+						</button>
+					</div>
+				</div>
+			</div>
 
+			<div class="table-container">
+				<table class="table">
+					<thead class="table__head">
+						<tr class="table__row table__row--header">
+							<th class="table__cell table__cell--header table__cell--checkbox">
+								<input type="checkbox" class="table__checkbox-header" />
+							</th>
+							<th class="table__cell table__cell--header">ID</th>
+							<th class="table__cell table__cell--header">Nombre</th>
+							<th class="table__cell table__cell--header">Tipo</th>
+							<th class="table__cell table__cell--header">Cantidad</th>
+							<th class="table__cell table__cell--header">Estado</th>
+							<th class="table__cell table__cell--header table__cell--actions">Acciones</th>
+						</tr>
+					</thead>
+					<tbody class="table__body">
+						<!-- Aquí se renderizan los insumos desde JS -->
+					</tbody>
+				</table>
+
+				<div class="pagination">
+					<div class="pagination__info">
+						Mostrando <span class="pagination__current-page">1</span> a
+						<span class="pagination__items-per-page">10</span> de
+						<span class="pagination__total-items">15</span> resultados
+					</div>
+					<div class="pagination__controls">
+						<button class="pagination__button pagination__button--prev" disabled>
+							<span class="material-symbols-outlined">navigate_before</span>
+						</button>
+						<button class="pagination__button pagination__button--active">1</button>
+						<button class="pagination__button">2</button>
+						<button class="pagination__button" style="display: none;">3</button>
+						<button class="pagination__button" style="display: none;">4</button>
+						<button class="pagination__button" style="display: none;">5</button>
+						<button class="pagination__button pagination__button--next">
+							<span class="material-symbols-outlined">navigate_next</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</main>
+		<script type="module" src="../js/pages/Insumos.js"></script>
+	</body>
 </html>
