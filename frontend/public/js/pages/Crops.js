@@ -345,9 +345,12 @@ class Crops {
                     <button class="table__action-button table__action-button--view" title="Ver detalles">
                         <span class="material-symbols-outlined">visibility</span>
                     </button>
-                    <button class="table__action-button table__action-button--edit" title="Editar">
-                        <span class="material-symbols-outlined">edit</span>
-                    </button>
+                    <a href="../views/actualizar-cultivo.html?id=${crop.id}" class="table__action-button-wrapper">
+                        <button class="table__action-button table__action-button--edit" title="Editar">
+                            <span class="material-symbols-outlined">edit</span>
+                        </button>
+                    </a>
+
                     <button class="table__action-button table__action-button--toggle-status ${crop.status === 'Activo' ? 'table__action-button--disable' : 'table__action-button--enable'}" data-id="${crop.id}" title="${crop.status === 'Activo' ? 'Deshabilitar' : 'Habilitar'}">
                         <span class="material-symbols-outlined">power_settings_new</span>
                     </button>

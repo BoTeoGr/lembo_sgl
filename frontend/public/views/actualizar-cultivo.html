@@ -7,25 +7,24 @@
 		<link rel="stylesheet" href="../css/pages/forms.css" />
 		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
 		<script type="module" src="../js/pages/componentLoader.js"></script>
-		<link rel="stylesheet" href="../css/components/header.css">
+		<link rel="stylesheet" href="../css/components/header.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 	</head>
 
 	<body>
-		<header class="header" data-title="Actualizar cultivo">
-			
-		</header>
+		<header class="header" data-title="Actualizar cultivo"></header>
 
 		<main class="main-content">
 			<div class="form form--height">
 				<div class="form__back-link">
-					<a href="listar-cultivos.html" class="button button--back"
-						>← Volver</a
-					>
+					<a href="listar-cultivos.html" class="button--back">← Volver</a>
 				</div>
 
-				<h2 class="form__title">Actualizar cultivo</h2>
+				<h2 class="form__title">Actualización del cultivo</h2>
 
 				<form class="form__container" method="post">
+					<input type="hidden" id="id" />
+
 					<div class="form__row">
 						<div class="form__group">
 							<label for="nombre" class="form__label">Nombre</label>
@@ -49,7 +48,7 @@
 						</div>
 					</div>
 
-					<div class="form__group form__group--full-width">
+					<div class="form__group">
 						<label for="imagen" class="form__label">Imagen</label>
 						<input
 							type="file"
@@ -62,16 +61,6 @@
 
 					<div class="form__row">
 						<div class="form__group">
-							<label for="id" class="form__label">ID del cultivo</label>
-							<input
-								type="text"
-								id="id"
-								class="form__input form__input--cultive-id"
-								placeholder="Ingrese el identificador del cultivo"
-								required
-							/>
-						</div>
-						<div class="form__group">
 							<label for="ubicacion" class="form__label">Ubicación</label>
 							<input
 								type="text"
@@ -82,13 +71,14 @@
 							/>
 						</div>
 					</div>
+
 					<div class="form__group form__group--full-width">
 						<label for="tamano" class="form__label">Tamaño</label>
 						<input
-							type="number"
+							type="text"
 							id="tamano"
 							class="form__input form__input--cultive-size"
-							placeholder="Ingrese el tamaño del cultivo"
+							placeholder="Ingrese el tamaño del cultivo en m2"
 							required
 						/>
 					</div>
@@ -102,34 +92,35 @@
 							required
 						></textarea>
 					</div>
-					<div class="form-group full-width">
+
+					<div class="form__group--full-width">
 						<div class="status-container">
 							<div class="status-item">
-								<input
-									type="radio"
-									name="estado-habilitado"
-									value="habilitado"
-									checked
-								/>
+								<input type="radio" name="estado-habilitado" value="habilitado" />
 								Habilitado
 							</div>
 							<div class="status-item">
-								<input
-									type="radio"
-									name="estado-habilitado"
-									value="deshabilitado"
-								/>
+								<input type="radio" name="estado-habilitado" value="deshabilitado" />
 								Deshabilitado
 							</div>
 						</div>
 					</div>
 
 					<div class="form__button-container">
-						<button type="submit" class="button button--submit">
-							Actualizar cultivo
-						</button>
+						<button type="submit" class="button button--submit">Actualizar cultivo</button>
 					</div>
 				</form>
+			</div>
+
+			<div id="toast" class="toast hidden">
+				<div class="toast-content">
+					<i id="toastIcon" class="fas fa-check-circle"></i>
+					<div class="toast-message">
+						<span id="toastTitle" class="toast-title"></span>
+						<span id="toastDescription" class="toast-description"></span>
+					</div>
+				</div>
+				<div class="toast-progress"></div>
 			</div>
 		</main>
 

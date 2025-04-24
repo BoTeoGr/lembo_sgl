@@ -148,4 +148,78 @@ export function actualizarEstadoCultivo(req, res) {
     });
 }
 
-// Olvide este comentario
+// Actualizar cultivo por ID
+export function actualizarCultivo(req, res) {
+    const { id } = req.params;
+    const {
+        nombre,
+        tipo,
+        ubicacion,
+        tamano,
+        descripcion,
+        estado
+    } = req.body;
+
+    // Si hay un archivo, tomamos el nombre del archivo para la imagen
+    let imagen = req.file ? req.file.filename : null;
+
+    // Verifica que al menos haya algún dato a actualizar
+    if (!nombre && !tipo && !ubicacion && !tamano && !descripcion && !estado && !imagen) {
+        return res.status(400).json({ error: 'No hay datos para actualizar' });
+    }
+
+    // Construcción dinámica del query y parámetros
+    const campos = [];
+    const valores = [];
+
+    // Si los campos están presentes, los agregamos al query de actualización
+    if (nombre) { campos.push('nombre = ?'); valores.push(nombre); }
+    if (tipo) { campos.push('tipo = ?'); valores.push(tipo); }
+    if (ubicacion) { campos.push('ubicacion = ?'); valores.push(ubicacion); }
+    if (tamano) { campos.push('tamano = ?'); valores.push(tamano); }
+    if (descripcion) { campos.push('descripcion = ?'); valores.push(descripcion); }
+    if (estado) { campos.push('estado = ?'); valores.push(estado); }
+    if (imagen) { campos.push('imagen = ?'); valores.push(imagen); }
+
+    // Agregamos el id al final de los valores
+    valores.push(id);
+
+    // Construcción del query de actualización
+    const query = `UPDATE cultivos SET ${campos.join(', ')} WHERE id = ?`;
+
+    // Ejecutamos el query de actualización en la base de datos
+    db.query(query, valores, (err, result) => {
+        if (err) {
+            console.error("Error al actualizar el cultivo:", err);
+            return res.status(500).json({ error: 'Error al actualizar cultivo' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Cultivo no encontrado' });
+        }
+
+        // Respuesta exitosa
+        res.json({ success: true, message: 'Cultivo actualizado correctamente' });
+    });
+}
+
+
+// Obtener un cultivo por su ID
+export function obtenerCultivoPorId(req, res) {
+    const { id } = req.params;
+
+    const query = 'SELECT * FROM cultivos WHERE id = ?';
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error("Error al obtener el cultivo:", err);
+            return res.status(500).json({ error: 'Error interno del servidor' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Cultivo no encontrado' });
+        }
+
+        res.json(results[0]);
+    });
+}
+
