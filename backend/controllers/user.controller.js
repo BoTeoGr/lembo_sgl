@@ -123,3 +123,26 @@ export function obtenerUsuarioActual(req, res) {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 }
+
+// Cambia el estado de un usuario (habilitado/deshabilitado)
+export function actualizarEstadoUsuario(req, res) {
+    try {
+        const { id } = req.params;
+        let { estado } = req.body;
+        if (!id || !estado) {
+            return res.status(400).json({ error: 'ID y estado son requeridos' });
+        }
+        estado = (estado === 'habilitado') ? 'habilitado' : 'deshabilitado';
+        const query = 'UPDATE usuarios SET estado = ? WHERE id = ?';
+        db.query(query, [estado, id], (err, result) => {
+            if (err) {
+                console.error('Error al actualizar estado de usuario:', err);
+                return res.status(500).json({ error: 'Error al actualizar estado de usuario' });
+            }
+            res.status(200).json({ message: 'Estado actualizado correctamente' });
+        });
+    } catch (error) {
+        console.error('Error en actualizarEstadoUsuario:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}

@@ -1,12 +1,67 @@
-import { cropsData } from '../data/cropsData.js';
 import { cropsConfig } from '../config/cropsConfig.js';
+
+// Nueva función para cargar datos desde la API (si existe)
+async function fetchCropsFromAPI() {
+    try {
+        const response = await fetch('http://localhost:5000/cultivos');
+        if (!response.ok) throw new Error('Error al obtener cultivos de la API');
+        const data = await response.json();
+        // Si la respuesta contiene la clave 'cultivos', usarla; si no, usar el array directamente
+        const cultivos = Array.isArray(data) ? data : (data.cultivos || []);
+        // Mapear campos del backend a los del frontend
+        return cultivos.map(cultivo => {
+            // Normalizar estado para estilos
+            let status = cultivo.estado || cultivo.status || '';
+            // Acepta variantes comunes
+            if (typeof status === 'string') {
+                const estadoLower = status.trim().toLowerCase();
+                if (["habilitado", "activo", "enabled"].includes(estadoLower)) {
+                    status = 'Activo';
+                } else if (["deshabilitado", "inhabilitado", "inactivo", "disabled"].includes(estadoLower)) {
+                    status = 'Inhabilitado';
+                }
+            }
+            // Usar id numérico real para operaciones backend
+            return {
+                id: cultivo.cultivoId || cultivo.id || '', // id numérico para backend
+                idLabel: cultivo.id || cultivo.cultivoId || '', // id string para mostrar si lo tienes
+                name: cultivo.nombre || cultivo.name || '',
+                type: cultivo.tipo || cultivo.type || '',
+                location: cultivo.ubicacion || cultivo.location || '',
+                area: cultivo.tamano || cultivo.area || '',
+                status,
+            };
+        });
+    } catch (e) {
+        // Si falla la API, usar cropsData local
+        console.warn('Fallo la carga desde la API, usando datos locales:', e.message);
+        const { cropsData } = await import('../data/cropsData.js');
+        return cropsData;
+    }
+}
+
+// --- Función para actualizar estado en backend ---
+async function toggleCultivoStatus(id, nuevoEstado) {
+    await fetch(`http://localhost:5000/cultivos/${id}/estado`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado: nuevoEstado })
+    });
+}
 
 class Crops {
     constructor() {
         this.currentPage = 1;
         this.itemsPerPage = cropsConfig.table.itemsPerPage || 10;
-        this.filteredData = [...cropsData];
+        this.filteredData = [];
         this.selectedCrops = new Set();
+        // Cargar datos de la API o local
+        this.loadData();
+    }
+
+    async loadData() {
+        const data = await fetchCropsFromAPI();
+        this.filteredData = [...data];
         this.renderTable();
         this.updatePagination();
         this.initializeEventListeners();
@@ -91,7 +146,7 @@ class Crops {
                 if (!this.selectedCrops) return;
                 this.filteredData.forEach(crop => {
                     if (this.selectedCrops.has(crop.id)) {
-                        crop.status = 'Inactivo';
+                        crop.status = 'Inhabilitado';
                     }
                 });
                 this.renderTable();
@@ -227,7 +282,7 @@ class Crops {
 
     filterData() {
         const searchTerm = document.querySelector('.filters__search').value.toLowerCase();
-        this.filteredData = cropsData.filter(crop =>
+        this.filteredData = this.filteredData.filter(crop =>
             crop.name.toLowerCase().includes(searchTerm) ||
             crop.id.toLowerCase().includes(searchTerm)
         );
@@ -249,9 +304,9 @@ class Crops {
             row.className = 'table__row';
 
             let badgeClass = '';
-            if (crop.status.toLowerCase() === 'activo') {
+            if (crop.status === 'Activo') {
                 badgeClass = 'badge badge--active';
-            } else if (crop.status.toLowerCase() === 'inactivo') {
+            } else if (crop.status === 'Inhabilitado') {
                 badgeClass = 'badge badge--inactive';
             } else {
                 badgeClass = 'badge';
@@ -261,6 +316,7 @@ class Crops {
                 <td class="table__cell table__cell--checkbox">
                     <input type="checkbox" class="table__checkbox" data-id="${crop.id}" ${this.selectedCrops && this.selectedCrops.has(crop.id) ? 'checked' : ''} />
                 </td>
+                <td class="table__cell table__cell--id">${crop.id}</td>
                 <td class="table__cell table__cell--name">${crop.name}</td>
                 <td class="table__cell table__cell--type">${crop.type}</td>
                 <td class="table__cell table__cell--area">${crop.area}</td>
@@ -284,8 +340,11 @@ class Crops {
             checkbox.addEventListener('change', () => {
                 this.updateSelectedCrops(checkbox, checkbox.dataset.id);
             });
-            row.querySelector('.table__action-button--toggle-status').addEventListener('click', () => {
-                crop.status = crop.status === 'Activo' ? 'Inactivo' : 'Activo';
+            row.querySelector('.table__action-button--toggle-status').addEventListener('click', async () => {
+                const nuevoEstado = crop.status === 'Activo' ? 'Inhabilitado' : 'Activo';
+                crop.status = nuevoEstado;
+                console.log('PUT cultivo', crop.id, 'nuevo estado:', nuevoEstado); // log de depuración
+                await toggleCultivoStatus(crop.id, nuevoEstado);
                 this.renderTable();
             });
             tbody.appendChild(row);

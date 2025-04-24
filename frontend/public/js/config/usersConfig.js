@@ -28,8 +28,27 @@ export const usersConfig = {
   }
 };
 
-import { users as usersRaw } from '../../data/usersData.js';
-let users = [...usersRaw];
+let users = [];
+
+export async function fetchUsersFromAPI() {
+  try {
+    const response = await fetch('http://localhost:5000/usuarios');
+    if (!response.ok) throw new Error('Error al obtener usuarios de la API');
+    const data = await response.json();
+    const usuariosArr = Array.isArray(data) ? data : (data.usuarios || []);
+    users = usuariosArr.map(user => ({
+      id: user.id || user.numero_documento || '',
+      nombre: user.nombre || '',
+      rol: user.rol || '',
+      telefono: user.telefono || '',
+      estado: (user.estado && (user.estado.toLowerCase() === 'habilitado' || user.estado.toLowerCase() === 'activo')) ? 'Activo' : 'Inactivo'
+    }));
+    return users;
+  } catch (e) {
+    console.warn('Fallo la carga desde la API, usando datos locales:', e.message);
+    return users;
+  }
+}
 
 export function renderUsersTable(filteredUsers = users) {
   const tbody = document.querySelector('.table__body');
@@ -55,13 +74,24 @@ export function renderUsersTable(filteredUsers = users) {
   `).join('');
 }
 
+export async function updateUserStatusAPI(ids, status) {
+  const estadoDB = status === 'Activo' ? 'habilitado' : 'deshabilitado';
+  for (const id of ids) {
+    await fetch(`http://localhost:5000/usuarios/${id}/estado`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ estado: estadoDB })
+    });
+  }
+}
+
 export function updateUserStatus(ids, status) {
   users = users.map(user => ids.includes(user.id) ? { ...user, estado: status } : user);
 }
 
 export function filterUsers({ search = '', rol = '', estado = '' }) {
   return users.filter(user => {
-    const matchSearch = search === '' || user.nombre.toLowerCase().includes(search.toLowerCase()) || user.id.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = search === '' || user.nombre.toLowerCase().includes(search.toLowerCase()) || String(user.id).toLowerCase().includes(search.toLowerCase());
     const matchRol = rol === '' || user.rol === rol;
     const matchEstado = estado === '' || user.estado === estado;
     return matchSearch && matchRol && matchEstado;
@@ -69,5 +99,5 @@ export function filterUsers({ search = '', rol = '', estado = '' }) {
 }
 
 export function resetUsers() {
-  users = [...usersRaw];
+  users = [];
 }

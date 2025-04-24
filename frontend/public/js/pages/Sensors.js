@@ -1,12 +1,58 @@
 import { sensorsConfig } from '../config/sensorsConfig.js';
-import { sensorsData } from '../data/sensorsData.js';
+
+// --- Obtener sensores desde la API ---
+async function fetchSensorsFromAPI() {
+    try {
+        const response = await fetch('http://localhost:5000/sensor');
+        if (!response.ok) throw new Error('Error al obtener sensores de la API');
+        const data = await response.json();
+        const sensoresArr = Array.isArray(data) ? data : (data.sensores || []);
+        return sensoresArr.map(sensor => {
+            let status = sensor.estado || '';
+            if (typeof status === 'string') {
+                const estadoLower = status.trim().toLowerCase();
+                if (["habilitado"].includes(estadoLower)) {
+                    status = 'habilitado';
+                } else if (["deshabilitado"].includes(estadoLower)) {
+                    status = 'deshabilitado';
+                }
+            }
+            return {
+                id: sensor.sensorId || sensor.id || '',
+                nombre: sensor.nombre_sensor || sensor.nombre || '',
+                tipo: sensor.tipo_sensor || sensor.tipo || '',
+                ubicacion: sensor.ubicacion || '',
+                estado: status,
+                unidad_medida: sensor.unidad_medida || '',
+                tiempo_escaneo: sensor.tiempo_escaneo || ''
+            };
+        });
+    } catch (e) {
+        console.warn('Fallo la carga desde la API, usando datos locales:', e.message);
+        return [];
+    }
+}
+
+// --- Función para actualizar estado en backend ---
+async function toggleSensorStatus(id, nuevoEstado) {
+    await fetch(`http://localhost:5000/sensor/${id}/estado`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado: nuevoEstado })
+    });
+}
 
 class Sensors {
     constructor() {
         this.currentPage = 1;
         this.itemsPerPage = 10;
-        this.filteredData = [...sensorsData];
+        this.filteredData = [];
         this.selectedSensors = new Set();
+        this.init();
+    }
+
+    async init() {
+        this.filteredData = await fetchSensorsFromAPI();
         this.renderTable();
         this.updatePagination();
         this.initializeEventListeners();
@@ -67,13 +113,13 @@ class Sensors {
 
         if (enableButton) {
             enableButton.addEventListener('click', () => {
-                this.updateSensorStatus('Activo');
+                this.updateSensorStatus('habilitado');
             });
         }
 
         if (disableButton) {
             disableButton.addEventListener('click', () => {
-                this.updateSensorStatus('Inactivo');
+                this.updateSensorStatus('deshabilitado');
             });
         }
 
@@ -166,12 +212,12 @@ class Sensors {
         const typeFilter = document.querySelector('.filters__select[placeholder="Tipo de Sensor"]').value;
         const locationFilter = document.querySelector('.filters__select[placeholder="Ubicación"]').value;
 
-        this.filteredData = sensorsData.filter(sensor => {
-            const matchesSearch = sensor.name.toLowerCase().includes(searchTerm) || 
+        this.filteredData = this.filteredData.filter(sensor => {
+            const matchesSearch = sensor.nombre.toLowerCase().includes(searchTerm) || 
                                 sensor.id.toLowerCase().includes(searchTerm);
-            const matchesStatus = !statusFilter || sensor.status === statusFilter;
-            const matchesType = !typeFilter || sensor.type === typeFilter;
-            const matchesLocation = !locationFilter || sensor.location === locationFilter;
+            const matchesStatus = !statusFilter || sensor.estado === statusFilter;
+            const matchesType = !typeFilter || sensor.tipo === typeFilter;
+            const matchesLocation = !locationFilter || sensor.ubicacion === locationFilter;
 
             return matchesSearch && matchesStatus && matchesType && matchesLocation;
         });
@@ -235,28 +281,15 @@ class Sensors {
     }
 
     updateSensorStatus(newStatus) {
-        if (this.selectedSensors.size === 0) return;
-
-        this.selectedSensors.forEach(sensorId => {
-            const sensor = sensorsData.find(s => s.id === sensorId);
-            if (sensor) {
-                sensor.status = newStatus;
-                sensor.lastUpdate = 'Hace 1 minuto';
-            }
+        if (!this.selectedSensors.size) return;
+        const ids = Array.from(this.selectedSensors);
+        ids.forEach(id => {
+            const sensor = this.filteredData.find(s => String(s.id) === String(id));
+            if (sensor) sensor.estado = newStatus;
         });
-        
+        Promise.all(ids.map(id => toggleSensorStatus(id, newStatus)));
         this.renderTable();
-        // Limpiar selección visual y lógica
-        this.selectedSensors.clear();
-        this.updateActionsBar();
-        // Desmarcar todos los checkboxes
-        document.querySelectorAll('.table__checkbox').forEach(cb => cb.checked = false);
-        const headerCheckbox = document.querySelector('.table__checkbox-header');
-        if (headerCheckbox) headerCheckbox.checked = false;
-        const actionsBarCheckbox = document.querySelector('.actions-bar__checkbox');
-        if (actionsBarCheckbox) actionsBarCheckbox.checked = false;
-        // Mostrar notificación de éxito
-        this.showNotification(`Estado actualizado exitosamente a "${newStatus}"`);
+        this.showNotification(`Sensores actualizados a "${newStatus}"`);
     }
 
     showNotification(message) {
@@ -277,7 +310,6 @@ class Sensors {
     renderTable() {
         const tbody = document.querySelector('.table__body');
         tbody.innerHTML = '';
-
         const startIdx = (this.currentPage - 1) * this.itemsPerPage;
         const endIdx = startIdx + this.itemsPerPage;
         const currentPageData = this.filteredData.slice(startIdx, endIdx);
@@ -285,71 +317,37 @@ class Sensors {
         currentPageData.forEach(sensor => {
             const row = document.createElement('tr');
             row.className = 'table__row';
-            let badgeClass = '';
-            if (sensor.status.toLowerCase() === 'activo') {
-                badgeClass = 'badge badge--active';
-            } else if (sensor.status.toLowerCase() === 'inactivo') {
-                badgeClass = 'badge badge--inactive';
-            } else {
-                badgeClass = 'badge';
-            }
             row.innerHTML = `
                 <td class="table__cell table__cell--checkbox">
-                    <input type="checkbox" class="table__checkbox" ${this.selectedSensors.has(sensor.id) ? 'checked' : ''} />
+                    <input type="checkbox" class="table__checkbox" data-id="${sensor.id}" ${this.selectedSensors.has(sensor.id) ? 'checked' : ''} />
                 </td>
                 <td class="table__cell table__cell--id">${sensor.id}</td>
-                <td class="table__cell table__cell--name">${sensor.name}</td>
-                <td class="table__cell table__cell--type">${sensor.type}</td>
-                <td class="table__cell table__cell--unit">${sensor.unit || ''}</td>
-                <td class="table__cell table__cell--scan-interval">${sensor.scanInterval || ''}</td>
-                <td class="table__cell table__cell--status">
-                    <span class="${badgeClass}">${sensor.status}</span>
+                <td class="table__cell table__cell--name">${sensor.nombre}</td>
+                <td class="table__cell table__cell--type">${sensor.tipo}</td>
+                <td class="table__cell table__cell--unit">${sensor.unidad_medida || ''}</td>
+                <td class="table__cell table__cell--scan-interval">${sensor.tiempo_escaneo || ''}</td>
+                <td class="table__cell table__cell--estado">
+                    <span class="badge badge--${sensor.estado === 'habilitado' ? 'active' : 'inactive'}">${sensor.estado === 'habilitado' ? 'Habilitado' : 'Deshabilitado'}</span>
                 </td>
                 <td class="table__cell table__cell--actions">
-                    <button class="table__action-button table__action-button--view">
-                        <span class="material-symbols-outlined">visibility</span>
-                    </button>
-                    <button class="table__action-button table__action-button--edit">
-                        <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="table__action-button table__action-button--${sensor.status === 'Activo' ? 'disable' : 'enable'}">
-                        <span class="material-symbols-outlined">power_settings_new</span>
-                    </button>
+                    <button class="table__action-button table__action-button--view"><span class="material-symbols-outlined">visibility</span></button>
+                    <button class="table__action-button table__action-button--edit"><span class="material-symbols-outlined">edit</span></button>
+                    <button class="table__action-button table__action-button--${sensor.estado === 'habilitado' ? 'disable' : 'enable'}"><span class="material-symbols-outlined">power_settings_new</span></button>
                 </td>
             `;
-
-            // Agregar event listeners para los checkboxes
-            const checkbox = row.querySelector('.table__checkbox');
-            checkbox.checked = this.selectedSensors.has(sensor.id);
-            checkbox.addEventListener('change', () => {
-                this.updateSelectedSensors(checkbox);
+            // Eventos de acción
+            row.querySelector('.table__action-button--enable')?.addEventListener('click', async () => {
+                sensor.estado = 'habilitado';
+                await toggleSensorStatus(sensor.id, 'habilitado');
+                this.renderTable();
             });
-
-            // Botones de acción individuales
-            const actionButtons = row.querySelectorAll('.table__action-button');
-            actionButtons.forEach(button => {
-                if (button.classList.contains('table__action-button--enable')) {
-                    button.addEventListener('click', () => {
-                        this.toggleSensorStatus(sensor, 'Activo');
-                    });
-                } else if (button.classList.contains('table__action-button--disable')) {
-                    button.addEventListener('click', () => {
-                        this.toggleSensorStatus(sensor, 'Inactivo');
-                    });
-                } else if (button.classList.contains('table__action-button--view')) {
-                    button.addEventListener('click', () => {
-                        this.showSensorDetails(sensor);
-                    });
-                } else if (button.classList.contains('table__action-button--edit')) {
-                    button.addEventListener('click', () => {
-                        this.editSensor(sensor);
-                    });
-                }
+            row.querySelector('.table__action-button--disable')?.addEventListener('click', async () => {
+                sensor.estado = 'deshabilitado';
+                await toggleSensorStatus(sensor.id, 'deshabilitado');
+                this.renderTable();
             });
-
             tbody.appendChild(row);
         });
-
         this.updateActionsBar();
     }
 
@@ -361,14 +359,6 @@ class Sensors {
     editSensor(sensor) {
         // Implementar lógica para editar el sensor
         console.log('Editando sensor:', sensor);
-    }
-
-    toggleSensorStatus(sensor, newStatus) {
-        if (!sensor) return;
-        sensor.status = newStatus;
-        sensor.lastUpdate = 'Hace 1 minuto';
-        this.renderTable();
-        this.showNotification(`Sensor actualizado exitosamente a "${newStatus}"`);
     }
 
     updatePagination() {

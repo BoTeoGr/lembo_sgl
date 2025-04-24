@@ -2,75 +2,12 @@ import db from './../db/config.db.js';
 
 // Función para obtener insumos con paginación
 export function VerInsumos(req, res) {
-    try {
-        // Obtener los parámetros de paginación desde la solicitud
-        const { page = 1, limit = 6 } = req.query;
-
-        // Convertir los parámetros a números
-        const pageNumber = parseInt(page, 10);
-        const limitNumber = parseInt(limit, 10);
-
-        // Validar los parámetros
-        if (isNaN(pageNumber) || pageNumber < 1) {
-            return res.status(400).json({ error: 'El parámetro "page" debe ser un número mayor o igual a 1' });
+    db.query('SELECT * FROM insumos', (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error al obtener insumos' });
         }
-        if (isNaN(limitNumber) || limitNumber < 1) {
-            return res.status(400).json({ error: 'El parámetro "limit" debe ser un número mayor o igual a 1' });
-        }
-
-        // Calcular el índice inicial para la consulta
-        const offset = (pageNumber - 1) * limitNumber;
-
-        // Consulta para obtener los insumos con paginación
-        const query = `
-            SELECT 
-                id AS insumoId,
-                nombre AS nombre,
-                tipo AS tipo,
-                imagen AS imagen,
-                unidad_medida AS unidadMedida,
-                valor_unitario AS valorUnitario,
-                cantidad AS cantidad,
-                valor_total AS valorTotal,
-                descripcion AS descripcion,
-                usuario_id AS usuarioId,
-                estado AS estado,
-                fecha_creacion AS fechaCreacion
-            FROM insumos
-            LIMIT ? OFFSET ?
-        `;
-        const countQuery = 'SELECT COUNT(*) AS total FROM insumos';
-
-        // Obtener el total de insumos
-        db.query(countQuery, (err, countResults) => {
-            if (err) {
-                console.error('Error al contar insumos:', err);
-                return res.status(500).json({ error: 'Error al contar insumos' });
-            }
-
-            const totalInsumos = countResults[0].total;
-            const totalPages = Math.ceil(totalInsumos / limitNumber);
-
-            // Obtener los insumos con paginación
-            db.query(query, [limitNumber, offset], (err, results) => {
-                if (err) {
-                    console.error('Error al obtener insumos:', err);
-                    return res.status(500).json({ error: 'Error al obtener insumos' });
-                }
-
-                // Responder con los datos paginados
-                res.status(200).json({
-                    insumos: results,
-                    totalInsumos,
-                    totalPages,
-                    currentPage: pageNumber,
-                });
-            });
-        });
-    } catch (error) {
-        console.error('Error en VerInsumos:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
-    }
+        res.json(results);
+    });
 }
 
 // Función para crear un insumo
@@ -128,4 +65,24 @@ export function crearInsumo(req, res) {
         res.status(500).json({ error: 'Error desconocido' });
     }
 }
+
+// Actualizar estado de un insumo
+export function actualizarEstadoInsumo(req, res) {
+    const { id } = req.params;
+    const { estado } = req.body; // Espera 'Activo' o 'Inactivo'
+    if (!estado) {
+        return res.status(400).json({ error: 'El estado es requerido' });
+    }
+    // Normaliza para la base de datos
+    const estadoDB = (estado === 'Activo' || estado.toLowerCase() === 'habilitado') ? 'habilitado' : 'deshabilitado';
+    const query = 'UPDATE insumos SET estado = ? WHERE id = ?';
+    db.query(query, [estadoDB, id], (err, result) => {
+        if (err) {
+            console.error('Error SQL:', err); // Log detallado para depuración
+            return res.status(500).json({ error: 'Error al actualizar el estado del insumo', detalle: err.message });
+        }
+        res.json({ success: true });
+    });
+}
+
 // Olvide este comentario

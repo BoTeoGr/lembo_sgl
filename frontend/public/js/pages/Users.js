@@ -1,9 +1,10 @@
-import { renderUsersTable, updateUserStatus, filterUsers, resetUsers, usersConfig } from '../config/usersConfig.js';
+import { renderUsersTable, updateUserStatus, filterUsers, resetUsers, usersConfig, fetchUsersFromAPI, updateUserStatusAPI } from '../config/usersConfig.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   let currentPage = 1;
   const itemsPerPage = usersConfig.table.itemsPerPage || 10;
   let filteredUsers = null;
+  let allUsers = await fetchUsersFromAPI();
 
   // Filtros
   const searchInput = document.querySelector('.filters__search');
@@ -15,7 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const search = searchInput.value;
     const rol = rolSelect.value;
     const estado = estadoSelect.value;
-    return filterUsers({ search, rol, estado });
+    return allUsers.filter(user => {
+      const matchSearch = search === '' || user.nombre.toLowerCase().includes(search.toLowerCase()) || String(user.id).toLowerCase().includes(search.toLowerCase());
+      const matchRol = rol === '' || user.rol === rol;
+      const matchEstado = estado === '' || user.estado === estado;
+      return matchSearch && matchRol && matchEstado;
+    });
   }
 
   function renderPaginatedTable(usersList) {
@@ -81,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderPaginatedTable(filteredUsers);
 
   // Acciones de habilitar/deshabilitar (por fila)
-  document.querySelector('.table__body').addEventListener('click', (e) => {
+  document.querySelector('.table__body').addEventListener('click', async (e) => {
     const btn = e.target.closest('button');
     if (!btn) return;
     const row = btn.closest('tr');
@@ -91,11 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (btn.classList.contains('table__action-button--edit')) {
       alert(`Editar usuario: ${id}`);
     } else if (btn.classList.contains('table__action-button--enable')) {
-      updateUserStatus([id], 'Activo');
-      applyFilters();
+      await updateUserStatusAPI([id], 'Activo');
+      allUsers = await fetchUsersFromAPI();
+      filteredUsers = getFilteredUsers();
+      renderPaginatedTable(filteredUsers);
     } else if (btn.classList.contains('table__action-button--disable')) {
-      updateUserStatus([id], 'Inactivo');
-      applyFilters();
+      await updateUserStatusAPI([id], 'Inactivo');
+      allUsers = await fetchUsersFromAPI();
+      filteredUsers = getFilteredUsers();
+      renderPaginatedTable(filteredUsers);
     }
   });
 
@@ -122,20 +132,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelector('.table__body').addEventListener('change', updateSelectionCount);
 
-  enableBtn.addEventListener('click', () => {
+  enableBtn.addEventListener('click', async () => {
     const ids = getSelectedIds();
     if (ids.length === 0) return;
-    updateUserStatus(ids, 'Activo');
-    applyFilters();
+    await updateUserStatusAPI(ids, 'Activo');
+    allUsers = await fetchUsersFromAPI();
+    filteredUsers = getFilteredUsers();
+    renderPaginatedTable(filteredUsers);
     document.querySelector('.actions-bar__checkbox').checked = false;
     document.querySelector('.table__checkbox-header').checked = false;
     updateSelectionCount();
   });
-  disableBtn.addEventListener('click', () => {
+  disableBtn.addEventListener('click', async () => {
     const ids = getSelectedIds();
     if (ids.length === 0) return;
-    updateUserStatus(ids, 'Inactivo');
-    applyFilters();
+    await updateUserStatusAPI(ids, 'Inactivo');
+    allUsers = await fetchUsersFromAPI();
+    filteredUsers = getFilteredUsers();
+    renderPaginatedTable(filteredUsers);
     document.querySelector('.actions-bar__checkbox').checked = false;
     document.querySelector('.table__checkbox-header').checked = false;
     updateSelectionCount();
@@ -162,5 +176,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (bar) bar.checked = checked;
       updateSelectionCount();
     });
+  }
+
+  function updateUserStatus(ids, status) {
+    allUsers = allUsers.map(user => ids.includes(user.id) ? { ...user, estado: status } : user);
   }
 });

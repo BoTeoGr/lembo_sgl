@@ -100,3 +100,22 @@ export function crearSensor(req, res) {
         res.status(500).json({ error: "Error desconocido" });
     }
 }
+
+// Actualizar estado de un sensor
+export function actualizarEstadoSensor(req, res) {
+    const { id } = req.params;
+    const { estado } = req.body; // Espera 'habilitado' o 'deshabilitado'
+    if (!estado) {
+        return res.status(400).json({ error: 'El estado es requerido' });
+    }
+    // Normaliza para la base de datos
+    const estadoDB = (estado === 'habilitado') ? 'habilitado' : 'deshabilitado';
+    const query = 'UPDATE sensores SET estado = ? WHERE id = ?';
+    db.query(query, [estadoDB, id], (err, result) => {
+        if (err) {
+            console.error('Error SQL:', err);
+            return res.status(500).json({ error: 'Error al actualizar el estado del sensor', detalle: err.message });
+        }
+        res.json({ success: true });
+    });
+}

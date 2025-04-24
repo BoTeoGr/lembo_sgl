@@ -92,7 +92,7 @@ form.addEventListener("submit", (e) => {
 	// Si todo es válido, mostrar éxito y redirigir
 	showAlert("Ciclo de cultivo actualizado correctamente.");
 	setTimeout(() => {
-		window.location.href = "../../views/listar-ciclo-cultivos.html";
+		window.location.href = "../../views/listar-ciclos-cultivos.html";
 	}, 1000);
 
 	// console.log("Datos finales del ciclo de cultivo:", cicloCultivo);

@@ -1,14 +1,46 @@
-import { insumos } from '../data/insumosData.js';
 import { insumosConfig } from '../config/insumosConfig.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   let currentPage = 1;
   const itemsPerPage = insumosConfig.table.itemsPerPage || 10;
-  let filteredInsumos = [...insumos];
+  let filteredInsumos = [];
+
+  // --- Obtener insumos desde la API ---
+  async function fetchInsumosFromAPI() {
+    try {
+      const response = await fetch('http://localhost:5000/insumos');
+      if (!response.ok) throw new Error('Error al obtener insumos de la API');
+      const data = await response.json();
+      // Si la respuesta es un array o tiene la clave 'insumos'
+      const insumosArr = Array.isArray(data) ? data : (data.insumos || []);
+      // Normalizar campos y estado
+      return insumosArr.map(insumo => {
+        let status = insumo.estado || '';
+        if (typeof status === 'string') {
+          const estadoLower = status.trim().toLowerCase();
+          if (["habilitado"].includes(estadoLower)) {
+            status = 'habilitado';
+          } else if (["deshabilitado"].includes(estadoLower)) {
+            status = 'deshabilitado';
+          }
+        }
+        return {
+          id: insumo.insumoId || insumo.id || '',
+          nombre: insumo.nombre || '',
+          tipo: insumo.tipo || '',
+          cantidad: insumo.cantidad || '',
+          estado: status
+        };
+      });
+    } catch (e) {
+      console.warn('Fallo la carga desde la API, usando datos locales:', e.message);
+      return insumos;
+    }
+  }
 
   function updateInsumoStatus(ids, estado) {
     ids.forEach(id => {
-      const insumo = insumos.find(i => String(i.id) === String(id));
+      const insumo = filteredInsumos.find(i => String(i.id) === String(id));
       if (insumo) insumo.estado = estado;
     });
   }
@@ -17,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const search = document.querySelector('.filters__search')?.value?.toLowerCase() || '';
     const tipo = document.querySelector('select[placeholder="Tipo de Insumo"]')?.value || '';
     const estado = document.querySelector('select[placeholder="Estado"]')?.value || '';
-    return insumos.filter(i =>
+    return filteredInsumos.filter(i =>
       (i.nombre.toLowerCase().includes(search) || i.id.toLowerCase().includes(search)) &&
       (tipo ? i.tipo === tipo : true) &&
       (estado ? i.estado === estado : true)
@@ -36,12 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
         <td class="table__cell table__cell--tipo">${insumo.tipo}</td>
         <td class="table__cell table__cell--cantidad">${insumo.cantidad}</td>
         <td class="table__cell table__cell--estado">
-          <span class="badge badge--${insumo.estado === 'Con stock' ? 'active' : 'inactive'}">${insumo.estado}</span>
+          <span class="badge badge--${insumo.estado === 'habilitado' ? 'active' : 'inactive'}">${insumo.estado === 'habilitado' ? 'Con stock' : 'Sin stock'}</span>
         </td>
         <td class="table__cell table__cell--actions">
           <button class="table__action-button table__action-button--view"><span class="material-symbols-outlined">visibility</span></button>
           <button class="table__action-button table__action-button--edit"><span class="material-symbols-outlined">edit</span></button>
-          <button class="table__action-button table__action-button--${insumo.estado === 'Con stock' ? 'disable' : 'enable'}"><span class="material-symbols-outlined">power_settings_new</span></button>
+          <button class="table__action-button table__action-button--${insumo.estado === 'habilitado' ? 'disable' : 'enable'}"><span class="material-symbols-outlined">power_settings_new</span></button>
         </td>
       </tr>
     `).join('');
@@ -134,24 +166,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  document.querySelector('.button--enable').addEventListener('click', () => {
+  document.querySelector('.button--enable').addEventListener('click', async () => {
     const ids = getSelectedIds();
     if (ids.length === 0) return;
-    updateInsumoStatus(ids, 'Con stock');
+    updateInsumoStatus(ids, 'habilitado');
+    await Promise.all(ids.map(id => toggleInsumoStatus(id, 'habilitado')));
     renderPaginatedTable(filteredInsumos);
     document.querySelector('.actions-bar__checkbox').checked = false;
     document.querySelector('.table__checkbox-header').checked = false;
-    updateSelectionCount();
   });
-  document.querySelector('.button--disable').addEventListener('click', () => {
+  document.querySelector('.button--disable').addEventListener('click', async () => {
     const ids = getSelectedIds();
     if (ids.length === 0) return;
-    updateInsumoStatus(ids, 'Stock bajo');
+    updateInsumoStatus(ids, 'deshabilitado');
+    await Promise.all(ids.map(id => toggleInsumoStatus(id, 'deshabilitado')));
     renderPaginatedTable(filteredInsumos);
     document.querySelector('.actions-bar__checkbox').checked = false;
     document.querySelector('.table__checkbox-header').checked = false;
-    updateSelectionCount();
   });
+
+  // --- Nueva función para actualizar estado en backend ---
+  async function toggleInsumoStatus(id, nuevoEstado) {
+    await fetch(`http://localhost:5000/insumos/${id}/estado`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ estado: nuevoEstado })
+    });
+  }
 
   // --- Reporte funcional ---
   const reportModal = document.getElementById('reportModal');
@@ -186,8 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const includeInactive = document.getElementById('includeInactive').checked;
       const includeDetails = document.getElementById('includeDetails').checked;
-      let reportData = insumos.filter(i => {
-        if (!includeInactive && i.estado === 'Stock bajo') return false;
+      let reportData = filteredInsumos.filter(i => {
+        if (!includeInactive && i.estado === 'deshabilitado') return false;
         return true;
       });
       let csv = '';
@@ -249,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  document.querySelector('.table__body').addEventListener('click', (e) => {
+  document.querySelector('.table__body').addEventListener('click', async (e) => {
     const btn = e.target.closest('button');
     if (!btn) return;
     const row = btn.closest('tr');
@@ -259,15 +300,17 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (btn.classList.contains('table__action-button--edit')) {
       alert(`Editar insumo: ${id}`);
     } else if (btn.classList.contains('table__action-button--enable')) {
-      updateInsumoStatus([id], 'Con stock');
+      updateInsumoStatus([id], 'habilitado');
+      await toggleInsumoStatus(id, 'habilitado');
       renderPaginatedTable(filteredInsumos);
     } else if (btn.classList.contains('table__action-button--disable')) {
-      updateInsumoStatus([id], 'Stock bajo');
+      updateInsumoStatus([id], 'deshabilitado');
+      await toggleInsumoStatus(id, 'deshabilitado');
       renderPaginatedTable(filteredInsumos);
     }
   });
 
   // Inicializar datos y render
-  filteredInsumos = getFilteredInsumos();
+  filteredInsumos = await fetchInsumosFromAPI();
   renderPaginatedTable(filteredInsumos);
 });

@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             // Aquí iría el código para guardar los cambios
             alert('Guardando cambios...');
-            window.location.href = 'producciones.html';
+            window.location.href = 'listar-producciones.html';
         }
     });
     
@@ -451,7 +451,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     saveBtn.addEventListener('click', () => {
         alert('Guardando cambios...');
-        window.location.href = 'producciones.html';
+        window.location.href = 'listar-producciones.html';
     });
     
     // Inicializar primera pestaña

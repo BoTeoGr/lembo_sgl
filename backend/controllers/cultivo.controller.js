@@ -128,4 +128,24 @@ export function crearCultivo(req, res) {
         res.status(500).json({ error: 'Error desconocido' });
     }
 }
+
+// Actualizar estado de un cultivo
+export function actualizarEstadoCultivo(req, res) {
+    const { id } = req.params;
+    const { estado } = req.body; // Espera 'Activo' o 'Inactivo'
+    if (!estado) {
+        return res.status(400).json({ error: 'El estado es requerido' });
+    }
+    // Normaliza para la base de datos
+    const estadoDB = (estado === 'Activo' || estado.toLowerCase() === 'habilitado') ? 'habilitado' : 'deshabilitado';
+    const query = 'UPDATE cultivos SET estado = ? WHERE id = ?';
+    db.query(query, [estadoDB, id], (err, result) => {
+        if (err) {
+            console.error('Error SQL:', err); // Log detallado para depuración
+            return res.status(500).json({ error: 'Error al actualizar el estado del cultivo', detalle: err.message });
+        }
+        res.json({ success: true });
+    });
+}
+
 // Olvide este comentario

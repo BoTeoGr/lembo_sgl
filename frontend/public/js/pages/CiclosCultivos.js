@@ -1,56 +1,18 @@
-import { ciclosCultivos } from '../data/ciclosCultivosData.js';
-import { ciclosCultivosConfig } from '../config/ciclosCultivosConfig.js';
+import { fetchCiclosCultivoFromAPI, renderCiclosCultivoTable, updateCicloCultivoEstadoAPI, ciclosCultivosConfig } from '../config/ciclosCultivosConfig.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   let currentPage = 1;
   const itemsPerPage = ciclosCultivosConfig.table.itemsPerPage || 10;
-  let filteredCiclos = [...ciclosCultivos];
+  let allCiclos = await fetchCiclosCultivoFromAPI();
+  let filteredCiclos = allCiclos;
   let selectedIds = [];
 
-  function renderCiclosTable(data) {
-    const tbody = document.querySelector('.table__body');
-    tbody.innerHTML = data.map(ciclo => `
-      <tr class="table__row">
-        <td class="table__cell table__cell--checkbox">
-          <input type="checkbox" class="table__checkbox" data-id="${ciclo.id}" ${selectedIds.includes(ciclo.id) ? 'checked' : ''} />
-        </td>
-        <td class="table__cell table__cell--id">${ciclo.id}</td>
-        <td class="table__cell table__cell--nombre">${ciclo.nombre}</td>
-        <td class="table__cell table__cell--periodo-inicio">${ciclo.periodoInicio}</td>
-        <td class="table__cell table__cell--periodo-final">${ciclo.periodoFinal}</td>
-        <td class="table__cell table__cell--estado">
-          <span class="badge badge--${ciclo.estado === 'Activo' ? 'active' : 'inactive'}">${ciclo.estado}</span>
-        </td>
-        <td class="table__cell table__cell--actions">
-          <button class="table__action-button table__action-button--view" title="Ver"><span class="material-symbols-outlined">visibility</span></button>
-          <button class="table__action-button table__action-button--edit" title="Editar"><span class="material-symbols-outlined">edit</span></button>
-          <button class="table__action-button table__action-button--${ciclo.estado === 'Activo' ? 'disable' : 'enable'}" data-id="${ciclo.id}" title="${ciclo.estado === 'Activo' ? 'Desactivar' : 'Activar'}"><span class="material-symbols-outlined">power_settings_new</span></button>
-        </td>
-      </tr>
-    `).join('');
-  }
-
-  function updateCicloStatus(ids, estado) {
-    ids.forEach(id => {
-      const ciclo = ciclosCultivos.find(c => String(c.id) === String(id));
-      if (ciclo) ciclo.estado = estado;
-    });
-  }
-
-  function getSelectedIds() {
-    return Array.from(document.querySelectorAll('.table__checkbox:checked'))
-      .map(cb => cb.closest('tr').querySelector('.table__cell--id').textContent);
-  }
-
-  function updateSelectionCount() {
-    const total = document.querySelectorAll('.table__checkbox').length;
-    const selected = document.querySelectorAll('.table__checkbox:checked').length;
-    document.querySelector('.actions-bar__count--selected').textContent = selected;
-    document.querySelector('.actions-bar__count--total').textContent = total;
-    const header = document.querySelector('.table__checkbox-header');
-    const bar = document.querySelector('.actions-bar__checkbox');
-    if (header) header.checked = (selected === total && total > 0);
-    if (bar) bar.checked = (selected === total && total > 0);
+  function getFilteredCiclos() {
+    const searchInput = document.querySelector('.filters__search');
+    const q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    return allCiclos.filter(c =>
+      c.nombre.toLowerCase().includes(q) || String(c.id).toLowerCase().includes(q)
+    );
   }
 
   function renderPaginatedTable(list) {
@@ -60,22 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startIdx = (currentPage - 1) * itemsPerPage;
     const endIdx = Math.min(startIdx + itemsPerPage, total);
     const pageItems = list.slice(startIdx, endIdx);
-    renderCiclosTable(pageItems);
-    renderPaginationInfo(startIdx, endIdx, total);
-    renderPaginationControls(totalPages);
-    updateSelectionCount();
-  }
-
-  function renderPaginationInfo(startIdx, endIdx, total) {
-    const currentPageSpan = document.querySelector('.pagination__current-page');
-    const itemsPerPageSpan = document.querySelector('.pagination__items-per-page');
-    const totalItemsSpan = document.querySelector('.pagination__total-items');
-    if (currentPageSpan) currentPageSpan.textContent = startIdx + 1;
-    if (itemsPerPageSpan) itemsPerPageSpan.textContent = endIdx;
-    if (totalItemsSpan) totalItemsSpan.textContent = total;
-  }
-
-  function renderPaginationControls(totalPages) {
+    renderCiclosCultivoTable(pageItems);
     const controlsDiv = document.querySelector('.pagination__controls');
     if (!controlsDiv) return;
 
@@ -106,15 +53,86 @@ document.addEventListener('DOMContentLoaded', () => {
     nextBtn.onclick = () => { if (currentPage < totalPages) { currentPage++; renderPaginatedTable(filteredCiclos); } };
   }
 
-  // --- Eventos checkboxes ---
-  document.querySelector('.table__body').addEventListener('change', updateSelectionCount);
+  // Inicializa tabla con datos de API
+  filteredCiclos = getFilteredCiclos();
+  renderPaginatedTable(filteredCiclos);
 
-  document.querySelector('.actions-bar__checkbox').addEventListener('change', function() {
-    const checked = this.checked;
-    document.querySelectorAll('.table__checkbox').forEach(cb => { cb.checked = checked; });
-    const thHeader = document.querySelector('.table__checkbox-header');
-    if (thHeader) thHeader.checked = checked;
-    updateSelectionCount();
+  // Filtros
+  const searchInput = document.querySelector('.filters__search');
+  const clearBtn = document.querySelector('.button--clear');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      filteredCiclos = getFilteredCiclos();
+      currentPage = 1;
+      renderPaginatedTable(filteredCiclos);
+    });
+  }
+  if (clearBtn && searchInput) {
+    clearBtn.onclick = () => {
+      searchInput.value = '';
+      filteredCiclos = getFilteredCiclos();
+      currentPage = 1;
+      renderPaginatedTable(filteredCiclos);
+    };
+  }
+
+  // Habilitar/deshabilitar individual
+  document.querySelector('.table__body').addEventListener('click', async (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const row = btn.closest('tr');
+    const id = row.querySelector('.table__cell--id').textContent;
+    if (btn.classList.contains('table__action-button--enable')) {
+      await updateCicloCultivoEstadoAPI([id], 'Activo');
+      allCiclos = await fetchCiclosCultivoFromAPI();
+      filteredCiclos = getFilteredCiclos();
+      renderPaginatedTable(filteredCiclos);
+    } else if (btn.classList.contains('table__action-button--disable')) {
+      await updateCicloCultivoEstadoAPI([id], 'Inactivo');
+      allCiclos = await fetchCiclosCultivoFromAPI();
+      filteredCiclos = getFilteredCiclos();
+      renderPaginatedTable(filteredCiclos);
+    }
+  });
+
+  // Habilitar/deshabilitar masivo
+  const enableBtn = document.querySelector('.button--enable');
+  const disableBtn = document.querySelector('.button--disable');
+  function getSelectedIds() {
+    return Array.from(document.querySelectorAll('.table__checkbox:checked'))
+      .map(cb => cb.closest('tr').querySelector('.table__cell--id').textContent);
+  }
+  if (enableBtn) {
+    enableBtn.addEventListener('click', async () => {
+      const ids = getSelectedIds();
+      if (ids.length === 0) return;
+      await updateCicloCultivoEstadoAPI(ids, 'Activo');
+      allCiclos = await fetchCiclosCultivoFromAPI();
+      filteredCiclos = getFilteredCiclos();
+      renderPaginatedTable(filteredCiclos);
+    });
+  }
+  if (disableBtn) {
+    disableBtn.addEventListener('click', async () => {
+      const ids = getSelectedIds();
+      if (ids.length === 0) return;
+      await updateCicloCultivoEstadoAPI(ids, 'Inactivo');
+      allCiclos = await fetchCiclosCultivoFromAPI();
+      filteredCiclos = getFilteredCiclos();
+      renderPaginatedTable(filteredCiclos);
+    });
+  }
+
+  // --- Eventos checkboxes ---
+  document.querySelector('.table__body').addEventListener('change', () => {
+    const total = document.querySelectorAll('.table__checkbox').length;
+    const selected = document.querySelectorAll('.table__checkbox:checked').length;
+    document.querySelector('.actions-bar__count--selected').textContent = selected;
+    document.querySelector('.actions-bar__count--total').textContent = total;
+    const header = document.querySelector('.table__checkbox-header');
+    const bar = document.querySelector('.actions-bar__checkbox');
+    if (header) header.checked = (selected === total && total > 0);
+    if (bar) bar.checked = (selected === total && total > 0);
   });
 
   // Checkbox en header de tabla
@@ -125,11 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.table__checkbox').forEach(cb => { cb.checked = checked; });
       const bar = document.querySelector('.actions-bar__checkbox');
       if (bar) bar.checked = checked;
-      updateSelectionCount();
     });
   }
 
-  // --- Botones individuales y masivos ---
+  // Botones individuales y masivos
   document.querySelector('.table__body').addEventListener('click', (e) => {
     const btn = e.target.closest('button');
     if (!btn) return;
@@ -139,77 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // alert(`Ver ciclo: ${id}`);
     } else if (btn.classList.contains('table__action-button--edit')) {
       // alert(`Editar ciclo: ${id}`);
-    } else if (btn.classList.contains('table__action-button--enable')) {
-      updateCicloStatus([id], 'Activo');
-      renderPaginatedTable(filteredCiclos);
-    } else if (btn.classList.contains('table__action-button--disable')) {
-      updateCicloStatus([id], 'Inactivo');
-      renderPaginatedTable(filteredCiclos);
     }
   });
-
-  // Botones de barra de acciones masiva
-  const enableBtn = document.querySelector('.button--enable');
-  const disableBtn = document.querySelector('.button--disable');
-  if (enableBtn) {
-    enableBtn.addEventListener('click', () => {
-      const ids = getSelectedIds();
-      if (ids.length === 0) return;
-      updateCicloStatus(ids, 'Activo');
-      renderPaginatedTable(filteredCiclos);
-      document.querySelector('.actions-bar__checkbox').checked = false;
-      document.querySelector('.table__checkbox-header').checked = false;
-      updateSelectionCount();
-    });
-  }
-  if (disableBtn) {
-    disableBtn.addEventListener('click', () => {
-      const ids = getSelectedIds();
-      if (ids.length === 0) return;
-      updateCicloStatus(ids, 'Inactivo');
-      renderPaginatedTable(filteredCiclos);
-      document.querySelector('.actions-bar__checkbox').checked = false;
-      document.querySelector('.table__checkbox-header').checked = false;
-      updateSelectionCount();
-    });
-  }
-
-  // --- Filtros funcionales ---
-  const filtersDiv = document.querySelector('.filters');
-  const filterBtn = document.querySelector('.button--filter');
-  const closeBtn = document.querySelector('.filters__close');
-  const searchInput = document.querySelector('.filters__search');
-  const clearBtn = document.querySelector('.button--clear');
-
-  // Mostrar/ocultar panel de filtros
-  if (filterBtn && filtersDiv) {
-    filterBtn.onclick = () => filtersDiv.classList.remove('hidden');
-  }
-  if (closeBtn && filtersDiv) {
-    closeBtn.onclick = () => filtersDiv.classList.add('hidden');
-  }
-
-  // Filtrado por texto (nombre o ID)
-  if (searchInput) {
-    searchInput.addEventListener('input', function() {
-      const q = this.value.trim().toLowerCase();
-      filteredCiclos = ciclosCultivos.filter(c =>
-        c.nombre.toLowerCase().includes(q) || String(c.id).toLowerCase().includes(q)
-      );
-      currentPage = 1;
-      renderPaginatedTable(filteredCiclos);
-    });
-  }
-
-  // Limpiar filtros
-  if (clearBtn && searchInput) {
-    clearBtn.onclick = () => {
-      searchInput.value = '';
-      filteredCiclos = [...ciclosCultivos];
-      currentPage = 1;
-      renderPaginatedTable(filteredCiclos);
-    };
-  }
 
   // --- Modal de Generar Reporte avanzado funcional ---
   const reportModal = document.getElementById('reportModal');
@@ -268,9 +216,4 @@ document.addEventListener('DOMContentLoaded', () => {
       reportModal.classList.remove('modal--active');
     };
   }
-
-  // Asegúrate de que los imports y rutas JS apunten al nuevo nombre del HTML si es necesario en rutas relativas
-  // Inicializar
-  filteredCiclos = [...ciclosCultivos];
-  renderPaginatedTable(filteredCiclos);
 });

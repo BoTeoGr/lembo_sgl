@@ -1,53 +1,15 @@
 import db from './../db/config.db.js ';
 
+// DEVOLVER TODOS LOS CICLOS DE CULTIVO SIN PAGINACIÓN (para frontend)
 export function VerCiclosCultivo(req, res) {
     try {
-        const { page = 1, limit = 6 } = req.query;
-        const pageNumber = parseInt(page, 10);
-        const limitNumber = parseInt(limit, 10);
-
-        if (isNaN(pageNumber) || pageNumber < 1) {
-            return res.status(400).json({ error: 'El parámetro "page" debe ser un número mayor o igual a 1' });
-        }
-        if (isNaN(limitNumber) || limitNumber < 1) {
-            return res.status(400).json({ error: 'El parámetro "limit" debe ser un número mayor o igual a 1' });
-        }
-
-        const offset = (pageNumber - 1) * limitNumber;
-
-        const countQuery = "SELECT COUNT(*) AS total FROM ciclo_cultivo ";
-
-        db.query(countQuery, (err, countResults) => {
+        const query = "SELECT * FROM ciclo_cultivo ORDER BY id ASC";
+        db.query(query, (err, results) => {
             if (err) {
-                console.error('Error al contar ciclos:', err);
-                return res.status(500).json({ error: 'Error al contar ciclos de cultivo' });
+                console.error('Error al obtener ciclos:', err);
+                return res.status(500).json({ error: 'Error al obtener ciclos de cultivo' });
             }
-
-            const totalCiclos = countResults[0].total;
-            const totalPages = Math.ceil(totalCiclos / limitNumber);
-
-            if (pageNumber > totalPages) {
-                return res.status(400).json({ error: 'Número de página excede el total de páginas disponibles' });
-            }
-
-            const query = `
-                SELECT * FROM ciclo_cultivo 
-                ORDER BY id ASC
-                LIMIT ? OFFSET ?`;
-
-            db.query(query, [limitNumber, offset], (err, results) => {
-                if (err) {
-                    console.error('Error al obtener ciclos:', err);
-                    return res.status(500).json({ error: 'Error al obtener ciclos de cultivo' });
-                }
-
-                res.status(200).json({
-                    ciclos: results,
-                    totalCiclos,
-                    totalPages,
-                    currentPage: pageNumber
-                });
-            });
+            res.status(200).json({ ciclos: results });
         });
     } catch (error) {
         console.error('Error en VerCiclosCultivo:', error);
@@ -102,5 +64,28 @@ export function crearCicloCultivo(req, res) {
     } catch (error) {
         console.error('Error en el servidor:', error);
         res.status(500).json({ error: 'Error desconocido' });
+    }
+}
+
+// Cambiar el estado de un ciclo de cultivo (habilitado/deshabilitado)
+export function actualizarEstadoCicloCultivo(req, res) {
+    try {
+        const { id } = req.params;
+        let { estado } = req.body;
+        if (!id || !estado) {
+            return res.status(400).json({ error: 'ID y estado son requeridos' });
+        }
+        estado = (estado === 'habilitado') ? 'habilitado' : 'deshabilitado';
+        const query = 'UPDATE ciclo_cultivo SET estado = ? WHERE id = ?';
+        db.query(query, [estado, id], (err, result) => {
+            if (err) {
+                console.error('Error al actualizar estado del ciclo de cultivo:', err);
+                return res.status(500).json({ error: 'Error al actualizar estado del ciclo de cultivo' });
+            }
+            res.status(200).json({ message: 'Estado actualizado correctamente' });
+        });
+    } catch (error) {
+        console.error('Error en actualizarEstadoCicloCultivo:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 }

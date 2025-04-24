@@ -147,7 +147,8 @@ submitButton.addEventListener("click", async () => {
 		submitButton.disabled = true;
 		submitButton.textContent = "Creando...";
 
-		const response = await fetch("http://localhost:5000/ciclos-cultivos", {
+		// Cambia la URL para que coincida con la ruta backend
+        const response = await fetch("http://localhost:5000/ciclo_cultivo", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -161,7 +162,7 @@ submitButton.addEventListener("click", async () => {
 			showToast("Ciclo de cultivo creado", "El ciclo de cultivo ha sido creado correctamente", "success");
 			// Redirigir a listar-usuarios.html
             setTimeout(() => {
-                window.location.href = "listar-ciclo-cultivos.html";
+                window.location.href = "listar-ciclos-cultivos.html";
             }, 2000); // Espera 2 segundos para mostrar el toast antes de redirigir
 		} else {
 			showToast("Error", data.error || "Error al crear el ciclo de cultivo", "error");

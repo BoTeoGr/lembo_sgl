@@ -1224,7 +1224,7 @@ async function createProduction(e) {
 
     // Redireccionar después de crear
     setTimeout(() => {
-      window.location.href = "/producciones.html";
+      window.location.href = "/listar-producciones.html";
     }, 2000);
   } catch (error) {
     console.error("Error al crear producción:", error);

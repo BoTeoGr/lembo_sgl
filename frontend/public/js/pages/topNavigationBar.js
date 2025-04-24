@@ -73,7 +73,7 @@ export default function Navbar() {
                             </button>
                             <div class="nav__dropdown-content">
                                 <a href="listar-cultivos.html" class="nav__dropdown-link">Lista de Cultivos</a>
-                                <a href="listar-ciclo-cultivos.html" class="nav__dropdown-link">Lista de Ciclos</a>
+                                <a href="listar-ciclos-cultivos.html" class="nav__dropdown-link">Lista de Ciclos</a>
                                 <a href="crear-cultivo.html" class="nav__dropdown-link">Agregar Cultivo</a>
                                 <a href="crear-ciclo-cultivo.html" class="nav__dropdown-link">Agregar Ciclo</a>
                             </div>
@@ -81,14 +81,14 @@ export default function Navbar() {
 
                         <li class="nav__item nav__item--dropdown">
                             <button class="nav__dropdown-btn ${isSelected(
-															"producciones.html"
+															"listar-producciones.html"
 														)}">
                                 <span class="material-symbols-outlined">manufacturing</span>
                                 <span>Producciones</span>
                                 <span class="material-symbols-outlined nav__arrow">expand_more</span>
                             </button>
                             <div class="nav__dropdown-content">
-                                <a href="producciones.html" class="nav__dropdown-link">Lista de Producciones</a>
+                                <a href="listar-producciones.html" class="nav__dropdown-link">Lista de Producciones</a>
                                 <a href="crear-produccion.html" class="nav__dropdown-link">Agregar Producción</a>
                             </div>
                         </li>
@@ -167,7 +167,7 @@ export default function Navbar() {
                     <span class="material-symbols-outlined">agriculture</span>
                     <span>Lista de Cultivos</span>
                 </a>
-                <a href="listar-ciclo-cultivos.html" class="nav__mobile-link">
+                <a href="listar-ciclos-cultivos.html" class="nav__mobile-link">
                     <span class="material-symbols-outlined">cycle</span>
                     <span>Lista de Ciclos</span>
                 </a>
@@ -179,7 +179,7 @@ export default function Navbar() {
                     <span class="material-symbols-outlined">add_circle</span>
                     <span>Agregar Ciclo</span>
                 </a>
-                <a href="producciones.html" class="nav__mobile-link">
+                <a href="listar-producciones.html" class="nav__mobile-link">
                     <span class="material-symbols-outlined">manufacturing</span>
                     <span>Lista de Producciones</span>
                 </a>
