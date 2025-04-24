@@ -15,6 +15,7 @@
 		<script type="module" src="../js/pages/componentLoader.js"></script>
 		<script type="module" src="../js/config/productionsConfig.js"></script>
 		<script type="module" src="../js/pages/Productions.js"></script>
+		<script src="../js/pages/ReportGenerator.js"></script>
 	</head>
 	<body>
 		<nav class="nav-render"></nav>
@@ -352,6 +353,56 @@
 					</div>
 					<div class="modal__footer">
 						<button class="button button--secondary" id="closeViewProduccionBtn">Cerrar</button>
+					</div>
+				</div>
+			</div>
+			<!-- Modal para generar reporte de producciones -->
+			<div class="modal" id="reportModalProduccion">
+				<div class="modal__content">
+					<div class="modal__header">
+						<div class="modal__header-top">
+							<div class="modal__titles">
+								<h2 class="modal__title">Generar Reporte de Producciones</h2>
+							</div>
+							<button class="modal__close" id="closeReportModalProduccion" type="button" title="Cerrar">
+								<span class="material-symbols-outlined">close</span>
+							</button>
+						</div>
+					</div>
+					<div class="modal__body">
+						<form id="reportFormProduccion">
+							<div class="form-field">
+								<label for="reportFormat">Formato:</label>
+								<select id="reportFormatProduccion">
+									<option value="csv">CSV</option>
+									<option value="excel">Excel</option>
+									<option value="pdf">PDF</option>
+								</select>
+							</div>
+							<div class="form-field">
+								<label class="checkbox">
+									<input type="checkbox" id="includeInactiveProduccion" /> Incluir inactivos
+								</label>
+								<label class="checkbox">
+									<input type="checkbox" id="includeDetailsProduccion" checked /> Detalles completos
+								</label>
+								<label class="checkbox">
+									<input type="checkbox" id="includeSensorsProduccion" /> Datos de sensores
+								</label>
+								<label class="checkbox">
+									<input type="checkbox" id="includeSuppliesProduccion" /> Uso de insumos
+								</label>
+							</div>
+							<div class="form-field">
+								<p id="confirmMessageProduccion" class="modal__confirm-message">
+									¿Está seguro que desea generar el reporte con estas configuraciones?
+								</p>
+							</div>
+						</form>
+					</div>
+					<div class="modal__footer modal__footer--confirm">
+						<button class="button button--secondary" id="cancelReportBtnProduccion">Cancelar</button>
+						<button class="button button--primary" id="generateReportBtnProduccion">Generar</button>
 					</div>
 				</div>
 			</div>

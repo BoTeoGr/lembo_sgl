@@ -256,6 +256,94 @@ class Productions {
                 }
             });
         }
+
+        // --- Reporte funcional ---
+        // Selección de elementos del modal CORRECTO para Producciones
+        const reportModal = document.getElementById('reportModalProduccion');
+        const reportBtn = document.querySelector('.button--report');
+        const cancelReportBtn = document.getElementById('cancelReportBtnProduccion');
+        const generateReportBtn = document.getElementById('generateReportBtnProduccion');
+        const closeReportModal = document.getElementById('closeReportModalProduccion');
+
+        if (reportBtn && reportModal) {
+            reportBtn.addEventListener('click', () => {
+                reportModal.classList.add('modal--active');
+                reportModal.style.display = '';
+                reportModal.style.alignItems = '';
+                reportModal.style.justifyContent = '';
+            });
+        }
+        if (cancelReportBtn && reportModal) {
+            cancelReportBtn.addEventListener('click', () => {
+                reportModal.classList.remove('modal--active');
+                reportModal.style.display = '';
+            });
+        }
+        if (closeReportModal && reportModal) {
+            closeReportModal.addEventListener('click', () => {
+                reportModal.classList.remove('modal--active');
+                reportModal.style.display = '';
+            });
+        }
+        if (generateReportBtn) {
+            generateReportBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const format = document.getElementById('reportFormatProduccion').value;
+                const includeInactive = document.getElementById('includeInactiveProduccion').checked;
+                const includeDetails = document.getElementById('includeDetailsProduccion').checked;
+                const includeSensors = document.getElementById('includeSensorsProduccion').checked;
+                const includeSupplies = document.getElementById('includeSuppliesProduccion').checked;
+                // Filtrar datos según opciones
+                let data = this.filteredData;
+                if (!includeInactive) {
+                    data = data.filter(p => p.status === 'Activo');
+                }
+                // Seleccionar columnas
+                let columns = [
+                    { header: 'ID', key: 'id' },
+                    { header: 'Nombre', key: 'name' },
+                    { header: 'Cultivo', key: 'crop' },
+                    { header: 'Ciclo', key: 'cycle' },
+                    { header: 'Responsable', key: 'responsible' },
+                    { header: 'Inversión', key: 'investment' },
+                    { header: 'Fecha de Inicio', key: 'startDate' },
+                    { header: 'Estado', key: 'status' }
+                ];
+                if (includeDetails) {
+                    columns.push(
+                        { header: 'Área', key: 'area' },
+                        { header: 'Personal', key: 'personal_asignado' }
+                    );
+                }
+                if (includeSensors) {
+                    columns.push({ header: 'Sensores Asignados', key: 'sensores_asignados' });
+                }
+                if (includeSupplies) {
+                    columns.push({ header: 'Insumos Asignados', key: 'insumos_asignados' });
+                }
+                // Normalizar datos para exportar
+                const reportData = data.map(p => {
+                    const row = { ...p };
+                    if (Array.isArray(row.personal_asignado)) row.personal_asignado = row.personal_asignado.join(', ');
+                    if (Array.isArray(row.sensores_asignados)) row.sensores_asignados = row.sensores_asignados.join(', ');
+                    if (Array.isArray(row.insumos_asignados)) row.insumos_asignados = row.insumos_asignados.join(', ');
+                    return row;
+                });
+                // Usar ReportGenerator global como en otros módulos
+                if (window.ReportGenerator && typeof window.ReportGenerator.generateReport === 'function') {
+                    window.ReportGenerator.generateReport({
+                        columns,
+                        data: reportData,
+                        format,
+                        filename: 'reporte_producciones_' + new Date().toISOString().slice(0,10)
+                    });
+                } else {
+                    alert('No se encontró el módulo de generación de reportes.');
+                }
+                reportModal.classList.remove('modal--active');
+                reportModal.style.display = '';
+            });
+        }
     }
 
     updateStatus(ids, status) {
