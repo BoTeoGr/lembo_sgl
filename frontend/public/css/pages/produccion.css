@@ -121,11 +121,11 @@ body {
     transition: transform 0.2s ease;
     background: rgba(255, 255, 255, 0.2);
     padding: 0.5rem 1rem;
-    border-radius: 3.2rem;
+    border-radius: 2rem;
 }
 
 .form__back-link:hover {
-    transform: translateX(-5px);
+    transform: translateX(-0.3125rem);
     background: rgba(255, 255, 255, 0.3);
 }
 
@@ -133,7 +133,7 @@ body {
     font-size: var(--font-size-xxl);
     margin-bottom: 0;
     font-weight: 700;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.03125rem;
 }
 
 .form__subtitle {

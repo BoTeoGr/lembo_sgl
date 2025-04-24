@@ -4,9 +4,7 @@ import cors from 'cors';//y esto es para que el html y js del navegador no piens
 import dataRoutes from './routes/routes.js'
 
 const app = express();
-app.use(express.json());
-
-
+app.use(express.json({ limit: '50mb' })); // Aumentar el límite para imágenes base64
 app.use(cors());
 app.use('/', dataRoutes)
 

@@ -18,8 +18,8 @@ export function verProducciones(req, res) {
 
         db.query(query, (err, results) => {
             if (err) {
-                console.error('Error al obtener producciones:', err.message);
-                return res.status(500).json({ error: 'Error al obtener producciones' });
+                console.error('Error al obtener producciones:', err);
+                return res.status(500).json({ error: 'Error al obtener producciones: ' + err.message });
             }
             
             // Procesar los resultados para obtener información de insumos y sensores
@@ -69,12 +69,12 @@ export function verProducciones(req, res) {
                 })
                 .catch(error => {
                     console.error('Error al procesar producciones:', error);
-                    res.status(500).json({ error: 'Error al procesar producciones' });
+                    res.status(500).json({ error: 'Error al procesar producciones: ' + error.message });
                 });
         });
     } catch (error) {
         console.error('Error en ver Producciones:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
     }
 }
 
@@ -94,6 +94,12 @@ export function crearProduccion(req, res) {
             insumos_ids,
             sensores_ids
         } = req.body;
+
+        // Log de los datos recibidos (sin la imagen para no sobrecargar el log)
+        console.log('Datos recibidos:', {
+            ...req.body,
+            imagen: req.body.imagen ? '[BASE64_IMAGE]' : undefined
+        });
 
         // Validar que todos los campos requeridos estén presentes
         if (!nombre || !tipo || !imagen || !ubicacion || !descripcion || !usuario_id || !cantidad) {
@@ -121,7 +127,11 @@ export function crearProduccion(req, res) {
 
         // Validar que el usuario exista
         db.query('SELECT id FROM usuarios WHERE id = ?', [usuario_id], (err, results) => {
-            if (err || results.length === 0) {
+            if (err) {
+                console.error('Error al verificar usuario:', err);
+                return res.status(500).json({ error: 'Error al verificar el usuario: ' + err.message });
+            }
+            if (results.length === 0) {
                 return res.status(400).json({ error: 'El usuario especificado no existe' });
             }
 
@@ -130,7 +140,8 @@ export function crearProduccion(req, res) {
                 if (cultivo_id) {
                     db.query('SELECT id FROM cultivos WHERE id = ?', [cultivo_id], (err, results) => {
                         if (err) {
-                            reject('Error al verificar el cultivo');
+                            console.error('Error al verificar cultivo:', err);
+                            reject('Error al verificar el cultivo: ' + err.message);
                         } else if (results.length === 0) {
                             reject('El cultivo especificado no existe');
                         } else {
@@ -147,7 +158,8 @@ export function crearProduccion(req, res) {
                 if (ciclo_id) {
                     db.query('SELECT id FROM ciclo_cultivo WHERE id = ?', [ciclo_id], (err, results) => {
                         if (err) {
-                            reject('Error al verificar el ciclo');
+                            console.error('Error al verificar ciclo:', err);
+                            reject('Error al verificar el ciclo: ' + err.message);
                         } else if (results.length === 0) {
                             reject('El ciclo especificado no existe');
                         } else {
@@ -162,10 +174,15 @@ export function crearProduccion(req, res) {
             // Validar que los insumos existan si se proporcionan
             const validarInsumos = new Promise((resolve, reject) => {
                 if (insumos_ids && insumos_ids.length > 0) {
-                    const idsArray = insumos_ids.split(',').map(id => parseInt(id.trim()));
+                    const idsArray = insumos_ids.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+                    if (idsArray.length === 0) {
+                        reject('Lista de insumos inválida');
+                        return;
+                    }
                     db.query('SELECT id FROM insumos WHERE id IN (?)', [idsArray], (err, results) => {
                         if (err) {
-                            reject('Error al verificar los insumos');
+                            console.error('Error al verificar insumos:', err);
+                            reject('Error al verificar los insumos: ' + err.message);
                         } else if (results.length !== idsArray.length) {
                             reject('Uno o más insumos especificados no existen');
                         } else {
@@ -180,10 +197,15 @@ export function crearProduccion(req, res) {
             // Validar que los sensores existan si se proporcionan
             const validarSensores = new Promise((resolve, reject) => {
                 if (sensores_ids && sensores_ids.length > 0) {
-                    const idsArray = sensores_ids.split(',').map(id => parseInt(id.trim()));
+                    const idsArray = sensores_ids.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+                    if (idsArray.length === 0) {
+                        reject('Lista de sensores inválida');
+                        return;
+                    }
                     db.query('SELECT id FROM sensores WHERE id IN (?)', [idsArray], (err, results) => {
                         if (err) {
-                            reject('Error al verificar los sensores');
+                            console.error('Error al verificar sensores:', err);
+                            reject('Error al verificar los sensores: ' + err.message);
                         } else if (results.length !== idsArray.length) {
                             reject('Uno o más sensores especificados no existen');
                         } else {
@@ -236,8 +258,8 @@ export function crearProduccion(req, res) {
                         ],
                         (err, results) => {
                             if (err) {
-                                console.error('Error al insertar producción:', err.message);
-                                return res.status(500).json({ error: 'Error desconocido al crear la producción' });
+                                console.error('Error al insertar producción:', err);
+                                return res.status(500).json({ error: 'Error al insertar la producción: ' + err.message });
                             }
                             
                             res.status(201).json({ 
@@ -249,12 +271,13 @@ export function crearProduccion(req, res) {
                     );
                 })
                 .catch(error => {
-                    return res.status(400).json({ error });
+                    console.error('Error en validaciones:', error);
+                    return res.status(400).json({ error: error });
                 });
         });
     } catch (err) {
         console.error('Error en el servidor:', err);
-        res.status(500).json({ error: 'Error desconocido' });
+        res.status(500).json({ error: 'Error en el servidor: ' + err.message });
     }
 }
 
@@ -280,8 +303,8 @@ export function obtenerProduccionPorId(req, res) {
 
         db.query(query, [id], (err, results) => {
             if (err) {
-                console.error('Error al obtener la producción:', err.message);
-                return res.status(500).json({ error: 'Error al obtener la producción' });
+                console.error('Error al obtener la producción:', err);
+                return res.status(500).json({ error: 'Error al obtener la producción: ' + err.message });
             }
             
             if (results.length === 0) {
@@ -336,12 +359,12 @@ export function obtenerProduccionPorId(req, res) {
                 })
                 .catch(error => {
                     console.error('Error al procesar la producción:', error);
-                    res.status(500).json({ error: 'Error al procesar la producción' });
+                    res.status(500).json({ error: 'Error al procesar la producción: ' + error.message });
                 });
         });
     } catch (error) {
         console.error('Error al obtener producción por ID:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
     }
 }
 
@@ -370,8 +393,8 @@ export function actualizarProduccion(req, res) {
         // Verificar que la producción existe
         db.query('SELECT * FROM producciones WHERE id = ?', [id], (err, results) => {
             if (err) {
-                console.error('Error al verificar la producción:', err.message);
-                return res.status(500).json({ error: 'Error al verificar la producción' });
+                console.error('Error al verificar la producción:', err);
+                return res.status(500).json({ error: 'Error al verificar la producción: ' + err.message });
             }
             
             if (results.length === 0) {
@@ -462,8 +485,8 @@ export function actualizarProduccion(req, res) {
 
             db.query(updateQuery, updateValues, (err, results) => {
                 if (err) {
-                    console.error('Error al actualizar la producción:', err.message);
-                    return res.status(500).json({ error: 'Error al actualizar la producción' });
+                    console.error('Error al actualizar la producción:', err);
+                    return res.status(500).json({ error: 'Error al actualizar la producción: ' + err.message });
                 }
                 
                 res.status(200).json({ 
@@ -475,7 +498,7 @@ export function actualizarProduccion(req, res) {
         });
     } catch (error) {
         console.error('Error al actualizar producción:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
     }
 }
 
@@ -492,14 +515,14 @@ export function actualizarEstadoProduccion(req, res) {
         const query = 'UPDATE producciones SET estado = ? WHERE id = ?';
         db.query(query, [estado, id], (err, result) => {
             if (err) {
-                console.error('Error al actualizar estado de producción:', err.message);
-                return res.status(500).json({ error: 'Error al actualizar estado de producción' });
+                console.error('Error al actualizar estado de producción:', err);
+                return res.status(500).json({ error: 'Error al actualizar estado de producción: ' + err.message });
             }
             res.status(200).json({ message: 'Estado actualizado correctamente' });
         });
     } catch (error) {
         console.error('Error en actualizarEstadoProduccion:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
     }
 }
 
@@ -514,8 +537,8 @@ export function eliminarProduccion(req, res) {
         // Verificar que la producción existe
         db.query('SELECT * FROM producciones WHERE id = ?', [id], (err, results) => {
             if (err) {
-                console.error('Error al verificar la producción:', err.message);
-                return res.status(500).json({ error: 'Error al verificar la producción' });
+                console.error('Error al verificar la producción:', err);
+                return res.status(500).json({ error: 'Error al verificar la producción: ' + err.message });
             }
             
             if (results.length === 0) {
@@ -525,8 +548,8 @@ export function eliminarProduccion(req, res) {
             // Eliminar la producción
             db.query('DELETE FROM producciones WHERE id = ?', [id], (err, results) => {
                 if (err) {
-                    console.error('Error al eliminar la producción:', err.message);
-                    return res.status(500).json({ error: 'Error al eliminar la producción' });
+                    console.error('Error al eliminar la producción:', err);
+                    return res.status(500).json({ error: 'Error al eliminar la producción: ' + err.message });
                 }
                 
                 res.status(200).json({ 
@@ -538,7 +561,7 @@ export function eliminarProduccion(req, res) {
         });
     } catch (error) {
         console.error('Error al eliminar producción:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
     }
 }
 
