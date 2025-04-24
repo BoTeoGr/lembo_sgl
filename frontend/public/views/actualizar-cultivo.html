@@ -23,24 +23,22 @@
 				<h2 class="form__title">Actualización del cultivo</h2>
 
 				<form class="form__container" method="post">
-					<input type="hidden" id="id" />
+					<input type="hidden" />
 
 					<div class="form__row">
 						<div class="form__group">
-							<label for="nombre" class="form__label">Nombre</label>
+							<label class="form__label">Nombre</label>
 							<input
 								type="text"
-								id="nombre"
 								class="form__input form__input--cultive-name"
 								placeholder="Ingrese nombre del cultivo"
 								required
 							/>
 						</div>
 						<div class="form__group">
-							<label for="tipo" class="form__label">Tipo de cultivo</label>
+							<label class="form__label">Tipo de cultivo</label>
 							<input
 								type="text"
-								id="tipo"
 								class="form__input form__input--cultive-type"
 								placeholder="Tipo de cultivo"
 								required
@@ -49,10 +47,9 @@
 					</div>
 
 					<div class="form__group">
-						<label for="imagen" class="form__label">Imagen</label>
+						<label class="form__label">Imagen</label>
 						<input
 							type="file"
-							id="imagen"
 							class="form__file form__file--cultive-image"
 							accept=".jpg, .jpeg, .png"
 							required
@@ -61,10 +58,9 @@
 
 					<div class="form__row">
 						<div class="form__group">
-							<label for="ubicacion" class="form__label">Ubicación</label>
+							<label class="form__label">Ubicación</label>
 							<input
 								type="text"
-								id="ubicacion"
 								class="form__input form__input--cultive-location"
 								placeholder="Ingrese la ubicación del cultivo"
 								required
@@ -73,10 +69,9 @@
 					</div>
 
 					<div class="form__group form__group--full-width">
-						<label for="tamano" class="form__label">Tamaño</label>
+						<label class="form__label">Tamaño</label>
 						<input
 							type="text"
-							id="tamano"
 							class="form__input form__input--cultive-size"
 							placeholder="Ingrese el tamaño del cultivo en m2"
 							required
@@ -84,9 +79,8 @@
 					</div>
 
 					<div class="form__group form__group--full-width">
-						<label for="descripcion" class="form__label">Descripción</label>
+						<label class="form__label">Descripción</label>
 						<textarea
-							id="descripcion"
 							class="form__textarea form__textarea--cultive-description"
 							placeholder="Ingrese descripción del cultivo"
 							required

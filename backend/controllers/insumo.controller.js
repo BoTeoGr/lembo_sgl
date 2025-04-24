@@ -85,4 +85,85 @@ export function actualizarEstadoInsumo(req, res) {
     });
 }
 
-// Olvide este comentario
+// Actualizar insumo por ID
+export function actualizarInsumo(req, res) {
+    const { id } = req.params;
+    const {
+        nombre,
+        tipo,
+        medida,
+        valor_unitario,
+        cantidad,
+        descripcion,
+        estado
+    } = req.body;
+
+    // Inicializar las variables campos y valores
+    const campos = [];
+    const valores = [];
+
+    // Si el estado es proporcionado, lo normalizamos y lo agregamos a los campos
+    if (estado) {
+        const estadoNormalizado = (estado === 'Activo' || estado.toLowerCase() === 'habilitado') ? 'habilitado' : 'deshabilitado';
+        campos.push('estado = ?');
+        valores.push(estadoNormalizado);
+    }
+
+    // Si hay un archivo, tomamos el nombre del archivo para la imagen
+    let imagen = req.file ? req.file.filename : null;
+
+    // Verifica que al menos haya algún dato a actualizar
+    if (!nombre && !tipo && !medida && !valor_unitario && !cantidad && !descripcion && !estado && !imagen) {
+        return res.status(400).json({ error: 'No hay datos para actualizar' });
+    }
+
+    // Si los campos están presentes, los agregamos al query de actualización
+    if (nombre) { campos.push('nombre = ?'); valores.push(nombre); }
+    if (tipo) { campos.push('tipo = ?'); valores.push(tipo); }
+    if (medida) { campos.push('medida = ?'); valores.push(medida); }
+    if (valor_unitario) { campos.push('valor_unitario = ?'); valores.push(valor_unitario); }
+    if (cantidad) { campos.push('cantidad = ?'); valores.push(cantidad); }
+    if (descripcion) { campos.push('descripcion = ?'); valores.push(descripcion); }
+    if (imagen) { campos.push('imagen = ?'); valores.push(imagen); }
+
+    // Agregamos el id al final de los valores
+    valores.push(id);
+
+    // Construcción del query de actualización
+    const query = `UPDATE insumos SET ${campos.join(', ')} WHERE id = ?`;
+
+    // Ejecutamos el query de actualización en la base de datos
+    db.query(query, valores, (err, result) => {
+        if (err) {
+            console.error("Error al actualizar el insumo:", err);
+            return res.status(500).json({ error: 'Error al actualizar insumo' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Insumo no encontrado' });
+        }
+
+        // Respuesta exitosa
+        res.json({ success: true, message: 'Insumo actualizado correctamente' });
+    });
+}
+
+
+// Obtener un insumo por su ID
+export function obtenerInsumoPorId(req, res) {
+    const { id } = req.params;
+
+    const query = 'SELECT * FROM insumos WHERE id = ?';
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error("Error al obtener el insumo:", err);
+            return res.status(500).json({ error: 'Error interno del servidor' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Insumo no encontrado' });
+        }
+
+        res.json(results[0]);
+    });
+}

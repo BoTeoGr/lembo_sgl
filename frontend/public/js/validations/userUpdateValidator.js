@@ -1,142 +1,125 @@
-// Objeto para almacenar los datos del formulario
-const usuario = {
-	tipoDocumento: "",
-	nombre: "",
-	numeroDocumento: "",
-	telefono: "",
-	correo: "",
-	rol: "",
-	estado: "habilitado",
-};
+document.addEventListener("DOMContentLoaded", async () => {
+    const params = new URLSearchParams(window.location.search);
+    const userId = params.get("id");
 
-// Mapeo entre los IDs de los inputs y las propiedades reales del objeto
-const mapeoInputs = {
-	"form__select--user-type": "tipoDocumento",
-	"form__input--user-name": "nombre",
-	"form__input--user-id": "numeroDocumento",
-	"form__input--user-tel": "telefono",
-	"form__input--user-email": "correo",
-	"form__input--user-confirm-email": "confirmarCorreo",
-	"form__select--user-rol": "rol",
-};
+    if (!userId) {
+        alert("ID del usuario no encontrado en la URL");
+        window.location.href = "listar-usuarios.html";
+        return;
+    }
 
-// Función para leer valores de los inputs y asignarlos al objeto correctamente
-function readText(event) {
-	const { id, value } = event.target;
-	const propiedad = mapeoInputs[id]; // Buscar la propiedad correcta en el mapeo
+    const form = document.querySelector(".form__container");
+    const tipoDocumentoInput = form.querySelector("#tipo-documento");
+    const nombreInput = form.querySelector("#nombre");
+    const numeroDocumentoInput = form.querySelector("#numero-documento");
+    const telefonoInput = form.querySelector("#telefono");
+    const correoInput = form.querySelector("#correo");
+    const confirmarCorreoInput = form.querySelector("#confirmar-correo");
+    const rolInput = form.querySelector("#rol");
+    const estadoRadios = form.querySelectorAll("[name='estado-habilitado']");
+    const submitButton = form.querySelector("button[type='submit']");
 
-	if (propiedad) {
-		usuario[propiedad] = value.trim();
-		console.log(usuario); // Mostrar el objeto actualizado en consola
-	}
-}
+    let usuarioActual = null;
 
-// Seleccionar elementos del formulario
-const form = document.querySelector(".form__container");
-const tipoDocumento = document.querySelector(".form__select--user-type");
-const nombre = document.querySelector(".form__input--user-name");
-const numeroDocumento = document.querySelector(".form__input--user-id");
-const telefono = document.querySelector(".form__input--user-tel");
-const correo = document.querySelector(".form__input--user-email");
-const confirmarCorreo = document.querySelector(".form__input--user-confirm-email");
-const rol = document.querySelector(".form__select--user-rol");
-const estadoRadios = document.querySelectorAll(
-	'input[name="estado-habilitado"]'
-);
+    try {
+        const response = await fetch(`http://localhost:5000/usuarios/${userId}`);
+        if (!response.ok) throw new Error("No se pudo obtener el usuario");
 
-// Asignar eventos de entrada a cada input
-tipoDocumento.addEventListener("input", readText);
-nombre.addEventListener("input", readText);
-numeroDocumento.addEventListener("input", readText);
-telefono.addEventListener("input", readText);
-correo.addEventListener("input", readText);
-confirmarCorreo.addEventListener("input", readText);
-rol.addEventListener("input", readText);
+        usuarioActual = await response.json();
 
-// Capturar el estado seleccionado en tiempo real
-estadoRadios.forEach((radio) => {
-	radio.addEventListener("change", (e) => {
-		usuario.estado = e.target.value;
-		console.log(usuario); // Mostrar en consola cuando cambia el estado
-	});
+        // Asignación de valores a los campos del formulario
+        tipoDocumentoInput.value = usuarioActual.tipo_documento;
+        nombreInput.value = usuarioActual.nombre_completo;
+        numeroDocumentoInput.value = usuarioActual.numero_documento;
+        telefonoInput.value = usuarioActual.telefono;
+        correoInput.value = usuarioActual.correo;
+        confirmarCorreoInput.value = usuarioActual.correo;
+        rolInput.value = usuarioActual.rol;
+
+        // Selección del estado
+        for (const radio of estadoRadios) {
+            radio.checked = radio.value === usuarioActual.estado;
+        }
+    } catch (error) {
+        console.error("Error cargando datos del usuario:", error);
+        alert("No se pudo cargar la información del usuario.");
+    }
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        if (!usuarioActual) {
+            alert("No se puede actualizar sin datos del usuario cargados.");
+            return;
+        }
+
+        const datosActualizados = {};
+
+        // Comprobación de campos modificados
+        if (nombreInput.value.trim() !== usuarioActual.nombre_completo) {
+            datosActualizados.nombre_completo = nombreInput.value.trim();
+        }
+
+        if (tipoDocumentoInput.value !== usuarioActual.tipo_documento) {
+            datosActualizados.tipo_documento = tipoDocumentoInput.value;
+        }
+
+        if (numeroDocumentoInput.value.trim() !== usuarioActual.numero_documento) {
+            datosActualizados.numero_documento = numeroDocumentoInput.value.trim();
+        }
+
+        if (telefonoInput.value.trim() !== usuarioActual.telefono) {
+            datosActualizados.telefono = telefonoInput.value.trim();
+        }
+
+        if (correoInput.value.trim() !== usuarioActual.correo) {
+            datosActualizados.correo = correoInput.value.trim();
+        }
+
+        if (rolInput.value !== usuarioActual.rol) {
+            datosActualizados.rol = rolInput.value;
+        }
+
+        let estadoSeleccionado = null;
+        for (const radio of estadoRadios) {
+            if (radio.checked) {
+                estadoSeleccionado = radio.value;
+                break;
+            }
+        }
+
+        if (estadoSeleccionado && estadoSeleccionado !== usuarioActual.estado) {
+            datosActualizados.estado = estadoSeleccionado;
+        }
+
+        if (Object.keys(datosActualizados).length === 0) {
+            alert("No se han realizado cambios.");
+            return;
+        }
+
+        submitButton.disabled = true;
+
+        try {
+            const response = await fetch(`http://localhost:5000/usuarios/${userId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(datosActualizados)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "No se pudo actualizar el usuario");
+            }
+
+            alert("Usuario actualizado correctamente.");
+            window.location.href = "listar-usuarios.html";
+        } catch (error) {
+            console.error("Error actualizando usuario:", error);
+            alert("Hubo un error al actualizar el usuario.");
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
 });
-
-// Función para bloquear teclas que no sean números
-function bloquearTeclasNoNumericas(input) {
-	input.addEventListener("keydown", (e) => {
-		const teclasPermitidas = [
-			"Backspace",
-			"Tab",
-			"Enter",
-			"ArrowLeft",
-			"ArrowRight",
-			"Delete",
-		];
-		if (!/^[0-9]$/.test(e.key) && !teclasPermitidas.includes(e.key)) {
-			e.preventDefault();
-		}
-	});
-}
-
-// Aplico restricciones a los campos numéricos
-bloquearTeclasNoNumericas(numeroDocumento);
-bloquearTeclasNoNumericas(telefono);
-
-// Evento para validar y enviar el formulario
-form.addEventListener("submit", (e) => {
-	e.preventDefault();
-
-	// Validaciones
-	if (!tipoDocumento.value || tipoDocumento.value === "default")
-		return showAlert("Debe seleccionar un tipo de documento.", true);
-	if (!nombre.value) return showAlert("El nombre es obligatorio.", true);
-	if (!numeroDocumento.value)
-		return showAlert("El número de documento es obligatorio.", true);
-	if (!telefono.value) return showAlert("El teléfono es obligatorio.", true);
-	if (!correo.value)
-		return showAlert("El correo electrónico es obligatorio.", true);
-	if (!confirmarCorreo.value)
-		return showAlert("Debe confirmar el correo electrónico.", true);
-	if (!rol.value || rol.value === "default")
-		return showAlert("Debe seleccionar un rol.", true);
-
-	// Valido que los correos coincidan
-	if (correo.value !== confirmarCorreo.value)
-		return showAlert("Los correos electrónicos no coinciden.", true);
-
-	// Si todo está correcto, actualizo el objeto usuario con los valores del formulario
-	usuario.tipoDocumento = tipoDocumento.value;
-	usuario.nombre = nombre.value;
-	usuario.numeroDocumento = numeroDocumento.value;
-	usuario.telefono = telefono.value;
-	usuario.correo = correo.value;
-	usuario.rol = rol.value;
-
-	// Muestro un mensaje de éxito
-	showAlert("Usuario actualizado correctamente.");
-
-	setTimeout(() => {
-		window.location.href = "views/listar-usuarios.html"; // Asegúrate de que la ruta sea correcta
-	}, 1000);
-
-	console.log("Datos finales del usuario:", usuario);
-});
-
-// Función para mostrar alertas
-function showAlert(message, error = false) {
-	const alert = document.createElement("p");
-	alert.textContent = message;
-	alert.classList.add("alert");
-
-	if (error) {
-		alert.classList.add("error");
-	} else {
-		alert.classList.add("correct");
-	}
-
-	form.appendChild(alert);
-
-	setTimeout(() => {
-		alert.remove();
-	}, 5000);
-}

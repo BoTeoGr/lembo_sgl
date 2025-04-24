@@ -9,14 +9,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const form = document.querySelector(".form__container");
-    const nombreInput = document.getElementById("nombre");
-    const tipoInput = document.getElementById("tipo");
-    const imagenInput = document.getElementById("imagen"); // cadena, no file
-    const idInput = document.getElementById("id");
-    const ubicacionInput = document.getElementById("ubicacion");
-    const tamanoInput = document.getElementById("tamano");
-    const descripcionInput = document.getElementById("descripcion");
-    const estadoRadios = document.getElementsByName("estado-habilitado");
+    const nombreInput = form.querySelector(".form__input--cultive-name");
+    const tipoInput = form.querySelector(".form__input--cultive-type");
+    const imagenInput = form.querySelector(".form__file--cultive-image"); // cadena, no file
+    const ubicacionInput = form.querySelector(".form__input--cultive-location");
+    const tamanoInput = form.querySelector(".form__input--cultive-size");
+    const descripcionInput = form.querySelector(".form__textarea--cultive-description");
+    const estadoRadios = form.querySelectorAll("[name='estado-habilitado']");
     const submitButton = form.querySelector("button[type='submit']");
 
     let cultivoActual = null;
@@ -29,11 +28,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         nombreInput.value = cultivoActual.nombre;
         tipoInput.value = cultivoActual.tipo;
-        idInput.value = cultivoActual.id;
         ubicacionInput.value = cultivoActual.ubicacion;
         tamanoInput.value = cultivoActual.tamano;
         descripcionInput.value = cultivoActual.descripcion;
-        // imagenInput.value = cultivoActual.imagen;
 
         for (const radio of estadoRadios) {
             radio.checked = radio.value === cultivoActual.estado;
