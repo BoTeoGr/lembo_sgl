@@ -10,33 +10,20 @@ const router = express.Router()
 
 // Rutas para usuarios
 router.get('/usuarios', VerUsuarios)
-router.post('/usuarios', crearUsuario);
+router.post('/users', crearUsuario);
 router.put('/usuarios/:id/estado', actualizarEstadoUsuario);
-<<<<<<< HEAD
 // RUtas para sensores
 router.get('/sensor', VerSensores)
 router.post('/sensor', crearSensor);
 router.put('/sensor/:id/estado', actualizarEstadoSensor);
 router.put('/sensor/:id', actualizarSensor);
 router.get('/sensor/:id', obtenerSensorPorId); 
-=======
-
-// Rutas para sensores
-router.get('/sensores', VerSensores)
-router.post('/sensores', crearSensor);
-router.put('/sensores/:id/estado', actualizarEstadoSensor);
-
->>>>>>> 38f816197af6532551f856fc090865efe2598faa
 // Rutas para insumos
 router.get('/insumos', VerInsumos);
 router.post('/insumos', crearInsumo);
 router.put('/insumos/:id/estado', actualizarEstadoInsumo);
-<<<<<<< HEAD
 router.put('/insumos/:id', actualizarInsumo);
 router.get('/insumos/:id', obtenerInsumoPorId); 
-=======
-
->>>>>>> 38f816197af6532551f856fc090865efe2598faa
 // Rutas para cultivos
 router.get('/cultivos', VerCultivos);
 router.post('/cultivos', crearCultivo);
@@ -44,10 +31,9 @@ router.put('/cultivos/:id/estado', actualizarEstadoCultivo);
 router.put('/cultivos/:id', actualizarCultivo);
 router.get('/cultivos/:id', obtenerCultivoPorId); 
 // Rutas para ciclos de cultivo
-router.get('/ciclos', VerCiclosCultivo);
-router.post('/ciclos', crearCicloCultivo);
-router.put('/ciclos/:id/estado', actualizarEstadoCicloCultivo);
-
+router.get('/ciclo_cultivo', VerCiclosCultivo);
+router.post('/ciclo_cultivo', crearCicloCultivo);
+router.put('/ciclo_cultivo/:id/estado', actualizarEstadoCicloCultivo);
 // Rutas para producciones
 router.get('/producciones', verProducciones);
 router.post('/producciones', crearProduccion);
