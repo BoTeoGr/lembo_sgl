@@ -1,122 +1,111 @@
-<!DOCTYPE html>
+                    <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Producción - SGAL</title>
+    <title>Crear Producción</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../css/pages/produccion.css">
 </head>
 <body>
     <div class="main-content">
-        <div class="form">
-            <div class="form__header">
-                <a href="listar-producciones.html" class="form__back-link">
-                    <i class="fas fa-arrow-left"></i> Volver
-                </a>
-                <h1 class="form__title">Crear Producción</h1>
-                <p class="form__subtitle">Complete el formulario para registrar una nueva producción</p>
-            </div>
-
-            <form id="productionForm" class="form__container">
-                <!-- Sección de información básica -->
+        <div class="content">
+            <h1 class="content__title"><i class="fas fa-seedling"></i> Crear Nueva Producción</h1>
+            
+            <form id="productionForm" class="form">
+                <!-- Información básica -->
                 <div class="form__section">
                     <h2 class="form__section-title"><i class="fas fa-info-circle"></i> Información Básica</h2>
                     
-                    <!-- Primera fila: ID y Responsable -->
+                    <!-- Primera fila: Nombre y Tipo -->
                     <div class="form__row">
                         <div class="form__group">
-                            <label for="productionId" class="form__label"><i class="fas fa-hashtag"></i> Identificador de producción</label>
-                            <input type="text" id="productionId" class="form_input form_input--disabled" disabled>
+                            <label for="productionName" class="form__label"><i class="fas fa-tag"></i> Nombre de la producción</label>
+                            <input type="text" id="productionName" class="form__input" required>
                         </div>
+                        <div class="form__group">
+                            <label for="productionType" class="form__label"><i class="fas fa-list"></i> Tipo</label>
+                            <select id="productionType" class="form__select" required>
+                                <option value="">Seleccionar tipo</option>
+                                <option value="Tradicional">Tradicional</option>
+                                <option value="Orgánica">Orgánica</option>
+                                <option value="Hidropónica">Hidropónica</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Segunda fila: Ubicación e Imagen -->
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="location" class="form__label"><i class="fas fa-map-marker-alt"></i> Ubicación</label>
+                            <input type="text" id="location" class="form__input" required>
+                        </div>
+                        <div class="form__group">
+                            <label for="image" class="form__label"><i class="fas fa-image"></i> Imagen</label>
+                            <input type="file" id="image" class="form__input" accept="image/*" required>
+                        </div>
+                    </div>
+
+                    <!-- Tercera fila: Descripción -->
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="description" class="form__label"><i class="fas fa-align-left"></i> Descripción</label>
+                            <textarea id="description" class="form__input" rows="3" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Cuarta fila: Inversión y Cantidad -->
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="investment" class="form__label"><i class="fas fa-dollar-sign"></i> Inversión</label>
+                            <input type="number" id="investment" class="form__input" required min="0" step="0.01">
+                        </div>
+                        <div class="form__group">
+                            <label for="quantity" class="form__label"><i class="fas fa-weight"></i> Cantidad (kg)</label>
+                            <input type="number" id="quantity" class="form__input" required min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <!-- Quinta fila: Cultivo y Ciclo -->
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="crop" class="form__label"><i class="fas fa-leaf"></i> Cultivo</label>
+                            <select id="crop" class="form__select" required>
+                                <option value="">Seleccionar cultivo</option>
+                            </select>
+                        </div>
+                        <div class="form__group">
+                            <label for="cropCycle" class="form__label"><i class="fas fa-sync"></i> Ciclo</label>
+                            <select id="cropCycle" class="form__select" required>
+                                <option value="">Seleccionar ciclo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Sexta fila: Responsable -->
+                    <div class="form__row">
                         <div class="form__group">
                             <label for="responsible" class="form__label"><i class="fas fa-user"></i> Responsable</label>
-                            <div class="select-group">
-                                <select id="responsible" class="select-group_select form_select">
-                                    <option value="">Seleccionar responsable</option>
-                                    <!-- Se llenará dinámicamente -->
-                                </select>
-                                <button type="button" class="select-group__button" id="addResponsibleBtn">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                            <small id="responsibleError" class="error hidden"></small>
-                        </div>
-                    </div>
-
-                    <!-- Segunda fila: Nombre de producción -->
-                    <div class="form__row">
-                        <div class="form_group form_group--full-width">
-                            <label for="productionName" class="form__label"><i class="fas fa-tag"></i> Nombre de producción</label>
-                            <input type="text" id="productionName" class="form__input" placeholder="Ingrese el nombre de la producción">
-                            <small id="productionNameError" class="error hidden"></small>
-                        </div>
-                    </div>
-
-                    <!-- Tercera fila: Cultivo y Ciclo de cultivo -->
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label for="crop" class="form__label"><i class="fas fa-seedling"></i> Cultivo</label>
-                            <div class="select-with-button">
-                                <select id="crop" class="form__select">
-                                    <option value="">Seleccionar cultivo</option>
-                                    <!-- Se llenará dinámicamente -->
-                                </select>
-                                <button type="button" class="button--add" id="addCropBtn">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                            <small id="cropError" class="error hidden"></small>
-                        </div>
-                        <div class="form__group">
-                            <label for="cropCycle" class="form__label"><i class="fas fa-sync-alt"></i> Ciclo de cultivo</label>
-                            <div class="select-with-button">
-                                <select id="cropCycle" class="form__select">
-                                    <option value="">Seleccionar ciclo</option>
-                                    <!-- Se llenará dinámicamente -->
-                                </select>
-                                <button type="button" class="button--add" id="addCycleBtn">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                            <small id="cycleError" class="error hidden"></small>
+                            <select id="responsible" class="form__select" required>
+                                <option value="">Seleccionar responsable</option>
+                            </select>
                         </div>
                     </div>
                 </div>
 
                 <!-- Sección de sensores -->
                 <div class="form__section">
-                    <h2 class="form__section-title"><i class="fas fa-microchip"></i> Sensores y Monitoreo</h2>
-                    
-                    <!-- Cuarta fila: Sensores -->
+                    <h2 class="form__section-title"><i class="fas fa-microchip"></i> Sensores (Mínimo 3)</h2>
                     <div class="form__row">
-                        <div class="form_group form_group--full-width">
-                            <label for="sensors" class="form__label"><i class="fas fa-thermometer-half"></i> Sensores (máximo 3)</label>
-                            <div class="select-with-button">
-                                <select id="sensors" class="form__select" multiple size="4">
-                                    <!-- Se llenará dinámicamente -->
+                        <div class="form__group">
+                            <div class="sensor-selection">
+                                <select id="sensor" class="form__select">
+                                    <option value="">Seleccionar sensor</option>
                                 </select>
-                                <button type="button" class="button--add" id="addSensorBtn">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                                <button type="button" id="addSensor" class="button--add"><i class="fas fa-plus"></i></button>
                             </div>
-                            <small id="sensorsError" class="error hidden"></small>
-                        </div>
-                    </div>
-                    <!-- Contenedor para mostrar los sensores seleccionados -->
-                    <div class="form__row">
-                        <div id="selectedSensorsDisplay" class="selected-sensors-display">
-                            <!-- Sensores seleccionados se mostrarán aquí con opción de eliminar -->
-                        </div>
-                    </div>
-
-                    <!-- Visualización de lecturas de sensores -->
-                    <div class="production-readings">
-                        <h3 class="production-readings__title"><i class="fas fa-chart-line"></i> Visualización de lecturas de sensores</h3>
-                        <div class="production-readings__charts" id="sensorCharts">
-                            <div style="height: 200px; width: 100%;">
-                                <canvas id="sensorChart"></canvas>
+                            <div id="selectedSensors" class="selected-items">
+                                <!-- Aquí se mostrarán las cards de sensores seleccionados -->
                             </div>
                         </div>
                     </div>
@@ -124,273 +113,30 @@
 
                 <!-- Sección de insumos -->
                 <div class="form__section">
-                    <h2 class="form__section-title"><i class="fas fa-box-open"></i> Insumos y Recursos</h2>
-                    
-                    <!-- Quinta fila: Insumos -->
-                    <div class="form__row hidden">
-                        <div class="form_group form_group--full-width">
-                            <label for="supplies" class="form__label"><i class="fas fa-leaf"></i> Insumos</label>
-                            <div class="select-with-button">
-                                <select id="supplies" class="form__select" multiple size="4">
-                                    <!-- Se llenará dinámicamente -->
+                    <h2 class="form__section-title"><i class="fas fa-box-open"></i> Insumos (Mínimo 3)</h2>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <div class="supply-selection">
+                                <select id="supply" class="form__select">
+                                    <option value="">Seleccionar insumo</option>
                                 </select>
-                                <button type="button" class="button--add" id="addSupplyBtn">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                                <button type="button" id="addSupply" class="button--add"><i class="fas fa-plus"></i></button>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Tabla de insumos utilizados -->
-                    <div class="production-supplies">
-                        <h3 class="production-supplies__title"><i class="fas fa-clipboard-list"></i> Insumos utilizados</h3>
-                        <div class="production-supplies__table-container">
-                            <table class="production-supplies__table" id="suppliesTable">
-                                <thead>
-                                    <tr>
-                                        <th class="production-supplies_cell production-supplies_header">Insumo</th>
-                                        <th class="production-supplies_cell production-supplies_header">Fecha de uso</th>
-                                        <th class="production-supplies_cell production-supplies_header">Cantidad</th>
-                                        <th class="production-supplies_cell production-supplies_header">Responsable</th>
-                                        <th class="production-supplies_cell production-supplies_header">Valor unitario</th>
-                                        <th class="production-supplies_cell production-supplies_header">Valor total</th>
-                                        <th class="production-supplies_cell production-supplies_header">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="suppliesTableBody">
-                                    <!-- Las filas se agregarán dinámicamente -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <button type="button" class="production-supplies__button" id="addSupplyRowBtn">
-                            <i class="fas fa-plus"></i> Agregar insumo
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Sección financiera y fechas -->
-                <div class="form__section">
-                    <h2 class="form__section-title"><i class="fas fa-dollar-sign"></i> Información Financiera y Fechas</h2>
-                    
-                    <!-- Sexta fila: Inversión y Meta -->
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label for="investment" class="form__label"><i class="fas fa-coins"></i> Inversión</label>
-                            <input type="text" id="investment" class="form_input form_input--disabled" disabled>
-                        </div>
-                        <div class="form__group">
-                            <label for="goal" class="form__label"><i class="fas fa-bullseye"></i> Meta (Estimación de ganancias)</label>
-                            <input type="text" id="goal" class="form_input form_input--disabled" disabled>
-                        </div>
-                    </div>
-
-                    <!-- Séptima fila: Fechas -->
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label for="startDate" class="form__label"><i class="fas fa-calendar-alt"></i> Fecha de inicio</label>
-                            <input type="date" id="startDate" class="form__input">
-                        </div>
-                        <div class="form__group">
-                            <label for="endDate" class="form__label"><i class="fas fa-calendar-check"></i> Fecha de fin (estimada)</label>
-                            <input type="date" id="endDate" class="form__input">
-                            <small id="dateError" class="error hidden"></small>
+                            <div id="selectedSupplies" class="selected-items">
+                                <!-- Aquí se mostrarán las cards de insumos seleccionados -->
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Botones de acción -->
-                <div class="form__button-container">
-                    <button type="button" class="button--secondary" id="saveDraftBtn">
-                        <i class="fas fa-save"></i> Guardar borrador
+                <div class="form__actions">
+                    <button type="submit" id="createBtn" class="button button--primary" disabled>
+                        <i class="fas fa-save"></i> Crear Producción
                     </button>
-                    <button type="submit" class="button--submit" id="createBtn" disabled>
-                        <i class="fas fa-check-circle"></i> Crear
+                    <button type="button" class="button button--secondary" onclick="window.location.href='listar-producciones.html'">
+                        <i class="fas fa-times"></i> Cancelar
                     </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para agregar responsable -->
-    <div id="responsibleModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2><i class="fas fa-user-plus"></i> Agregar Responsable</h2>
-            <form id="responsibleForm">
-                <div class="form__group">
-                    <label for="newResponsibleName" class="form__label"><i class="fas fa-user"></i> Nombre completo</label>
-                    <input type="text" id="newResponsibleName" class="form__input" required>
-                </div>
-                <div class="form__group">
-                    <label for="newResponsibleEmail" class="form__label"><i class="fas fa-envelope"></i> Correo electrónico</label>
-                    <input type="email" id="newResponsibleEmail" class="form__input" required>
-                </div>
-                <div class="form__button-container">
-                    <button type="submit" class="button--submit">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para agregar cultivo -->
-    <div id="cropModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2><i class="fas fa-seedling"></i> Agregar Cultivo</h2>
-            <form id="cropForm">
-                <div class="form__group">
-                    <label for="newCropName" class="form__label"><i class="fas fa-leaf"></i> Nombre del cultivo</label>
-                    <input type="text" id="newCropName" class="form__input" required>
-                </div>
-                <div class="form__group">
-                    <label for="newCropDescription" class="form__label"><i class="fas fa-align-left"></i> Descripción</label>
-                    <textarea id="newCropDescription" class="form__textarea"></textarea>
-                </div>
-                <div class="form__button-container">
-                    <button type="submit" class="button--submit">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para agregar ciclo de cultivo -->
-    <div id="cycleModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2><i class="fas fa-sync-alt"></i> Agregar Ciclo de Cultivo</h2>
-            <form id="cycleForm">
-                <div class="form__group">
-                    <label for="newCycleName" class="form__label"><i class="fas fa-tag"></i> Nombre del ciclo</label>
-                    <input type="text" id="newCycleName" class="form__input" required>
-                </div>
-                <div class="form__group">
-                    <label for="newCycleDuration" class="form__label"><i class="fas fa-clock"></i> Duración (días)</label>
-                    <input type="number" id="newCycleDuration" class="form__input" required min="1">
-                </div>
-                <div class="form__button-container">
-                    <button type="submit" class="button--submit">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para agregar sensor -->
-    <div id="sensorModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2><i class="fas fa-microchip"></i> Agregar Sensor</h2>
-            <form id="sensorForm">
-                <div class="form__group">
-                    <label for="newSensorName" class="form__label"><i class="fas fa-tag"></i> Nombre del sensor</label>
-                    <input type="text" id="newSensorName" class="form__input" required>
-                </div>
-                <div class="form__group">
-                    <label for="newSensorType" class="form__label"><i class="fas fa-thermometer-half"></i> Tipo de sensor</label>
-                    <select id="newSensorType" class="form__select" required>
-                        <option value="">Seleccionar tipo</option>
-                        <option value="temperatura">Temperatura</option>
-                        <option value="humedad">Humedad</option>
-                        <option value="ph">pH</option>
-                        <option value="luz">Luz</option>
-                        <option value="co2">CO2</option>
-                    </select>
-                </div>
-                <div class="form__group">
-                    <label for="newSensorUnit" class="form__label"><i class="fas fa-ruler"></i> Unidad de medida</label>
-                    <input type="text" id="newSensorUnit" class="form__input" required>
-                </div>
-                <div class="form__button-container">
-                    <button type="submit" class="button--submit">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para agregar insumo -->
-    <div id="supplyModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2><i class="fas fa-box-open"></i> Agregar Insumo</h2>
-            <form id="supplyForm">
-                <div class="form__group">
-                    <label for="newSupplyName" class="form__label"><i class="fas fa-tag"></i> Nombre del insumo</label>
-                    <input type="text" id="newSupplyName" class="form__input" required>
-                </div>
-                <div class="form__group">
-                    <label for="newSupplyType" class="form__label"><i class="fas fa-list"></i> Tipo de insumo</label>
-                    <select id="newSupplyType" class="form__select" required>
-                        <option value="">Seleccionar tipo</option>
-                        <option value="fertilizante">Fertilizante</option>
-                        <option value="semilla">Semilla</option>
-                        <option value="pesticida">Pesticida</option>
-                        <option value="herbicida">Herbicida</option>
-                        <option value="otro">Otro</option>
-                    </select>
-                </div>
-                <div class="form__group">
-                    <label for="newSupplyUnit" class="form__label"><i class="fas fa-ruler"></i> Unidad de medida</label>
-                    <select id="newSupplyUnit" class="form__select" required>
-                        <option value="">Seleccionar unidad</option>
-                        <option value="kg">Kilogramo (kg)</option>
-                        <option value="g">Gramo (g)</option>
-                        <option value="l">Litro (l)</option>
-                        <option value="ml">Mililitro (ml)</option>
-                        <option value="unidad">Unidad</option>
-                    </select>
-                </div>
-                <div class="form__group">
-                    <label for="newSupplyPrice" class="form__label"><i class="fas fa-dollar-sign"></i> Precio unitario</label>
-                    <input type="number" id="newSupplyPrice" class="form__input" required min="0" step="1">
-                </div>
-                <div class="form__button-container">
-                    <button type="submit" class="button--submit">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para agregar fila de insumo -->
-    <div id="supplyRowModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2><i class="fas fa-plus-circle"></i> Agregar Uso de Insumo</h2>
-            <form id="supplyRowForm">
-                <div class="form__group">
-                    <label for="supplySelect" class="form__label"><i class="fas fa-box"></i> Insumo</label>
-                    <select id="supplySelect" class="form__select" required>
-                        <option value="">Seleccionar insumo</option>
-                        <!-- Se llenará dinámicamente -->
-                    </select>
-                </div>
-                <div class="form__group">
-                    <label for="supplyDate" class="form__label"><i class="fas fa-calendar-day"></i> Fecha de uso</label>
-                    <input type="date" id="supplyDate" class="form__input" required>
-                </div>
-                <div class="form__group">
-                    <label for="supplyQuantity" class="form__label"><i class="fas fa-weight"></i> Cantidad</label>
-                    <input type="number" id="supplyQuantity" class="form__input" required min="1" step="1">
-                </div>
-                <div class="form__group">
-                    <label for="supplyResponsible" class="form__label"><i class="fas fa-user"></i> Responsable</label>
-                    <select id="supplyResponsible" class="form__select" required>
-                        <option value="">Seleccionar responsable</option>
-                        <!-- Se llenará dinámicamente -->
-                    </select>
-                </div>
-                <div class="form__group">
-                    <label for="supplyUnitValue" class="form__label"><i class="fas fa-tag"></i> Valor unitario</label>
-                    <input type="number" id="supplyUnitValue" class="form__input" required min="0" step="1">
-                </div>
-                <div class="form__group">
-                    <label for="supplyTotalValue" class="form__label"><i class="fas fa-calculator"></i> Valor total</label>
-                    <input type="text" id="supplyTotalValue" class="form__input" readonly>
-                </div>
-                <div class="form__group">
-                    <label for="supplyObservations" class="form__label"><i class="fas fa-comment"></i> Observaciones</label>
-                    <textarea id="supplyObservations" class="form__textarea"></textarea>
-                </div>
-                <div class="form__button-container">
-                    <button type="submit" class="button--submit">Guardar</button>
                 </div>
             </form>
         </div>
@@ -398,17 +144,13 @@
 
     <!-- Toast para notificaciones -->
     <div id="toast" class="toast hidden">
-        <div class="toast-content">
-            <i id="toastIcon" class="fas fa-check-circle"></i>
-            <div class="toast-message">
-                <span id="toastTitle" class="toast-title">Éxito</span>
-                <span id="toastDescription" class="toast-description">Operación completada con éxito</span>
-            </div>
+        <div class="toast__content">
+            <div class="toast__title"></div>
+            <div class="toast__message"></div>
         </div>
-        <div class="toast-progress"></div>
     </div>
 
-    <script src="../js/validations/productionCreationValidator.js"></script>
-
+    <!-- Scripts -->
+    <script src="../js/validations/productionCreationValidator.js" type="module"></script>
 </body>
 </html>

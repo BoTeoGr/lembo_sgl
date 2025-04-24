@@ -10,24 +10,29 @@ const router = express.Router()
 
 // Rutas para usuarios
 router.get('/usuarios', VerUsuarios)
-router.post('/users', crearUsuario);
+router.post('/usuarios', crearUsuario);
 router.put('/usuarios/:id/estado', actualizarEstadoUsuario);
-// RUtas para sensores
-router.get('/sensor', VerSensores)
-router.post('/sensor', crearSensor);
-router.put('/sensor/:id/estado', actualizarEstadoSensor);
+
+// Rutas para sensores
+router.get('/sensores', VerSensores)
+router.post('/sensores', crearSensor);
+router.put('/sensores/:id/estado', actualizarEstadoSensor);
+
 // Rutas para insumos
 router.get('/insumos', VerInsumos);
 router.post('/insumos', crearInsumo);
 router.put('/insumos/:id/estado', actualizarEstadoInsumo);
+
 // Rutas para cultivos
 router.get('/cultivos', VerCultivos);
 router.post('/cultivos', crearCultivo);
 router.put('/cultivos/:id/estado', actualizarEstadoCultivo);
+
 // Rutas para ciclos de cultivo
-router.get('/ciclo_cultivo', VerCiclosCultivo);
-router.post('/ciclo_cultivo', crearCicloCultivo);
-router.put('/ciclo_cultivo/:id/estado', actualizarEstadoCicloCultivo);
+router.get('/ciclos', VerCiclosCultivo);
+router.post('/ciclos', crearCicloCultivo);
+router.put('/ciclos/:id/estado', actualizarEstadoCicloCultivo);
+
 // Rutas para producciones
 router.get('/producciones', verProducciones);
 router.post('/producciones', crearProduccion);
