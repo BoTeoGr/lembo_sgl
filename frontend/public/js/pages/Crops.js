@@ -301,7 +301,7 @@ class Crops {
         const searchTerm = document.querySelector('.filters__search').value.toLowerCase();
         this.filteredData = this.filteredData.filter(crop =>
             crop.name.toLowerCase().includes(searchTerm) ||
-            crop.id.toLowerCase().includes(searchTerm)
+            String(crop.id).toLowerCase().includes(searchTerm)
         );
         this.currentPage = 1;
         this.renderTable();

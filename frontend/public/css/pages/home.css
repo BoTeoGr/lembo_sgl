@@ -867,3 +867,29 @@ body {
       font-size: 1.5rem;
     }
   }
+
+  .badge--success{
+    background-color: var(--green-50);
+    color: var(--green-700);
+  }
+
+  .badge{
+    background-color: var(--green-800);
+    color: var(--white);
+  }
+
+  .alerts__icon{
+    background-color: var(--green-50);
+    color: var(--green-700);
+  }
+
+  .alerts__icon--warning{
+    background-color: var(--warning);
+    color: var(--white);
+  }
+
+  .card__subtitle{
+    font-size: 0.875rem;
+    color: var(--gray-60);
+    margin-top: 0.125rem;
+  }

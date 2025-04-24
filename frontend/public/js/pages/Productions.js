@@ -70,6 +70,7 @@ async function fetchProductionsFromAPI() {
                 insumos_asignados_count: insumosNombres.length,
                 sensores_asignados: sensoresNombres,
                 sensores_asignados_count: sensoresNombres.length,
+                funcional: prod.funcional !== undefined ? prod.funcional : (prod.tipo ? (prod.tipo.toLowerCase() === 'funcional' ? 'Sí' : 'No') : ''),
                 // Otros campos según necesidad
             };
         });
@@ -93,6 +94,7 @@ class Productions {
         this.currentPage = 1;
         this.itemsPerPage = 10;
         this.filteredData = [];
+        this.filteredDataOriginal = [];
         this.selectedProductions = new Set();
         this.loadData();
     }
@@ -100,6 +102,7 @@ class Productions {
     async loadData() {
         const data = await fetchProductionsFromAPI();
         this.filteredData = [...data];
+        this.filteredDataOriginal = [...data]; // Guardar copia original para filtros
         this.renderTable();
         this.updatePagination();
         this.initializeEventListeners();
@@ -115,6 +118,7 @@ class Productions {
         const disableBtn = document.querySelector('.button--disable');
         const actionsBarCheckbox = document.querySelector('.actions-bar__checkbox');
         const tableCheckboxHeader = document.querySelector('.table__checkbox-header');
+        const filtersFuncional = document.querySelector('.filters__select--funcional');
 
         // Mostrar/ocultar filtros
         if (filterButton && document.querySelector('.filters')) {
@@ -130,24 +134,39 @@ class Productions {
         if (clearBtn) {
             clearBtn.addEventListener('click', () => {
                 if (filtersSearch) filtersSearch.value = '';
-                this.filteredData = [...this.filteredData];
+                if (filtersFuncional) filtersFuncional.value = '';
+                this.filteredData = [...this.filteredDataOriginal];
                 this.currentPage = 1;
                 this.renderTable();
                 this.updatePagination();
             });
         }
-        // Buscador rápido
-        if (filtersSearch) {
-            filtersSearch.addEventListener('input', (e) => {
-                const value = e.target.value.toLowerCase();
-                this.filteredData = this.filteredData.filter(prod =>
-                    prod.id.toLowerCase().includes(value) ||
-                    prod.name.toLowerCase().includes(value)
+        // --- Lógica de filtros combinados ---
+        const applyFilters = () => {
+            let data = [...this.filteredDataOriginal];
+            // Filtro búsqueda
+            const searchValue = filtersSearch ? filtersSearch.value.toLowerCase() : '';
+            if (searchValue) {
+                data = data.filter(prod =>
+                    prod.id.toLowerCase().includes(searchValue) ||
+                    prod.name.toLowerCase().includes(searchValue)
                 );
-                this.currentPage = 1;
-                this.renderTable();
-                this.updatePagination();
-            });
+            }
+            // Filtro funcional
+            const funcionalValue = filtersFuncional ? filtersFuncional.value : '';
+            if (funcionalValue) {
+                data = data.filter(prod => String(prod.funcional).toLowerCase() === funcionalValue.toLowerCase());
+            }
+            this.filteredData = data;
+            this.currentPage = 1;
+            this.renderTable();
+            this.updatePagination();
+        };
+        if (filtersSearch) {
+            filtersSearch.addEventListener('input', applyFilters);
+        }
+        if (filtersFuncional) {
+            filtersFuncional.addEventListener('change', applyFilters);
         }
         // Habilitar/deshabilitar masivo
         if (enableBtn) {

@@ -67,15 +67,13 @@
 						<option value="Primavera-Verano">Primavera - Verano</option>
 						<option value="Otoño-Invierno">Otoño - Invierno</option>
 					</select>
-					<div class="filters__date-container">
-						<label class="filters__date-label">Fecha de inicio:</label>
-						<input type="date" class="filters__date" />
-					</div>
-					<div class="filters__date-container">
-						<label class="filters__date-label">Fecha de fin:</label>
-						<input type="date" class="filters__date" />
-					</div>
-
+					<!-- Filtro funcional -->
+					<select class="filters__select filters__select--funcional" placeholder="Funcional">
+						<option value="">Todos</option>
+						<option value="Sí">Sí</option>
+						<option value="No">No</option>
+					</select>
+					<!-- Eliminados los filtros por fecha -->
 					<button class="button button--clear">Limpiar filtros</button>
 				</div>
 			</div>
