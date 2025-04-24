@@ -92,7 +92,8 @@ export function crearProduccion(req, res) {
             cultivo_id,
             ciclo_id,
             insumos_ids,
-            sensores_ids
+            sensores_ids,
+            inversion
         } = req.body;
 
         // Log de los datos recibidos (sin la imagen para no sobrecargar el log)
@@ -102,8 +103,8 @@ export function crearProduccion(req, res) {
         });
 
         // Validar que todos los campos requeridos estén presentes
-        if (!nombre || !tipo || !imagen || !ubicacion || !descripcion || !usuario_id || !cantidad) {
-            return res.status(400).json({ error: 'Los campos nombre, tipo, imagen, ubicacion, descripcion, usuario_id y cantidad son obligatorios' });
+        if (!nombre || !tipo || !imagen || !ubicacion || !descripcion || !usuario_id || !cantidad || inversion === undefined) {
+            return res.status(400).json({ error: 'Los campos nombre, tipo, imagen, ubicacion, descripcion, usuario_id, cantidad e inversion son obligatorios' });
         }
 
         // Validar que cantidad sea un número válido y esté dentro del rango permitido
@@ -230,13 +231,14 @@ export function crearProduccion(req, res) {
                             descripcion, 
                             usuario_id, 
                             cantidad, 
+                            inversion, 
                             estado, 
                             fecha_creacion,
                             cultivo_id,
                             ciclo_id,
                             insumos_ids,
                             sensores_ids
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     `;
 
                     db.query(
@@ -249,6 +251,7 @@ export function crearProduccion(req, res) {
                             descripcion, 
                             usuario_id, 
                             parsedQuantity, 
+                            inversion, 
                             estadoFinal, 
                             new Date(),
                             cultivo_id || null,
@@ -383,7 +386,8 @@ export function actualizarProduccion(req, res) {
             cultivo_id,
             ciclo_id,
             insumos_ids,
-            sensores_ids
+            sensores_ids,
+            inversion
         } = req.body;
 
         if (!id) {
@@ -452,6 +456,11 @@ export function actualizarProduccion(req, res) {
                 }
                 updateFields.push('estado = ?');
                 updateValues.push(estado);
+            }
+
+            if (inversion !== undefined) {
+                updateFields.push('inversion = ?');
+                updateValues.push(inversion);
             }
 
             if (cultivo_id !== undefined) {

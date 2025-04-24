@@ -123,62 +123,69 @@ export function actualizarEstadoSensor(req, res) {
 // Actualizar sensor por ID
 export function actualizarSensor(req, res) {
     const { id } = req.params;
+    // Compatibilidad con frontend: aceptar ambos nombres de campos
     const {
+        nombre_sensor,
         nombre,
+        tipo_sensor,
         tipo,
         unidad_medida,
-        valor_minimo,
-        valor_maximo,
         descripcion,
-        estado
+        tiempo_escaneo,
+        estado,
+        imagen
     } = req.body;
 
     // Inicializar las variables campos y valores
     const campos = [];
     const valores = [];
 
-    // Si el estado es proporcionado, lo normalizamos y lo agregamos a los campos
+    // Nombres compatibles con el frontend
+    if (nombre_sensor || nombre) {
+        campos.push('nombre_sensor = ?');
+        valores.push(nombre_sensor || nombre);
+    }
+    if (tipo_sensor || tipo) {
+        campos.push('tipo_sensor = ?');
+        valores.push(tipo_sensor || tipo);
+    }
+    if (unidad_medida) {
+        campos.push('unidad_medida = ?');
+        valores.push(unidad_medida);
+    }
+    if (descripcion) {
+        campos.push('descripcion = ?');
+        valores.push(descripcion);
+    }
+    if (tiempo_escaneo) {
+        campos.push('tiempo_escaneo = ?');
+        valores.push(tiempo_escaneo);
+    }
+    if (imagen) {
+        campos.push('imagen = ?');
+        valores.push(imagen);
+    }
     if (estado) {
         const estadoNormalizado = (estado === 'Activo' || estado.toLowerCase() === 'habilitado') ? 'habilitado' : 'deshabilitado';
         campos.push('estado = ?');
         valores.push(estadoNormalizado);
     }
 
-    // Si hay un archivo, tomamos el nombre del archivo para la imagen
-    let imagen = req.file ? req.file.filename : null;
-
-    // Verifica que al menos haya algún dato a actualizar
-    if (!nombre && !tipo && !unidad_medida && !valor_minimo && !valor_maximo && !descripcion && !estado && !imagen) {
+    if (campos.length === 0) {
         return res.status(400).json({ error: 'No hay datos para actualizar' });
     }
 
-    // Si los campos están presentes, los agregamos al query de actualización
-    if (nombre) { campos.push('nombre = ?'); valores.push(nombre); }
-    if (tipo) { campos.push('tipo = ?'); valores.push(tipo); }
-    if (unidad_medida) { campos.push('unidad_medida = ?'); valores.push(unidad_medida); }
-    if (valor_minimo) { campos.push('valor_minimo = ?'); valores.push(valor_minimo); }
-    if (valor_maximo) { campos.push('valor_maximo = ?'); valores.push(valor_maximo); }
-    if (descripcion) { campos.push('descripcion = ?'); valores.push(descripcion); }
-    if (imagen) { campos.push('imagen = ?'); valores.push(imagen); }
-
-    // Agregamos el id al final de los valores
     valores.push(id);
-
-    // Construcción del query de actualización
     const query = `UPDATE sensores SET ${campos.join(', ')} WHERE id = ?`;
 
-    // Ejecutamos el query de actualización en la base de datos
     db.query(query, valores, (err, result) => {
         if (err) {
             console.error("Error al actualizar el sensor:", err);
             return res.status(500).json({ error: 'Error al actualizar sensor' });
         }
-
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Sensor no encontrado' });
         }
-
-        // Respuesta exitosa
         res.json({ success: true, message: 'Sensor actualizado correctamente' });
     });
 }

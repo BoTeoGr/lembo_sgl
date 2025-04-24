@@ -4,98 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Producción</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/pages/produccion.css">
+    <link rel="stylesheet" href="../css/pages/forms.css" />
+    <link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
+    <script type="module" src="../js/pages/componentLoader.js"></script>
+    <link rel="stylesheet" href="../css/components/header.css" />
+    <link rel="stylesheet" href="../css/pages/crear-produccion.mod.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-    <div class="main-content">
-        <div class="content">
-            <h1 class="content__title"><i class="fas fa-seedling"></i> Crear Nueva Producción</h1>
-            
-            <form id="productionForm" class="form">
-                <!-- Información básica -->
-                <div class="form__section">
-                    <h2 class="form__section-title"><i class="fas fa-info-circle"></i> Información Básica</h2>
-                    
-                    <!-- Primera fila: Nombre y Tipo -->
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label for="productionName" class="form__label"><i class="fas fa-tag"></i> Nombre de la producción</label>
-                            <input type="text" id="productionName" class="form__input" required>
-                        </div>
-                        <div class="form__group">
-                            <label for="productionType" class="form__label"><i class="fas fa-list"></i> Tipo</label>
-                            <select id="productionType" class="form__select" required>
-                                <option value="">Seleccionar tipo</option>
-                                <option value="Tradicional">Tradicional</option>
-                                <option value="Orgánica">Orgánica</option>
-                                <option value="Hidropónica">Hidropónica</option>
-                            </select>
-                        </div>
+    <header class="header" data-title="Crear Producción"></header>
+    <main class="main-content">
+        <div class="form form--height">
+            <div class="form__back-link">
+                <a href="listar-producciones.html" class="button--back">← Volver</a>
+            </div>
+            <h2 class="form__title">Crear Nueva Producción</h2>
+            <form class="form__container" id="productionForm" method="post">
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="productionName" class="form__label"><i class="fas fa-tag"></i> Nombre de la producción</label>
+                        <input type="text" id="productionName" class="form__input" required>
                     </div>
-
-                    <!-- Segunda fila: Ubicación e Imagen -->
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label for="location" class="form__label"><i class="fas fa-map-marker-alt"></i> Ubicación</label>
-                            <input type="text" id="location" class="form__input" required>
-                        </div>
-                        <div class="form__group">
-                            <label for="image" class="form__label"><i class="fas fa-image"></i> Imagen</label>
-                            <input type="file" id="image" class="form__input" accept="image/*" required>
-                        </div>
+                    <div class="form__group">
+                        <label for="productionType" class="form__label"><i class="fas fa-list"></i> Tipo</label>
+                        <select id="productionType" class="form__select" required>
+                            <option value="">Seleccionar tipo</option>
+                            <option value="Tradicional">Tradicional</option>
+                            <option value="Orgánica">Orgánica</option>
+                            <option value="Hidropónica">Hidropónica</option>
+                        </select>
                     </div>
-
-                    <!-- Tercera fila: Descripción -->
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label for="description" class="form__label"><i class="fas fa-align-left"></i> Descripción</label>
-                            <textarea id="description" class="form__input" rows="3" required></textarea>
-                        </div>
+                </div>
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="location" class="form__label"><i class="fas fa-map-marker-alt"></i> Ubicación</label>
+                        <input type="text" id="location" class="form__input" required>
                     </div>
-
-                    <!-- Cuarta fila: Inversión y Cantidad -->
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label for="investment" class="form__label"><i class="fas fa-dollar-sign"></i> Inversión</label>
-                            <input type="number" id="investment" class="form__input" required min="0" step="0.01">
-                        </div>
-                        <div class="form__group">
-                            <label for="quantity" class="form__label"><i class="fas fa-weight"></i> Cantidad (kg)</label>
-                            <input type="number" id="quantity" class="form__input" required min="0" step="0.01">
-                        </div>
-                    </div>
-
-                    <!-- Quinta fila: Cultivo y Ciclo -->
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label for="crop" class="form__label"><i class="fas fa-leaf"></i> Cultivo</label>
-                            <select id="crop" class="form__select" required>
-                                <option value="">Seleccionar cultivo</option>
-                            </select>
-                        </div>
-                        <div class="form__group">
-                            <label for="cropCycle" class="form__label"><i class="fas fa-sync"></i> Ciclo</label>
-                            <select id="cropCycle" class="form__select" required>
-                                <option value="">Seleccionar ciclo</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Sexta fila: Responsable -->
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label for="responsible" class="form__label"><i class="fas fa-user"></i> Responsable</label>
-                            <select id="responsible" class="form__select" required>
-                                <option value="">Seleccionar responsable</option>
-                            </select>
+                    <div class="form__group">
+                        <label for="image" class="form__label"><i class="fas fa-image"></i> Imagen</label>
+                        <div class="form__image-input">
+                            <input type="file" id="image" class="form__file" accept="image/*" required />
                         </div>
                     </div>
                 </div>
-
-                <!-- Sección de sensores -->
+                <div class="form__group form__group--full-width">
+                    <label for="description" class="form__label"><i class="fas fa-align-left"></i> Descripción</label>
+                    <textarea id="description" class="form__textarea" rows="3" required></textarea>
+                </div>
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="investment" class="form__label"><i class="fas fa-dollar-sign"></i> Inversión</label>
+                        <input type="number" id="investment" class="form__input" required min="0" step="0.01">
+                    </div>
+                    <div class="form__group">
+                        <label for="quantity" class="form__label"><i class="fas fa-weight"></i> Cantidad (kg)</label>
+                        <input type="number" id="quantity" class="form__input" required min="0" step="0.01">
+                    </div>
+                </div>
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="crop" class="form__label"><i class="fas fa-leaf"></i> Cultivo</label>
+                        <select id="crop" class="form__select" required>
+                            <option value="">Seleccionar cultivo</option>
+                        </select>
+                    </div>
+                    <div class="form__group">
+                        <label for="cropCycle" class="form__label"><i class="fas fa-sync"></i> Ciclo</label>
+                        <select id="cropCycle" class="form__select" required>
+                            <option value="">Seleccionar ciclo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="responsible" class="form__label"><i class="fas fa-user"></i> Responsable</label>
+                        <select id="responsible" class="form__select" required>
+                            <option value="">Seleccionar responsable</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form__section">
-                    <h2 class="form__section-title"><i class="fas fa-microchip"></i> Sensores (Mínimo 3)</h2>
+                    <h3 class="form__section-title"><i class="fas fa-microchip"></i> Sensores (Mínimo 3)</h3>
                     <div class="form__row">
                         <div class="form__group">
                             <div class="sensor-selection">
@@ -104,16 +93,12 @@
                                 </select>
                                 <button type="button" id="addSensor" class="button--add"><i class="fas fa-plus"></i></button>
                             </div>
-                            <div id="selectedSensors" class="selected-items">
-                                <!-- Aquí se mostrarán las cards de sensores seleccionados -->
-                            </div>
+                            <div id="selectedSensors" class="selected-items"></div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Sección de insumos -->
                 <div class="form__section">
-                    <h2 class="form__section-title"><i class="fas fa-box-open"></i> Insumos (Mínimo 3)</h2>
+                    <h3 class="form__section-title"><i class="fas fa-box-open"></i> Insumos (Mínimo 3)</h3>
                     <div class="form__row">
                         <div class="form__group">
                             <div class="supply-selection">
@@ -122,25 +107,18 @@
                                 </select>
                                 <button type="button" id="addSupply" class="button--add"><i class="fas fa-plus"></i></button>
                             </div>
-                            <div id="selectedSupplies" class="selected-items">
-                                <!-- Aquí se mostrarán las cards de insumos seleccionados -->
-                            </div>
+                            <div id="selectedSupplies" class="selected-items"></div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Botones de acción -->
-                <div class="form__actions">
-                    <button type="submit" id="createBtn" class="button button--primary" disabled>
+                <div class="form__button-container">
+                    <button type="submit" id="createBtn" class="button button--submit" disabled>
                         <i class="fas fa-save"></i> Crear Producción
-                    </button>
-                    <button type="button" class="button button--secondary" onclick="window.location.href='listar-producciones.html'">
-                        <i class="fas fa-times"></i> Cancelar
                     </button>
                 </div>
             </form>
         </div>
-    </div>
+    </main>
 
     <!-- Toast para notificaciones -->
     <div id="toast" class="toast hidden">

@@ -67,6 +67,46 @@ export function crearCicloCultivo(req, res) {
     }
 }
 
+// Obtener ciclo de cultivo por id
+export function obtenerCicloCultivoPorId(req, res) {
+    const { id } = req.params;
+    db.query('SELECT * FROM ciclo_cultivo WHERE id = ?', [id], (err, results) => {
+        if (err) {
+            console.error('Error al obtener ciclo de cultivo por id:', err);
+            return res.status(500).json({ error: 'Error al obtener ciclo de cultivo' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Ciclo de cultivo no encontrado' });
+        }
+        const ciclo = results[0];
+        res.status(200).json({
+            ...ciclo,
+            periodoInicio: ciclo.periodo_inicio,
+            periodoFinal: ciclo.periodo_final
+        });
+    });
+}
+
+// Actualizar ciclo de cultivo por id
+export function actualizarCicloCultivo(req, res) {
+    const { id } = req.params;
+    const { nombre, descripcion, periodoInicio, periodoFinal, novedades, estado } = req.body;
+    if (!nombre || !descripcion || !periodoInicio || !periodoFinal || !estado) {
+        return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
+    }
+    const query = `UPDATE ciclo_cultivo SET nombre = ?, descripcion = ?, periodo_inicio = ?, periodo_final = ?, novedades = ?, estado = ? WHERE id = ?`;
+    db.query(query, [nombre, descripcion, periodoInicio, periodoFinal, novedades, estado, id], (err, result) => {
+        if (err) {
+            console.error('Error al actualizar ciclo de cultivo:', err);
+            return res.status(500).json({ error: 'Error al actualizar ciclo de cultivo.' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Ciclo de cultivo no encontrado.' });
+        }
+        res.status(200).json({ message: 'Ciclo de cultivo actualizado correctamente.' });
+    });
+}
+
 // Cambiar el estado de un ciclo de cultivo (habilitado/deshabilitado)
 export function actualizarEstadoCicloCultivo(req, res) {
     try {

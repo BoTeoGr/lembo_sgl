@@ -124,6 +124,21 @@ export function obtenerUsuarioActual(req, res) {
     }
 }
 
+// Obtener usuario por id
+export function obtenerUsuarioPorId(req, res) {
+    const { id } = req.params;
+    db.query('SELECT * FROM usuarios WHERE id = ?', [id], (err, results) => {
+        if (err) {
+            console.error('Error al obtener usuario por id:', err);
+            return res.status(500).json({ error: 'Error al obtener usuario' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+        res.status(200).json(results[0]);
+    });
+}
+
 // Cambia el estado de un usuario (habilitado/deshabilitado)
 export function actualizarEstadoUsuario(req, res) {
     try {
@@ -145,4 +160,24 @@ export function actualizarEstadoUsuario(req, res) {
         console.error('Error en actualizarEstadoUsuario:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
+}
+
+// Actualizar usuario por id
+export function actualizarUsuario(req, res) {
+    const { id } = req.params;
+    const { nombre, correo, rol, estado } = req.body;
+    if (!nombre || !correo || !rol || !estado) {
+        return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
+    }
+    const query = `UPDATE usuarios SET nombre = ?, correo = ?, rol = ?, estado = ? WHERE id = ?`;
+    db.query(query, [nombre, correo, rol, estado, id], (err, result) => {
+        if (err) {
+            console.error('Error al actualizar usuario:', err);
+            return res.status(500).json({ error: 'Error al actualizar usuario.' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado.' });
+        }
+        res.status(200).json({ message: 'Usuario actualizado correctamente.' });
+    });
 }

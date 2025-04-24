@@ -92,18 +92,6 @@ export default function Navbar() {
                                 <a href="crear-produccion.html" class="nav__dropdown-link">Agregar Producción</a>
                             </div>
                         </li>
-                        <li class="nav__item nav__item--dropdown">
-                            <button class="nav__dropdown-btn ${isSelected(
-															"asociaciones.html"
-														)}">
-                                <span class="material-symbols-outlined">analytics</span>
-                                <span>Asociaciones</span>
-                                <span class="material-symbols-outlined nav__arrow">expand_more</span>
-                            </button>
-                            <div class="nav__dropdown-content">
-                                <a href="asociaciones.html" class="nav__dropdown-link">Lista de Asociaciones</a>
-                            </div>
-                        </li>
                     </ul>
                 </nav>
             </div>
@@ -186,10 +174,6 @@ export default function Navbar() {
                 <a href="crear-produccion.html" class="nav__mobile-link">
                     <span class="material-symbols-outlined">add_circle</span>
                     <span>Agregar Producción</span>
-                </a>
-                <a href="asociaciones.html" class="nav__mobile-link">
-                    <span class="material-symbols-outlined">analytics</span>
-                    <span>Lista de Asociaciones</span>
                 </a>
 
                 <a href="index.html" class="nav__mobile-link">

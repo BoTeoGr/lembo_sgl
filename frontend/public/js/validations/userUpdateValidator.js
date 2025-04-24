@@ -28,17 +28,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         usuarioActual = await response.json();
 
         // Asignación de valores a los campos del formulario
-        tipoDocumentoInput.value = usuarioActual.tipo_documento;
-        nombreInput.value = usuarioActual.nombre_completo;
-        numeroDocumentoInput.value = usuarioActual.numero_documento;
-        telefonoInput.value = usuarioActual.telefono;
-        correoInput.value = usuarioActual.correo;
-        confirmarCorreoInput.value = usuarioActual.correo;
-        rolInput.value = usuarioActual.rol;
+        tipoDocumentoInput.value = usuarioActual.tipo_documento || usuarioActual.tipoDocumento || '';
+        nombreInput.value = usuarioActual.nombre || usuarioActual.nombre_completo || '';
+        numeroDocumentoInput.value = usuarioActual.numero_documento || usuarioActual.numeroDocumento || '';
+        telefonoInput.value = usuarioActual.telefono || '';
+        correoInput.value = usuarioActual.correo || '';
+        confirmarCorreoInput.value = usuarioActual.correo || '';
+        rolInput.value = usuarioActual.rol || '';
 
         // Selección del estado
         for (const radio of estadoRadios) {
-            radio.checked = radio.value === usuarioActual.estado;
+            radio.checked = radio.value === (usuarioActual.estado || '').toLowerCase();
         }
     } catch (error) {
         console.error("Error cargando datos del usuario:", error);
@@ -53,33 +53,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        const datosActualizados = {};
-
-        // Comprobación de campos modificados
-        if (nombreInput.value.trim() !== usuarioActual.nombre_completo) {
-            datosActualizados.nombre_completo = nombreInput.value.trim();
-        }
-
-        if (tipoDocumentoInput.value !== usuarioActual.tipo_documento) {
-            datosActualizados.tipo_documento = tipoDocumentoInput.value;
-        }
-
-        if (numeroDocumentoInput.value.trim() !== usuarioActual.numero_documento) {
-            datosActualizados.numero_documento = numeroDocumentoInput.value.trim();
-        }
-
-        if (telefonoInput.value.trim() !== usuarioActual.telefono) {
-            datosActualizados.telefono = telefonoInput.value.trim();
-        }
-
-        if (correoInput.value.trim() !== usuarioActual.correo) {
-            datosActualizados.correo = correoInput.value.trim();
-        }
-
-        if (rolInput.value !== usuarioActual.rol) {
-            datosActualizados.rol = rolInput.value;
-        }
-
         let estadoSeleccionado = null;
         for (const radio of estadoRadios) {
             if (radio.checked) {
@@ -88,14 +61,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         }
 
-        if (estadoSeleccionado && estadoSeleccionado !== usuarioActual.estado) {
-            datosActualizados.estado = estadoSeleccionado;
-        }
+        // Construcción de objeto para PUT
+        const datosActualizados = {
+            nombre: nombreInput.value.trim(),
+            correo: correoInput.value.trim(),
+            rol: rolInput.value,
+            estado: estadoSeleccionado
+        };
 
-        if (Object.keys(datosActualizados).length === 0) {
-            alert("No se han realizado cambios.");
-            return;
-        }
+        // Puedes agregar validaciones adicionales aquí
 
         submitButton.disabled = true;
 

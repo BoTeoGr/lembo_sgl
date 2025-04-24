@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const insumoId = params.get("id");
 
     if (!insumoId) {
-        alert("ID del insumo no encontrado en la URL");
         window.location.href = "listar-insumos.html";
         return;
     }
@@ -64,7 +63,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     } catch (error) {
         console.error("Error cargando datos del insumo:", error);
-        alert("No se pudo cargar la información del insumo.");
     }
 
     // Llamar a la función de cálculo cada vez que cambien los valores de cantidad o valor unitario
@@ -76,7 +74,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         e.preventDefault();
 
         if (!insumoActual) {
-            alert("No se puede actualizar sin datos del insumo cargados.");
             return;
         }
 
@@ -123,7 +120,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         if (Object.keys(datosActualizados).length === 0) {
-            alert("No se han realizado cambios.");
             return;
         }
 
@@ -143,11 +139,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 throw new Error(errorText || "No se pudo actualizar el insumo");
             }
 
-            alert("Insumo actualizado correctamente.");
             window.location.href = "listar-insumos.html";
         } catch (error) {
             console.error("Error actualizando insumo:", error);
-            alert("Hubo un error al actualizar el insumo.");
         } finally {
             submitButton.disabled = false;
         }

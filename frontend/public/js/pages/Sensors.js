@@ -181,6 +181,12 @@ class Sensors {
                 if (sensor) this.showSensorDetails(sensor);
                 return;
             }
+            // Acción editar sensor
+            if (btn.classList.contains('table__action-button--edit')) {
+                const id = row.querySelector('.table__cell--id').textContent;
+                window.location.href = `actualizar-sensor.html?id=${id}`;
+                return;
+            }
             // Eventos de acción
             if (btn.classList.contains('table__action-button--enable')) {
                 const id = row.querySelector('.table__cell--id').textContent;

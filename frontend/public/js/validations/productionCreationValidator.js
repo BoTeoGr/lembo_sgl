@@ -64,8 +64,8 @@ async function initializeForm() {
     // Cargar todos los datos necesarios con un límite alto para obtener todos los items
     const [cropsData, cyclesData, sensorsData, suppliesData, usersData] = await Promise.all([
       getAllItems('/cultivos', 100),
-      getAllItems('/ciclos', 100),
-      getAllItems('/sensores', 100),
+      getAllItems('/ciclo_cultivo', 100),
+      getAllItems('/sensor', 100),
       getAllItems('/insumos', 100),
       getAllItems('/usuarios', 100)
     ]);

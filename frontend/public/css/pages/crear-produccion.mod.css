@@ -1,0 +1,114 @@
+/* Mejoras para el botón de agregar sensor y supply */
+/* Botón de agregar sensor/insumo - estilo mejorado */
+.button--add {
+  height: 2.4rem;
+  min-width: 2.4rem;
+  width: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #43b047;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.35rem;
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+  margin-left: 0.3rem;
+  box-shadow: 0 1px 6px 0 rgba(60,72,88,0.13);
+  outline: none;
+}
+.button--add:hover, .button--add:focus {
+  background: #2f8c36;
+  box-shadow: 0 3px 12px 0 rgba(60,72,88,0.18);
+  transform: scale(1.08);
+}
+.button--add i {
+  font-size: 1.1em;
+  pointer-events: none;
+}
+
+/* Mejorar alineación en selects con botón */
+.sensor-selection, .supply-selection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Mejorar visibilidad del botón volver */
+.button--back {
+  display: inline-block;
+  padding: 0.4rem 1.1rem;
+  background: #e9f7e5;
+  color: #388e3c;
+  border-radius: 7px;
+  font-size: 1.06rem;
+  font-weight: 500;
+  text-decoration: none;
+  margin-bottom: 1.2rem;
+  transition: background 0.18s, color 0.18s;
+  border: none;
+}
+.button--back:hover {
+  background: #c8e6c9;
+  color: #256029;
+}
+
+/* Tarjetas de items seleccionados en sensores/insumos */
+.selected-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 0.7rem;
+  margin-bottom: 0.5rem;
+}
+.item-card {
+  display: flex;
+  align-items: center;
+  background: #f8fafb;
+  border: 1.5px solid #d0e2c1;
+  border-radius: 10px;
+  padding: 0.4rem 1.1rem 0.4rem 0.7rem;
+  box-shadow: 0 1px 5px 0 rgba(60,72,88,0.08);
+  min-width: 120px;
+  max-width: 240px;
+  position: relative;
+  transition: box-shadow 0.18s;
+}
+.item-card:hover {
+  box-shadow: 0 3px 12px 0 rgba(60,72,88,0.18);
+  border-color: #b2d47c;
+}
+.item-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.item-name {
+  font-weight: 500;
+  color: #388e3c;
+  font-size: 1.05rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.remove-item {
+  background: #ffebee;
+  color: #c62828;
+  border: none;
+  border-radius: 50%;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  margin-right: 0.7rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.remove-item:hover, .remove-item:focus {
+  background: #ffcdd2;
+  color: #b71c1c;
+}

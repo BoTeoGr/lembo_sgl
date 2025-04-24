@@ -92,6 +92,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       allCiclos = await fetchCiclosCultivoFromAPI();
       filteredCiclos = getFilteredCiclos();
       renderPaginatedTable(filteredCiclos);
+    } else if (btn.classList.contains('table__action-button--edit')) {
+      // Redirigir a la página de actualización con el id
+      window.location.href = `actualizar-ciclo-cultivo.html?id=${id}`;
     }
   });
 
@@ -156,9 +159,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       const ciclo = filteredCiclos.find(c => String(c.id) === String(id));
       if (ciclo) showCicloCultivoDetails(ciclo);
       return;
-    }
-    if (btn.classList.contains('table__action-button--edit')) {
-      // alert(`Editar ciclo: ${id}`);
     }
   });
 

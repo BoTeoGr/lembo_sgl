@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (usuario) showUsuarioModal(usuario);
       return;
     } else if (btn.classList.contains('table__action-button--edit')) {
-      alert(`Editar usuario: ${id}`);
+      window.location.href = `actualizar-usuario.html?id=${id}`;
     } else if (btn.classList.contains('table__action-button--enable')) {
       await updateUserStatusAPI([id], 'Activo');
       allUsers = await fetchUsersFromAPI();

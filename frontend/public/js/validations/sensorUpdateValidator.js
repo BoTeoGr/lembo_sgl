@@ -9,13 +9,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const form = document.querySelector(".form__container");
-    const tipoInput = form.querySelector(".form__input--sensor-type");
+    const tipoSelect = form.querySelector(".form__select--sensor-type");
     const nombreInput = form.querySelector(".form__input--sensor-name");
-    const unidadInput = form.querySelector(".form__input--sensor-unit");
-    const descripcionInput = form.querySelector(".form__textarea--sensor-description");
-    const tiempoEscaneoInput = form.querySelector(".form__input--sensor-scan-time");
+    const unidadSelect = form.querySelector(".form__select--sensor-unit");
+    const descripcionTextarea = form.querySelector(".form__textarea--sensor-description");
+    const tiempoEscaneoSelect = form.querySelector(".form__select--sensor-scan");
     const estadoRadios = form.querySelectorAll("[name='estado-habilitado']");
-    const imagenInput = form.querySelector(".form__file--sensor-image"); // cadena, no archivo
+    const imagenInput = form.querySelector(".form__file--sensor-image"); // input type=file
     const submitButton = form.querySelector("button[type='submit']");
 
     let sensorActual = null;
@@ -27,13 +27,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         sensorActual = await response.json();
 
         // Asignación de valores a los campos del formulario
-        tipoInput.value = sensorActual.tipo_sensor;
-        nombreInput.value = sensorActual.nombre_sensor;
-        unidadInput.value = sensorActual.unidad_medida;
-        descripcionInput.value = sensorActual.descripcion;
-        tiempoEscaneoInput.value = sensorActual.tiempo_escaneo;
+        if (tipoSelect) tipoSelect.value = sensorActual.tipo_sensor || "default";
+        if (nombreInput) nombreInput.value = sensorActual.nombre_sensor || "";
+        if (unidadSelect) unidadSelect.value = sensorActual.unidad_medida || "default";
+        if (descripcionTextarea) descripcionTextarea.value = sensorActual.descripcion || "";
+        if (tiempoEscaneoSelect) tiempoEscaneoSelect.value = sensorActual.tiempo_escaneo || "default";
 
-        imagenInput.value = sensorActual.imagen; // Como cadena de texto
+        // Imagen: solo mostrar nombre si existe, no se puede asignar value por seguridad
+        if (imagenInput && sensorActual.imagen) {
+            // Mostrar nombre del archivo en algún lugar si es necesario
+            imagenInput.setAttribute('data-existing', sensorActual.imagen);
+        }
 
         // Selección del estado
         for (const radio of estadoRadios) {
@@ -55,28 +59,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         const datosActualizados = {};
 
         // Comprobación de campos modificados
-        if (nombreInput.value.trim() !== "" && nombreInput.value.trim() !== sensorActual.nombre_sensor) {
+        if (nombreInput && nombreInput.value.trim() !== "" && nombreInput.value.trim() !== sensorActual.nombre_sensor) {
             datosActualizados.nombre_sensor = nombreInput.value.trim();
         }
 
-        if (tipoInput.value.trim() !== "" && tipoInput.value.trim() !== sensorActual.tipo_sensor) {
-            datosActualizados.tipo_sensor = tipoInput.value.trim();
+        if (tipoSelect && tipoSelect.value !== "default" && tipoSelect.value !== sensorActual.tipo_sensor) {
+            datosActualizados.tipo_sensor = tipoSelect.value;
         }
 
-        if (unidadInput.value.trim() !== "" && unidadInput.value.trim() !== sensorActual.unidad_medida) {
-            datosActualizados.unidad_medida = unidadInput.value.trim();
+        if (unidadSelect && unidadSelect.value !== "default" && unidadSelect.value !== sensorActual.unidad_medida) {
+            datosActualizados.unidad_medida = unidadSelect.value;
         }
 
-        if (descripcionInput.value.trim() !== "" && descripcionInput.value.trim() !== sensorActual.descripcion) {
-            datosActualizados.descripcion = descripcionInput.value.trim();
+        if (descripcionTextarea && descripcionTextarea.value.trim() !== sensorActual.descripcion) {
+            datosActualizados.descripcion = descripcionTextarea.value.trim();
         }
 
-        if (tiempoEscaneoInput.value !== "" && tiempoEscaneoInput.value !== sensorActual.tiempo_escaneo) {
-            datosActualizados.tiempo_escaneo = tiempoEscaneoInput.value.trim();
+        if (tiempoEscaneoSelect && tiempoEscaneoSelect.value !== "default" && tiempoEscaneoSelect.value !== sensorActual.tiempo_escaneo) {
+            datosActualizados.tiempo_escaneo = tiempoEscaneoSelect.value;
         }
 
-        if (imagenInput.value.trim() !== "" && imagenInput.value.trim() !== sensorActual.imagen) {
-            datosActualizados.imagen = imagenInput.value.trim(); // Como cadena de texto
+        // Imagen: solo enviar si se selecciona una nueva
+        if (imagenInput && imagenInput.files && imagenInput.files.length > 0) {
+            // Aquí deberías manejar la subida de archivos si el backend lo soporta
+            // Por ahora, solo enviamos el nombre del archivo
+            datosActualizados.imagen = imagenInput.files[0].name;
         }
 
         let estadoSeleccionado = null;
@@ -86,18 +93,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 break;
             }
         }
-
         if (estadoSeleccionado && estadoSeleccionado !== sensorActual.estado) {
             datosActualizados.estado = estadoSeleccionado;
         }
 
         if (Object.keys(datosActualizados).length === 0) {
-            alert("No se han realizado cambios.");
             return;
         }
 
         submitButton.disabled = true;
-
         try {
             const response = await fetch(`http://localhost:5000/sensor/${sensorId}`, {
                 method: "PUT",
@@ -112,11 +116,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 throw new Error(errorText || "No se pudo actualizar el sensor");
             }
 
-            alert("Sensor actualizado correctamente.");
             window.location.href = "listar-sensores.html";
         } catch (error) {
             console.error("Error actualizando sensor:", error);
-            alert("Hubo un error al actualizar el sensor.");
         } finally {
             submitButton.disabled = false;
         }
