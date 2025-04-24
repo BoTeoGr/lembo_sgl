@@ -70,12 +70,12 @@ header {
 
 .button {
     height: var(--button-height);
-    border-radius: 0.3rem;
+    border-radius: var(--button-border-radius);
     padding: 0.4rem 0.8rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: var(--button-padding-between-elements);
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--gray-100);
@@ -91,7 +91,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: var(--button-padding-between-elements);
 }
 
 .button:hover {
@@ -109,7 +109,7 @@ header {
 }
 
 .material-symbols-outlined.button__icon {
-    font-size: 1.125rem;
+    font-size: var(--button-icon-size);
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
@@ -119,7 +119,7 @@ header {
     border: 1px solid var(--gray-40);
     border-radius: 0.5rem;
     background-color: var(--white);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
     display: block;
 }
 
@@ -153,7 +153,6 @@ header {
 .material-symbols-outlined.filters__close {
     font-size: 1.25rem;
     cursor: pointer;
-    color: var(--gray-60);
 }
 
 .filters__content button, .filters__content input, .filters__content select {
@@ -356,7 +355,8 @@ header {
     border-radius: 0.5rem;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
+    display: block;
 }
 
 .form-section__title {
@@ -624,7 +624,7 @@ header {
 .sensor-card {
     background-color: var(--white);
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
     padding: 1rem;
     position: relative;
     height: 100%;
@@ -635,7 +635,7 @@ header {
 }
 
 .sensor-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
     transform: translateY(-0.125rem);
 }
 
@@ -739,7 +739,7 @@ header {
 .insumo-card {
     background-color: var(--white);
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
     padding: 1rem;
     position: relative;
     height: 100%;
@@ -750,7 +750,7 @@ header {
 }
 
 .insumo-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
     transform: translateY(-0.125rem);
 }
 
@@ -1095,7 +1095,7 @@ header {
   display: flex;
   align-items: center;
   gap: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
 }
 
 .reading-card__icon {
@@ -1174,7 +1174,7 @@ header {
     min-width: 320px;
     max-width: 95vw;
     max-height: 95vh;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
     margin: auto;
 }
 
@@ -1330,7 +1330,7 @@ header {
     padding: 20px;
     background-color: var(--white);
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
     border-left: 4px solid transparent;
     display: flex;
@@ -1340,7 +1340,7 @@ header {
 
 .info-section:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
 }
 
 .info-section__icon {
@@ -1442,7 +1442,7 @@ header {
     overflow: hidden;
     border: 1px solid var(--gray-40);
     background-color: var(--white);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
 }
 
 .table {
@@ -1680,14 +1680,14 @@ header {
     background-color: var(--white);
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .sensor-card-modal:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
 }
 
 .sensor-card-modal--temperature {
@@ -1821,7 +1821,7 @@ header {
 .supply-card-modal {
     background-color: var(--white);
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
     padding: 20px;
     transition: all 0.3s ease;
     position: relative;
@@ -1831,7 +1831,7 @@ header {
 
 .supply-card-modal:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
 }
 
 .supply-card-modal--fertilizer {
@@ -2303,7 +2303,7 @@ header {
     border-radius: 12px;
     background: linear-gradient(to bottom, var(--white), var(--gray-20));
     max-width: 550px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
 }
 
 .modal--report .modal__header {
@@ -2436,13 +2436,13 @@ header {
     font-weight: 500;
     transition: all 0.2s;
     border: none;
-    box-shadow: 0 2px 5px rgba(57, 169, 0, 0.3);
+    box-shadow: 0 0.125rem 0.25rem rgba(57, 169, 0, 0.3);
 }
 
 .button--generate-report:hover {
     background-color: var(--green-900);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(57, 169, 0, 0.4);
+    box-shadow: 0 0.25rem 0.5rem rgba(57, 169, 0, 0.4);
 }
 
 .modal__close--confirm {
@@ -2476,7 +2476,7 @@ header {
     overflow: hidden;
     background: var(--white);
     border-radius: 0.5rem;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
     z-index: 100;
     transition: all 0.3s ease;
     opacity: 0;
@@ -2736,14 +2736,14 @@ header {
   padding: 1rem;
   background-color: var(--white);
   border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .sensor__card:hover,
 .insumo__card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
 }
 
 .sensor__icon,
