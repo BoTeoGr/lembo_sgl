@@ -6,6 +6,7 @@
 		<title>Sistema de Gestión Agrícola - Cultivos</title>
 		<link rel="stylesheet" href="../css/pages/listar.css" />
 		<link rel="stylesheet" href="../css/components/navbar.css" />
+		<link rel="stylesheet" href="../css/components/modal-cultivo.css" />
 		<link
 			rel="stylesheet"
 			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
@@ -137,6 +138,37 @@
 						<button class="button button--primary" id="generateReportBtn">
 							Generar
 						</button>
+					</div>
+				</div>
+			</div>
+			<!-- Modal de Visualización de Cultivo -->
+			<div class="modal" id="viewCropModal">
+				<div class="modal__content">
+					<div class="modal__header">
+						<h2 class="modal__title">Detalles del Cultivo</h2>
+						<span class="modal__close" id="closeViewCropModal">
+							<span class="material-symbols-outlined">close</span>
+						</span>
+					</div>
+					<div class="modal__body">
+						<div class="modal__image-container">
+							<img id="modalCropImage" class="modal__image--default" src="../imgs/default-cultivo.jpg" alt="Imagen del cultivo" />
+						</div>
+						<table class="modal__table">
+							<tbody>
+								<tr><th>ID</th><td id="modalCropId"></td></tr>
+								<tr><th>Nombre</th><td id="modalCropName"></td></tr>
+								<tr><th>Tipo</th><td id="modalCropType"></td></tr>
+								<tr><th>Tamaño</th><td id="modalCropArea"></td></tr>
+								<tr><th>Ubicación</th><td id="modalCropLocation"></td></tr>
+								<tr><th>Estado</th><td id="modalCropStatus"></td></tr>
+								<tr><th>Descripción</th><td id="modalCropDescription"></td></tr>
+								<tr><th>Fecha de creación</th><td id="modalCropCreated"></td></tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal__footer">
+						<button class="button button--secondary" id="closeViewCropBtn">Cerrar</button>
 					</div>
 				</div>
 			</div>

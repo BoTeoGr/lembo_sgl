@@ -30,6 +30,9 @@ async function fetchCropsFromAPI() {
                 location: cultivo.ubicacion || cultivo.location || '',
                 area: cultivo.tamano || cultivo.area || '',
                 status,
+                // image: cultivo.imagen || cultivo.image || '',
+                description: cultivo.descripcion || cultivo.description || '',
+                createdAt: cultivo.fecha_creacion || cultivo.fechaCreacion || cultivo.createdAt || '',
             };
         });
     } catch (e) {
@@ -160,7 +163,10 @@ class Crops {
         const closeReportModal = document.getElementById('closeReportModal');
         const cancelReportBtn = document.getElementById('cancelReportBtn');
         const generateReportBtn = document.getElementById('generateReportBtn');
-        // Esperar a que el DOM esté listo para los botones del modal
+        // --- MODAL DE VISUALIZAR CULTIVO ---
+        const viewCropModal = document.getElementById('viewCropModal');
+        const closeViewCropModal = document.getElementById('closeViewCropModal');
+        const closeViewCropBtn = document.getElementById('closeViewCropBtn');
         setTimeout(() => {
             // Abrir modal
             if (openReportBtn) {
@@ -240,6 +246,17 @@ class Crops {
                         win.print();
                     }
                     reportModal.classList.remove('modal--active');
+                });
+            }
+            // --- Cerrar modal de visualizar cultivo ---
+            if (closeViewCropModal) {
+                closeViewCropModal.addEventListener('click', () => {
+                    viewCropModal.classList.remove('modal--active');
+                });
+            }
+            if (closeViewCropBtn) {
+                closeViewCropBtn.addEventListener('click', () => {
+                    viewCropModal.classList.remove('modal--active');
                 });
             }
         }, 0);
@@ -347,8 +364,33 @@ class Crops {
                 await toggleCultivoStatus(crop.id, nuevoEstado);
                 this.renderTable();
             });
+            // --- Botón Visualizar ---
+            row.querySelector('.table__action-button--view').addEventListener('click', () => {
+                this.showCropModal(crop);
+            });
             tbody.appendChild(row);
         });
+    }
+
+    showCropModal(crop) {
+        // Imagen por defecto o la del cultivo si existe
+        const imageElem = document.getElementById('modalCropImage');
+        if (crop.image || crop.imagen) {
+            imageElem.src = crop.image || crop.imagen;
+        } else {
+            imageElem.src = '../imgs/default-cultivo.jpg';
+        }
+        // Rellena el modal con los datos del cultivo
+        document.getElementById('modalCropId').textContent = crop.id || '';
+        document.getElementById('modalCropName').textContent = crop.name || '';
+        document.getElementById('modalCropType').textContent = crop.type || '';
+        document.getElementById('modalCropArea').textContent = crop.area || '';
+        document.getElementById('modalCropLocation').textContent = crop.location || '';
+        document.getElementById('modalCropStatus').textContent = crop.status || '';
+        document.getElementById('modalCropDescription').textContent = crop.description || crop.descripcion || '-';
+        document.getElementById('modalCropCreated').textContent = crop.createdAt || crop.fecha_creacion || crop.fechaCreacion || '-';
+        // Muestra el modal
+        document.getElementById('viewCropModal').classList.add('modal--active');
     }
 
     updatePagination() {
