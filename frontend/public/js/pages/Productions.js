@@ -1,12 +1,105 @@
-import productionsData from '../data/productionsData.js';
 import { productionsConfig } from '../config/productionsConfig.js';
+
+// --- Obtener producciones desde la API ---
+async function fetchProductionsFromAPI() {
+    try {
+        const response = await fetch('http://localhost:5000/producciones');
+        if (!response.ok) throw new Error('Error al obtener producciones de la API');
+        const data = await response.json();
+
+        // Cargar catálogos locales para mapear nombres
+        let usersMap = {}, insumosMap = {}, sensoresMap = {};
+        try {
+            const usersModule = await import('../data/usersData.js');
+            if (usersModule && usersModule.users) {
+                usersModule.users.forEach(u => { usersMap[String(u.id)] = u.nombre; });
+            }
+        } catch (e) {}
+        try {
+            const insumosModule = await import('../data/insumosData.js');
+            if (insumosModule && insumosModule.insumos) {
+                insumosModule.insumos.forEach(i => { insumosMap[String(i.id)] = i.nombre; });
+            }
+        } catch (e) {}
+        try {
+            const sensoresModule = await import('../data/sensorsData.js');
+            if (sensoresModule && (sensoresModule.sensors || sensoresModule.sensorsData)) {
+                (sensoresModule.sensors || sensoresModule.sensorsData).forEach(s => { sensoresMap[String(s.id)] = s.nombre || s.name; });
+            }
+        } catch (e) {}
+
+        return data.map(prod => {
+            // Mapear personal
+            let personalNombres = [];
+            if (prod.personal_ids) {
+                personalNombres = String(prod.personal_ids)
+                    .split(',')
+                    .map(id => usersMap[String(id).trim()] || id.trim())
+                    .filter(Boolean);
+            }
+            // Mapear insumos
+            let insumosNombres = [];
+            if (prod.insumos_ids) {
+                insumosNombres = String(prod.insumos_ids)
+                    .split(',')
+                    .map(id => insumosMap[String(id).trim()] || id.trim())
+                    .filter(Boolean);
+            }
+            // Mapear sensores
+            let sensoresNombres = [];
+            if (prod.sensores_ids) {
+                sensoresNombres = String(prod.sensores_ids)
+                    .split(',')
+                    .map(id => sensoresMap[String(id).trim()] || id.trim())
+                    .filter(Boolean);
+            }
+            return {
+                id: prod.id || '',
+                name: prod.nombre || '',
+                crop: prod.nombre_cultivo || '',
+                cycle: prod.nombre_ciclo || '',
+                responsible: prod.nombre_usuario || '',
+                investment: prod.inversion || prod.investment || '',
+                startDate: prod.fecha_creacion || prod.startDate || '',
+                status: prod.estado === 'habilitado' ? 'Activo' : 'Inactivo',
+                area: prod.area || prod.tamano || '',
+                workers: prod.personal || prod.workers || '',
+                personal_asignado: personalNombres,
+                personal_asignado_count: personalNombres.length,
+                insumos_asignados: insumosNombres,
+                insumos_asignados_count: insumosNombres.length,
+                sensores_asignados: sensoresNombres,
+                sensores_asignados_count: sensoresNombres.length,
+                // Otros campos según necesidad
+            };
+        });
+    } catch (e) {
+        console.warn('Fallo la carga desde la API:', e.message);
+        return [];
+    }
+}
+
+// --- Cambiar estado de producción en backend ---
+async function toggleProductionStatus(id, nuevoEstado) {
+    await fetch(`http://localhost:5000/producciones/${id}/estado`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado: nuevoEstado })
+    });
+}
 
 class Productions {
     constructor() {
         this.currentPage = 1;
         this.itemsPerPage = 10;
-        this.filteredData = [...productionsData];
+        this.filteredData = [];
         this.selectedProductions = new Set();
+        this.loadData();
+    }
+
+    async loadData() {
+        const data = await fetchProductionsFromAPI();
+        this.filteredData = [...data];
         this.renderTable();
         this.updatePagination();
         this.initializeEventListeners();
@@ -37,7 +130,7 @@ class Productions {
         if (clearBtn) {
             clearBtn.addEventListener('click', () => {
                 if (filtersSearch) filtersSearch.value = '';
-                this.filteredData = [...productionsData];
+                this.filteredData = [...this.filteredData];
                 this.currentPage = 1;
                 this.renderTable();
                 this.updatePagination();
@@ -47,7 +140,7 @@ class Productions {
         if (filtersSearch) {
             filtersSearch.addEventListener('input', (e) => {
                 const value = e.target.value.toLowerCase();
-                this.filteredData = productionsData.filter(prod =>
+                this.filteredData = this.filteredData.filter(prod =>
                     prod.id.toLowerCase().includes(value) ||
                     prod.name.toLowerCase().includes(value)
                 );
@@ -135,22 +228,45 @@ class Productions {
             if (!btn) return;
             const row = btn.closest('tr');
             const id = row.querySelector('.table__cell--id').textContent;
+            if (btn.classList.contains('table__action-button--view')) {
+                const prod = this.filteredData.find(p => String(p.id) === String(id));
+                if (prod) this.showProduccionDetails(prod);
+                return;
+            }
             if (btn.classList.contains('table__action-button--enable')) {
                 this.updateStatus([id], 'Activo');
             } else if (btn.classList.contains('table__action-button--disable')) {
                 this.updateStatus([id], 'Inactivo');
             }
         });
+        // Cerrar modal
+        const closeBtn = document.getElementById('closeViewProduccionModal');
+        const modal = document.getElementById('viewModal') || document.getElementById('viewProduccionModal');
+        if (closeBtn && modal) {
+            closeBtn.onclick = () => {
+                modal.classList.remove('modal--active');
+            };
+        }
+        // Cerrar modal al hacer click fuera del contenido
+        if (modal) {
+            modal.addEventListener('mousedown', function(e) {
+                // Solo cerrar si el click es directamente sobre el fondo del modal
+                if (e.target === modal) {
+                    modal.classList.remove('modal--active');
+                }
+            });
+        }
     }
 
     updateStatus(ids, status) {
-        productionsData.forEach(prod => {
-            if (ids.includes(prod.id)) prod.status = status;
-        });
-        this.renderTable();
-        this.updatePagination();
-        this.selectedProductions.clear();
-        this.updateSelectionCount();
+        // Llamar al backend para actualizar cada producción
+        Promise.all(ids.map(id => toggleProductionStatus(id, status === 'Activo' ? 'habilitado' : 'deshabilitado')))
+            .then(async () => {
+                // Volver a cargar todos los datos desde la API para reflejar el estado real
+                await this.loadData();
+                this.selectedProductions.clear();
+                this.updateSelectionCount();
+            });
     }
 
     updateSelectionCount() {
@@ -234,6 +350,92 @@ class Productions {
             const start = totalItems === 0 ? 0 : ((this.currentPage - 1) * this.itemsPerPage) + 1;
             const end = Math.min(this.currentPage * this.itemsPerPage, totalItems);
             info.innerHTML = `Página <span class="pagination__current-page">${this.currentPage}</span> de <span class="pagination__total-pages">${totalPages}</span> | Mostrando <span class="pagination__items-per-page">${end - start + 1}</span> de <span class="pagination__total-items">${totalItems}</span> producciones (${start} - ${end})`;
+        }
+    }
+
+    showProduccionDetails(prod) {
+        // General
+        document.getElementById('viewId').textContent = prod.id || '';
+        document.getElementById('viewName').textContent = prod.name || prod.nombre || '';
+        document.getElementById('viewStatus').textContent = (prod.status || prod.estado) === 'habilitado' || (prod.status || prod.estado) === 'Activo' ? 'Activo' : 'Inactivo';
+        document.getElementById('viewCropType').textContent = prod.crop || prod.nombre_cultivo || '';
+        document.getElementById('viewArea').textContent = prod.area || prod.tamano || '';
+
+        // Insumos y Sensores en el panel general
+        let insumos = '-';
+        if (Array.isArray(prod.insumos_asignados) && prod.insumos_asignados.length > 0) {
+            insumos = prod.insumos_asignados.join(', ');
+        }
+        document.getElementById('viewInsumos').textContent = insumos;
+
+        let sensores = '-';
+        if (Array.isArray(prod.sensores_asignados) && prod.sensores_asignados.length > 0) {
+            sensores = prod.sensores_asignados.join(', ');
+        }
+        document.getElementById('viewSensores').textContent = sensores;
+
+        // Personal
+        document.getElementById('viewResponsible').textContent = prod.responsible || prod.nombre_usuario || '';
+        document.getElementById('viewSupervisor').textContent = prod.supervisor || prod.supervisor_nombre || '-';
+        document.getElementById('viewTechnician').textContent = prod.tecnico || prod.tecnico_nombre || '-';
+        let personal = '';
+        if (Array.isArray(prod.personal_asignado) && prod.personal_asignado.length > 0) {
+            personal = prod.personal_asignado.join(', ');
+        } else if (prod.personal_asignado_count) {
+            personal = prod.personal_asignado_count + ' personas';
+        } else {
+            personal = 'Sin personal asignado';
+        }
+        document.getElementById('viewWorkers').textContent = personal;
+
+        // Fechas
+        document.getElementById('viewStartDate').textContent = prod.startDate || prod.fecha_creacion || prod.fecha_inicio || '';
+        document.getElementById('viewEndDate').textContent = prod.fecha_fin || prod.endDate || '-';
+        document.getElementById('viewDuration').textContent = prod.duracion_total || prod.duration || '-';
+        document.getElementById('viewDaysLeft').textContent = prod.dias_restantes || prod.days_left || '-';
+
+        // Financiero
+        document.getElementById('viewInvestment').textContent = prod.investment || prod.inversion || '';
+        document.getElementById('viewExpectedReturn').textContent = prod.retorno_esperado || prod.expected_return || '-';
+        document.getElementById('viewROI').textContent = prod.roi_estimado || prod.roi || '-';
+        document.getElementById('viewCostPerHectare').textContent = prod.costo_hectarea || prod.cost_per_hectare || '-';
+
+        // Panel de Sensores
+        const sensoresContent = document.getElementById('sensoresContent');
+        if (sensoresContent) {
+            sensoresContent.innerHTML = '';
+            if (Array.isArray(prod.sensores_asignados) && prod.sensores_asignados.length > 0) {
+                prod.sensores_asignados.forEach(nombre => {
+                    const div = document.createElement('div');
+                    div.className = 'sensor-item';
+                    div.textContent = nombre;
+                    sensoresContent.appendChild(div);
+                });
+            } else {
+                sensoresContent.innerHTML = '<div class="sensor-item">Sin sensores asignados</div>';
+            }
+        }
+        // Panel de Insumos
+        const insumosContent = document.getElementById('insumosContent');
+        if (insumosContent) {
+            insumosContent.innerHTML = '';
+            if (Array.isArray(prod.insumos_asignados) && prod.insumos_asignados.length > 0) {
+                prod.insumos_asignados.forEach(nombre => {
+                    const div = document.createElement('div');
+                    div.className = 'insumo-item';
+                    div.textContent = nombre;
+                    insumosContent.appendChild(div);
+                });
+            } else {
+                insumosContent.innerHTML = '<div class="insumo-item">Sin insumos asignados</div>';
+            }
+        }
+
+        // ABRIR EL MODAL CORRECTO
+        // Buscar el modal principal por id (puede ser 'viewModal' o 'viewProduccionModal')
+        let modal = document.getElementById('viewModal') || document.getElementById('viewProduccionModal');
+        if (modal) {
+            modal.classList.add('modal--active');
         }
     }
 }

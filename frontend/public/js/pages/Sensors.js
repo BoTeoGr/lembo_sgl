@@ -21,10 +21,13 @@ async function fetchSensorsFromAPI() {
                 id: sensor.sensorId || sensor.id || '',
                 nombre: sensor.nombre_sensor || sensor.nombre || '',
                 tipo: sensor.tipo_sensor || sensor.tipo || '',
+                descripcion: sensor.descripcion || '',
                 ubicacion: sensor.ubicacion || '',
                 estado: status,
                 unidad_medida: sensor.unidad_medida || '',
-                tiempo_escaneo: sensor.tiempo_escaneo || ''
+                tiempo_escaneo: sensor.tiempo_escaneo || '',
+                fecha_creacion: sensor.fecha_creacion || sensor.createdAt || '',
+                imagen: sensor.imagen || '',
             };
         });
     } catch (e) {
@@ -166,6 +169,46 @@ class Sensors {
         document.getElementById('cancelReportBtn').addEventListener('click', () => {
             this.hideReportModal();
         });
+
+        // Acción ver sensor
+        document.querySelector('.table__body').addEventListener('click', (e) => {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+            const row = btn.closest('tr');
+            if (btn.classList.contains('table__action-button--view')) {
+                const id = row.querySelector('.table__cell--id').textContent;
+                const sensor = this.filteredData.find(s => String(s.id) === String(id));
+                if (sensor) this.showSensorDetails(sensor);
+                return;
+            }
+            // Eventos de acción
+            if (btn.classList.contains('table__action-button--enable')) {
+                const id = row.querySelector('.table__cell--id').textContent;
+                const sensor = this.filteredData.find(s => String(s.id) === String(id));
+                if (sensor) {
+                    sensor.estado = 'habilitado';
+                    this.renderTable();
+                    toggleSensorStatus(id, 'habilitado');
+                }
+            }
+            if (btn.classList.contains('table__action-button--disable')) {
+                const id = row.querySelector('.table__cell--id').textContent;
+                const sensor = this.filteredData.find(s => String(s.id) === String(id));
+                if (sensor) {
+                    sensor.estado = 'deshabilitado';
+                    this.renderTable();
+                    toggleSensorStatus(id, 'deshabilitado');
+                }
+            }
+        });
+
+        // Cerrar modal
+        document.getElementById('closeViewSensorModal').onclick = () => {
+            document.getElementById('viewSensorModal').classList.remove('modal--active');
+        };
+        document.getElementById('closeViewSensorBtn').onclick = () => {
+            document.getElementById('viewSensorModal').classList.remove('modal--active');
+        };
     }
 
     setupPaginationEvents() {
@@ -335,25 +378,26 @@ class Sensors {
                     <button class="table__action-button table__action-button--${sensor.estado === 'habilitado' ? 'disable' : 'enable'}"><span class="material-symbols-outlined">power_settings_new</span></button>
                 </td>
             `;
-            // Eventos de acción
-            row.querySelector('.table__action-button--enable')?.addEventListener('click', async () => {
-                sensor.estado = 'habilitado';
-                await toggleSensorStatus(sensor.id, 'habilitado');
-                this.renderTable();
-            });
-            row.querySelector('.table__action-button--disable')?.addEventListener('click', async () => {
-                sensor.estado = 'deshabilitado';
-                await toggleSensorStatus(sensor.id, 'deshabilitado');
-                this.renderTable();
-            });
             tbody.appendChild(row);
         });
         this.updateActionsBar();
     }
 
     showSensorDetails(sensor) {
-        // Implementar lógica para mostrar detalles del sensor
-        console.log('Mostrando detalles del sensor:', sensor);
+        document.getElementById('modalSensorId').textContent = sensor.id || '';
+        document.getElementById('modalSensorNombre').textContent = sensor.nombre || '';
+        document.getElementById('modalSensorTipo').textContent = sensor.tipo || '';
+        document.getElementById('modalSensorDescripcion').textContent = sensor.descripcion || '';
+        document.getElementById('modalSensorUnidadMedida').textContent = sensor.unidad_medida || '';
+        document.getElementById('modalSensorTiempoEscaneo').textContent = sensor.tiempo_escaneo || '';
+        document.getElementById('modalSensorFechaCreacion').textContent = sensor.fecha_creacion || '';
+        document.getElementById('modalSensorEstado').textContent = sensor.estado || '';
+        const imgElem = document.getElementById('modalSensorImagen');
+        if (imgElem) {
+            imgElem.src = sensor.imagen || '../imgs/default-sensor.jpg';
+            imgElem.alt = sensor.nombre || 'Imagen de sensor';
+        }
+        document.getElementById('viewSensorModal').classList.add('modal--active');
     }
 
     editSensor(sensor) {

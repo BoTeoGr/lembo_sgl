@@ -23,6 +23,9 @@ export async function fetchCiclosCultivoFromAPI() {
     ciclosCultivo = arr.map(ciclo => ({
       id: ciclo.id || ciclo.ciclo_id || '',
       nombre: ciclo.nombre || ciclo.nombre_ciclo || '',
+      descripcion: ciclo.descripcion || '',
+      novedades: ciclo.novedades || '',
+      imagen: ciclo.imagen || '',
       periodoInicio: ciclo.periodo_inicio || ciclo.periodoInicio || '',
       periodoFinal: ciclo.periodo_final || ciclo.periodoFinal || '',
       estado: (ciclo.estado && (ciclo.estado.toLowerCase() === 'habilitado' || ciclo.estado.toLowerCase() === 'activo')) ? 'Activo' : 'Inactivo'

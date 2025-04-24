@@ -39,9 +39,13 @@ export async function fetchUsersFromAPI() {
     users = usuariosArr.map(user => ({
       id: user.id || user.numero_documento || '',
       nombre: user.nombre || '',
+      correo: user.correo || user.email || '',
+      tipoDocumento: user.tipoDocumento || user.tipo_doc || user.tipo_documento || '',
+      numeroDocumento: user.numeroDocumento || user.num_doc || user.numero_doc || user.numero_documento || '',
+      telefono: user.telefono || user.celular || '',
       rol: user.rol || '',
-      telefono: user.telefono || '',
-      estado: (user.estado && (user.estado.toLowerCase() === 'habilitado' || user.estado.toLowerCase() === 'activo')) ? 'Activo' : 'Inactivo'
+      estado: (user.estado && (user.estado.toLowerCase() === 'habilitado' || user.estado.toLowerCase() === 'activo')) ? 'Activo' : 'Inactivo',
+      imagen: user.imagen || '',
     }));
     return users;
   } catch (e) {

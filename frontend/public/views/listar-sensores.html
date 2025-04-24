@@ -10,6 +10,7 @@
 			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
 		/>
 		<link rel="stylesheet" href="../css/components/navbar.css" />
+		<link rel="stylesheet" href="../css/components/modal-list.css" />
 		<script type="module" src="../js/data/sensorsData.js"></script>
 		<script type="module" src="../js/config/sensorsConfig.js"></script>
 		
@@ -160,8 +161,12 @@
 												<span class="info-item__value" id="viewSensorType">Temperatura</span>
 											</div>
 											<div class="info-item">
-												<span class="info-item__label">Ubicación</span>
-												<span class="info-item__value" id="viewLocation">Invernadero Norte</span>
+												<span class="info-item__label">Descripción</span>
+												<span class="info-item__value" id="viewDescription"></span>
+											</div>
+											<div class="info-item">
+												<span class="info-item__label">Fecha de Creación</span>
+												<span class="info-item__value" id="viewCreationDate"></span>
 											</div>
 										</div>
 									</div>
@@ -323,6 +328,38 @@
 						<button class="button button--primary" id="generateReportBtn">
 							Generar
 						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal Visualizar Sensor -->
+			<div class="modal" id="viewSensorModal">
+				<div class="modal__content">
+					<div class="modal__header">
+						<h2 class="modal__title">Detalles del Sensor</h2>
+						<span class="modal__close" id="closeViewSensorModal">
+							<span class="material-symbols-outlined">close</span>
+						</span>
+					</div>
+					<div class="modal__body">
+						<div class="modal__image-container">
+							<img id="modalSensorImagen" class="modal__image--default" src="../imgs/default-sensor.jpg" alt="Imagen del sensor" />
+						</div>
+						<table class="modal__table">
+							<tbody>
+								<tr><th>ID</th><td id="modalSensorId"></td></tr>
+								<tr><th>Nombre</th><td id="modalSensorNombre"></td></tr>
+								<tr><th>Tipo</th><td id="modalSensorTipo"></td></tr>
+								<tr><th>Descripción</th><td id="modalSensorDescripcion"></td></tr>
+								<tr><th>Unidad de medida</th><td id="modalSensorUnidadMedida"></td></tr>
+								<tr><th>Tiempo de escaneo</th><td id="modalSensorTiempoEscaneo"></td></tr>
+								<tr><th>Fecha de creación</th><td id="modalSensorFechaCreacion"></td></tr>
+								<tr><th>Estado</th><td id="modalSensorEstado"></td></tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal__footer">
+						<button class="button button--secondary" id="closeViewSensorBtn">Cerrar</button>
 					</div>
 				</div>
 			</div>

@@ -10,6 +10,7 @@
 			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
 		/>
 		<link rel="stylesheet" href="../css/components/navbar.css" />
+		<link rel="stylesheet" href="../css/components/modal-list.css" />
 		<script type="module" src="../js/config/usersConfig.js"></script>
 		<script type="module" src="../js/pages/componentLoader.js"></script>
 		<script type="module" src="../js/pages/Users.js"></script>
@@ -204,6 +205,38 @@
 						<button class="button button--primary" id="generateReportBtn">
 							Generar
 						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal Visualizar Usuario -->
+			<div class="modal" id="viewUsuarioModal">
+				<div class="modal__content">
+					<div class="modal__header">
+						<h2 class="modal__title">Detalles del Usuario</h2>
+						<span class="modal__close" id="closeViewUsuarioModal">
+							<span class="material-symbols-outlined">close</span>
+						</span>
+					</div>
+					<div class="modal__body">
+						<div class="modal__image-container">
+							<img id="modalUsuarioImagen" class="modal__image--default" src="../imgs/default-user.jpg" alt="Imagen del usuario" />
+						</div>
+						<table class="modal__table">
+							<tbody>
+								<tr><th>ID</th><td id="modalUsuarioId"></td></tr>
+								<tr><th>Nombre</th><td id="modalUsuarioNombre"></td></tr>
+								<tr><th>Correo</th><td id="modalUsuarioCorreo"></td></tr>
+								<tr><th>Tipo de documento</th><td id="modalUsuarioTipoDoc"></td></tr>
+								<tr><th>Número de documento</th><td id="modalUsuarioNumDoc"></td></tr>
+								<tr><th>Teléfono</th><td id="modalUsuarioTelefono"></td></tr>
+								<tr><th>Rol</th><td id="modalUsuarioRol"></td></tr>
+								<tr><th>Estado</th><td id="modalUsuarioEstado"></td></tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal__footer">
+						<button class="button button--secondary" id="closeViewUsuarioBtn">Cerrar</button>
 					</div>
 				</div>
 			</div>

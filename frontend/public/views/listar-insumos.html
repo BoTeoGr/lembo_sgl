@@ -10,6 +10,7 @@
 			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
 		/>
 		<link rel="stylesheet" href="../css/components/navbar.css" />
+		<link rel="stylesheet" href="../css/components/modal-list.css" />
 		<script type="module" src="../js/pages/componentLoader.js"></script>
 		<script type="module" src="../js/config/insumosConfig.js"></script>
 	</head>
@@ -247,6 +248,36 @@
 						<button class="button button--primary" id="generateReportBtn">
 							Generar
 						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal Visualizar Insumo -->
+			<div class="modal" id="viewInsumoModal">
+				<div class="modal__content">
+					<div class="modal__header">
+						<h2 class="modal__title">Detalles del Insumo</h2>
+						<span class="modal__close" id="closeViewInsumoModal">
+							<span class="material-symbols-outlined">close</span>
+						</span>
+					</div>
+					<div class="modal__body">
+						<div class="modal__image-container">
+							<img id="modalInsumoImagen" class="modal__image--default" src="../imgs/default-insumo.jpg" alt="Imagen del insumo" />
+						</div>
+						<table class="modal__table">
+							<tbody>
+								<tr><th>ID</th><td id="modalInsumoId"></td></tr>
+								<tr><th>Nombre</th><td id="modalInsumoNombre"></td></tr>
+								<tr><th>Tipo</th><td id="modalInsumoTipo"></td></tr>
+								<tr><th>Cantidad</th><td id="modalInsumoCantidad"></td></tr>
+								<tr><th>Estado</th><td id="modalInsumoEstado"></td></tr>
+								<tr><th>Descripción</th><td id="modalInsumoDescripcion"></td></tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal__footer">
+						<button class="button button--secondary" id="closeViewInsumoBtn">Cerrar</button>
 					</div>
 				</div>
 			</div>

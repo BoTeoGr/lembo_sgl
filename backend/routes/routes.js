@@ -4,7 +4,7 @@ import {VerSensores, crearSensor, actualizarEstadoSensor} from '../controllers/s
 import {crearInsumo,VerInsumos,actualizarEstadoInsumo} from '../controllers/insumo.controller.js'
 import {crearCultivo,VerCultivos,actualizarEstadoCultivo} from '../controllers/cultivo.controller.js'
 import {VerCiclosCultivo, crearCicloCultivo, actualizarEstadoCicloCultivo} from '../controllers/ciclo-cultivo.controller.js'
-import {actualizarProduccion,crearProduccion,eliminarProduccion,obtenerProduccionPorId,verProducciones} from '../controllers/production.controller.js'
+import {actualizarProduccion,crearProduccion,eliminarProduccion,obtenerProduccionPorId,verProducciones,actualizarEstadoProduccion} from '../controllers/production.controller.js'
 
 const router = express.Router()
 
@@ -33,6 +33,7 @@ router.get('/producciones', verProducciones);
 router.post('/producciones', crearProduccion);
 router.get('/producciones/:id', obtenerProduccionPorId);
 router.put('/producciones/:id', actualizarProduccion);
+router.put('/producciones/:id/estado', actualizarEstadoProduccion);
 router.delete('/producciones/:id', eliminarProduccion);
 
 export default router

@@ -1,6 +1,6 @@
 export const sensorsData = [
     {
-        id: 'SENS-01042025-0001',
+        id: 1,
         name: 'Sensor de Temperatura Zona Norte',
         type: 'Temperatura',
         location: 'Invernadero Norte',
@@ -23,7 +23,7 @@ export const sensorsData = [
         scanInterval: '5 min'
     },
     {
-        id: 'SENS-01042025-0002',
+        id: 2,
         name: 'Sensor de Humedad Zona Sur',
         type: 'Humedad',
         location: 'Invernadero Sur',
@@ -46,7 +46,7 @@ export const sensorsData = [
         scanInterval: '10 min'
     },
     {
-        id: 'SENS-01042025-0003',
+        id: 3,
         name: 'Sensor de Luz Exterior',
         type: 'Luz',
         location: 'Campo',
@@ -69,7 +69,7 @@ export const sensorsData = [
         scanInterval: '15 min'
     },
     {
-        id: 'SENS-01042025-0004',
+        id: 4,
         name: 'Sensor de Suelo Lote 5',
         type: 'Suelo',
         location: 'Campo',
@@ -92,7 +92,7 @@ export const sensorsData = [
         scanInterval: '30 min'
     },
     {
-        id: 'SENS-01042025-0005',
+        id: 5,
         name: 'Sensor de CO2 Invernadero 1',
         type: 'CO2',
         location: 'Invernadero',
@@ -115,7 +115,7 @@ export const sensorsData = [
         scanInterval: '5 min'
     },
     {
-        id: 'SENS-01042025-0006',
+        id: 6,
         name: 'Sensor de Presión Atmosférica',
         type: 'Presión',
         location: 'Campo',
@@ -138,7 +138,7 @@ export const sensorsData = [
         scanInterval: '15 min'
     },
     {
-        id: 'SENS-01042025-0007',
+        id: 7,
         name: 'Sensor de Viento Zona Este',
         type: 'Viento',
         location: 'Campo',
@@ -161,7 +161,7 @@ export const sensorsData = [
         scanInterval: '5 min'
     },
     {
-        id: 'SENS-01042025-0008',
+        id: 8,
         name: 'Sensor de Lluvia',
         type: 'Lluvia',
         location: 'Campo',
@@ -184,7 +184,7 @@ export const sensorsData = [
         scanInterval: '30 min'
     },
     {
-        id: 'SENS-01042025-0009',
+        id: 9,
         name: 'Sensor de Temperatura Suelo',
         type: 'Temperatura',
         location: 'Campo',
@@ -207,7 +207,7 @@ export const sensorsData = [
         scanInterval: '10 min'
     },
     {
-        id: 'SENS-01042025-0010',
+        id: 10,
         name: 'Sensor de Humedad Hoja',
         type: 'Humedad',
         location: 'Invernadero',
@@ -230,7 +230,7 @@ export const sensorsData = [
         scanInterval: '5 min'
     },
     {
-        id: 'SENS-01042025-0016',
+        id: 11,
         name: 'Sensor de Temperatura Lote 9',
         type: 'Temperatura',
         location: 'Campo',
@@ -253,7 +253,7 @@ export const sensorsData = [
         scanInterval: '15 min'
     },
     {
-        id: 'SENS-01042025-0017',
+        id: 12,
         name: 'Sensor de Humedad Lote 3',
         type: 'Humedad',
         location: 'Invernadero',
@@ -276,7 +276,7 @@ export const sensorsData = [
         scanInterval: '10 min'
     },
     {
-        id: 'SENS-01042025-0018',
+        id: 13,
         name: 'Sensor de Luz Lote 1',
         type: 'Luz',
         location: 'Campo',
@@ -299,7 +299,7 @@ export const sensorsData = [
         scanInterval: '5 min'
     },
     {
-        id: 'SENS-01042025-0019',
+        id: 14,
         name: 'Sensor de Suelo Lote 10',
         type: 'Suelo',
         location: 'Campo',
@@ -322,7 +322,7 @@ export const sensorsData = [
         scanInterval: '30 min'
     },
     {
-        id: 'SENS-01042025-0020',
+        id: 15,
         name: 'Sensor de CO2 Zona Sur',
         type: 'CO2',
         location: 'Invernadero Sur',

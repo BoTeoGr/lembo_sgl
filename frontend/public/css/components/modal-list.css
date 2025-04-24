@@ -1,3 +1,4 @@
+/* Estilos reutilizables para modales de listas y detalles */
 .modal__content {
   max-width: 420px;
   padding: 0;
@@ -99,4 +100,66 @@
 .button--secondary:hover {
   background: #4caf50;
   color: #fff;
+}
+
+.modal__header-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.modal__content--produccion {
+  max-width: 1200px;
+  min-width: 900px;
+  width: 90vw;
+  max-height: 80vh;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.modal--produccion {
+  width: 100%;
+}
+
+.asignados-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  align-items: stretch;
+}
+
+.asignados-grid .info-item {
+  background: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 120px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.asignados-grid .info-item__value:empty::before {
+  content: '-';
+  color: #aaa;
+}
+
+.modal-grid--produccion {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem 2.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .asignados-grid {
+    grid-template-columns: 1fr;
+  }
+  .modal-grid--produccion {
+    grid-template-columns: 1fr;
+  }
 }

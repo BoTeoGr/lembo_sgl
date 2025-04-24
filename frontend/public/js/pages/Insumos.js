@@ -29,7 +29,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           nombre: insumo.nombre || '',
           tipo: insumo.tipo || '',
           cantidad: insumo.cantidad || '',
-          estado: status
+          estado: status,
+          descripcion: insumo.descripcion || '',
+          proveedor: insumo.proveedor || '',
+          unidad: insumo.unidad || '',
+          imagen: insumo.imagen || '',
+          fechaCreacion: insumo.fechaCreacion || insumo.createdAt || insumo.fecha_creacion || '',
+          fechaActualizacion: insumo.fechaActualizacion || insumo.updatedAt || insumo.fecha_actualizacion || '',
         };
       });
     } catch (e) {
@@ -194,6 +200,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // --- Mostrar modal de visualizar insumo ---
+  function showInsumoModal(insumo) {
+    document.getElementById('modalInsumoId').textContent = insumo.id || '';
+    document.getElementById('modalInsumoNombre').textContent = insumo.nombre || '';
+    document.getElementById('modalInsumoTipo').textContent = insumo.tipo || '';
+    document.getElementById('modalInsumoCantidad').textContent = insumo.cantidad || '';
+    document.getElementById('modalInsumoEstado').textContent = insumo.estado || '';
+    document.getElementById('modalInsumoDescripcion').textContent = insumo.descripcion || '-';
+    const imgElem = document.getElementById('modalInsumoImagen');
+    if (imgElem) {
+      imgElem.src = insumo.imagen || '../imgs/default-insumo.jpg';
+      imgElem.alt = insumo.nombre || 'Imagen de insumo';
+    }
+    document.getElementById('viewInsumoModal').classList.add('modal--active');
+  }
+
+  // Cerrar modal
+  document.getElementById('closeViewInsumoModal').onclick = () => {
+    document.getElementById('viewInsumoModal').classList.remove('modal--active');
+  };
+  document.getElementById('closeViewInsumoBtn').onclick = () => {
+    document.getElementById('viewInsumoModal').classList.remove('modal--active');
+  };
+
   // --- Reporte funcional ---
   const reportModal = document.getElementById('reportModal');
   const reportBtn = document.querySelector('.button--report');
@@ -296,7 +326,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const row = btn.closest('tr');
     const id = row.querySelector('.table__cell--id').textContent;
     if (btn.classList.contains('table__action-button--view')) {
-      alert(`Ver insumo: ${id}`);
+      const insumo = filteredInsumos.find(i => String(i.id) === String(id));
+      if (insumo) showInsumoModal(insumo);
+      return;
     } else if (btn.classList.contains('table__action-button--edit')) {
       alert(`Editar insumo: ${id}`);
     } else if (btn.classList.contains('table__action-button--enable')) {

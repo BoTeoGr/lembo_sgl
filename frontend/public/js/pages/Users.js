@@ -93,7 +93,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const row = btn.closest('tr');
     const id = row.querySelector('.table__cell--id').textContent;
     if (btn.classList.contains('table__action-button--view')) {
-      alert(`Ver usuario: ${id}`);
+      const usuario = allUsers.find(u => String(u.id) === String(id));
+      if (usuario) showUsuarioModal(usuario);
+      return;
     } else if (btn.classList.contains('table__action-button--edit')) {
       alert(`Editar usuario: ${id}`);
     } else if (btn.classList.contains('table__action-button--enable')) {
@@ -181,4 +183,30 @@ document.addEventListener('DOMContentLoaded', async () => {
   function updateUserStatus(ids, status) {
     allUsers = allUsers.map(user => ids.includes(user.id) ? { ...user, estado: status } : user);
   }
+
+  // --- Modal Visualizar Usuario ---
+  function showUsuarioModal(usuario) {
+    document.getElementById('modalUsuarioId').textContent = usuario.id || '';
+    document.getElementById('modalUsuarioNombre').textContent = usuario.nombre || '';
+    document.getElementById('modalUsuarioCorreo').textContent = usuario.correo || usuario.email || '-';
+    document.getElementById('modalUsuarioTipoDoc').textContent = usuario.tipoDocumento;
+    document.getElementById('modalUsuarioNumDoc').textContent = usuario.numeroDocumento || usuario.num_doc || usuario.numero_doc || '-';
+    document.getElementById('modalUsuarioTelefono').textContent = usuario.telefono || usuario.celular || '-';
+    document.getElementById('modalUsuarioRol').textContent = usuario.rol || '-';
+    document.getElementById('modalUsuarioEstado').textContent = usuario.estado || '-';
+    const imgElem = document.getElementById('modalUsuarioImagen');
+    if (imgElem) {
+      imgElem.src = usuario.imagen || '../imgs/default-user.jpg';
+      imgElem.alt = usuario.nombre || 'Imagen de usuario';
+    }
+    document.getElementById('viewUsuarioModal').classList.add('modal--active');
+  }
+
+  // Cerrar modal
+  document.getElementById('closeViewUsuarioModal').onclick = () => {
+    document.getElementById('viewUsuarioModal').classList.remove('modal--active');
+  };
+  document.getElementById('closeViewUsuarioBtn').onclick = () => {
+    document.getElementById('viewUsuarioModal').classList.remove('modal--active');
+  };
 });

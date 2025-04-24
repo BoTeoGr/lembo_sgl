@@ -146,18 +146,43 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Botones individuales y masivos
+  // Acción ver ciclo de cultivo
   document.querySelector('.table__body').addEventListener('click', (e) => {
     const btn = e.target.closest('button');
     if (!btn) return;
     const row = btn.closest('tr');
     const id = row.querySelector('.table__cell--id').textContent;
     if (btn.classList.contains('table__action-button--view')) {
-      // alert(`Ver ciclo: ${id}`);
-    } else if (btn.classList.contains('table__action-button--edit')) {
+      const ciclo = filteredCiclos.find(c => String(c.id) === String(id));
+      if (ciclo) showCicloCultivoDetails(ciclo);
+      return;
+    }
+    if (btn.classList.contains('table__action-button--edit')) {
       // alert(`Editar ciclo: ${id}`);
     }
   });
+
+  function showCicloCultivoDetails(ciclo) {
+    document.getElementById('modalCicloCultivoId').textContent = ciclo.id || '';
+    document.getElementById('modalCicloCultivoNombre').textContent = ciclo.nombre || '';
+    document.getElementById('modalCicloCultivoDescripcion').textContent = ciclo.descripcion || '';
+    document.getElementById('modalCicloCultivoNovedades').textContent = ciclo.novedades || '';
+    document.getElementById('modalCicloCultivoPeriodoInicio').textContent = ciclo.periodoInicio || '';
+    document.getElementById('modalCicloCultivoPeriodoFinal').textContent = ciclo.periodoFinal || '';
+    document.getElementById('modalCicloCultivoEstado').textContent = ciclo.estado || '';
+    const imgElem = document.getElementById('modalCicloCultivoImagen');
+    if (imgElem) {
+      imgElem.src = ciclo.imagen || '../imgs/default-ciclo-cultivo.jpg';
+      imgElem.alt = ciclo.nombre || 'Imagen de ciclo de cultivo';
+    }
+    document.getElementById('viewCicloCultivoModal').classList.add('modal--active');
+  }
+  document.getElementById('closeViewCicloCultivoModal').onclick = () => {
+    document.getElementById('viewCicloCultivoModal').classList.remove('modal--active');
+  };
+  document.getElementById('closeViewCicloCultivoBtn').onclick = () => {
+    document.getElementById('viewCicloCultivoModal').classList.remove('modal--active');
+  };
 
   // --- Modal de Generar Reporte avanzado funcional ---
   const reportModal = document.getElementById('reportModal');

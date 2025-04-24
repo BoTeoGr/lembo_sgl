@@ -479,6 +479,29 @@ export function actualizarProduccion(req, res) {
     }
 }
 
+export function actualizarEstadoProduccion(req, res) {
+    try {
+        const { id } = req.params;
+        const { estado } = req.body;
+        if (!id || !estado) {
+            return res.status(400).json({ error: 'Faltan parámetros requeridos (id, estado)' });
+        }
+        if (!['habilitado', 'deshabilitado'].includes(estado)) {
+            return res.status(400).json({ error: 'Estado no válido' });
+        }
+        const query = 'UPDATE producciones SET estado = ? WHERE id = ?';
+        db.query(query, [estado, id], (err, result) => {
+            if (err) {
+                console.error('Error al actualizar estado de producción:', err.message);
+                return res.status(500).json({ error: 'Error al actualizar estado de producción' });
+            }
+            res.status(200).json({ message: 'Estado actualizado correctamente' });
+        });
+    } catch (error) {
+        console.error('Error en actualizarEstadoProduccion:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
 
 export function eliminarProduccion(req, res) {
     try {
@@ -525,5 +548,6 @@ export default {
     crearProduccion,
     obtenerProduccionPorId,
     actualizarProduccion,
+    actualizarEstadoProduccion,
     eliminarProduccion
 };

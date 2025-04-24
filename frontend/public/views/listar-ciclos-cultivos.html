@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Sistema de Gestión Agrícola - Ciclos de Cultivos</title>
 		<link rel="stylesheet" href="../css/pages/listar.css" />
+		<link rel="stylesheet" href="../css/components/modal-list.css" />
 		<link
 			rel="stylesheet"
 			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
@@ -132,6 +133,36 @@
 					<div class="modal__footer modal__footer--confirm">
 						<button class="button button--secondary" id="cancelReportBtn">Cancelar</button>
 						<button class="button button--primary" id="generateReportBtn">Generar</button>
+					</div>
+				</div>
+			</div>
+			<!-- Modal Visualizar Ciclo de Cultivo -->
+			<div class="modal" id="viewCicloCultivoModal">
+				<div class="modal__content">
+					<div class="modal__header">
+						<h2 class="modal__title">Detalles del Ciclo de Cultivo</h2>
+						<span class="modal__close" id="closeViewCicloCultivoModal">
+							<span class="material-symbols-outlined">close</span>
+						</span>
+					</div>
+					<div class="modal__body">
+						<div class="modal__image-container">
+							<img id="modalCicloCultivoImagen" class="modal__image--default" src="../imgs/default-ciclo-cultivo.jpg" alt="Imagen del ciclo de cultivo" />
+						</div>
+						<table class="modal__table">
+							<tbody>
+								<tr><th>ID</th><td id="modalCicloCultivoId"></td></tr>
+								<tr><th>Nombre</th><td id="modalCicloCultivoNombre"></td></tr>
+								<tr><th>Descripción</th><td id="modalCicloCultivoDescripcion"></td></tr>
+								<tr><th>Novedades</th><td id="modalCicloCultivoNovedades"></td></tr>
+								<tr><th>Periodo Inicio</th><td id="modalCicloCultivoPeriodoInicio"></td></tr>
+								<tr><th>Periodo Final</th><td id="modalCicloCultivoPeriodoFinal"></td></tr>
+								<tr><th>Estado</th><td id="modalCicloCultivoEstado"></td></tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal__footer">
+						<button class="button button--secondary" id="closeViewCicloCultivoBtn">Cerrar</button>
 					</div>
 				</div>
 			</div>

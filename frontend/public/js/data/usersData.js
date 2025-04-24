@@ -1,48 +1,18 @@
 // Datos de ejemplo para usuarios
 export const users = [
-  {
-    id: 'USR-001', nombre: 'Juan Pérez', rol: 'Administrador', telefono: '3101234567', estado: 'Activo'
-  },
-  {
-    id: 'USR-002', nombre: 'María Gómez', rol: 'Usuario', telefono: '3209876543', estado: 'Inactivo'
-  },
-  {
-    id: 'USR-003', nombre: 'Carlos Ramírez', rol: 'Usuario', telefono: '3001122334', estado: 'Activo'
-  },
-  {
-    id: 'USR-004', nombre: 'Ana Torres', rol: 'Administrador', telefono: '3159988776', estado: 'Activo'
-  },
-  {
-    id: 'USR-005', nombre: 'Luis Martínez', rol: 'Usuario', telefono: '3124455667', estado: 'Inactivo'
-  },
-  {
-    id: 'USR-006', nombre: 'Sofía Herrera', rol: 'Usuario', telefono: '3112233445', estado: 'Activo'
-  },
-  {
-    id: 'USR-007', nombre: 'Pedro López', rol: 'Administrador', telefono: '3133344556', estado: 'Activo'
-  },
-  {
-    id: 'USR-008', nombre: 'Laura Mendoza', rol: 'Usuario', telefono: '3145566778', estado: 'Inactivo'
-  },
-  {
-    id: 'USR-009', nombre: 'Miguel Ángel', rol: 'Usuario', telefono: '3178899001', estado: 'Activo'
-  },
-  {
-    id: 'USR-010', nombre: 'Isabel Castro', rol: 'Administrador', telefono: '3161122334', estado: 'Activo'
-  },
-  {
-    id: 'USR-011', nombre: 'Ricardo Díaz', rol: 'Usuario', telefono: '3104455667', estado: 'Inactivo'
-  },
-  {
-    id: 'USR-012', nombre: 'Valentina Ruiz', rol: 'Usuario', telefono: '3127788990', estado: 'Activo'
-  },
-  {
-    id: 'USR-013', nombre: 'Andrés Cárdenas', rol: 'Administrador', telefono: '3153344556', estado: 'Activo'
-  },
-  {
-    id: 'USR-014', nombre: 'Natalia Vargas', rol: 'Usuario', telefono: '3199988776', estado: 'Inactivo'
-  },
-  {
-    id: 'USR-015', nombre: 'Camilo Rojas', rol: 'Usuario', telefono: '3185566778', estado: 'Activo'
-  }
+  { id: 1, nombre: 'Mateo Ramírez', rol: 'admin', telefono: '+57 300000001', estado: 'Activo' },
+  { id: 2, nombre: 'Laura Gómez', rol: 'apoyo', telefono: '+57 300000002', estado: 'Activo' },
+  { id: 3, nombre: 'Carlos Torres', rol: 'apoyo', telefono: '+57 300000003', estado: 'Activo' },
+  { id: 4, nombre: 'María López', rol: 'apoyo', telefono: '+57 300000004', estado: 'Activo' },
+  { id: 5, nombre: 'Andrés Pérez', rol: 'apoyo', telefono: '+57 300000005', estado: 'Activo' },
+  { id: 6, nombre: 'Valentina Ruiz', rol: 'apoyo', telefono: '+57 300000006', estado: 'Activo' },
+  { id: 7, nombre: 'Jorge Castillo', rol: 'apoyo', telefono: '+57 300000007', estado: 'Activo' },
+  { id: 8, nombre: 'Sofía Herrera', rol: 'apoyo', telefono: '+57 300000008', estado: 'Activo' },
+  { id: 9, nombre: 'Miguel López', rol: 'apoyo', telefono: '+57 300000009', estado: 'Activo' },
+  { id: 10, nombre: 'Paula Medina', rol: 'apoyo', telefono: '+57 300000010', estado: 'Activo' },
+  { id: 11, nombre: 'Camilo Vargas', rol: 'apoyo', telefono: '+57 300000011', estado: 'Activo' },
+  { id: 12, nombre: 'Mariana Ortiz', rol: 'apoyo', telefono: '+57 300000012', estado: 'Activo' },
+  { id: 13, nombre: 'Ricardo Jiménez', rol: 'apoyo', telefono: '+57 300000013', estado: 'Activo' },
+  { id: 14, nombre: 'Natalia Castro', rol: 'apoyo', telefono: '+57 300000014', estado: 'Activo' },
+  { id: 15, nombre: 'Daniela Romero', rol: 'apoyo', telefono: '+57 300000015', estado: 'Activo' }
 ];
