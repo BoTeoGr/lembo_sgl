@@ -82,9 +82,7 @@ CREATE TABLE IF NOT EXISTS producciones (
     imagen VARCHAR(255) NOT NULL,
     ubicacion VARCHAR(100) NOT NULL,
     descripcion TEXT NOT NULL,
-    inversion DECIMAL(12,2) DEFAULT 0,
     usuario_id INT,
-    cantidad DECIMAL(10, 2) NOT NULL,
     estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     cultivo_id INT,
@@ -249,15 +247,15 @@ INSERT INTO insumos (nombre, tipo, imagen, unidad_medida, valor_unitario, cantid
 ('Plástico Mulch', 'Material', 'plastico_mulch.jpg', 'metro', 1.20, 1000, 1200.00, 'Plástico agrícola para cobertura de suelos y control de malezas.', 1);
 
 -- Insertar datos de ejemplo en la tabla producciones
-INSERT INTO producciones (id, nombre, tipo, imagen, ubicacion, descripcion, inversion, usuario_id, cantidad, estado, cultivo_id, ciclo_id, insumos_ids, sensores_ids, personal_ids) VALUES
-(1, 'Producción de Tomates 2025', 'Orgánica', 'tomate_produccion.jpg', 'Invernadero 1', 'Producción de tomates orgánicos', 2500.00, 1, 500.00, 'habilitado', 1, 1, '1,3', '1,5', '2,3'),
-(2, 'Producción de Maíz Verano', 'Tradicional', 'maiz_produccion.jpg', 'Campo 3', 'Producción de maíz para temporada de verano', 4000.00, 3, 1200.00, 'habilitado', 3, 2, '1,4,6', '2,7', '4,5,6'),
-(3, 'Producción de Fresas', 'Hidropónica', 'fresa_produccion.jpg', 'Invernadero 2', 'Producción de fresas en sistema hidropónico', 1800.00, 8, 300.00, 'habilitado', 8, 8, '2,5,7', '3,8', '7'),
-(4, 'Producción de Café Premium', 'Orgánica', 'cafe_produccion.jpg', 'Plantación 1', 'Producción de café de alta calidad', 3200.00, 5, 800.00, 'habilitado', 5, 5, '6,7', '4,5', '8,9'),
-(5, 'Producción de Zanahoria Premium', 'Orgánica', 'zanahoria_premium.jpg', 'Parcela 2', 'Producción de zanahorias seleccionadas para exportación a Europa.', 1500.00, 2, 200.00, 'habilitado', 9, 13, '8,9', '9,11', '10'),
-(6, 'Producción de Banano Cavendish', 'Tradicional', 'banano_cavendish.jpg', 'Finca El Paraíso', 'Cosecha de banano Cavendish con riego tecnificado y control fitosanitario.', 2200.00, 3, 1200.00, 'habilitado', 10, 14, '10,11', '10,12', '11,12'),
-(7, 'Producción de Cacao Fino', 'Orgánica', 'cacao_fino.jpg', 'Finca Las Delicias', 'Producción de cacao para chocolatería artesanal y exportación.', 1700.00, 4, 350.00, 'habilitado', 11, 15, '12,13', '13,14', '13'),
-(8, 'Producción de Aguacate Hass', 'Tradicional', 'aguacate_hass.jpg', 'Huerta Central', 'Producción de aguacate Hass con manejo integrado de plagas.', 2000.00, 1, 600.00, 'habilitado', 12, 16, '14,15', '15,16', '14,15');
+INSERT INTO producciones (id, nombre, tipo, imagen, ubicacion, descripcion, usuario_id, estado, fecha_creacion, cultivo_id, ciclo_id, insumos_ids, sensores_ids, personal_ids) VALUES
+(1, 'Producción de Tomates 2025', 'Orgánica', 'tomate_produccion.jpg', 'Invernadero 1', 'Producción de tomates orgánicos', 1, 'habilitado', NOW(), 1, 1, '1,3', '1,5', '2,3'),
+(2, 'Producción de Maíz Verano', 'Tradicional', 'maiz_produccion.jpg', 'Campo 3', 'Producción de maíz para temporada de verano', 3, 'habilitado', NOW(), 3, 2, '1,4,6', '2,7', '4,5,6'),
+(3, 'Producción de Fresas', 'Hidropónica', 'fresa_produccion.jpg', 'Invernadero 2', 'Producción de fresas en sistema hidropónico', 8, 'habilitado', NOW(), 8, 8, '2,5,7', '3,8', '7'),
+(4, 'Producción de Café Premium', 'Orgánica', 'cafe_produccion.jpg', 'Plantación 1', 'Producción de café de alta calidad', 5, 'habilitado', NOW(), 5, 5, '6,7', '4,5', '8,9'),
+(5, 'Producción de Zanahoria Premium', 'Orgánica', 'zanahoria_premium.jpg', 'Parcela 2', 'Producción de zanahorias seleccionadas para exportación a Europa.', 2, 'habilitado', NOW(), 9, 13, '8,9', '9,11', '10'),
+(6, 'Producción de Banano Cavendish', 'Tradicional', 'banano_cavendish.jpg', 'Finca El Paraíso', 'Cosecha de banano Cavendish con riego tecnificado y control fitosanitario.', 3, 'habilitado', NOW(), 10, 14, '10,11', '10,12', '11,12'),
+(7, 'Producción de Cacao Fino', 'Orgánica', 'cacao_fino.jpg', 'Finca Las Delicias', 'Producción de cacao para chocolatería artesanal y exportación.', 4, 'habilitado', NOW(), 11, 15, '12,13', '13,14', '13'),
+(8, 'Producción de Aguacate Hass', 'Tradicional', 'aguacate_hass.jpg', 'Huerta Central', 'Producción de aguacate Hass con manejo integrado de plagas.', 1, 'habilitado', NOW(), 12, 16, '14,15', '15,16', '14,15');
 
 -- Ejemplo de asignación de personal a producciones (IDs de usuario ficticios)
 INSERT INTO produccion_personal (produccion_id, usuario_id) VALUES

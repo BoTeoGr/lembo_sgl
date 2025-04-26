@@ -87,13 +87,11 @@ export function crearProduccion(req, res) {
             ubicacion, 
             descripcion, 
             usuario_id, 
-            cantidad, 
             estado,
             cultivo_id,
             ciclo_id,
             insumos_ids,
-            sensores_ids,
-            inversion
+            sensores_ids
         } = req.body;
 
         // Log de los datos recibidos (sin la imagen para no sobrecargar el log)
@@ -103,16 +101,8 @@ export function crearProduccion(req, res) {
         });
 
         // Validar que todos los campos requeridos estén presentes
-        if (!nombre || !tipo || !imagen || !ubicacion || !descripcion || !usuario_id || !cantidad || inversion === undefined) {
-            return res.status(400).json({ error: 'Los campos nombre, tipo, imagen, ubicacion, descripcion, usuario_id, cantidad e inversion son obligatorios' });
-        }
-
-        // Validar que cantidad sea un número válido y esté dentro del rango permitido
-        const parsedQuantity = parseFloat(cantidad);
-        if (isNaN(parsedQuantity) || parsedQuantity < 1 || parsedQuantity > 1000000) {
-            return res.status(400).json({ 
-                error: 'La cantidad de producción debe ser un número válido entre 1 y 1,000,000 kg' 
-            });
+        if (!nombre || !tipo || !imagen || !ubicacion || !descripcion || !usuario_id ) {
+            return res.status(400).json({ error: 'Los campos nombre, tipo, imagen, ubicacion, descripcion, usuario_id son obligatorios' });
         }
 
         // Validar que el estado sea válido si se proporciona
@@ -230,15 +220,13 @@ export function crearProduccion(req, res) {
                             ubicacion, 
                             descripcion, 
                             usuario_id, 
-                            cantidad, 
-                            inversion, 
                             estado, 
                             fecha_creacion,
                             cultivo_id,
                             ciclo_id,
                             insumos_ids,
                             sensores_ids
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     `;
 
                     db.query(
@@ -250,8 +238,6 @@ export function crearProduccion(req, res) {
                             ubicacion, 
                             descripcion, 
                             usuario_id, 
-                            parsedQuantity, 
-                            inversion, 
                             estadoFinal, 
                             new Date(),
                             cultivo_id || null,
@@ -267,8 +253,7 @@ export function crearProduccion(req, res) {
                             
                             res.status(201).json({ 
                                 message: 'Producción creada correctamente', 
-                                produccionId: results.insertId,
-                                info: `Cantidad de producción: ${parsedQuantity} kg`
+                                produccionId: results.insertId
                             });
                         }
                     );

@@ -126,6 +126,9 @@ const modalCropCycleData = {
     estado: "habilitado"
 };
 
+// Guardar el array global de insumos al cargar el formulario
+let allSuppliesGlobal = [];
+
 // Inicialización del formulario
 document.addEventListener("DOMContentLoaded", async () => {
   await initializeForm();
@@ -148,6 +151,23 @@ async function getAllItems(endpoint, limit = 100) {
   }
 }
 
+// Función para actualizar el select de insumos disponibles
+function updateAvailableSuppliesSelect() {
+    const supplySelect = document.getElementById("supply");
+    // Filtra los insumos que NO están en la lista de seleccionados
+    const availableSupplies = allSuppliesGlobal.filter(supply =>
+        !productionData.insumos_ids.includes(String(supply.id))
+    );
+    supplySelect.innerHTML = '<option value="">Seleccionar insumo</option>';
+    availableSupplies.forEach(supply => {
+        supplySelect.innerHTML += `
+            <option value="${supply.id}">
+                ${supply.nombre}
+            </option>
+        `;
+    });
+}
+
 // Función para inicializar el formulario
 async function initializeForm() {
   try {
@@ -166,13 +186,15 @@ async function initializeForm() {
     const crops = cropsData.cultivos || [];
     const cycles = cyclesData.ciclos || [];
     const sensors = sensorsData.sensores || [];
-    const supplies = suppliesData || []; // Los insumos no vienen en un objeto anidado
+    const supplies = suppliesData || [];
     const users = usersData.usuarios || [];
 
     // Llenar los selectores
     fillSelect("crop", crops, "Seleccionar cultivo", NAME_FIELDS.crop, ID_FIELDS.crop);
     fillSelect("cropCycle", cycles, "Seleccionar ciclo", NAME_FIELDS.cycle, ID_FIELDS.cycle);
     fillSelect("sensor", sensors, "Seleccionar sensor", NAME_FIELDS.sensor, ID_FIELDS.sensor);
+    allSuppliesGlobal = Array.isArray(supplies) ? supplies : (supplies.insumos || []);
+    updateAvailableSuppliesSelect();
     fillSelect("supply", supplies, "Seleccionar insumo", NAME_FIELDS.supply, ID_FIELDS.supply);
     
     // Mostrar todos los usuarios sin filtrar por rol
@@ -222,9 +244,7 @@ function setupEventListeners() {
     productionType: document.getElementById("productionType"),
     location: document.getElementById("location"),
     description: document.getElementById("description"),
-    investment: document.getElementById("investment"),
-    quantity: document.getElementById("quantity"),
-    
+
     // Selects principales
     crop: document.getElementById("crop"),
     cropCycle: document.getElementById("cropCycle"),
@@ -265,8 +285,6 @@ function validateForm() {
         'productionType',
         'location',
         'description',
-        'investment',
-        'quantity',
         'crop',
         'cropCycle',
         'responsible'
@@ -280,10 +298,9 @@ function validateForm() {
 
     // Verificar sensores e insumos
     const hasSufficientSensors = productionData.sensores_ids.length >= 3;
-    const hasSufficientSupplies = productionData.insumos_ids.length >= 3;
 
     // El formulario es válido solo si todos los campos están completos
-    const isValid = basicFieldsValid && hasSufficientSensors && hasSufficientSupplies;
+    const isValid = basicFieldsValid && hasSufficientSensors;
 
     // Habilitar/deshabilitar el botón de crear
     const createBtn = document.getElementById("createBtn");
@@ -366,39 +383,32 @@ function addSelectedSupply() {
     
     selectedSupplies.appendChild(supplyCard);
 
-    // Mostrar mensaje si aún no se alcanza el mínimo de insumos
-    if (productionData.insumos_ids.length < 3) {
-        showToast("Insumos", `Necesitas agregar ${3 - productionData.insumos_ids.length} insumo(s) más`, "warning");
+    // Buscar el objeto completo en el array global y pasarlo a updateSelectedSupplies
+    const selectedSuppliesFull = productionData.insumos_ids.map(id => {
+        return allSuppliesGlobal.find(s => String(s.id) === String(id));
+    });
+    if (typeof window.updateSelectedSupplies === 'function') {
+        window.updateSelectedSupplies(selectedSuppliesFull);
+        if (typeof window.showSupplyUsageFormById === 'function') {
+            window.showSupplyUsageFormById(selectedSupply.value);
+        }
     }
-
-    validateForm();
-
-    // Deshabilitar el botón si ya se seleccionaron 3 insumos
-    document.getElementById("addSupply").disabled = productionData.insumos_ids.length >= 3;
+    updateAvailableSuppliesSelect();
 }
 
 function removeSelectedItem(button, type) {
     const card = button.closest('.item-card');
     const itemId = type === 'sensor' ? card.dataset.sensorId : card.dataset.supplyId;
-    
     if (type === 'sensor') {
         productionData.sensores_ids = productionData.sensores_ids.filter(id => id !== itemId);
-        // Habilitar el botón si hay menos de 3 sensores
         document.getElementById("addSensor").disabled = productionData.sensores_ids.length >= 3;
-        // Mostrar mensaje al remover un sensor
         if (productionData.sensores_ids.length < 3) {
             showToast("Sensores", `Necesitas agregar ${3 - productionData.sensores_ids.length} sensor(es) más`, "warning");
         }
     } else {
         productionData.insumos_ids = productionData.insumos_ids.filter(id => id !== itemId);
-        // Habilitar el botón si hay menos de 3 insumos
-        document.getElementById("addSupply").disabled = productionData.insumos_ids.length >= 3;
-        // Mostrar mensaje al remover un insumo
-        if (productionData.insumos_ids.length < 3) {
-            showToast("Insumos", `Necesitas agregar ${3 - productionData.insumos_ids.length} insumo(s) más`, "warning");
-        }
+        updateAvailableSuppliesSelect();
     }
-    
     card.remove();
     validateForm();
 }
@@ -420,8 +430,6 @@ async function createProduction(e) {
       imagen: 'imagen.png', // Usar imagen por defecto
       ubicacion: document.getElementById('location').value,
       descripcion: document.getElementById('description').value,
-      inversion: parseFloat(document.getElementById('investment').value) || 0,
-      cantidad: parseFloat(document.getElementById('quantity').value) || 0,
       estado: "habilitado",
       cultivo_id: parseInt(document.getElementById('crop').value) || 0,
       ciclo_id: parseInt(document.getElementById('cropCycle').value) || 0,
