@@ -309,11 +309,22 @@ body {
 }
 
 .button--back {
-	font-size: 1.4rem;
-	color: var(--primary-color);
-	text-decoration: none;
-	font-weight: 500;
-}
+    display: inline-block;
+    padding: 0.4rem 1.1rem;
+    background: var(--green-50);
+    color: var(--green-700);
+    border-radius: 7px;
+    font-size: 1.4rem;
+    font-weight: 500;
+    text-decoration: none;
+    /* margin-bottom: 1.2rem; */
+    transition: background 0.18s, color 0.18s;
+    border: none;
+  }
+  .button--back:hover {
+    background: var(--green-100);
+    color: var(--green-800);
+  }
 
 /* logotipo de actuallizar-contraseña.html */
 .form__logo {
@@ -675,3 +686,28 @@ body {
 .hidden {
 	display: none;
 }
+
+/* Estilos para los campos de selección y botones */
+.form__select-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.form__select {
+    width: 100%;
+    height: 40px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: var(--white);
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+

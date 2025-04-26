@@ -64,23 +64,40 @@
                 <div class="form__row">
                     <div class="form__group">
                         <label for="crop" class="form__label"><i class="fas fa-leaf"></i> Cultivo</label>
-                        <select id="crop" class="form__select" required>
-                            <option value="">Seleccionar cultivo</option>
-                        </select>
+                        <div class="form__select-container">
+                            <select id="crop" class="form__select" required>
+                                <option value="">Seleccionar cultivo</option>
+                            </select>
+                            <button type="button" id="createCropBtn" class="button--create">
+                                <i class="fas fa-plus-circle"></i> Nuevo Cultivo
+                            </button>
+                        </div>
                     </div>
+                </div>
+                <div class="form__row"> 
                     <div class="form__group">
                         <label for="cropCycle" class="form__label"><i class="fas fa-sync"></i> Ciclo</label>
-                        <select id="cropCycle" class="form__select" required>
-                            <option value="">Seleccionar ciclo</option>
-                        </select>
+                        <div class="form__select-container">
+                            <select id="cropCycle" class="form__select" required>
+                                <option value="">Seleccionar ciclo</option>
+                            </select>
+                            <button type="button" id="createCropCycleBtn" class="button--create">
+                                <i class="fas fa-plus-circle"></i> Nuevo Ciclo
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="form__row">
                     <div class="form__group">
                         <label for="responsible" class="form__label"><i class="fas fa-user"></i> Responsable</label>
-                        <select id="responsible" class="form__select" required>
-                            <option value="">Seleccionar responsable</option>
-                        </select>
+                        <div class="form__select-container">
+                            <select id="responsible" class="form__select" required>
+                                <option value="">Seleccionar responsable</option>
+                            </select>
+                            <button type="button" id="createUserBtn" class="button--create">
+                                <i class="fas fa-plus-circle"></i> Nuevo Responsable
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="form__section">
@@ -91,7 +108,14 @@
                                 <select id="sensor" class="form__select">
                                     <option value="">Seleccionar sensor</option>
                                 </select>
-                                <button type="button" id="addSensor" class="button--add"><i class="fas fa-plus"></i></button>
+                                <div class="button-group">
+                                    <button type="button" id="addSensor" class="button--add">
+                                        <i class="fas fa-plus"></i> Agregar a la lista
+                                    </button>
+                                    <button type="button" id="createSensorBtn" class="button--create">
+                                        <i class="fas fa-plus-circle"></i> Nuevo Sensor
+                                    </button>
+                                </div>
                             </div>
                             <div id="selectedSensors" class="selected-items"></div>
                         </div>
@@ -105,7 +129,14 @@
                                 <select id="supply" class="form__select">
                                     <option value="">Seleccionar insumo</option>
                                 </select>
-                                <button type="button" id="addSupply" class="button--add"><i class="fas fa-plus"></i></button>
+                                <div class="button-group">
+                                    <button type="button" id="addSupply" class="button--add">
+                                        <i class="fas fa-plus"></i> Agregar a la lista
+                                    </button>
+                                    <button type="button" id="createSupplyBtn" class="button--create">
+                                        <i class="fas fa-plus-circle"></i> Nuevo Insumo
+                                    </button>
+                                </div>
                             </div>
                             <div id="selectedSupplies" class="selected-items"></div>
                         </div>
@@ -122,9 +153,392 @@
 
     <!-- Toast para notificaciones -->
     <div id="toast" class="toast hidden">
-        <div class="toast__content">
-            <div class="toast__title"></div>
-            <div class="toast__message"></div>
+        <div class="toast-content">
+            <i id="toastIcon" class="fas fa-check-circle"></i>
+            <div class="toast-message">
+                <span id="toastTitle" class="toast-title"></span>
+                <span id="toastDescription" class="toast-description"></span>
+            </div>
+        </div>
+        <div class="toast-progress"></div>
+    </div>
+
+    <!-- Modal para crear usuario -->
+    <div id="createUserModal" class="modal hidden">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Crear Nuevo Usuario</h2>
+                <button type="button" id="closeCreateUserModal" class="modal__close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <form id="createUserForm" class="form__container" method="post">
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-tipo-documento" class="form__label">Tipo de documento</label>
+                            <select id="modal-tipo-documento" class="form__select form__select--user-type-id" required>
+                                <option value="default">Seleccione una Opción</option>
+                                <option value="ti">Tarjeta de identidad</option>
+                                <option value="cc">Cédula de ciudadanía</option>
+                                <option value="ce">Cédula extranjera</option>
+                                <option value="pep">Persona Políticamente Expuesta</option>
+                                <option value="ppt">Permiso de protección temporal</option>
+                            </select>
+                        </div>
+                        <div class="form__group">
+                            <label for="modal-nombre" class="form__label">Nombre completo</label>
+                            <input type="text" id="modal-nombre" class="form__input form__input--user-name" placeholder="Ingrese el nombre completo" required />
+                        </div>
+                    </div>
+
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-numero-documento" class="form__label">Número de documento</label>
+                            <input type="text" id="modal-numero-documento" class="form__input form__input--user-id" placeholder="Ingrese el número de documento" required />
+                        </div>
+                        <div class="form__group">
+                            <label for="modal-telefono" class="form__label">Número de Teléfono</label>
+                            <input type="text" id="modal-telefono" class="form__input form__input--user-tel" placeholder="Ingrese el número de Teléfono" required />
+                        </div>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="modal-correo" class="form__label">Correo electrónico</label>
+                        <input type="email" id="modal-correo" class="form__input form__input--user-email" placeholder="Ingrese el correo electrónico" required />
+                    </div>
+
+                    <div class="form__group">
+                        <label for="modal-confirmar-correo" class="form__label">Confirmar correo</label>
+                        <input type="email" id="modal-confirmar-correo" class="form__input form__input--user-confirm-email" placeholder="Ingrese nuevamente el Correo electrónico" required />
+                    </div>
+
+                    <div class="form__group">
+                        <label for="modal-rol" class="form__label">Rol</label>
+                        <div class="form__rol">
+                            <select id="modal-rol" class="form__select form__select--user-rol" required>
+                                <option value="default" selected>Seleccione una Opción</option>
+                                <option value="superadmin">Super administrador</option>
+                                <option value="admin">Administrador</option>
+                                <option value="apoyo">Personal de Apoyo</option>
+                                <option value="visitante">Visitante</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form__group form__group--full-width">
+                        <div class="status-container">
+                            <div class="status-item">
+                                <input type="radio" name="modal-estado-habilitado" value="habilitado" checked />
+                                Habilitado
+                            </div>
+                            <div class="status-item">
+                                <input type="radio" name="modal-estado-habilitado" value="deshabilitado" />
+                                Deshabilitado
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__button-container">
+                        <button type="submit" class="button button--submit">
+                            Crear Usuario
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para crear sensor -->
+    <div id="createSensorModal" class="modal hidden">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Crear Nuevo Sensor</h2>
+                <button type="button" id="closeCreateSensorModal" class="modal__close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <form id="createSensorForm" class="form__container" method="post">
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-tipo-sensor" class="form__label">Tipo de sensor</label>
+                            <select id="modal-tipo-sensor" class="form__select form__select--sensor-type" required>
+                                <option value="default">Seleccione una opción</option>
+                                <option value="Sensor de contacto">Sensor de contacto</option>
+                                <option value="Sensor de distancia">Sensor de distancia</option>
+                                <option value="Sensores de luz">Sensores de luz</option>
+                            </select>
+                        </div>
+                        <div class="form__group">
+                            <label for="modal-nombre-sensor" class="form__label">Nombre del sensor</label>
+                            <input type="text" id="modal-nombre-sensor" class="form__input form__input--sensor-name" placeholder="Ingrese nombre del sensor" required />
+                        </div>
+                    </div>
+
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-unidad-medida" class="form__label">Unidad de medida</label>
+                            <select id="modal-unidad-medida" class="form__select form__select--sensor-unit" required>
+                                <option value="default">Seleccione una opción</option>
+                                <option value="Temperatura">Temperatura</option>
+                                <option value="Distancia">Distancia</option>
+                                <option value="Presión">Presión</option>
+                            </select>
+                        </div>
+                        <div class="form__group">
+                            <label for="modal-imagen" class="form__label">Imagen</label>
+                            <div class="form__image-input">
+                                <input type="file" id="modal-imagen" class="form__file form__file--sensor-image" accept=".jpg, .jpeg, .png" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__group form__group--full-width">
+                        <label for="modal-descripcion" class="form__label">Descripción</label>
+                        <textarea id="modal-descripcion" class="form__textarea form__textarea--sensor-description" placeholder="Ingrese descripción del sensor" required></textarea>
+                    </div>
+
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-tiempo-escaneo" class="form__label">Tiempo de Escaneo/Muestreo</label>
+                            <select id="modal-tiempo-escaneo" class="form__select form__select--sensor-scan" required>
+                                <option value="default">Seleccione una opción</option>
+                                <option value="Sensores lentos">Sensores lentos</option>
+                                <option value="Sensores de velocidad media">Sensores de velocidad media</option>
+                                <option value="Sensores rápidos">Sensores rápidos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form__group form__group--full-width">
+                        <div class="status-container">
+                            <div class="status-item">
+                                <input type="radio" name="modal-estado-sensor" value="habilitado" checked />
+                                Habilitado
+                            </div>
+                            <div class="status-item">
+                                <input type="radio" name="modal-estado-sensor" value="deshabilitado" />
+                                Deshabilitado
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__button-container">
+                        <button type="submit" class="button button--submit">
+                            Crear Sensor
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para crear insumo -->
+    <div id="createSupplyModal" class="modal hidden">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Crear Nuevo Insumo</h2>
+                <button type="button" id="closeCreateSupplyModal" class="modal__close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <form id="createSupplyForm" class="form__container" method="post">
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-nombre-insumo" class="form__label">Nombre</label>
+                            <input type="text" id="modal-nombre-insumo" class="form__input form__input--insume-name" placeholder="Ingrese nombre del insumo" required />
+                        </div>
+                        <div class="form__group">
+                            <label for="modal-tipo-insumo" class="form__label">Tipo de insumo</label>
+                            <input type="text" id="modal-tipo-insumo" class="form__input form__input--insume-type" placeholder="Tipo de insumo" required />
+                        </div>
+                    </div>
+                    <div class="form__group">
+                        <label for="modal-imagen-insumo" class="form__label">Imagen</label>
+                        <input type="file" id="modal-imagen-insumo" class="form__file form__file--insume-image" accept=".jpg, .jpeg, .png" required />
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-medida-insumo" class="form__label">Unidad de medida</label>
+                            <select id="modal-medida-insumo" class="form__select form__select--insume-extent" required>
+                                <option value="default">Seleccione una Opción</option>
+                                <option value="peso">peso</option>
+                                <option value="volumen">volumen</option>
+                                <option value="superficie">superficie</option>
+                                <option value="concentración">concentración</option>
+                                <option value="litro">litro</option>
+                                <option value="kilo">kilo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-valor-unitario" class="form__label">Valor unitario</label>
+                            <input type="text" id="modal-valor-unitario" class="form__input form__input--insume-price" placeholder="Ingrese el valor unitario del insumo" required />
+                        </div>
+                        <div class="form__group">
+                            <label for="modal-cantidad" class="form__label">Cantidad</label>
+                            <input type="text" id="modal-cantidad" class="form__input form__input--insume-amount" placeholder="Ingrese la cantidad de unidades" required />
+                        </div>
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-valor-total" class="form__label">Valor total</label>
+                            <input type="text" id="modal-valor-total" class="form__input form__input--total-value" placeholder="Ingrese el valor total del insumo" readonly required />
+                        </div>
+                        <div class="form__group form__group--full-width">
+                            <label for="modal-descripcion-insumo" class="form__label">Descripción</label>
+                            <textarea id="modal-descripcion-insumo" class="form__textarea form__textarea--insume-description" placeholder="Ingrese descripción del insumo" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form__group form__group--full-width">
+                        <div class="status-container">
+                            <div class="status-item">
+                                <input type="radio" name="modal-estado-insumo" value="habilitado" checked />
+                                Habilitado
+                            </div>
+                            <div class="status-item">
+                                <input type="radio" name="modal-estado-insumo" value="deshabilitado" />
+                                Deshabilitado
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form__button-container">
+                        <button type="submit" class="button button--submit">
+                            Crear Insumo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para crear cultivo -->
+    <div id="createCropModal" class="modal hidden">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Crear Nuevo Cultivo</h2>
+                <button type="button" id="closeCreateCropModal" class="modal__close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <form id="createCropForm" class="form__container" method="post">
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-nombre-cultivo" class="form__label">Nombre</label>
+                            <input type="text" id="modal-nombre-cultivo" class="form__input form__input--cultive-name" placeholder="Ingrese nombre del cultivo" required />
+                        </div>
+                        <div class="form__group">
+                            <label for="modal-tipo-cultivo" class="form__label">Tipo de cultivo</label>
+                            <input type="text" id="modal-tipo-cultivo" class="form__input form__input--cultive-type" placeholder="Tipo de cultivo" required />
+                        </div>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="modal-imagen-cultivo" class="form__label">Imagen</label>
+                        <input type="file" id="modal-imagen-cultivo" class="form__file form__file--cultive-image" accept=".jpg, .jpeg, .png" required />
+                    </div>
+
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-ubicacion-cultivo" class="form__label">Ubicación</label>
+                            <input type="text" id="modal-ubicacion-cultivo" class="form__input form__input--cultive-location" placeholder="Ingrese la ubicación del cultivo" required />
+                        </div>
+                    </div>
+
+                    <div class="form__group form__group--full-width">
+                        <label for="modal-tamano-cultivo" class="form__label">Tamaño</label>
+                        <input type="number" id="modal-tamano-cultivo" class="form__input form__input--cultive-size" placeholder="Ingrese el tamaño del cultivo en m2" required />
+                    </div>
+
+                    <div class="form__group form__group--full-width">
+                        <label for="modal-descripcion-cultivo" class="form__label">Descripción</label>
+                        <textarea id="modal-descripcion-cultivo" class="form__textarea form__textarea--cultive-description" placeholder="Ingrese descripción del cultivo" required></textarea>
+                    </div>
+
+                    <div class="form__group form__group--full-width">
+                        <div class="status-container">
+                            <div class="status-item">
+                                <input type="radio" name="modal-estado-cultivo" value="habilitado" checked />
+                                Habilitado
+                            </div>
+                            <div class="status-item">
+                                <input type="radio" name="modal-estado-cultivo" value="deshabilitado" />
+                                Deshabilitado
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__button-container">
+                        <button type="submit" class="button button--submit">
+                            Crear Cultivo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para crear ciclo de cultivo -->
+    <div id="createCropCycleModal" class="modal hidden">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Crear Nuevo Ciclo de Cultivo</h2>
+                <button type="button" id="closeCreateCropCycleModal" class="modal__close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <form id="createCropCycleForm" class="form__container" method="post">
+                    <div class="form__group form__group--full-width">
+                        <label for="modal-nombre-ciclo" class="form__label">Nombre</label>
+                        <input type="text" id="modal-nombre-ciclo" class="form__input form__input--cycle-name" placeholder="Ingrese nombre del ciclo de cultivo" required />
+                    </div>
+
+                    <div class="form__group form__group--full-width">
+                        <label for="modal-descripcion-ciclo" class="form__label">Descripción</label>
+                        <textarea id="modal-descripcion-ciclo" class="form__textarea form__textarea--cycle-description" placeholder="Ingrese descripción del ciclo de cultivo" required></textarea>
+                    </div>
+
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="modal-periodo-inicio" class="form__label">Periodo - Inicio</label>
+                            <input type="date" id="modal-periodo-inicio" class="form__input form__input--cycle-start-date" required />
+                        </div>
+                        <div class="form__group">
+                            <label for="modal-periodo-final" class="form__label">Periodo - Final</label>
+                            <input type="date" id="modal-periodo-final" class="form__input form__input--cycle-end-date" required />
+                        </div>
+                    </div>
+
+                    <div class="form__group form__group--full-width">
+                        <label for="modal-novedades-ciclo" class="form__label">Novedades</label>
+                        <textarea id="modal-novedades-ciclo" class="form__textarea form__textarea--cycle-updates" placeholder="Ingrese novedades del ciclo de cultivo" required></textarea>
+                    </div>
+
+                    <div class="form__group form__group--full-width">
+                        <div class="status-container">
+                            <div class="status-item">
+                                <input type="radio" name="modal-estado-ciclo" value="habilitado" checked />
+                                Habilitado
+                            </div>
+                            <div class="status-item">
+                                <input type="radio" name="modal-estado-ciclo" value="deshabilitado" />
+                                Deshabilitado
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__button-container">
+                        <button type="submit" class="button button--submit">
+                            Crear Ciclo de Cultivo
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
