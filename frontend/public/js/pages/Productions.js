@@ -461,86 +461,79 @@ class Productions {
     }
 
     showProduccionDetails(prod) {
-        // General
+        // Información General
         document.getElementById('viewId').textContent = prod.id || '';
-        document.getElementById('viewName').textContent = prod.name || prod.nombre || '';
-        document.getElementById('viewStatus').textContent = (prod.status || prod.estado) === 'habilitado' || (prod.status || prod.estado) === 'Activo' ? 'Activo' : 'Inactivo';
-        document.getElementById('viewCropType').textContent = prod.crop || prod.nombre_cultivo || '';
-        document.getElementById('viewArea').textContent = prod.area || prod.tamano || '';
-
-        // Insumos y Sensores en el panel general
-        let insumos = '-';
-        if (Array.isArray(prod.insumos_asignados) && prod.insumos_asignados.length > 0) {
-            insumos = prod.insumos_asignados.join(', ');
-        }
-        document.getElementById('viewInsumos').textContent = insumos;
-
-        let sensores = '-';
-        if (Array.isArray(prod.sensores_asignados) && prod.sensores_asignados.length > 0) {
-            sensores = prod.sensores_asignados.join(', ');
-        }
-        document.getElementById('viewSensores').textContent = sensores;
+        document.getElementById('viewName').textContent = prod.nombre || '';
+        document.getElementById('viewStatus').textContent = prod.estado === 'habilitado' ? 'Activo' : 'Inactivo';
+        document.getElementById('viewCropType').textContent = prod.tipo || '';
+        document.getElementById('viewArea').textContent = prod.ubicacion || '';
 
         // Personal
-        document.getElementById('viewResponsible').textContent = prod.responsible || prod.nombre_usuario || '';
-        document.getElementById('viewSupervisor').textContent = prod.supervisor || prod.supervisor_nombre || '-';
-        document.getElementById('viewTechnician').textContent = prod.tecnico || prod.tecnico_nombre || '-';
-        let personal = '';
-        if (Array.isArray(prod.personal_asignado) && prod.personal_asignado.length > 0) {
-            personal = prod.personal_asignado.join(', ');
-        } else if (prod.personal_asignado_count) {
-            personal = prod.personal_asignado_count + ' personas';
-        } else {
-            personal = 'Sin personal asignado';
-        }
-        document.getElementById('viewWorkers').textContent = personal;
+        const personalIds = prod.personal_ids ? prod.personal_ids.split(',').map(id => id.trim()) : [];
+        const personalNombres = personalIds.map(id => {
+            const user = this.usersMap[id];
+            return user ? user.nombre : `Usuario ${id}`;
+        });
+        
+        document.getElementById('viewResponsible').textContent = personalNombres[0] || 'No asignado';
+        document.getElementById('viewSupervisor').textContent = personalNombres[1] || 'No asignado';
+        document.getElementById('viewTechnician').textContent = personalNombres[2] || 'No asignado';
+        document.getElementById('viewWorkers').textContent = `${personalNombres.length} personas`;
+
+        // Insumos y Sensores
+        const insumosIds = prod.insumos_ids ? prod.insumos_ids.split(',').map(id => id.trim()) : [];
+        const sensoresIds = prod.sensores_ids ? prod.sensores_ids.split(',').map(id => id.trim()) : [];
+        
+        const insumosNombres = insumosIds.map(id => {
+            const insumo = this.insumosMap[id];
+            return insumo ? insumo.nombre : `Insumo ${id}`;
+        });
+        
+        const sensoresNombres = sensoresIds.map(id => {
+            const sensor = this.sensoresMap[id];
+            return sensor ? sensor.nombre_sensor : `Sensor ${id}`;
+        });
+
+        document.getElementById('viewInsumos').textContent = insumosNombres.join(', ') || 'No hay insumos asignados';
+        document.getElementById('viewSensores').textContent = sensoresNombres.join(', ') || 'No hay sensores asignados';
 
         // Fechas
-        document.getElementById('viewStartDate').textContent = prod.startDate || prod.fecha_creacion || prod.fecha_inicio || '';
-        document.getElementById('viewEndDate').textContent = prod.fecha_fin || prod.endDate || '-';
-        document.getElementById('viewDuration').textContent = prod.duracion_total || prod.duration || '-';
-        document.getElementById('viewDaysLeft').textContent = prod.dias_restantes || prod.days_left || '-';
+        const fechaCreacion = new Date(prod.fecha_creacion);
+        const fechaFormateada = fechaCreacion.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+        
+        document.getElementById('viewStartDate').textContent = fechaFormateada;
+        document.getElementById('viewEndDate').textContent = 'En curso';
+        document.getElementById('viewDuration').textContent = 'En curso';
+        document.getElementById('viewDaysLeft').textContent = 'En curso';
 
         // Financiero
-        document.getElementById('viewInvestment').textContent = prod.investment || prod.inversion || '';
-        document.getElementById('viewExpectedReturn').textContent = prod.retorno_esperado || prod.expected_return || '-';
-        document.getElementById('viewROI').textContent = prod.roi_estimado || prod.roi || '-';
-        document.getElementById('viewCostPerHectare').textContent = prod.costo_hectarea || prod.cost_per_hectare || '-';
+        const inversionFormateada = new Intl.NumberFormat('es-ES', {
+            style: 'currency',
+            currency: 'COP',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(prod.inversion_total || 0);
 
-        // Panel de Sensores
-        const sensoresContent = document.getElementById('sensoresContent');
-        if (sensoresContent) {
-            sensoresContent.innerHTML = '';
-            if (Array.isArray(prod.sensores_asignados) && prod.sensores_asignados.length > 0) {
-                prod.sensores_asignados.forEach(nombre => {
-                    const div = document.createElement('div');
-                    div.className = 'sensor-item';
-                    div.textContent = nombre;
-                    sensoresContent.appendChild(div);
-                });
-            } else {
-                sensoresContent.innerHTML = '<div class="sensor-item">Sin sensores asignados</div>';
-            }
-        }
-        // Panel de Insumos
-        const insumosContent = document.getElementById('insumosContent');
-        if (insumosContent) {
-            insumosContent.innerHTML = '';
-            if (Array.isArray(prod.insumos_asignados) && prod.insumos_asignados.length > 0) {
-                prod.insumos_asignados.forEach(nombre => {
-                    const div = document.createElement('div');
-                    div.className = 'insumo-item';
-                    div.textContent = nombre;
-                    insumosContent.appendChild(div);
-                });
-            } else {
-                insumosContent.innerHTML = '<div class="insumo-item">Sin insumos asignados</div>';
-            }
-        }
+        const metaFormateada = new Intl.NumberFormat('es-ES', {
+            style: 'currency',
+            currency: 'COP',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(prod.meta_ganancias || 0);
 
-        // ABRIR EL MODAL CORRECTO
-        // Buscar el modal principal por id (puede ser 'viewModal' o 'viewProduccionModal')
-        let modal = document.getElementById('viewModal') || document.getElementById('viewProduccionModal');
+        const roi = prod.inversion_total ? ((prod.meta_ganancias - prod.inversion_total) / prod.inversion_total * 100).toFixed(2) : 0;
+
+        document.getElementById('viewInvestment').textContent = inversionFormateada;
+        document.getElementById('viewExpectedReturn').textContent = metaFormateada;
+        document.getElementById('viewROI').textContent = `${roi}%`;
+        document.getElementById('viewCostPerHectare').textContent = 'Calculando...';
+
+        // Mostrar el modal
+        const modal = document.getElementById('viewModal');
         if (modal) {
             modal.classList.add('modal--active');
         }

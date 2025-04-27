@@ -91,7 +91,10 @@ export function crearProduccion(req, res) {
             cultivo_id,
             ciclo_id,
             insumos_ids,
-            sensores_ids
+            sensores_ids,
+            inversion_total,
+            meta_ganancias,
+            personal_ids
         } = req.body;
 
         // Log de los datos recibidos (sin la imagen para no sobrecargar el log)
@@ -101,8 +104,8 @@ export function crearProduccion(req, res) {
         });
 
         // Validar que todos los campos requeridos estén presentes
-        if (!nombre || !tipo || !imagen || !ubicacion || !descripcion || !usuario_id ) {
-            return res.status(400).json({ error: 'Los campos nombre, tipo, imagen, ubicacion, descripcion, usuario_id son obligatorios' });
+        if (!nombre || !tipo || !imagen || !ubicacion || !descripcion || !usuario_id || !personal_ids) {
+            return res.status(400).json({ error: 'Los campos nombre, tipo, imagen, ubicacion, descripcion, usuario_id y personal_ids son obligatorios' });
         }
 
         // Validar que el estado sea válido si se proporciona
@@ -225,8 +228,11 @@ export function crearProduccion(req, res) {
                             cultivo_id,
                             ciclo_id,
                             insumos_ids,
-                            sensores_ids
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            sensores_ids,
+                            inversion_total,
+                            meta_ganancias,
+                            personal_ids
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     `;
 
                     db.query(
@@ -243,7 +249,10 @@ export function crearProduccion(req, res) {
                             cultivo_id || null,
                             ciclo_id || null,
                             insumos_ids || null,
-                            sensores_ids || null
+                            sensores_ids || null,
+                            inversion_total || null,
+                            meta_ganancias || null,
+                            personal_ids
                         ],
                         (err, results) => {
                             if (err) {

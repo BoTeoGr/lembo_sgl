@@ -436,7 +436,10 @@ async function createProduction(e) {
       usuario_id: parseInt(document.getElementById('responsible').value) || 0,
       // Convertir arrays a strings separados por comas
       insumos_ids: (productionData.insumos_ids || []).join(','),
-      sensores_ids: (productionData.sensores_ids || []).join(',')
+      sensores_ids: (productionData.sensores_ids || []).join(','),
+      inversion_total: parseFloat(document.getElementById('totalInvestment').value) || 0,
+      meta_ganancias: parseFloat(document.getElementById('estimatedProfit').value) || 0,
+      personal_ids: [parseInt(document.getElementById('responsible').value)].join(',')
     };
 
     // Log de datos a enviar
