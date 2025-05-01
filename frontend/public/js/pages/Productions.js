@@ -1,546 +1,1095 @@
-import { productionsConfig } from '../config/productionsConfig.js';
-
-// --- Obtener producciones desde la API ---
-async function fetchProductionsFromAPI() {
-    try {
-        const response = await fetch('http://localhost:5000/producciones');
-        if (!response.ok) throw new Error('Error al obtener producciones de la API');
-        const data = await response.json();
-
-        // Cargar catálogos locales para mapear nombres
-        let usersMap = {}, insumosMap = {}, sensoresMap = {};
-        try {
-            const usersModule = await import('../data/usersData.js');
-            if (usersModule && usersModule.users) {
-                usersModule.users.forEach(u => { usersMap[String(u.id)] = u.nombre; });
-            }
-        } catch (e) {}
-        try {
-            const insumosModule = await import('../data/insumosData.js');
-            if (insumosModule && insumosModule.insumos) {
-                insumosModule.insumos.forEach(i => { insumosMap[String(i.id)] = i.nombre; });
-            }
-        } catch (e) {}
-        try {
-            const sensoresModule = await import('../data/sensorsData.js');
-            if (sensoresModule && (sensoresModule.sensors || sensoresModule.sensorsData)) {
-                (sensoresModule.sensors || sensoresModule.sensorsData).forEach(s => { sensoresMap[String(s.id)] = s.nombre || s.name; });
-            }
-        } catch (e) {}
-
-        return data.map(prod => {
-            // Mapear personal
-            let personalNombres = [];
-            if (prod.personal_ids) {
-                personalNombres = String(prod.personal_ids)
-                    .split(',')
-                    .map(id => usersMap[String(id).trim()] || id.trim())
-                    .filter(Boolean);
-            }
-            // Mapear insumos
-            let insumosNombres = [];
-            if (prod.insumos_ids) {
-                insumosNombres = String(prod.insumos_ids)
-                    .split(',')
-                    .map(id => insumosMap[String(id).trim()] || id.trim())
-                    .filter(Boolean);
-            }
-            // Mapear sensores
-            let sensoresNombres = [];
-            if (prod.sensores_ids) {
-                sensoresNombres = String(prod.sensores_ids)
-                    .split(',')
-                    .map(id => sensoresMap[String(id).trim()] || id.trim())
-                    .filter(Boolean);
-            }
-            return {
-                id: prod.id || '',
-                name: prod.nombre || '',
-                crop: prod.nombre_cultivo || '',
-                cycle: prod.nombre_ciclo || '',
-                responsible: prod.nombre_usuario || '',
-                investment: prod.inversion || prod.investment || '',
-                startDate: prod.fecha_creacion || prod.startDate || '',
-                status: prod.estado === 'habilitado' ? 'Activo' : 'Inactivo',
-                area: prod.area || prod.tamano || '',
-                workers: prod.personal || prod.workers || '',
-                personal_asignado: personalNombres,
-                personal_asignado_count: personalNombres.length,
-                insumos_asignados: insumosNombres,
-                insumos_asignados_count: insumosNombres.length,
-                sensores_asignados: sensoresNombres,
-                sensores_asignados_count: sensoresNombres.length,
-                funcional: prod.funcional !== undefined ? prod.funcional : (prod.tipo ? (prod.tipo.toLowerCase() === 'funcional' ? 'Sí' : 'No') : ''),
-                // Otros campos según necesidad
-            };
-        });
-    } catch (e) {
-        console.warn('Fallo la carga desde la API:', e.message);
-        return [];
-    }
-}
-
-// --- Cambiar estado de producción en backend ---
-async function toggleProductionStatus(id, nuevoEstado) {
-    await fetch(`http://localhost:5000/producciones/${id}/estado`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ estado: nuevoEstado })
-    });
-}
-
-class Productions {
-    constructor() {
-        this.currentPage = 1;
-        this.itemsPerPage = 10;
-        this.filteredData = [];
-        this.filteredDataOriginal = [];
-        this.selectedProductions = new Set();
-        this.loadData();
-    }
-
-    async loadData() {
-        const data = await fetchProductionsFromAPI();
-        this.filteredData = [...data];
-        this.filteredDataOriginal = [...data]; // Guardar copia original para filtros
-        this.renderTable();
-        this.updatePagination();
-        this.initializeEventListeners();
-    }
-
-    initializeEventListeners() {
-        // Filtros (puedes agregar lógica de filtros aquí si lo deseas)
-        const filterButton = document.querySelector('.button--filter');
-        const filtersClose = document.querySelector('.filters__close');
-        const filtersSearch = document.querySelector('.filters__search');
-        const clearBtn = document.querySelector('.button--clear');
-        const enableBtn = document.querySelector('.button--enable');
-        const disableBtn = document.querySelector('.button--disable');
-        const actionsBarCheckbox = document.querySelector('.actions-bar__checkbox');
-        const tableCheckboxHeader = document.querySelector('.table__checkbox-header');
-        const filtersFuncional = document.querySelector('.filters__select--funcional');
-
-        // Mostrar/ocultar filtros
-        if (filterButton && document.querySelector('.filters')) {
-            filterButton.addEventListener('click', () => {
-                document.querySelector('.filters').classList.remove('hidden');
-            });
-        }
-        if (filtersClose && document.querySelector('.filters')) {
-            filtersClose.addEventListener('click', () => {
-                document.querySelector('.filters').classList.add('hidden');
-            });
-        }
-        if (clearBtn) {
-            clearBtn.addEventListener('click', () => {
-                if (filtersSearch) filtersSearch.value = '';
-                if (filtersFuncional) filtersFuncional.value = '';
-                this.filteredData = [...this.filteredDataOriginal];
-                this.currentPage = 1;
-                this.renderTable();
-                this.updatePagination();
-            });
-        }
-        // --- Lógica de filtros combinados ---
-        const applyFilters = () => {
-            let data = [...this.filteredDataOriginal];
-            // Filtro búsqueda
-            const searchValue = filtersSearch ? filtersSearch.value.toLowerCase() : '';
-            if (searchValue) {
-                data = data.filter(prod =>
-                    prod.id.toLowerCase().includes(searchValue) ||
-                    prod.name.toLowerCase().includes(searchValue)
-                );
-            }
-            // Filtro funcional
-            const funcionalValue = filtersFuncional ? filtersFuncional.value : '';
-            if (funcionalValue) {
-                data = data.filter(prod => String(prod.funcional).toLowerCase() === funcionalValue.toLowerCase());
-            }
-            this.filteredData = data;
-            this.currentPage = 1;
-            this.renderTable();
-            this.updatePagination();
-        };
-        if (filtersSearch) {
-            filtersSearch.addEventListener('input', applyFilters);
-        }
-        if (filtersFuncional) {
-            filtersFuncional.addEventListener('change', applyFilters);
-        }
-        // Habilitar/deshabilitar masivo
-        if (enableBtn) {
-            enableBtn.addEventListener('click', () => {
-                const ids = Array.from(this.selectedProductions);
-                if (ids.length === 0) return;
-                this.updateStatus(ids, 'Activo');
-            });
-        }
-        if (disableBtn) {
-            disableBtn.addEventListener('click', () => {
-                const ids = Array.from(this.selectedProductions);
-                if (ids.length === 0) return;
-                this.updateStatus(ids, 'Inactivo');
-            });
-        }
-        // Checkbox de barra de selección
-        if (actionsBarCheckbox) {
-            actionsBarCheckbox.addEventListener('change', (e) => {
-                const checked = e.target.checked;
-                document.querySelectorAll('.table__checkbox').forEach(cb => {
-                    cb.checked = checked;
-                    const row = cb.closest('tr');
-                    if (row) {
-                        const id = row.querySelector('.table__cell--id').textContent;
-                        if (checked) this.selectedProductions.add(id);
-                        else this.selectedProductions.delete(id);
-                    }
-                });
-                this.updateSelectionCount();
-            });
-        }
-        // Checkbox de cabecera de tabla
-        if (tableCheckboxHeader) {
-            tableCheckboxHeader.addEventListener('change', (e) => {
-                const checked = e.target.checked;
-                document.querySelectorAll('.table__checkbox').forEach(cb => {
-                    cb.checked = checked;
-                    const row = cb.closest('tr');
-                    if (row) {
-                        const id = row.querySelector('.table__cell--id').textContent;
-                        if (checked) this.selectedProductions.add(id);
-                        else this.selectedProductions.delete(id);
-                    }
-                });
-                this.updateSelectionCount();
-            });
-        }
-        // Evento de paginación
-        document.querySelector('.pagination__controls')?.addEventListener('click', (e) => {
-            const btn = e.target.closest('button');
-            if (!btn) return;
-            if (btn.classList.contains('pagination__button--prev')) {
-                if (this.currentPage > 1) {
-                    this.currentPage--;
-                    this.renderTable();
-                    this.updatePagination();
-                }
-            } else if (btn.classList.contains('pagination__button--next')) {
-                const totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
-                if (this.currentPage < totalPages) {
-                    this.currentPage++;
-                    this.renderTable();
-                    this.updatePagination();
-                }
-            } else if (btn.classList.contains('pagination__button')) {
-                const pageNumber = Number(btn.textContent);
-                if (!isNaN(pageNumber)) {
-                    this.currentPage = pageNumber;
-                    this.renderTable();
-                    this.updatePagination();
-                }
-            }
-        });
-        // Evento de acción en la tabla
-        document.querySelector('.table__body')?.addEventListener('click', (e) => {
-            const btn = e.target.closest('button');
-            if (!btn) return;
-            const row = btn.closest('tr');
-            const id = row.querySelector('.table__cell--id').textContent;
-            if (btn.classList.contains('table__action-button--view')) {
-                const prod = this.filteredData.find(p => String(p.id) === String(id));
-                if (prod) this.showProduccionDetails(prod);
-                return;
-            }
-            if (btn.classList.contains('table__action-button--enable')) {
-                this.updateStatus([id], 'Activo');
-            } else if (btn.classList.contains('table__action-button--disable')) {
-                this.updateStatus([id], 'Inactivo');
-            }
-        });
-        // Cerrar modal
-        const closeBtn = document.getElementById('closeViewProduccionModal');
-        const modal = document.getElementById('viewModal') || document.getElementById('viewProduccionModal');
-        if (closeBtn && modal) {
-            closeBtn.onclick = () => {
-                modal.classList.remove('modal--active');
-            };
-        }
-        // Cerrar modal al hacer click fuera del contenido
-        if (modal) {
-            modal.addEventListener('mousedown', function(e) {
-                // Solo cerrar si el click es directamente sobre el fondo del modal
-                if (e.target === modal) {
-                    modal.classList.remove('modal--active');
-                }
-            });
-        }
-
-        // --- Reporte funcional ---
-        // Selección de elementos del modal CORRECTO para Producciones
-        const reportModal = document.getElementById('reportModalProduccion');
-        const reportBtn = document.querySelector('.button--report');
-        const cancelReportBtn = document.getElementById('cancelReportBtnProduccion');
-        const generateReportBtn = document.getElementById('generateReportBtnProduccion');
-        const closeReportModal = document.getElementById('closeReportModalProduccion');
-
-        if (reportBtn && reportModal) {
-            reportBtn.addEventListener('click', () => {
-                reportModal.classList.add('modal--active');
-                reportModal.style.display = '';
-                reportModal.style.alignItems = '';
-                reportModal.style.justifyContent = '';
-            });
-        }
-        if (cancelReportBtn && reportModal) {
-            cancelReportBtn.addEventListener('click', () => {
-                reportModal.classList.remove('modal--active');
-                reportModal.style.display = '';
-            });
-        }
-        if (closeReportModal && reportModal) {
-            closeReportModal.addEventListener('click', () => {
-                reportModal.classList.remove('modal--active');
-                reportModal.style.display = '';
-            });
-        }
-        if (generateReportBtn) {
-            generateReportBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const format = document.getElementById('reportFormatProduccion').value;
-                const includeInactive = document.getElementById('includeInactiveProduccion').checked;
-                const includeDetails = document.getElementById('includeDetailsProduccion').checked;
-                const includeSensors = document.getElementById('includeSensorsProduccion').checked;
-                const includeSupplies = document.getElementById('includeSuppliesProduccion').checked;
-                // Filtrar datos según opciones
-                let data = this.filteredData;
-                if (!includeInactive) {
-                    data = data.filter(p => p.status === 'Activo');
-                }
-                // Seleccionar columnas
-                let columns = [
-                    { header: 'ID', key: 'id' },
-                    { header: 'Nombre', key: 'name' },
-                    { header: 'Cultivo', key: 'crop' },
-                    { header: 'Ciclo', key: 'cycle' },
-                    { header: 'Responsable', key: 'responsible' },
-                    { header: 'Inversión', key: 'investment' },
-                    { header: 'Fecha de Inicio', key: 'startDate' },
-                    { header: 'Estado', key: 'status' }
-                ];
-                if (includeDetails) {
-                    columns.push(
-                        { header: 'Área', key: 'area' },
-                        { header: 'Personal', key: 'personal_asignado' }
-                    );
-                }
-                if (includeSensors) {
-                    columns.push({ header: 'Sensores Asignados', key: 'sensores_asignados' });
-                }
-                if (includeSupplies) {
-                    columns.push({ header: 'Insumos Asignados', key: 'insumos_asignados' });
-                }
-                // Normalizar datos para exportar
-                const reportData = data.map(p => {
-                    const row = { ...p };
-                    if (Array.isArray(row.personal_asignado)) row.personal_asignado = row.personal_asignado.join(', ');
-                    if (Array.isArray(row.sensores_asignados)) row.sensores_asignados = row.sensores_asignados.join(', ');
-                    if (Array.isArray(row.insumos_asignados)) row.insumos_asignados = row.insumos_asignados.join(', ');
-                    return row;
-                });
-                // Usar ReportGenerator global como en otros módulos
-                if (window.ReportGenerator && typeof window.ReportGenerator.generateReport === 'function') {
-                    window.ReportGenerator.generateReport({
-                        columns,
-                        data: reportData,
-                        format,
-                        filename: 'reporte_producciones_' + new Date().toISOString().slice(0,10)
-                    });
-                } else {
-                    alert('No se encontró el módulo de generación de reportes.');
-                }
-                reportModal.classList.remove('modal--active');
-                reportModal.style.display = '';
-            });
-        }
-    }
-
-    updateStatus(ids, status) {
-        // Llamar al backend para actualizar cada producción
-        Promise.all(ids.map(id => toggleProductionStatus(id, status === 'Activo' ? 'habilitado' : 'deshabilitado')))
-            .then(async () => {
-                // Volver a cargar todos los datos desde la API para reflejar el estado real
-                await this.loadData();
-                this.selectedProductions.clear();
-                this.updateSelectionCount();
-            });
-    }
-
-    updateSelectionCount() {
-        const total = document.querySelectorAll('.table__checkbox').length;
-        const selected = document.querySelectorAll('.table__checkbox:checked').length;
-        document.querySelector('.actions-bar__count--selected').textContent = selected;
-        document.querySelector('.actions-bar__count--total').textContent = total;
-        // Actualiza el set de seleccionados
-        this.selectedProductions.clear();
-        document.querySelectorAll('.table__checkbox:checked').forEach(cb => {
-            const row = cb.closest('tr');
-            if (row) {
-                const id = row.querySelector('.table__cell--id').textContent;
-                this.selectedProductions.add(id);
-            }
-        });
-    }
-
-    renderTable() {
-        const tbody = document.querySelector('.table__body');
-        tbody.innerHTML = '';
-        const startIdx = (this.currentPage - 1) * this.itemsPerPage;
-        const endIdx = startIdx + this.itemsPerPage;
-        const currentPageData = this.filteredData.slice(startIdx, endIdx);
-        currentPageData.forEach(production => {
-            const row = document.createElement('tr');
-            row.className = 'table__row';
-            row.innerHTML = `
-                <td class="table__cell table__cell--checkbox">
-                    <input type="checkbox" class="table__checkbox" ${this.selectedProductions.has(production.id) ? 'checked' : ''} />
-                </td>
-            `;
-            productionsConfig.tableColumns.forEach(column => {
-                const cell = document.createElement('td');
-                cell.className = `table__cell ${column.class}`;
-                if (column.key === 'status') {
-                    cell.innerHTML = `
-                        <span class="badge badge--${production[column.key].toLowerCase() === 'activo' ? 'active' : 'inactive'}">
-                            ${production[column.key]}
-                        </span>
-                    `;
-                } else {
-                    cell.textContent = production[column.key] || '-';
-                }
-                row.appendChild(cell);
-            });
-            const actionsCell = document.createElement('td');
-            actionsCell.className = 'table__cell table__cell--actions';
-            actionsCell.innerHTML = `
-                <button class="table__action-button table__action-button--view">
-                    <span class="material-symbols-outlined">visibility</span>
-                </button>
-                <button class="table__action-button table__action-button--edit">
-                    <span class="material-symbols-outlined">edit</span>
-                </button>
-                <button class="table__action-button table__action-button--${production.status.toLowerCase() === 'activo' ? 'disable' : 'enable'}">
-                    <span class="material-symbols-outlined">power_settings_new</span>
-                </button>
-            `;
-            row.appendChild(actionsCell);
-            tbody.appendChild(row);
-        });
-        this.updateSelectionCount();
-    }
-
-    updatePagination() {
-        const totalItems = this.filteredData.length;
-        const totalPages = Math.ceil(totalItems / this.itemsPerPage) || 1;
-        const paginationControls = document.querySelector('.pagination__controls');
-        if (!paginationControls) return;
-        let controlsHTML = `<button class="pagination__button pagination__button--prev ${this.currentPage === 1 ? 'disabled' : ''}"><span class="material-symbols-outlined">navigate_before</span></button>`;
-        for (let i = 1; i <= totalPages; i++) {
-            controlsHTML += `<button class="pagination__button ${i === this.currentPage ? 'pagination__button--active' : ''}">${i}</button>`;
-        }
-        controlsHTML += `<button class="pagination__button pagination__button--next ${this.currentPage === totalPages ? 'disabled' : ''}"><span class="material-symbols-outlined">navigate_next</span></button>`;
-        paginationControls.innerHTML = controlsHTML;
-
-        // Actualizar info de paginación
-        const info = document.querySelector('.pagination__info');
-        if (info) {
-            const start = totalItems === 0 ? 0 : ((this.currentPage - 1) * this.itemsPerPage) + 1;
-            const end = Math.min(this.currentPage * this.itemsPerPage, totalItems);
-            info.innerHTML = `Página <span class="pagination__current-page">${this.currentPage}</span> de <span class="pagination__total-pages">${totalPages}</span> | Mostrando <span class="pagination__items-per-page">${end - start + 1}</span> de <span class="pagination__total-items">${totalItems}</span> producciones (${start} - ${end})`;
-        }
-    }
-
-    showProduccionDetails(prod) {
-        // Información General
-        document.getElementById('viewId').textContent = prod.id || '';
-        document.getElementById('viewName').textContent = prod.nombre || '';
-        document.getElementById('viewStatus').textContent = prod.estado === 'habilitado' ? 'Activo' : 'Inactivo';
-        document.getElementById('viewCropType').textContent = prod.tipo || '';
-        document.getElementById('viewArea').textContent = prod.ubicacion || '';
-
-        // Personal
-        const personalIds = prod.personal_ids ? prod.personal_ids.split(',').map(id => id.trim()) : [];
-        const personalNombres = personalIds.map(id => {
-            const user = this.usersMap[id];
-            return user ? user.nombre : `Usuario ${id}`;
-        });
-        
-        document.getElementById('viewResponsible').textContent = personalNombres[0] || 'No asignado';
-        document.getElementById('viewSupervisor').textContent = personalNombres[1] || 'No asignado';
-        document.getElementById('viewTechnician').textContent = personalNombres[2] || 'No asignado';
-        document.getElementById('viewWorkers').textContent = `${personalNombres.length} personas`;
-
-        // Insumos y Sensores
-        const insumosIds = prod.insumos_ids ? prod.insumos_ids.split(',').map(id => id.trim()) : [];
-        const sensoresIds = prod.sensores_ids ? prod.sensores_ids.split(',').map(id => id.trim()) : [];
-        
-        const insumosNombres = insumosIds.map(id => {
-            const insumo = this.insumosMap[id];
-            return insumo ? insumo.nombre : `Insumo ${id}`;
-        });
-        
-        const sensoresNombres = sensoresIds.map(id => {
-            const sensor = this.sensoresMap[id];
-            return sensor ? sensor.nombre_sensor : `Sensor ${id}`;
-        });
-
-        document.getElementById('viewInsumos').textContent = insumosNombres.join(', ') || 'No hay insumos asignados';
-        document.getElementById('viewSensores').textContent = sensoresNombres.join(', ') || 'No hay sensores asignados';
-
-        // Fechas
-        const fechaCreacion = new Date(prod.fecha_creacion);
-        const fechaFormateada = fechaCreacion.toLocaleDateString('es-ES', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
-        
-        document.getElementById('viewStartDate').textContent = fechaFormateada;
-        document.getElementById('viewEndDate').textContent = 'En curso';
-        document.getElementById('viewDuration').textContent = 'En curso';
-        document.getElementById('viewDaysLeft').textContent = 'En curso';
-
-        // Financiero
-        const inversionFormateada = new Intl.NumberFormat('es-ES', {
-            style: 'currency',
-            currency: 'COP',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-        }).format(prod.inversion_total || 0);
-
-        const metaFormateada = new Intl.NumberFormat('es-ES', {
-            style: 'currency',
-            currency: 'COP',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-        }).format(prod.meta_ganancias || 0);
-
-        const roi = prod.inversion_total ? ((prod.meta_ganancias - prod.inversion_total) / prod.inversion_total * 100).toFixed(2) : 0;
-
-        document.getElementById('viewInvestment').textContent = inversionFormateada;
-        document.getElementById('viewExpectedReturn').textContent = metaFormateada;
-        document.getElementById('viewROI').textContent = `${roi}%`;
-        document.getElementById('viewCostPerHectare').textContent = 'Calculando...';
-
-        // Mostrar el modal
-        const modal = document.getElementById('viewModal');
-        if (modal) {
-            modal.classList.add('modal--active');
-        }
-    }
-}
-
-// Inicializar la aplicación cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-    new Productions();
+document.addEventListener("DOMContentLoaded", () => {
+	setupCharts();
+	setupDropdowns();
+	setupModal();
+	setupNavigationButtons();
+	setupAutoRefresh();
+	setupInvestmentCharts();
+	setupTabs();
+	setupFilters();
+	setupPagination();
 });
+
+// Manejo del botón para mostrar/ocultar cards
+document.addEventListener("DOMContentLoaded", () => {
+	const toggleCardsBtn = document.getElementById("toggleCardsBtn");
+	const cardsContainer = document.getElementById("cardsContainer");
+	const buttonText = toggleCardsBtn.querySelector(".button__text");
+
+	toggleCardsBtn.addEventListener("click", () => {
+		const isVisible = cardsContainer.style.display === "block";
+		cardsContainer.style.display = isVisible ? "none" : "block";
+		buttonText.textContent = isVisible
+			? "Mostrar Widgets con Informacion Adicional"
+			: "Ocultar Widgests con Informacion Adicional";
+		toggleCardsBtn.classList.toggle("active");
+	});
+});
+
+// Configuración de gráficos
+function setupCharts() {
+	// Datos de ejemplo para los gráficos
+	const dates = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
+	const humidityData = [62, 64, 65, 68, 67, 65, 68];
+	const temperatureData = [22, 23, 24, 25, 24, 23, 24];
+
+	// Configuración común para los gráficos
+	const commonOptions = {
+		responsive: true,
+		maintainAspectRatio: false,
+		plugins: {
+			legend: {
+				display: false,
+			},
+			tooltip: {
+				mode: "index",
+				intersect: false,
+				backgroundColor: "rgba(255, 255, 255, 0.9)",
+				titleColor: "#1e293b",
+				bodyColor: "#1e293b",
+				borderColor: "#e2e8f0",
+				borderWidth: 1,
+				padding: 10,
+				cornerRadius: 4,
+				boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+				callbacks: {
+					label: (context) => {
+						let label = "";
+						if (context.dataset.label) {
+							label += context.dataset.label + ": ";
+						}
+						if (context.parsed.y !== null) {
+							label +=
+								context.parsed.y +
+								(context.dataset.label.includes("Humedad") ? "%" : "°C");
+						}
+						return label;
+					},
+				},
+			},
+		},
+		scales: {
+			x: {
+				grid: {
+					display: false,
+				},
+			},
+			y: {
+				beginAtZero: false,
+				grid: {
+					color: "rgba(226, 232, 240, 0.5)",
+				},
+			},
+		},
+		elements: {
+			line: {
+				tension: 0.4,
+			},
+			point: {
+				radius: 3,
+				hoverRadius: 5,
+			},
+		},
+	};
+
+	// Gráfico de humedad en el dashboard
+	const humidityCtx = document.getElementById("humidityChart");
+	if (humidityCtx) {
+		const humidityChart = new Chart(humidityCtx.getContext("2d"), {
+			type: "line",
+			data: {
+				labels: dates,
+				datasets: [
+					{
+						label: "Humedad",
+						data: humidityData,
+						backgroundColor: "rgba(59, 130, 246, 0.2)",
+						borderColor: "rgba(59, 130, 246, 1)",
+						borderWidth: 2,
+						fill: true,
+					},
+				],
+			},
+			options: {
+				...commonOptions,
+				scales: {
+					...commonOptions.scales,
+					y: {
+						...commonOptions.scales.y,
+						min: Math.min(...humidityData) - 5,
+						max: Math.max(...humidityData) + 5,
+					},
+				},
+			},
+		});
+	}
+
+	// Gráfico de temperatura en el dashboard
+	const temperatureCtx = document.getElementById("temperatureChart");
+	if (temperatureCtx) {
+		const temperatureChart = new Chart(temperatureCtx.getContext("2d"), {
+			type: "line",
+			data: {
+				labels: dates,
+				datasets: [
+					{
+						label: "Temperatura",
+						data: temperatureData,
+						backgroundColor: "rgba(249, 115, 22, 0.2)",
+						borderColor: "rgba(249, 115, 22, 1)",
+						borderWidth: 2,
+						fill: true,
+					},
+				],
+			},
+			options: {
+				...commonOptions,
+				scales: {
+					...commonOptions.scales,
+					y: {
+						...commonOptions.scales.y,
+						min: Math.min(...temperatureData) - 2,
+						max: Math.max(...temperatureData) + 2,
+					},
+				},
+			},
+		});
+	}
+
+	// Gráficos para el modal
+	const modalHumidityCtx = document.getElementById("modalHumidityChart");
+	const modalTemperatureCtx = document.getElementById("modalTemperatureChart");
+
+	if (modalHumidityCtx && modalTemperatureCtx) {
+		// Gráfico de humedad en el modal
+		const modalHumidityChart = new Chart(modalHumidityCtx.getContext("2d"), {
+			type: "line",
+			data: {
+				labels: dates,
+				datasets: [
+					{
+						label: "Humedad",
+						data: humidityData,
+						backgroundColor: "rgba(59, 130, 246, 0.2)",
+						borderColor: "rgba(59, 130, 246, 1)",
+						borderWidth: 2,
+						fill: true,
+					},
+				],
+			},
+			options: {
+				...commonOptions,
+				scales: {
+					...commonOptions.scales,
+					y: {
+						...commonOptions.scales.y,
+						min: Math.min(...humidityData) - 5,
+						max: Math.max(...humidityData) + 5,
+					},
+				},
+			},
+		});
+
+		// Gráfico de temperatura en el modal
+		const modalTemperatureChart = new Chart(
+			modalTemperatureCtx.getContext("2d"),
+			{
+				type: "line",
+				data: {
+					labels: dates,
+					datasets: [
+						{
+							label: "Temperatura",
+							data: temperatureData,
+							backgroundColor: "rgba(249, 115, 22, 0.2)",
+							borderColor: "rgba(249, 115, 22, 1)",
+							borderWidth: 2,
+							fill: true,
+						},
+					],
+				},
+				options: {
+					...commonOptions,
+					scales: {
+						...commonOptions.scales,
+						y: {
+							...commonOptions.scales.y,
+							min: Math.min(...temperatureData) - 2,
+							max: Math.max(...temperatureData) + 2,
+						},
+					},
+				},
+			}
+		);
+	}
+
+	// Investment Trend Chart
+	const investmentTrendCtx = document.getElementById("investmentTrendChart");
+	if (investmentTrendCtx) {
+		const months = [
+			"Ene",
+			"Feb",
+			"Mar",
+			"Abr",
+			"May",
+			"Jun",
+			"Jul",
+			"Ago",
+			"Sep",
+			"Oct",
+			"Nov",
+			"Dic",
+		];
+		const investmentData = [
+			85000, 82000, 78000, 75000, 80000, 85000, 90000, 95000, 100000, 110000,
+			115000, 125000,
+		];
+
+		const investmentTrendChart = new Chart(investmentTrendCtx, {
+			type: "line",
+			data: {
+				labels: months,
+				datasets: [
+					{
+						label: "Inversión Total",
+						data: investmentData,
+						backgroundColor: "rgba(79, 70, 229, 0.2)",
+						borderColor: "rgba(79, 70, 229, 1)",
+						borderWidth: 2,
+						fill: true,
+					},
+				],
+			},
+			options: {
+				...commonOptions,
+				scales: {
+					...commonOptions.scales,
+					y: {
+						...commonOptions.scales.y,
+						min: Math.min(...investmentData) * 0.9,
+						max: Math.max(...investmentData) * 1.1,
+						ticks: {
+							callback: (value) => "$" + value.toLocaleString(),
+						},
+					},
+				},
+				plugins: {
+					...commonOptions.plugins,
+					tooltip: {
+						...commonOptions.plugins.tooltip,
+						callbacks: {
+							label: (context) => {
+								let label = "";
+								if (context.dataset.label) {
+									label += context.dataset.label + ": ";
+								}
+								if (context.parsed.y !== null) {
+									label += "$" + context.parsed.y.toLocaleString();
+								}
+								return label;
+							},
+						},
+					},
+				},
+			},
+		});
+	}
+}
+
+// Configuración de los gráficos de inversión
+function setupInvestmentCharts() {
+	// Gráfico de distribución de inversión (pie chart)
+	const pieCtx = document.getElementById("investmentPieChart");
+	if (pieCtx) {
+		// Destruir el gráfico existente si existe
+		const existingPieChart = Chart.getChart(pieCtx);
+		if (existingPieChart) {
+			existingPieChart.destroy();
+		}
+
+		new Chart(pieCtx, {
+			type: "pie",
+			data: {
+				labels: ["Maíz", "Frijol", "Tomate", "Papa", "Trigo", "Otros"],
+				datasets: [
+					{
+						data: [11, 8, 19, 12, 15, 35],
+						backgroundColor: [
+							"#3b82f6",
+							"#22c55e",
+							"#f59e0b",
+							"#ef4444",
+							"#8b5cf6",
+							"#94a3b8",
+						],
+						borderWidth: 1,
+						borderColor: "#ffffff",
+					},
+				],
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: true,
+						position: "right",
+						labels: {
+							padding: 20,
+							usePointStyle: true,
+							font: {
+								size: 12,
+							},
+						},
+					},
+					tooltip: {
+						callbacks: {
+							label: function (context) {
+								const value = context.parsed;
+								const total = context.dataset.data.reduce((a, b) => a + b, 0);
+								const percentage = Math.round((value / total) * 100);
+								const label = context.label;
+								return `${label}: ${percentage}% (${value.toLocaleString()} millones)`;
+							},
+						},
+					},
+				},
+				layout: {
+					padding: {
+						left: 20,
+						right: 20,
+						top: 20,
+						bottom: 20,
+					},
+				},
+			},
+		});
+	}
+
+	// Gráfico de tendencia de inversión (line chart)
+	const trendCtx = document.getElementById("investmentTrendChart");
+	if (trendCtx) {
+		// Destruir el gráfico existente si existe
+		const existingTrendChart = Chart.getChart(trendCtx);
+		if (existingTrendChart) {
+			existingTrendChart.destroy();
+		}
+
+		const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun"];
+		const investmentData = [
+			8000000, 7500000, 4000000, 3500000, 6000000, 4500000,
+		];
+
+		new Chart(trendCtx, {
+			type: "line",
+			data: {
+				labels: months,
+				datasets: [
+					{
+						label: "Inversión Mensual",
+						data: investmentData,
+						borderColor: "#4f46e5",
+						backgroundColor: "rgba(79, 70, 229, 0.1)",
+						tension: 0.4,
+						fill: true,
+					},
+				],
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: false,
+					},
+					tooltip: {
+						callbacks: {
+							label: function (context) {
+								return `$${context.parsed.y.toLocaleString()}`;
+							},
+						},
+					},
+				},
+				scales: {
+					y: {
+						beginAtZero: true,
+						ticks: {
+							callback: function (value) {
+								return "$" + value.toLocaleString();
+							},
+						},
+					},
+				},
+			},
+		});
+	}
+}
+
+// Configuración de menús desplegables
+function setupDropdowns() {
+	// Menú de usuario
+	const userMenuBtn = document.getElementById("userMenuBtn");
+	const userDropdown = document.getElementById("userDropdown");
+
+	if (userMenuBtn && userDropdown) {
+		userMenuBtn.addEventListener("click", () => {
+			userDropdown.style.display =
+				userDropdown.style.display === "block" ? "none" : "block";
+		});
+	}
+
+	// Cerrar menús al hacer clic fuera
+	document.addEventListener("click", () => {
+		document.querySelectorAll(".dropdown-menu").forEach((menu) => {
+			menu.style.display = "none";
+		});
+	});
+}
+
+// Configuración del modal y pestañas
+function setupModal() {
+	const modal = document.getElementById("detailsModal");
+	const viewDetailsBtns = document.querySelectorAll(
+		".dropdown-menu__item--view, .production-details-btn"
+	);
+	const tabBtns = document.querySelectorAll(".modal__tab-btn");
+	const closeModalBtns = document.querySelectorAll(
+		".modal__close, [data-close]"
+	);
+
+	// Cerrar todos los modales
+	function closeAllModals() {
+		document.querySelectorAll(".modal").forEach((modal) => {
+			modal.style.display = "none";
+		});
+	}
+
+	// Setup para cerrar modales
+	closeModalBtns.forEach((btn) => {
+		btn.addEventListener("click", function () {
+			const modalId = this.getAttribute("data-close");
+			if (modalId) {
+				document.getElementById(modalId).style.display = "none";
+			} else {
+				// Si no tiene data-close, cerrar el modal padre
+				this.closest(".modal").style.display = "none";
+			}
+		});
+	});
+
+	if (modal) {
+		// Abrir modal de detalles
+		viewDetailsBtns.forEach((btn) => {
+			btn.addEventListener("click", function (e) {
+				e.preventDefault();
+				modal.style.display = "flex";
+
+				// Cargar datos según el ID
+				const productionId = this.getAttribute("data-id");
+				loadProductionDetails(productionId);
+			});
+		});
+
+		// Cambiar pestañas
+		tabBtns.forEach((btn) => {
+			btn.addEventListener("click", function () {
+				const tabId = this.getAttribute("data-tab");
+
+				// Desactivar todas las pestañas
+				tabBtns.forEach((b) => b.classList.remove("modal__tab-btn--active"));
+				document.querySelectorAll(".tab-content").forEach((content) => {
+					content.classList.remove("tab-content--active");
+				});
+
+				// Activar la pestaña seleccionada
+				this.classList.add("modal__tab-btn--active");
+				document.getElementById(tabId).classList.add("tab-content--active");
+			});
+		});
+	}
+}
+
+// Modal handling
+document.addEventListener("DOMContentLoaded", function () {
+	const modal = document.getElementById("modalVisualizarCultivo");
+	const closeModal = document.getElementById("closeModalVisualizarCultivo");
+	const viewButtons = document.querySelectorAll(".table__action-button--view");
+
+	// Chart instances storage
+	let chartInstances = {
+		inversion: null,
+		humedad: null,
+		temperatura: null,
+	};
+
+	// Datos de ejemplo para las gráficas
+	const últimosMeses = ["Ene", "Feb", "Mar", "Abr", "May"];
+	const humedadData = [65, 68, 62, 70, 68];
+	const temperaturaData = [22, 23, 25, 24, 24];
+	const inversionData = [1200000, 1500000, 1800000, 2100000, 2400000];
+
+	// Cerrar modal y limpiar gráficos
+	function closeModalAndCleanup() {
+		modal.style.display = "none";
+		// Destruir todas las instancias de gráficos
+		Object.values(chartInstances).forEach((chart) => {
+			if (chart) {
+				chart.destroy();
+			}
+		});
+		// Resetear el objeto de instancias
+		chartInstances = {
+			inversion: null,
+			humedad: null,
+			temperatura: null,
+		};
+	}
+
+	// Cerrar modal
+	closeModal.addEventListener("click", closeModalAndCleanup);
+
+	// Cerrar modal al hacer clic fuera
+	window.addEventListener("click", (e) => {
+		if (e.target === modal) {
+			closeModalAndCleanup();
+		}
+	});
+
+	// Abrir modal y cargar datos
+	viewButtons.forEach((button) => {
+		button.addEventListener("click", () => {
+			const row = button.closest("tr");
+			const cultivoData = {
+				id: row.querySelector("td:nth-child(2)").textContent,
+				nombre: row.querySelector("td:nth-child(3)").textContent,
+				responsable: row.querySelector("td:nth-child(4)").textContent,
+				inversion: row.querySelector("td:nth-child(6)").textContent,
+				progreso: row.querySelector(".progress__text").textContent,
+				estado: row.querySelector(".badge--status").textContent.trim(),
+			};
+
+			loadCultivoData(cultivoData);
+			modal.style.display = "flex";
+		});
+	});
+
+	function loadCultivoData(data) {
+		// Cargar datos básicos
+		document.getElementById("cultivoId").textContent = data.id;
+		document.getElementById("cultivoNombre").textContent = data.nombre;
+		document.getElementById("cultivoResponsable").textContent =
+			data.responsable;
+		document.getElementById("cultivoRol").textContent = "Supervisor de cultivo";
+		document.getElementById("cultivoInversion").textContent = data.inversion;
+
+		// Actualizar barra de progreso
+		const progressBar = document.querySelector(
+			".cultivo-progress .progress__bar"
+		);
+		const progressText = document.getElementById("cultivoProgreso");
+		const progress = parseInt(data.progreso);
+		progressBar.style.width = progress + "%";
+		progressText.textContent = progress + "%";
+
+		// Destruir gráficos existentes antes de crear nuevos
+		Object.values(chartInstances).forEach((chart) => {
+			if (chart) {
+				chart.destroy();
+			}
+		});
+
+		// Crear gráfica de inversión
+		const ctxInversion = document
+			.getElementById("inversionChart")
+			.getContext("2d");
+		chartInstances.inversion = new Chart(ctxInversion, {
+			type: "line",
+			data: {
+				labels: últimosMeses,
+				datasets: [
+					{
+						label: "Inversión Mensual",
+						data: inversionData,
+						borderColor: "#39a900",
+						backgroundColor: "rgba(57, 169, 0, 0.1)",
+						tension: 0.4,
+						fill: true,
+					},
+				],
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: false,
+					},
+				},
+				scales: {
+					y: {
+						beginAtZero: true,
+						ticks: {
+							callback: function (value) {
+								return "$" + value.toLocaleString();
+							},
+						},
+					},
+				},
+			},
+		});
+
+		// Crear gráfica de humedad
+		const ctxHumedad = document.getElementById("humedadChart").getContext("2d");
+		chartInstances.humedad = new Chart(ctxHumedad, {
+			type: "line",
+			data: {
+				labels: últimosMeses,
+				datasets: [
+					{
+						label: "Humedad (%)",
+						data: humedadData,
+						borderColor: "#50e5f9",
+						backgroundColor: "rgba(80, 229, 249, 0.1)",
+						tension: 0.4,
+						fill: true,
+					},
+				],
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: false,
+					},
+				},
+			},
+		});
+
+		// Crear gráfica de temperatura
+		const ctxTemperatura = document
+			.getElementById("temperaturaChart")
+			.getContext("2d");
+		chartInstances.temperatura = new Chart(ctxTemperatura, {
+			type: "line",
+			data: {
+				labels: últimosMeses,
+				datasets: [
+					{
+						label: "Temperatura (°C)",
+						data: temperaturaData,
+						borderColor: "#93d074",
+						backgroundColor: "rgba(147, 208, 116, 0.1)",
+						tension: 0.4,
+						fill: true,
+					},
+				],
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: false,
+					},
+				},
+			},
+		});
+	}
+});
+
+// Configuración de los botones de navegación
+function setupNavigationButtons() {
+	// Botones para abrir modales
+	const navButtons = {
+		productionsBtn: "productionsModal",
+		cropsBtn: "cropsModal",
+		sensorsBtn: "sensorsModal",
+		inputsBtn: "inputsModal",
+		responsablesBtn: "responsablesModal",
+	};
+
+	// Agregar event listeners a cada botón
+	for (const [buttonId, modalId] of Object.entries(navButtons)) {
+		const button = document.getElementById(buttonId);
+		const modal = document.getElementById(modalId);
+
+		if (button && modal) {
+			button.addEventListener("click", () => {
+				// Cerrar otros modales
+				document.querySelectorAll(".modal").forEach((m) => {
+					m.style.display = "none";
+				});
+
+				// Mostrar el modal correspondiente
+				modal.style.display = "flex";
+			});
+		}
+	}
+
+	// Cerrar modales al hacer clic fuera del contenido
+	const modals = document.querySelectorAll(".modal");
+	modals.forEach((modal) => {
+		modal.addEventListener("click", function (e) {
+			if (e.target === this) {
+				this.style.display = "none";
+			}
+		});
+	});
+}
+
+// Configuración de actualizaciones automáticas
+function setupAutoRefresh() {
+	const updateIntervals = {
+		humidity: 300000, // 5 minutos
+		temperature: 120000, // 2 minutos
+		production: 600000, // 10 minutos
+	};
+
+	// Actualizar sensores
+	setInterval(() => {
+		updateSensorData("humidity", generateRandomData(60, 75));
+		updateProgressBars();
+	}, updateIntervals.humidity);
+
+	setInterval(() => {
+		updateSensorData("temperature", generateRandomData(20, 28));
+		updateProgressBars();
+	}, updateIntervals.temperature);
+
+	// Primera actualización inmediata
+	updateSensorData("humidity", generateRandomData(60, 75));
+	updateSensorData("temperature", generateRandomData(20, 28));
+	updateProgressBars();
+}
+
+// Generar datos aleatorios para simulación
+function generateRandomData(min, max) {
+	return Math.round((Math.random() * (max - min) + min) * 10) / 10;
+}
+
+// Actualizar datos de sensores
+function updateSensorData(type, value) {
+	const elements = {
+		humidity: {
+			value: document.querySelector(".humidity-card .sensor__value"),
+			timestamp: document.querySelector(".humidity-card .sensor__timestamp"),
+		},
+		temperature: {
+			value: document.querySelector(".temperature-card .sensor__value"),
+			timestamp: document.querySelector(".temperature-card .sensor__timestamp"),
+		},
+	};
+
+	const sensor = elements[type];
+
+	if (sensor.value) {
+		sensor.value.textContent = `${value}${type === "humidity" ? "%" : "°C"}`;
+		sensor.value.classList.add("sensor__value--updated");
+		setTimeout(
+			() => sensor.value.classList.remove("sensor__value--updated"),
+			1000
+		);
+	}
+
+	if (sensor.timestamp) {
+		sensor.timestamp.textContent = "Última actualización: hace 1 min";
+	}
+
+	// Actualizar gráficos
+	updateCharts(type, value);
+}
+
+// Actualizar barras de progreso
+function updateProgressBars() {
+	document.querySelectorAll(".progress__bar").forEach((bar) => {
+		const currentWidth = parseInt(bar.style.width);
+		const randomChange = Math.random() * 10 - 5; // Cambio entre -5 y +5
+		let newWidth = Math.max(0, Math.min(100, currentWidth + randomChange));
+
+		bar.style.width = `${newWidth}%`;
+
+		// Actualizar color según el valor
+		if (newWidth > 80) {
+			bar.classList.add("progress__bar--warning");
+		} else {
+			bar.classList.remove("progress__bar--warning");
+		}
+	});
+}
+
+// Actualizar gráficos con nuevos datos
+function updateCharts(type, value) {
+	const chartId = type === "humidity" ? "humidityChart" : "temperatureChart";
+	const chart = Chart.getChart(chartId);
+
+	if (chart) {
+		const newData = chart.data.datasets[0].data;
+		newData.shift();
+		newData.push(value);
+		chart.update("none"); // Actualizar sin animación
+	}
+}
+
+// Cargar detalles de producción (simulado)
+function loadProductionDetails(id) {
+	// Aquí se cargarían los datos reales desde una API
+	console.log(`Cargando detalles para la producción ID: ${id}`);
+
+	// Datos de ejemplo
+	const productions = {
+		1: {
+			nombre: "Maíz Temporada 2023",
+			cultivo: "Maíz",
+			fechaInicio: "15/03/2023",
+			fechaFin: "15/08/2023",
+			estado: "Activo",
+			progreso: 75,
+		},
+		2: {
+			nombre: "Tomate Invernadero",
+			cultivo: "Tomate",
+			fechaInicio: "02/04/2023",
+			fechaFin: "30/07/2023",
+			estado: "Activo",
+			progreso: 45,
+		},
+		3: {
+			nombre: "Trigo Temporada 2022",
+			cultivo: "Trigo",
+			fechaInicio: "05/10/2022",
+			fechaFin: "15/03/2023",
+			estado: "Completado",
+			progreso: 100,
+		},
+	};
+
+	const production = productions[id];
+
+	if (production) {
+		// Actualizar datos en el modal
+		document.getElementById(
+			"modalTitle"
+		).textContent = `Detalles: ${production.nombre}`;
+		document.getElementById("produccionNombre").textContent = production.nombre;
+		document.getElementById("produccionCultivo").textContent =
+			production.cultivo;
+		document.getElementById("produccionFechaInicio").textContent =
+			production.fechaInicio;
+		document.getElementById("produccionFechaFin").textContent =
+			production.fechaFin;
+		document.getElementById("produccionEstado").textContent = production.estado;
+
+		// Actualizar barra de progreso
+		const progressBar = document.querySelector("#general .progress__bar");
+		const progressText = document.querySelector("#general .progress__text");
+
+		if (progressBar && progressText) {
+			progressBar.style.width = `${production.progreso}%`;
+			progressText.textContent = `${production.progreso}%`;
+		}
+	}
+
+	// Add financial data
+	const financialData = {
+		1: {
+			inversion: 56250,
+			costos: 35000,
+			gananciasEstimadas: 85000,
+			roi: 51.1,
+		},
+		2: {
+			inversion: 37500,
+			costos: 22000,
+			gananciasEstimadas: 65000,
+			roi: 73.3,
+		},
+		3: {
+			inversion: 31250,
+			costos: 18000,
+			gananciasEstimadas: 45000,
+			roi: 44.0,
+		},
+	};
+
+	const financial = financialData[id];
+
+	if (financial) {
+		// Check if financial elements exist in the modal
+		const inversionElement = document.getElementById("produccionInversion");
+		const costosElement = document.getElementById("produccionCostos");
+		const gananciasElement = document.getElementById("produccionGanancias");
+		const roiElement = document.getElementById("produccionROI");
+
+		if (inversionElement)
+			inversionElement.textContent = "$" + financial.inversion.toLocaleString();
+		if (costosElement)
+			costosElement.textContent = "$" + financial.costos.toLocaleString();
+		if (gananciasElement)
+			gananciasElement.textContent =
+				"$" + financial.gananciasEstimadas.toLocaleString();
+		if (roiElement) roiElement.textContent = financial.roi.toFixed(1) + "%";
+	}
+}
+
+// Manejo de tabs
+function setupTabs() {
+	const tabButtons = document.querySelectorAll(".tab-button");
+	const tabContents = document.querySelectorAll(".tab-content");
+
+	tabButtons.forEach((button) => {
+		button.addEventListener("click", () => {
+			// Remover clase active de todos los botones y contenidos
+			tabButtons.forEach((btn) => btn.classList.remove("active"));
+			tabContents.forEach((content) => (content.style.display = "none"));
+
+			// Activar el tab seleccionado
+			button.classList.add("active");
+			const tabId = button.getAttribute("data-tab");
+			const tabContent = document.getElementById(tabId);
+			if (tabContent) {
+				tabContent.style.display = "block";
+			}
+		});
+	});
+}
+
+// Configuración de filtros
+function setupFilters() {
+	const filterButton = document.querySelector('.button--filter');
+	const filtersPanel = document.querySelector('.filters');
+	const closeButton = document.querySelector('.filters__close');
+	const searchInput = document.querySelector('.filters__search');
+	const stateSelect = document.querySelector('.filters__select[placeholder="Estado"]');
+	const cycleSelect = document.querySelector('.filters__select[placeholder="Ciclo"]');
+	const clearButton = document.querySelector('.button--clear');
+	const tableRows = document.querySelectorAll('.table__row');
+
+	// Mostrar/ocultar panel de filtros
+	filterButton?.addEventListener('click', () => {
+		filtersPanel?.classList.toggle('hidden');
+	});
+
+	closeButton?.addEventListener('click', () => {
+		filtersPanel?.classList.add('hidden');
+	});
+
+	// Función de filtrado
+	function filterTable() {
+		const searchTerm = searchInput?.value.toLowerCase();
+		const selectedState = stateSelect?.value;
+		const selectedCycle = cycleSelect?.value;
+
+		tableRows.forEach(row => {
+			const id = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase();
+			const name = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase();
+			const state = row.querySelector('.badge--status')?.textContent.trim();
+			
+			// Aplicar filtros
+			const matchesSearch = !searchTerm || 
+				id.includes(searchTerm) || 
+				name.includes(searchTerm);
+				
+			const matchesState = !selectedState || 
+				state.includes(selectedState);
+				
+			const matchesCycle = !selectedCycle; // Implementar lógica de ciclo si es necesario
+
+			// Mostrar u ocultar fila según filtros
+			row.style.display = (matchesSearch && matchesState && matchesCycle) 
+				? '' 
+				: 'none';
+		});
+
+		updatePaginationAfterFilter();
+	}
+
+	// Event listeners para filtros
+	searchInput?.addEventListener('input', filterTable);
+	stateSelect?.addEventListener('change', filterTable);
+	cycleSelect?.addEventListener('change', filterTable);
+
+	// Limpiar filtros
+	clearButton?.addEventListener('click', () => {
+		if (searchInput) searchInput.value = '';
+		if (stateSelect) stateSelect.value = '';
+		if (cycleSelect) cycleSelect.value = '';
+		tableRows.forEach(row => row.style.display = '');
+		updatePaginationAfterFilter();
+	});
+}
+
+function setupPagination() {
+    const itemsPerPage = 10;
+    let currentPage = 1;
+    const tableRows = document.querySelectorAll('.table__row');
+    const totalItems = tableRows.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    function updatePaginationInfo() {
+        const startItem = (currentPage - 1) * itemsPerPage + 1;
+        const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+        
+        document.querySelector('.pagination__current-page').textContent = currentPage;
+        document.querySelector('.pagination__total-pages').textContent = totalPages;
+        document.querySelector('.pagination__items-per-page').textContent = endItem;
+        document.querySelector('.pagination__total-items').textContent = totalItems;
+    }
+
+    function updatePaginationControls() {
+        const prevBtn = document.querySelector('.pagination__button--prev');
+        const nextBtn = document.querySelector('.pagination__button--next');
+        const pageButtons = Array.from(document.querySelectorAll('.pagination__button:not(.pagination__button--prev):not(.pagination__button--next)'));
+
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
+
+        pageButtons.forEach((button, index) => {
+            const pageNum = index + 1;
+            button.classList.toggle('pagination__button--active', pageNum === currentPage);
+            button.style.display = pageNum <= totalPages ? '' : 'none';
+        });
+    }
+
+    function showPage(page) {
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+
+        tableRows.forEach((row, index) => {
+            row.style.display = (index >= start && index < end) ? '' : 'none';
+        });
+
+        currentPage = page;
+        updatePaginationInfo();
+        updatePaginationControls();
+    }
+
+    // Event Listeners para botones de paginación
+    document.querySelector('.pagination__button--prev').addEventListener('click', () => {
+        if (currentPage > 1) showPage(currentPage - 1);
+    });
+
+    document.querySelector('.pagination__button--next').addEventListener('click', () => {
+        if (currentPage < totalPages) showPage(currentPage + 1);
+    });
+
+    document.querySelectorAll('.pagination__button:not(.pagination__button--prev):not(.pagination__button--next)').forEach((button, index) => {
+        button.addEventListener('click', () => showPage(index + 1));
+    });
+
+    // Inicializar la primera página
+    showPage(1);
+}
+
+// Función para actualizar la paginación después de filtrar
+function updatePaginationAfterFilter() {
+    const visibleRows = document.querySelectorAll('.table__row:not([style*="display: none"])');
+    const totalItems = visibleRows.length;
+    
+    document.querySelector('.pagination__total-items').textContent = totalItems;
+    document.querySelector('.pagination__total-pages').textContent = Math.ceil(totalItems / 10);
+    
+    // Resetear a la primera página
+    const paginationEvent = new Event('paginationReset');
+    document.dispatchEvent(paginationEvent);
+}

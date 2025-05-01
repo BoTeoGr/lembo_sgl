@@ -1,440 +1,1485 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Sistema de Gestión Agrícola - Producciones</title>
-		<link rel="stylesheet" href="../css/pages/listar.css">
-		<link rel="shortcut icon" href="../imgs/logoSena.svg" type="image/x-icon" />
-		<link rel="stylesheet" href="../css/components/navbar.css" />
-		<link rel="stylesheet" href="../css/components/modal-list.css" />
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
-		/>
-		<script type="module" src="../js/data/productionsData.js"></script>
-		<script type="module" src="../js/pages/componentLoader.js"></script>
-		<script type="module" src="../js/config/productionsConfig.js"></script>
-		<script type="module" src="../js/pages/Productions.js"></script>
-		<script src="../js/pages/ReportGenerator.js"></script>
-	</head>
-	<body>
-		<nav class="nav-render"></nav>
-		<main>
-			<header>
-				<h1 class="header__title">Gestión de Producciones</h1>
-				<div class="header__buttons">
-					<button class="button button--filter">
-						<span class="material-symbols-outlined button__icon"
-							>filter_alt</span
-						>
-						Filtros
-					</button>
-					<button class="button button--secondary button--create">
-						<a href="crear-produccion.html" class="button__link">
-							<span class="material-symbols-outlined button__icon"
-								>add_circle</span
-							>
-							Crear produccion
-						</a>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Sistema de Gestión Agrícola</title>
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	<link rel="stylesheet" href="../css/pages/listar-produccion.css" />
+	<script type="module" src="../js/pages/componentLoader.js"></script>
+	<link rel="stylesheet" href="../css/components/navbar.css" />
+	<script src="../js/pages/Productions.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+	<nav class="nav-render"></nav>
+	<div class="dashboard">
+
+		<!-- Main Content -->
+		<div class="dashboard__content">
+			<!-- Main Area -->
+			<main class="main">
+				<!-- Navigation Buttons -->
+				<div class="nav-buttons">
+					<button class="button button--primary" id="toggleCardsBtn">
+						<span class="button__text">Mostrar Widgets con Informacion Adicional</span>
+						<span class="material-symbols-outlined button__icon">
+							arrow_drop_down
+							</span>
 					</button>
 				</div>
-			</header>
 
-			<div class="filters hidden">
-				<div class="filters__header">
-					<div class="filters__title-container">
-						<h2 class="filters__title">Filtros</h2>
-						<p class="filters__subtitle">
-							Filtre las opciones por diferentes criterios
-						</p>
-					</div>
-					<span class="material-symbols-outlined filters__close">close</span>
-				</div>
-				<div class="filters__content">
-					<input
-						type="text"
-						class="filters__search"
-						placeholder="Buscar por nombre o ID"
-					/>
-					<select class="filters__select" placeholder="Estado">
-						<option value="">Todos</option>
-						<option value="Activo">Activo</option>
-						<option value="Inactivo">Inactivo</option>
-					</select>
-					<select class="filters__select" placeholder="Ciclo">
-						<option value="">Todos</option>
-						<option value="Primavera-Verano">Primavera - Verano</option>
-						<option value="Otoño-Invierno">Otoño - Invierno</option>
-					</select>
-					<!-- Filtro funcional -->
-					<select class="filters__select filters__select--funcional" placeholder="Funcional">
-						<option value="">Todos</option>
-						<option value="Sí">Sí</option>
-						<option value="No">No</option>
-					</select>
-					<!-- Eliminados los filtros por fecha -->
-					<button class="button button--clear">Limpiar filtros</button>
-				</div>
-			</div>
-
-			<div class="actions-bar">
-				<div class="actions-bar__selection">
-					<input type="checkbox" class="actions-bar__checkbox" />
-					<p class="actions-bar__count">
-						<span class="actions-bar__count--selected">5</span> de
-						<span class="actions-bar__count--total">10</span> Seleccionados
-					</p>
-				</div>
-				<button class="button button--enable">
-					<span class="material-symbols-outlined button__icon"
-						>power_settings_new</span
-					>
-					Habilitar
-				</button>
-				<button class="button button--disable">
-					<span class="material-symbols-outlined button__icon"
-						>power_settings_new</span
-					>
-					Deshabilitar
-				</button>
-				<button class="button button--report">
-					<span class="material-symbols-outlined button__icon">download</span>
-					Generar Reporte
-				</button>
-			</div>
-			<!-- Modal de Visualización -->
-			<div class="modal modal--produccion" id="viewModal">
-				<div class="modal__content modal__content--produccion">
-					<div class="modal__header">
-						<div class="modal__header-top">
-							<div class="modal__titles">
-								<h2 class="modal__title">Información de la Producción</h2>
-								<p class="modal__subtitle">
-									ID: <span id="viewId"></span>
-								</p>
+				<!-- Cards Container -->
+				<div id="cardsContainer" class="cards-container" style="display: none">
+					<!-- Dashboard Summary Cards -->
+					<div class="summary">
+						<!-- Stats Overview -->
+						<div class="stats-overview">
+							<div class="stat-card">
+								<div class="stat-card__header">
+									<h3 class="stat-card__title">Total Producciones</h3>
+									<span class="stat-card__icon">📊</span>
+								</div>
+								<div class="stat-card__content">
+									<div class="stat-card__value">8</div>
+									<div class="stat-card__details">
+										<span class="stat-card__label">5 Activas</span>
+										<span class="stat-card__label">3 Completadas</span>
+									</div>
+								</div>
 							</div>
-							<button class="modal__close">
-								<span class="material-symbols-outlined">close</span>
-							</button>
+
+							<div class="stat-card">
+								<div class="stat-card__header">
+									<h3 class="stat-card__title">Inversión Total</h3>
+									<span class="stat-card__icon">💰</span>
+								</div>
+								<div class="stat-card__content">
+									<div class="stat-card__value">$41.100.000</div>
+									<div class="stat-card__trend stat-card__trend--positive">
+										<span class="stat-card__trend-icon">↗</span>
+										<span class="stat-card__trend-value">12.5%</span>
+										<span class="stat-card__trend-label">desde el mes pasado</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="stat-card">
+								<div class="stat-card__header">
+									<h3 class="stat-card__title">Meta de Ganancias</h3>
+									<span class="stat-card__icon">🎯</span>
+								</div>
+								<div class="stat-card__content">
+									<div class="stat-card__value">$53.430.000</div>
+									<div class="stat-card__trend stat-card__trend--positive">
+										<span class="stat-card__trend-icon">↗</span>
+										<span class="stat-card__trend-value">30%</span>
+										<span class="stat-card__trend-label">sobre la inversión total</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="stat-card">
+								<div class="stat-card__header">
+									<h3 class="stat-card__title">Próximas Cosechas</h3>
+									<span class="stat-card__icon">🌾</span>
+								</div>
+								<div class="stat-card__content">
+									<div class="stat-card__value">3</div>
+									<div class="stat-card__details">
+										<span class="stat-card__label stat-card__label--highlight">Próxima en 15
+											días</span>
+									</div>
+								</div>
+							</div>
 						</div>
 
-					</div>
+						<!-- Investment Distribution -->
+						<div class="card investment-distribution">
+							<div class="card__header">
+								<h2 class="card__title">Inversión por Cultivo</h2>
+								<span class="badge badge--green">Distribución actual</span>
+							</div>
+							<div class="card__content">
+								<div class="investment-chart">
+									<canvas id="investmentPieChart"></canvas>
+								</div>
+								<div class="investment-legend">
+									<div class="legend-item">
+										<span class="legend-item__color" style="background-color: #3b82f6"></span>
+										<span class="legend-item__label">Maíz: 11%</span>
+									</div>
+									<div class="legend-item">
+										<span class="legend-item__color" style="background-color: #22c55e"></span>
+										<span class="legend-item__label">Frijol: 8%</span>
+									</div>
+									<div class="legend-item">
+										<span class="legend-item__color" style="background-color: #f59e0b"></span>
+										<span class="legend-item__label">Tomate: 19%</span>
+									</div>
+									<div class="legend-item">
+										<span class="legend-item__color" style="background-color: #ef4444"></span>
+										<span class="legend-item__label">Papa: 12%</span>
+									</div>
+									<div class="legend-item">
+										<span class="legend-item__color" style="background-color: #8b5cf6"></span>
+										<span class="legend-item__label">Trigo: 15%</span>
+									</div>
+									<div class="legend-item">
+										<span class="legend-item__color" style="background-color: #94a3b8"></span>
+										<span class="legend-item__label">Otros: 35%</span>
+									</div>
+								</div>
+							</div>
+						</div>
 
-					<div class="modal__body">
-						<!-- Panel General con un solo grid y modificador para este modal -->
-						<div class="modal__panel modal__panel--active" data-panel="general">
-							<div class="modal-grid modal-grid--produccion">
-								<div class="info-section">
-									<h3 class="info-section__title">
-										<span class="material-symbols-outlined info-section__icon">info</span>
-										Información General
-									</h3>
-									<div class="info-section__content">
-										<div class="info-item">
-											<span class="info-item__label">ID</span>
-											<span class="info-item__value" id="viewId">PROD-01042025-0001</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">Nombre</span>
-											<span class="info-item__value" id="viewName">Maíz Orgánico Zona Norte</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">Estado</span>
-											<span class="badge badge--active" id="viewStatus">Activo</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">Tipo de Cultivo</span>
-											<span class="info-item__value" id="viewCropType">Maíz</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">Área Total</span>
-											<span class="info-item__value" id="viewArea">45 hectáreas</span>
+						<!-- Investment Trend -->
+						<div class="card investment-trend">
+							<div class="card__header">
+								<h2 class="card__title">Tendencia de Inversión</h2>
+								<span class="badge badge--green">Últimos 6 meses</span>
+							</div>
+							<div class="card__content">
+								<div class="trend-chart">
+									<canvas id="investmentTrendChart"></canvas>
+								</div>
+								<div class="trend-summary">
+									<p class="trend-summary__text">
+										Evolución de la inversión en los últimos 6 meses
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<!-- Production Status Card -->
+						<div class="card production-status-card">
+							<div class="card__header">
+								<h2 class="card__title">Estado de Producciones</h2>
+								<span class="badge badge--green">Actualizado hoy</span>
+							</div>
+							<div class="card__content">
+								<div class="production-status">
+									<div class="production-status__main">
+										<div class="stat__value">12</div>
+										<div class="stat__label">Producciones activas</div>
+										<div class="stat__trend stat__trend--positive">
+											<span class="stat__trend-icon">↗</span>
+											<span class="stat__trend-value">+2</span>
+											<span class="stat__trend-label">desde el mes pasado</span>
 										</div>
 									</div>
-								</div>
-								<div class="info-section">
-									<h3 class="info-section__title">
-										<span class="material-symbols-outlined info-section__icon">group</span>
-										Personal
-									</h3>
-									<div class="info-section__content">
-										<div class="info-item">
-											<span class="info-item__label">Responsable</span>
-											<span class="info-item__value" id="viewResponsible">Juan Pérez</span>
+									<div class="production-status__details">
+										<div class="status-item">
+											<div class="status-item__value">8</div>
+											<div class="status-item__label">En proceso</div>
 										</div>
-										<div class="info-item">
-											<span class="info-item__label">Supervisor</span>
-											<span class="info-item__value" id="viewSupervisor">María García</span>
+										<div class="status-item">
+											<div class="status-item__value">4</div>
+											<div class="status-item__label">Por iniciar</div>
 										</div>
-										<div class="info-item">
-											<span class="info-item__label">Técnico</span>
-											<span class="info-item__value" id="viewTechnician">Carlos Rodríguez</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">Personal Asignado</span>
-											<span class="info-item__value" id="viewWorkers">8 personas</span>
-										</div>
-									</div>
-								</div>
-								<div class="info-section">
-									<h3 class="info-section__title">
-										<span class="material-symbols-outlined info-section__icon">science</span>
-										Insumos y Sensores Asignados
-									</h3>
-									<div class="asignados-grid">
-										<div class="info-item">
-											<span class="info-item__label">Insumos</span>
-											<span class="info-item__value" id="viewInsumos">-</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">Sensores</span>
-											<span class="info-item__value" id="viewSensores">-</span>
-										</div>
-									</div>
-								</div>
-								<div class="info-section">
-									<h3 class="info-section__title">
-										<span class="material-symbols-outlined info-section__icon">calendar_month</span>
-										Fechas
-									</h3>
-									<div class="info-section__content">
-										<div class="info-item">
-											<span class="info-item__label">Inicio</span>
-											<span class="info-item__value" id="viewStartDate">01/04/2025</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">Fin esperado</span>
-											<span class="info-item__value" id="viewEndDate">15/09/2025</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">Duración Total</span>
-											<span class="info-item__value" id="viewDuration">168 días</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">Días Restantes</span>
-											<span class="info-item__value" id="viewDaysLeft">120 días</span>
-										</div>
-									</div>
-								</div>
-								<div class="info-section">
-									<h3 class="info-section__title">
-										<span class="material-symbols-outlined info-section__icon">attach_money</span>
-										Financiero
-									</h3>
-									<div class="info-section__content">
-										<div class="info-item">
-											<span class="info-item__label">Inversión</span>
-											<span class="info-item__value" id="viewInvestment">$58,000</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">Retorno esperado</span>
-											<span class="info-item__value" id="viewExpectedReturn">$92,800</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">ROI estimado</span>
-											<span class="info-item__value" id="viewROI">60%</span>
-										</div>
-										<div class="info-item">
-											<span class="info-item__label">Costo por Hectárea</span>
-											<span class="info-item__value" id="viewCostPerHectare">$1,289</span>
+										<div class="status-item">
+											<div class="status-item__value">15</div>
+											<div class="status-item__label">Completadas 2024</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<!-- Panel de Sensores -->
-						<div class="modal__panel" data-panel="sensores">
-							<div class="sensors-grid" id="sensoresContent">
-								<!-- Se llenará dinámicamente -->
+						<!-- Humidity Card -->
+						<div class="card humidity-card">
+							<div class="card__header">
+								<h2 class="card__title">Humedad Promedio</h2>
+								<span class="badge badge--warning">Alerta</span>
+							</div>
+							<div class="card__content">
+								<div class="sensor">
+									<div class="sensor__current">
+										<div class="sensor__value">68%</div>
+										<div class="sensor__label">Humedad actual</div>
+										<div class="sensor__timestamp">
+											Última actualización: hace 5 min
+										</div>
+									</div>
+									<div class="progress">
+										<div class="progress__bar progress__bar--humidity" style="width: 68%"></div>
+									</div>
+									<div class="sensor__summary">
+										<div>Min: 60%</div>
+										<div>Promedio: 65%</div>
+										<div>Max: 70%</div>
+									</div>
+								</div>
+								<div class="sensor__alerts">
+									<div class="alert alert--warning">
+										<span class="alert__icon">⚠️</span>
+										<div class="alert__content">
+											<div class="alert__title">Nivel superior al óptimo</div>
+											<div class="alert__message">
+												Se recomienda ajustar el riego en sector 3
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="chart">
+									<canvas id="humidityChart" class="chart__canvas"></canvas>
+								</div>
 							</div>
 						</div>
 
-						<!-- Panel de Insumos -->
-						<div class="modal__panel" data-panel="insumos">
-							<div class="supplies-grid" id="insumosContent">
-								<!-- Se llenará dinámicamente -->
+						<!-- Temperature Card -->
+						<div class="card temperature-card">
+							<div class="card__header">
+								<h2 class="card__title">Temperatura Promedio</h2>
+								<span class="badge badge--green">Normal</span>
+							</div>
+							<div class="card__content">
+								<div class="sensor">
+									<div class="sensor__current">
+										<div class="sensor__value">24°C</div>
+										<div class="sensor__label">Temperatura actual</div>
+										<div class="sensor__timestamp">
+											Última actualización: hace 2 min
+										</div>
+									</div>
+									<div class="progress">
+										<div class="progress__bar progress__bar--temperature" style="width: 60%"></div>
+									</div>
+									<div class="sensor__summary">
+										<div>Min: 20°C</div>
+										<div>Promedio: 23°C</div>
+										<div>Max: 26°C</div>
+									</div>
+								</div>
+								<div class="sensor__stats">
+									<div class="stat-details__item">
+										<div class="stat-details__label">Variación diaria</div>
+										<div class="stat-details__value">±2.5°C</div>
+									</div>
+									<div class="stat-details__item">
+										<div class="stat-details__label">Tendencia semanal</div>
+										<div class="stat-details__value trend-up">↗ +1.2°C</div>
+									</div>
+								</div>
+								<div class="chart">
+									<canvas id="temperatureChart" class="chart__canvas"></canvas>
+								</div>
+							</div>
+						</div>
+
+						<!-- Activity Card -->
+						<div class="card activity-card">
+							<div class="card__header">
+								<h2 class="card__title">Actividad Reciente</h2>
+								<span class="badge badge--green">12 nuevas</span>
+							</div>
+							<div class="card__content">
+								<ul class="activity">
+									<li class="activity__item">
+										<div class="activity__icon">💧</div>
+										<div class="activity__main">
+											<div class="activity__header">
+												<div class="activity__time">Hoy 10:30</div>
+												<div class="status status--active">✓ Completado</div>
+											</div>
+											<div class="activity__content">
+												<div class="activity__title">Riego programado</div>
+												<div class="activity__description">
+													Maíz Temporada 2023
+												</div>
+												<div class="activity__user">Por: Juan Pérez</div>
+											</div>
+										</div>
+									</li>
+									<li class="activity__item">
+										<div class="activity__icon">🌱</div>
+										<div class="activity__main">
+											<div class="activity__header">
+												<div class="activity__time">Ayer 15:45</div>
+												<div class="status status--active">✓ Verificado</div>
+											</div>
+											<div class="activity__content">
+												<div class="activity__title">
+													Fertilización completada
+												</div>
+												<div class="activity__description">
+													Tomate Invernadero
+												</div>
+												<div class="activity__user">Por: María Rodríguez</div>
+											</div>
+										</div>
+									</li>
+									<li class="activity__item">
+										<div class="activity__icon">🌡️</div>
+										<div class="activity__main">
+											<div class="activity__header">
+												<div class="activity__time">22/06 09:15</div>
+												<div class="status status--warning">
+													⚠️ Requiere atención
+												</div>
+											</div>
+											<div class="activity__content">
+												<div class="activity__title">
+													Alerta de temperatura
+												</div>
+												<div class="activity__description">
+													Invernadero #2
+												</div>
+												<div class="activity__user">Por: Sistema</div>
+											</div>
+										</div>
+									</li>
+								</ul>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			
-			<!-- Modal de Reporte -->
-			<div class="modal" id="reportModal">
-				<div class="modal__content">
-					<div class="modal__header modal__header--confirm">
-						<h2 class="modal__title">Generar Reporte</h2>
-						<span class="modal__close" id="closeReportModal">
-							<span class="material-symbols-outlined">close</span>
-						</span>
-					</div>
-					<div class="modal__body">
-						<form id="reportForm" class="form">
-							<div class="form-field">
-								<label class="form-field__label">Formato</label>
-								<select class="form-field__select" id="reportFormat">
-									<option value="excel">Excel (.xlsx)</option>
-									<option value="pdf">PDF</option>
-									<option value="csv">CSV</option>
-								</select>
-							</div>
-							<div class="form-field">
-								<label class="form-field__label">Incluir</label>
-								<div class="form-field__checkbox-group">
-									<label class="checkbox">
-										<input type="checkbox" checked id="includeInactive" />
-										Producciones inactivas
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" checked id="includeDetails" />
-										Detalles completos
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" id="includeSensors" />
-										Datos de sensores
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" id="includeSupplies" />
-										Uso de insumos
-									</label>
-								</div>
-							</div>
-							<div class="form-field">
-								<p id="confirmMessage" class="modal__confirm-message">
-									¿Está seguro que desea generar el reporte con estas configuraciones?
-								</p>
-							</div>
-						</form>
-					</div>
-					<div class="modal__footer modal__footer--confirm">
-						<button class="button button--secondary" id="cancelReportBtn">
-							Cancelar
+
+				<!-- Tabs Container -->
+				<div class="tabs-container">
+					<div class="tabs-header">
+						<button class="tab-button active" data-tab="producciones">
+							Producciones
 						</button>
-						<button class="button button--primary" id="generateReportBtn">
-							Generar
+						<button class="tab-button" data-tab="cultivos">Cultivos</button>
+						<button class="tab-button" data-tab="sensores">Sensores</button>
+						<button class="tab-button" data-tab="insumos">Insumos</button>
+						<button class="tab-button" data-tab="responsables">
+							Responsables
 						</button>
 					</div>
-				</div>
-			</div>
-			<!-- Modal Visualizar Producción -->
-			<div class="modal" id="viewProduccionModal">
-				<div class="modal__content">
-					<div class="modal__header">
-						<div class="modal__header-top">
-							<div class="modal__titles">
-								<h2 class="modal__title">Detalles de la Producción</h2>
-								<div class="modal__subtitle" id="viewName">Maíz Orgánico Zona Norte</div>
+
+					<!-- Tab Content -->
+					<div class="tab-content" id="producciones" style="display: block">
+						<header>
+							<h1 class="header__title">Gestión de Producciones</h1>
+							<div class="header__buttons">
+								<button class="button button--filter">
+									<span class="material-symbols-outlined button__icon">filter_alt</span>
+									Filtros
+								</button>
+								<button class="button button--secondary button--create">
+									<a href="crear-produccion.html" class="button__link">
+										<span class="material-symbols-outlined button__icon">add_circle</span>
+										Crear produccion
+									</a>
+								</button>
 							</div>
-							<button class="modal__close" id="closeViewProduccionModal" type="button" title="Cerrar">
-								<span class="material-symbols-outlined">close</span>
-							</button>
-						</div>
-					</div>
-					<div class="modal__body">
-						<div class="modal__image-container">
-							<img id="modalProduccionImagen" class="modal__image--default" src="../imgs/default-produccion.jpg" alt="Imagen de la producción" />
-						</div>
-						<table class="modal__table">
-							<tbody>
-								<tr><th>ID</th><td id="modalProduccionId"></td></tr>
-								<tr><th>Nombre</th><td id="modalProduccionNombre"></td></tr>
-								<tr><th>Cultivo</th><td id="modalProduccionCultivo"></td></tr>
-								<tr><th>Ciclo</th><td id="modalProduccionCiclo"></td></tr>
-								<tr><th>Responsable</th><td id="modalProduccionResponsable"></td></tr>
-								<tr><th>Personal Asignado</th><td id="modalProduccionPersonal"></td></tr>
-								<tr><th>Inversión</th><td id="modalProduccionInversion"></td></tr>
-								<tr><th>Fecha de Inicio</th><td id="modalProduccionFechaInicio"></td></tr>
-								<tr><th>Estado</th><td id="modalProduccionEstado"></td></tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="modal__footer">
-						<button class="button button--secondary" id="closeViewProduccionBtn">Cerrar</button>
-					</div>
-				</div>
-			</div>
-			<!-- Modal para generar reporte de producciones -->
-			<div class="modal" id="reportModalProduccion">
-				<div class="modal__content">
-					<div class="modal__header">
-						<div class="modal__header-top">
-							<div class="modal__titles">
-								<h2 class="modal__title">Generar Reporte de Producciones</h2>
+						</header>
+
+						<div class="filters hidden">
+							<div class="filters__header">
+								<div class="filters__title-container">
+									<h2 class="filters__title">Filtros</h2>
+									<p class="filters__subtitle">
+										Filtre las opciones por diferentes criterios
+									</p>
+								</div>
+								<span class="material-symbols-outlined filters__close">close</span>
 							</div>
-							<button class="modal__close" id="closeReportModalProduccion" type="button" title="Cerrar">
-								<span class="material-symbols-outlined">close</span>
-							</button>
-						</div>
-					</div>
-					<div class="modal__body">
-						<form id="reportFormProduccion">
-							<div class="form-field">
-								<label for="reportFormat">Formato:</label>
-								<select id="reportFormatProduccion">
-									<option value="csv">CSV</option>
-									<option value="excel">Excel</option>
-									<option value="pdf">PDF</option>
+							<div class="filters__content">
+								<input type="text" class="filters__search" placeholder="Buscar por nombre o ID" />
+								<select class="filters__select" placeholder="Estado">
+									<option value="">Todos</option>
+									<option value="Activo">Activo</option>
+									<option value="Inactivo">Inactivo</option>
 								</select>
+								<select class="filters__select" placeholder="Ciclo">
+									<option value="">Todos</option>
+									<option value="Primavera-Verano">Primavera - Verano</option>
+									<option value="Otoño-Invierno">Otoño - Invierno</option>
+								</select>
+								<button class="button button--clear">Limpiar filtros</button>
 							</div>
-							<div class="form-field">
-								<label class="checkbox">
-									<input type="checkbox" id="includeInactiveProduccion" /> Incluir inactivos
-								</label>
-								<label class="checkbox">
-									<input type="checkbox" id="includeDetailsProduccion" checked /> Detalles completos
-								</label>
-								<label class="checkbox">
-									<input type="checkbox" id="includeSensorsProduccion" /> Datos de sensores
-								</label>
-								<label class="checkbox">
-									<input type="checkbox" id="includeSuppliesProduccion" /> Uso de insumos
-								</label>
-							</div>
-							<div class="form-field">
-								<p id="confirmMessageProduccion" class="modal__confirm-message">
-									¿Está seguro que desea generar el reporte con estas configuraciones?
+						</div>
+
+						<div class="actions-bar">
+							<div class="actions-bar__selection">
+								<input type="checkbox" class="actions-bar__checkbox" />
+								<p class="actions-bar__count">
+									<span class="actions-bar__count--selected">5</span> de
+									<span class="actions-bar__count--total">10</span>
+									Seleccionados
 								</p>
 							</div>
-						</form>
+							<button class="button button--enable">
+								<span class="material-symbols-outlined button__icon">power_settings_new</span>
+								Habilitar
+							</button>
+							<button class="button button--disable">
+								<span class="material-symbols-outlined button__icon">power_settings_new</span>
+								Deshabilitar
+							</button>
+							<button class="button button--report">
+								<span class="material-symbols-outlined button__icon">download</span>
+								Generar Reporte
+							</button>
+						</div>
+
+						<div class="table-container">
+							<table class="table">
+								<thead class="table__header">
+									<tr>
+										<th class="table__cell table__cell--header table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox-header table" />
+										</th>
+										<th class="table__cell table__cell--header">ID</th>
+										<th class="table__cell table__cell--header">Nombre</th>
+										<th class="table__cell table__cell--header">
+											Responsable
+										</th>
+										<th class="table__cell table__cell--header">Cultivo</th>
+										<th class="table__cell table__cell--header">Inversión</th>
+										<th class="table__cell table__cell--header">Progreso</th>
+										<th class="table__cell table__cell--header">Estado</th>
+										<th class="table__cell table__cell--actions table__cell--header">
+											Acciones
+										</th>
+									</tr>
+								</thead>
+								<tbody class="table__body">
+									<tr class="table__row">
+										<td class="table__cell table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox" />
+										</td>
+										<td class="table__cell">PROD-09042025-1234</td>
+										<td class="table__cell">
+											Cultivo de Maíz Temporada 2025
+										</td>
+										<td class="table__cell">Juan Pérez</td>
+										<td class="table__cell">Maíz</td>
+										<td class="table__cell">$4.500.000</td>
+										<td class="table__cell">
+											<div class="progress progress--small">
+												<div class="progress__bar" style="width: 35%"></div>
+											</div>
+											<span class="progress__text">35%</span>
+										</td>
+										<td class="table__cell">
+											<span class="badge badge--status badge--active">
+												<span class="material-symbols-outlined">check_circle</span>
+												Activo
+											</span>
+										</td>
+										<td class="table__cell table__cell--actions">
+											<button class="table__action-button table__action-button--view">
+												<span class="material-symbols-outlined">visibility</span>
+											</button>
+											<button class="table__action-button table__action-button--edit">
+												<span class="material-symbols-outlined">edit</span>
+											</button>
+											<button class="table__action-button table__action-button--disable">
+												<span class="material-symbols-outlined">power_settings_new</span>
+											</button>
+										</td>
+									</tr>
+									<tr class="table__row">
+										<td class="table__cell table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox" />
+										</td>
+										<td class="table__cell">PROD-15032025-2341</td>
+										<td class="table__cell">Tomates Invernadero Sur</td>
+										<td class="table__cell">María Rodríguez</td>
+										<td class="table__cell">Tomate</td>
+										<td class="table__cell">$3.800.000</td>
+										<td class="table__cell">
+											<div class="progress progress--small">
+												<div class="progress__bar" style="width: 65%"></div>
+											</div>
+											<span class="progress__text">65%</span>
+										</td>
+										<td class="table__cell">
+											<span class="badge badge--status badge--active">
+												<span class="material-symbols-outlined">check_circle</span>
+												Activo
+											</span>
+										</td>
+										<td class="table__cell table__cell--actions">
+											<button class="table__action-button table__action-button--view">
+												<span class="material-symbols-outlined">visibility</span>
+											</button>
+											<button class="table__action-button table__action-button--edit">
+												<span class="material-symbols-outlined">edit</span>
+											</button>
+											<button class="table__action-button table__action-button--disable">
+												<span class="material-symbols-outlined">power_settings_new</span>
+											</button>
+										</td>
+									</tr>
+									<tr class="table__row">
+										<td class="table__cell table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox" />
+										</td>
+										<td class="table__cell">PROD-22022025-3412</td>
+										<td class="table__cell">Frijoles Zona Este</td>
+										<td class="table__cell">Carlos Gómez</td>
+										<td class="table__cell">Frijol</td>
+										<td class="table__cell">$2.900.000</td>
+										<td class="table__cell">
+											<div class="progress progress--small">
+												<div class="progress__bar" style="width: 80%"></div>
+											</div>
+											<span class="progress__text">80%</span>
+										</td>
+										<td class="table__cell">
+											<span class="badge badge--status badge--active">
+												<span class="material-symbols-outlined">check_circle</span>
+												Activo
+											</span>
+										</td>
+										<td class="table__cell table__cell--actions">
+											<button class="table__action-button table__action-button--view">
+												<span class="material-symbols-outlined">visibility</span>
+											</button>
+											<button class="table__action-button table__action-button--edit">
+												<span class="material-symbols-outlined">edit</span>
+											</button>
+											<button class="table__action-button table__action-button--disable">
+												<span class="material-symbols-outlined">power_settings_new</span>
+											</button>
+										</td>
+									</tr>
+									<tr class="table__row">
+										<td class="table__cell table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox" />
+										</td>
+										<td class="table__cell">PROD-01012025-4123</td>
+										<td class="table__cell">Papa Orgánica 2025</td>
+										<td class="table__cell">Laura Martínez</td>
+										<td class="table__cell">Papa</td>
+										<td class="table__cell">$5.200.000</td>
+										<td class="table__cell">
+											<div class="progress progress--small">
+												<div class="progress__bar" style="width: 45%"></div>
+											</div>
+											<span class="progress__text">45%</span>
+										</td>
+										<td class="table__cell">
+											<span class="badge badge--status badge--active">
+												<span class="material-symbols-outlined">check_circle</span>
+												Activo
+											</span>
+										</td>
+										<td class="table__cell table__cell--actions">
+											<button class="table__action-button table__action-button--view">
+												<span class="material-symbols-outlined">visibility</span>
+											</button>
+											<button class="table__action-button table__action-button--edit">
+												<span class="material-symbols-outlined">edit</span>
+											</button>
+											<button class="table__action-button table__action-button--disable">
+												<span class="material-symbols-outlined">power_settings_new</span>
+											</button>
+										</td>
+									</tr>
+									<tr class="table__row">
+										<td class="table__cell table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox" />
+										</td>
+										<td class="table__cell">PROD-18122024-5231</td>
+										<td class="table__cell">Trigo Premium</td>
+										<td class="table__cell">Carlos Gómez</td>
+										<td class="table__cell">Trigo</td>
+										<td class="table__cell">$4.800.000</td>
+										<td class="table__cell">
+											<div class="progress progress--small">
+												<div class="progress__bar" style="width: 90%"></div>
+											</div>
+											<span class="progress__text">90%</span>
+										</td>
+										<td class="table__cell">
+											<span class="badge badge--status badge--inactive">
+												<span class="material-symbols-outlined">cancel</span>
+												Inactivo
+											</span>
+										</td>
+										<td class="table__cell table__cell--actions">
+											<button class="table__action-button table__action-button--view">
+												<span class="material-symbols-outlined">visibility</span>
+											</button>
+											<button class="table__action-button table__action-button--edit">
+												<span class="material-symbols-outlined">edit</span>
+											</button>
+											<button class="table__action-button table__action-button--disable">
+												<span class="material-symbols-outlined">power_settings_new</span>
+											</button>
+										</td>
+									</tr>
+									<tr class="table__row">
+										<td class="table__cell table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox" />
+										</td>
+										<td class="table__cell">PROD-05042025-6132</td>
+										<td class="table__cell">Zanahoria Orgánica</td>
+										<td class="table__cell">María Rodríguez</td>
+										<td class="table__cell">Zanahoria</td>
+										<td class="table__cell">$2.100.000</td>
+										<td class="table__cell">
+											<div class="progress progress--small">
+												<div class="progress__bar" style="width: 25%"></div>
+											</div>
+											<span class="progress__text">25%</span>
+										</td>
+										<td class="table__cell">
+											<span class="badge badge--status badge--active">
+												<span class="material-symbols-outlined">check_circle</span>
+												Activo
+											</span>
+										</td>
+										<td class="table__cell table__cell--actions">
+											<button class="table__action-button table__action-button--view">
+												<span class="material-symbols-outlined">visibility</span>
+											</button>
+											<button class="table__action-button table__action-button--edit">
+												<span class="material-symbols-outlined">edit</span>
+											</button>
+											<button class="table__action-button table__action-button--disable">
+												<span class="material-symbols-outlined">power_settings_new</span>
+											</button>
+										</td>
+									</tr>
+									<tr class="table__row">
+										<td class="table__cell table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox" />
+										</td>
+										<td class="table__cell">PROD-30032025-7213</td>
+										<td class="table__cell">Cebolla Temporada 2025</td>
+										<td class="table__cell">Juan Pérez</td>
+										<td class="table__cell">Cebolla</td>
+										<td class="table__cell">$3.300.000</td>
+										<td class="table__cell">
+											<div class="progress progress--small">
+												<div class="progress__bar" style="width: 40%"></div>
+											</div>
+											<span class="progress__text">40%</span>
+										</td>
+										<td class="table__cell">
+											<span class="badge badge--status badge--active">
+												<span class="material-symbols-outlined">check_circle</span>
+												Activo
+											</span>
+										</td>
+										<td class="table__cell table__cell--actions">
+											<button class="table__action-button table__action-button--view">
+												<span class="material-symbols-outlined">visibility</span>
+											</button>
+											<button class="table__action-button table__action-button--edit">
+												<span class="material-symbols-outlined">edit</span>
+											</button>
+											<button class="table__action-button table__action-button--disable">
+												<span class="material-symbols-outlined">power_settings_new</span>
+											</button>
+										</td>
+									</tr>
+									<tr class="table__row">
+										<td class="table__cell table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox" />
+										</td>
+										<td class="table__cell">PROD-12022025-8312</td>
+										<td class="table__cell">Lechuga Hidropónica</td>
+										<td class="table__cell">Laura Martínez</td>
+										<td class="table__cell">Lechuga</td>
+										<td class="table__cell">$2.800.000</td>
+										<td class="table__cell">
+											<div class="progress progress--small">
+												<div class="progress__bar" style="width: 60%"></div>
+											</div>
+											<span class="progress__text">60%</span>
+										</td>
+										<td class="table__cell">
+											<span class="badge badge--status badge--active">
+												<span class="material-symbols-outlined">check_circle</span>
+												Activo
+											</span>
+										</td>
+										<td class="table__cell table__cell--actions">
+											<button class="table__action-button table__action-button--view">
+												<span class="material-symbols-outlined">visibility</span>
+											</button>
+											<button class="table__action-button table__action-button--edit">
+												<span class="material-symbols-outlined">edit</span>
+											</button>
+											<button class="table__action-button table__action-button--disable">
+												<span class="material-symbols-outlined">power_settings_new</span>
+											</button>
+										</td>
+									</tr>
+									<tr class="table__row">
+										<td class="table__cell table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox" />
+										</td>
+										<td class="table__cell">PROD-25032025-9123</td>
+										<td class="table__cell">Pimiento Invernadero</td>
+										<td class="table__cell">María Rodríguez</td>
+										<td class="table__cell">Pimiento</td>
+										<td class="table__cell">$3.600.000</td>
+										<td class="table__cell">
+											<div class="progress progress--small">
+												<div class="progress__bar" style="width: 30%"></div>
+											</div>
+											<span class="progress__text">30%</span>
+										</td>
+										<td class="table__cell">
+											<span class="badge badge--status badge--active">
+												<span class="material-symbols-outlined">check_circle</span>
+												Activo
+											</span>
+										</td>
+										<td class="table__cell table__cell--actions">
+											<button class="table__action-button table__action-button--view">
+												<span class="material-symbols-outlined">visibility</span>
+											</button>
+											<button class="table__action-button table__action-button--edit">
+												<span class="material-symbols-outlined">edit</span>
+											</button>
+											<button class="table__action-button table__action-button--disable">
+												<span class="material-symbols-outlined">power_settings_new</span>
+											</button>
+										</td>
+									</tr>
+									<tr class="table__row">
+										<td class="table__cell table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox" />
+										</td>
+										<td class="table__cell">PROD-08012025-1023</td>
+										<td class="table__cell">Arveja Verde</td>
+										<td class="table__cell">Carlos Gómez</td>
+										<td class="table__cell">Arveja</td>
+										<td class="table__cell">$2.400.000</td>
+										<td class="table__cell">
+											<div class="progress progress--small">
+												<div class="progress__bar" style="width: 75%"></div>
+											</div>
+											<span class="progress__text">75%</span>
+										</td>
+										<td class="table__cell">
+											<span class="badge badge--status badge--active">
+												<span class="material-symbols-outlined">check_circle</span>
+												Activo
+											</span>
+										</td>
+										<td class="table__cell table__cell--actions">
+											<button class="table__action-button table__action-button--view">
+												<span class="material-symbols-outlined">visibility</span>
+											</button>
+											<button class="table__action-button table__action-button--edit">
+												<span class="material-symbols-outlined">edit</span>
+											</button>
+											<button class="table__action-button table__action-button--disable">
+												<span class="material-symbols-outlined">power_settings_new</span>
+											</button>
+										</td>
+									</tr>
+									<tr class="table__row">
+										<td class="table__cell table__cell--checkbox">
+											<input type="checkbox" class="table__checkbox" />
+										</td>
+										<td class="table__cell">PROD-19042025-1123</td>
+										<td class="table__cell">Espinaca Orgánica</td>
+										<td class="table__cell">Laura Martínez</td>
+										<td class="table__cell">Espinaca</td>
+										<td class="table__cell">$1.900.000</td>
+										<td class="table__cell">
+											<div class="progress progress--small">
+												<div class="progress__bar" style="width: 15%"></div>
+											</div>
+											<span class="progress__text">15%</span>
+										</td>
+										<td class="table__cell">
+											<span class="badge badge--status badge--active">
+												<span class="material-symbols-outlined">check_circle</span>
+												Activo
+											</span>
+										</td>
+										<td class="table__cell table__cell--actions">
+											<button class="table__action-button table__action-button--view">
+												<span class="material-symbols-outlined">visibility</span>
+											</button>
+											<button class="table__action-button table__action-button--edit">
+												<span class="material-symbols-outlined">edit</span>
+											</button>
+											<button class="table__action-button table__action-button--disable">
+												<span class="material-symbols-outlined">power_settings_new</span>
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- Modal Visualizar Cultivo -->
+							<div id="modalVisualizarCultivo" class="modal">
+								<div class="modal__content">
+									<div class="modal__header">
+										<h2 class="modal__title">Detalles del Cultivo</h2>
+										<button class="modal__close" id="closeModalVisualizarCultivo">
+											<span class="material-symbols-outlined">close</span>
+										</button>
+									</div>
+									<div class="modal__body">
+										<div class="cultivo-details">
+											<div class="cultivo-header">
+												<div class="cultivo-title">
+													<h3 id="cultivoNombre"></h3>
+													<span id="cultivoEstado" class="badge badge--status badge--active">
+														<span class="material-symbols-outlined">check_circle</span>
+														Activo
+													</span>
+												</div>
+												<div class="cultivo-id">
+													ID: <span id="cultivoId"></span>
+												</div>
+											</div>
+
+											<div class="cultivo-progress">
+												<div class="progress-header">
+													<h4>Progreso del Ciclo</h4>
+													<span id="cultivoProgreso" class="progress-percentage">45%</span>
+												</div>
+												<div class="progress progress--large">
+													<div class="progress__bar" style="width: 45%"></div>
+												</div>
+												<div class="progress-dates">
+													<span>Inicio:
+														<span id="cultivoFechaInicio">15/03/2025</span></span>
+													<span>Fin estimado:
+														<span id="cultivoFechaFin">30/07/2025</span></span>
+												</div>
+											</div>
+
+											<div class="cultivo-grid">
+												<div class="cultivo-section cultivo-section--full">
+													<div class="section-header">
+															<h4>Responsable del Cultivo</h4>
+													</div>
+													<div class="responsable-content">
+														<div class="responsable-main">
+															<div class="responsable-avatar">
+																<span class="material-symbols-outlined">person</span>
+															</div>
+															<div class="responsable-info">
+																<span id="cultivoResponsable"
+																	class="responsable-name"></span>
+																<span id="cultivoRol" class="responsable-role"></span>
+															</div>
+														</div>
+														<div class="responsable-details">
+															<div class="detail-item">
+																<span class="material-symbols-outlined">mail</span>
+																<span id="cultivoEmail">responsable@ejemplo.com</span>
+															</div>
+															<div class="detail-item">
+																<span class="material-symbols-outlined">phone</span>
+																<span>+1 234 567 890</span>
+															</div>
+															<div class="detail-item">
+																<span class="material-symbols-outlined">schedule</span>
+																<span>Horario: 8:00 - 17:00</span>
+															</div>
+														</div>
+														<div class="responsable-stats">
+															<div class="stat-item">
+																<span class="stat-value">15</span>
+																<span class="stat-label">Cultivos activos</span>
+															</div>
+															<div class="stat-item">
+																<span class="stat-value">98%</span>
+																<span class="stat-label">Tasa de éxito</span>
+															</div>
+															<div class="stat-item">
+																<span class="stat-value">5 años</span>
+																<span class="stat-label">Experiencia</span>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="cultivo-section cultivo-section--full">
+													<div class="section-header">
+														<h4>Inversión y Rendimiento</h4>
+													</div>
+													<div class="inversion-content">
+														<div class="inversion-stats-grid">
+															<div class="inversion-stat-card">
+																<div class="stat-icon">
+																	<span class="material-symbols-outlined">paid</span>
+																</div>
+																<div class="stat-info">
+																	<span class="stat-label">Inversión Total</span>
+																	<span id="cultivoInversion"
+																		class="stat-value"></span>
+																</div>
+															</div>
+															<div class="inversion-stat-card">
+																<div class="stat-icon">
+																	<span
+																		class="material-symbols-outlined">trending_up</span>
+																</div>
+																<div class="stat-info">
+																	<span class="stat-label">ROI Esperado</span>
+																	<span id="cultivoROI" class="stat-value">25%</span>
+																</div>
+															</div>
+															<div class="inversion-stat-card">
+																<div class="stat-icon">
+																	<span
+																		class="material-symbols-outlined">schedule</span>
+																</div>
+																<div class="stat-info">
+																	<span class="stat-label">Tiempo Restante</span>
+																	<span class="stat-value">45 días</span>
+																</div>
+															</div>
+															<div class="inversion-stat-card">
+																<div class="stat-icon">
+																	<span
+																		class="material-symbols-outlined">monitoring</span>
+																</div>
+																<div class="stat-info">
+																	<span class="stat-label">Rendimiento</span>
+																	<span class="stat-value">Alto</span>
+																</div>
+															</div>
+														</div>
+														<div class="inversion-chart-section">
+															<div class="chart-header">
+																<h5>Evolución de la Inversión</h5>
+																<div class="chart-controls">
+																	<button class="chart-control active">
+																		1M
+																	</button>
+																	<button class="chart-control">3M</button>
+																	<button class="chart-control">6M</button>
+																	<button class="chart-control">1A</button>
+																</div>
+															</div>
+															<div class="inversion-chart-container">
+																<canvas id="inversionChart"></canvas>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="cultivo-section cultivo-section--full">
+													<div class="insumos-header">
+														<h4>Últimos Insumos Utilizados</h4>
+													</div>
+													<div class="insumos-grid">
+														<div class="insumo-card">
+															<div class="insumo-header">
+																<span class="material-symbols-outlined">yard</span>
+																<div class="insumo-header-text">
+																	<h5>Fertilizante NPK</h5>
+																	<span class="insumo-subtitle">Fertilizante
+																		balanceado</span>
+																</div>
+															</div>
+															<div class="insumo-content">
+																<div class="insumo-stat">
+																	<span class="insumo-label">Última aplicación</span>
+																	<span class="insumo-value">15/04/2025</span>
+																</div>
+																<div class="insumo-stat">
+																	<span class="insumo-label">Cantidad aplicada</span>
+																	<span class="insumo-value">250 kg</span>
+																</div>
+																<div class="insumo-applicator">
+																	<div class="applicator-avatar">
+																		<span
+																			class="material-symbols-outlined">person</span>
+																	</div>
+																	<div class="applicator-info">
+																		<span class="applicator-name">Carlos
+																			Gómez</span>
+																		<span class="applicator-role">Técnico
+																			agrícola</span>
+																	</div>
+																</div>
+																<div class="insumo-progress">
+																	<div class="insumo-progress-header">
+																		<span class="insumo-label">Stock restante</span>
+																		<span class="insumo-stock">70%</span>
+																	</div>
+																	<div class="progress progress--small">
+																		<div class="progress__bar" style="width: 70%">
+																		</div>
+																	</div>
+																	<span class="stock-detail">1,750 kg
+																		disponibles</span>
+																</div>
+																<div class="insumo-next">
+																	<span class="material-symbols-outlined">event</span>
+																	Próxima aplicación: 15/05/2025
+																</div>
+															</div>
+														</div>
+
+														<div class="insumo-card">
+															<div class="insumo-header">
+																<span
+																	class="material-symbols-outlined">water_drop</span>
+																<div class="insumo-header-text">
+																	<h5>Riego</h5>
+																	<span class="insumo-subtitle">Sistema
+																		automatizado</span>
+																</div>
+															</div>
+															<div class="insumo-content">
+																<div class="insumo-stat">
+																	<span class="insumo-label">Último riego</span>
+																	<span class="insumo-value">Hoy, 08:00</span>
+																</div>
+																<div class="insumo-stat">
+																	<span class="insumo-label">Cantidad</span>
+																	<span class="insumo-value">2000 L</span>
+																</div>
+																<div class="insumo-applicator">
+																	<div class="applicator-avatar">
+																		<span
+																			class="material-symbols-outlined">smart_toy</span>
+																	</div>
+																	<div class="applicator-info">
+																		<span class="applicator-name">Sistema
+																			Automático</span>
+																		<span class="applicator-role">Riego
+																			programado</span>
+																	</div>
+																</div>
+																<div class="insumo-efficiency">
+																	<span class="insumo-label">Eficiencia del
+																		sistema</span>
+																	<div
+																		class="efficiency-indicator efficiency-indicator--good">
+																		<span
+																			class="material-symbols-outlined">check_circle</span>
+																		Óptimo
+																	</div>
+																	<span class="efficiency-detail">98% de
+																		efectividad</span>
+																</div>
+																<div class="insumo-next">
+																	<span
+																		class="material-symbols-outlined">schedule</span>
+																	Próximo riego: Hoy, 16:00
+																</div>
+															</div>
+														</div>
+
+														<div class="insumo-card">
+															<div class="insumo-header">
+																<span
+																	class="material-symbols-outlined">pest_control</span>
+																<div class="insumo-header-text">
+																	<h5>Insecticida Orgánico</h5>
+																	<span class="insumo-subtitle">Control natural de
+																		plagas</span>
+																</div>
+															</div>
+															<div class="insumo-content">
+																<div class="insumo-stat">
+																	<span class="insumo-label">Última aplicación</span>
+																	<span class="insumo-value">12/04/2025</span>
+																</div>
+																<div class="insumo-stat">
+																	<span class="insumo-label">Cantidad</span>
+																	<span class="insumo-value">15 L</span>
+																</div>
+																<div class="insumo-applicator">
+																	<div class="applicator-avatar">
+																		<span
+																			class="material-symbols-outlined">person</span>
+																	</div>
+																	<div class="applicator-info">
+																		<span class="applicator-name">María
+																			Rodríguez</span>
+																		<span class="applicator-role">Especialista en
+																			control biológico</span>
+																	</div>
+																</div>
+																<div class="insumo-progress">
+																	<div class="insumo-progress-header">
+																		<span class="insumo-label">Stock restante</span>
+																		<span
+																			class="insumo-stock insumo-stock--warning">45%</span>
+																	</div>
+																	<div class="progress progress--small">
+																		<div class="progress__bar progress__bar--warning"
+																			style="width: 45%"></div>
+																	</div>
+																	<div class="stock-warning">
+																		<span
+																			class="material-symbols-outlined">warning</span>
+																		Stock bajo: 45L restantes
+																	</div>
+																</div>
+																<div class="insumo-next">
+																	<span class="material-symbols-outlined">event</span>
+																	Próxima aplicación: 26/04/2025
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="cultivo-section cultivo-section--full">
+													<h4>Datos de Sensores</h4>
+													<div class="sensors-grid">
+														<div class="sensor-card">
+															<div class="sensor-header">
+																<span
+																	class="material-symbols-outlined">humidity_percentage</span>
+																<h5>Humedad</h5>
+															</div>
+															<div class="sensor-value">
+																<span id="cultivoHumedad">68</span>%
+															</div>
+															<div class="sensor-chart">
+																<canvas id="humedadChart"></canvas>
+															</div>
+														</div>
+
+														<div class="sensor-card">
+															<div class="sensor-header">
+																<span
+																	class="material-symbols-outlined">device_thermostat</span>
+																<h5>Temperatura</h5>
+															</div>
+															<div class="sensor-value">
+																<span id="cultivoTemperatura">24</span>°C
+															</div>
+															<div class="sensor-chart">
+																<canvas id="temperaturaChart"></canvas>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="pagination">
+								<div class="pagination__info">
+									Página <span class="pagination__current-page">1</span> de
+									<span class="pagination__total-pages">1</span> | Mostrando
+									<span class="pagination__items-per-page">10</span> de
+									<span class="pagination__total-items">10</span> producciones
+								</div>
+								<div class="pagination__controls">
+									<button class="pagination__button pagination__button--prev" disabled>
+										<span class="material-symbols-outlined">chevron_left</span>
+									</button>
+									<button class="pagination__button pagination__button--active">1</button>
+									<button class="pagination__button">2</button>
+									<button class="pagination__button">3</button>
+									<button class="pagination__button pagination__button--next">
+										<span class="material-symbols-outlined">chevron_right</span>
+									</button>
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="modal__footer modal__footer--confirm">
-						<button class="button button--secondary" id="cancelReportBtnProduccion">Cancelar</button>
-						<button class="button button--primary" id="generateReportBtnProduccion">Generar</button>
+
+					<div class="tab-content" id="cultivos">
+						<div class="content-header">
+							<h2>Cultivos</h2>
+						</div>
+						<div class="list-group">
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">Maíz</h3>
+									<span class="badge badge--green">3 producciones</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Cultivo de maíz híbrido para producción comercial.
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Maíz Temporada 2023</li>
+											<li>Maíz Temporada 2022</li>
+											<li>Prueba Maíz Híbrido</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">Tomate</h3>
+									<span class="badge badge--green">1 producción</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Tomate de invernadero variedad Cherry y Roma.
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Tomate Invernadero</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">Trigo</h3>
+									<span class="badge badge--green">1 producción</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Cultivo de trigo para producción de harina.
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Trigo Temporada 2022</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-content" id="sensores">
+						<div class="content-header">
+							<h2>Sensores</h2>
+						</div>
+						<div class="list-group">
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">Sensor de Humedad</h3>
+									<span class="badge badge--green">5 instalados</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Mide el nivel de humedad del suelo.
+									</div>
+									<div class="sensor">
+										<div class="sensor__current">
+											<div class="sensor__value">68%</div>
+											<div class="sensor__label">
+												Humedad actual (promedio)
+											</div>
+										</div>
+										<div class="progress">
+											<div class="progress__bar progress__bar--humidity" style="width: 68%"></div>
+										</div>
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Maíz Temporada 2023 (2 sensores)</li>
+											<li>Tomate Invernadero (2 sensores)</li>
+											<li>Trigo Temporada 2022 (1 sensor)</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">Sensor de Temperatura</h3>
+									<span class="badge badge--green">3 instalados</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Mide la temperatura ambiente.
+									</div>
+									<div class="sensor">
+										<div class="sensor__current">
+											<div class="sensor__value">24°C</div>
+											<div class="sensor__label">
+												Temperatura actual (promedio)
+											</div>
+										</div>
+										<div class="progress">
+											<div class="progress__bar progress__bar--temperature" style="width: 60%">
+											</div>
+										</div>
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Maíz Temporada 2023 (1 sensor)</li>
+											<li>Tomate Invernadero (2 sensores)</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="tab-content" id="insumos">
+						<div class="content-header">
+							<h2>Insumos</h2>
+						</div>
+						<div class="list-group">
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">Fertilizante NPK</h3>
+									<span class="badge badge--green">Stock: 2500 kg</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Fertilizante balanceado con Nitrógeno, Fósforo y Potasio.
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Maíz Temporada 2023 (500 kg)</li>
+											<li>Tomate Invernadero (250 kg)</li>
+											<li>Trigo Temporada 2022 (400 kg)</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">Insecticida Orgánico</h3>
+									<span class="badge badge--green">Stock: 120 l</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Insecticida de origen natural para control de plagas.
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Maíz Temporada 2023 (30 l)</li>
+											<li>Tomate Invernadero (50 l)</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">Semillas de Maíz Híbrido</h3>
+									<span class="badge badge--green">Stock: 150 kg</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Semillas de maíz de alto rendimiento.
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Maíz Temporada 2023 (75 kg)</li>
+											<li>Prueba Maíz Híbrido (25 kg)</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="tab-content" id="responsables">
+						<div class="content-header">
+							<h2>Responsables</h2>
+						</div>
+						<div class="list-group">
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">Juan Pérez</h3>
+									<span class="badge badge--green">Supervisor</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Supervisor principal de las producciones agrícolas.
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Maíz Temporada 2023</li>
+											<li>Tomate Invernadero</li>
+											<li>Trigo Temporada 2022</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">María Rodríguez</h3>
+									<span class="badge badge--green">Técnico</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Técnico especializado en cultivos de invernadero.
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Tomate Invernadero</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">Carlos Gómez</h3>
+									<span class="badge badge--green">Agrónomo</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Agrónomo especializado en cultivos extensivos.
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Maíz Temporada 2023</li>
+											<li>Trigo Temporada 2022</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="list-group__item">
+								<div class="list-group__header">
+									<h3 class="list-group__title">Laura Martínez</h3>
+									<span class="badge badge--green">Técnico</span>
+								</div>
+								<div class="list-group__content">
+									<div class="list-group__description">
+										Técnico especializado en manejo de sensores.
+									</div>
+									<div class="list-group__associated">
+										<div class="list-group__label">
+											Producciones asociadas:
+										</div>
+										<ul class="list-group__items">
+											<li>Maíz Temporada 2023</li>
+											<li>Tomate Invernadero</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="table-container">
-				<table class="table">
-					<thead class="table__head">
-						<tr class="table__row table__row--header">
-							<th class="table__cell table__cell--header table__cell--checkbox">
-								<input type="checkbox" class="table__checkbox-header" />
-							</th>
-							<th class="table__cell table__cell--header">ID</th>
-							<th class="table__cell table__cell--header">Nombre</th>
-							<th class="table__cell table__cell--header">Cultivo</th>
-							<th class="table__cell table__cell--header">Ciclo</th>
-							<th class="table__cell table__cell--header">Responsable</th>
-							<th class="table__cell table__cell--header">Inversión</th>
-							<th class="table__cell table__cell--header">Fecha de Inicio</th>
-							<th class="table__cell table__cell--header">Estado</th>
-							<th class="table__cell table__cell--header table__cell--actions">Acciones</th>
-						</tr>
-					</thead>
-					<tbody class="table__body">
-						<!-- Se llena dinámicamente desde JS -->
-					</tbody>
-				</table>
-				<div class="pagination">
-					<div class="pagination__info">
-						Página <span class="pagination__current-page">1</span> de <span class="pagination__total-pages">1</span> |
-						Mostrando <span class="pagination__items-per-page">10</span> de <span class="pagination__total-items">0</span> producciones
-					</div>
-					<div class="pagination__controls"></div>
-				</div>
-			</div>
-		</main>
-	</body>
+			</main>
+		</div>
+	</div>
+</body>
+
 </html>
