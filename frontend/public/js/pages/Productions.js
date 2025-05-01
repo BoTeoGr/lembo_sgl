@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	setupFilters();
 	setupPagination();
 	setupReportGeneration();
+	cargarProducciones();
 });
 
 // Manejo del botón para mostrar/ocultar cards
@@ -1021,157 +1022,273 @@ function setupFilters() {
 }
 
 function setupPagination() {
-    const itemsPerPage = 10;
-    let currentPage = 1;
-    const tableRows = document.querySelectorAll('.table__row');
-    const totalItems = tableRows.length;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+	const itemsPerPage = 6;
+	let currentPage = 1;
+	const tableRows = document.querySelectorAll('.table__row');
+	const totalItems = tableRows.length;
+	const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-    function updatePaginationInfo() {
-        const startItem = (currentPage - 1) * itemsPerPage + 1;
-        const endItem = Math.min(currentPage * itemsPerPage, totalItems);
-        
-        document.querySelector('.pagination__current-page').textContent = currentPage;
-        document.querySelector('.pagination__total-pages').textContent = totalPages;
-        document.querySelector('.pagination__items-per-page').textContent = endItem;
-        document.querySelector('.pagination__total-items').textContent = totalItems;
-    }
+	// Actualizar la información de paginación
+	const paginationInfo = document.querySelector('.pagination__info');
+	if (paginationInfo) {
+		paginationInfo.innerHTML = `Mostrando <span class="pagination__items-per-page">${itemsPerPage}</span> de <span class="pagination__total-items">${totalItems}</span> producciones`;
+	}
 
-    function updatePaginationControls() {
-        const prevBtn = document.querySelector('.pagination__button--prev');
-        const nextBtn = document.querySelector('.pagination__button--next');
-        const pageButtons = Array.from(document.querySelectorAll('.pagination__button:not(.pagination__button--prev):not(.pagination__button--next)'));
+	// Actualizar los botones de página
+	const pageButtons = document.querySelectorAll('.pagination__button:not(.pagination__button--prev):not(.pagination__button--next)');
+	pageButtons.forEach((button, index) => {
+		const pageNum = index + 1;
+		button.style.display = pageNum <= totalPages ? '' : 'none';
+		button.classList.toggle('pagination__button--active', pageNum === currentPage);
+	});
 
-        prevBtn.disabled = currentPage === 1;
-        nextBtn.disabled = currentPage === totalPages;
+	// Actualizar botones prev/next
+	const prevBtn = document.querySelector('.pagination__button--prev');
+	const nextBtn = document.querySelector('.pagination__button--next');
+	if (prevBtn) prevBtn.disabled = currentPage === 1;
+	if (nextBtn) nextBtn.disabled = currentPage === totalPages;
 
-        pageButtons.forEach((button, index) => {
-            const pageNum = index + 1;
-            button.classList.toggle('pagination__button--active', pageNum === currentPage);
-            button.style.display = pageNum <= totalPages ? '' : 'none';
-        });
-    }
+	// Mostrar la primera página
+	showPage(currentPage);
 
-    function showPage(page) {
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
+	function showPage(page) {
+		const start = (page - 1) * itemsPerPage;
+		const end = start + itemsPerPage;
 
-        tableRows.forEach((row, index) => {
-            row.style.display = (index >= start && index < end) ? '' : 'none';
-        });
+		tableRows.forEach((row, index) => {
+			row.style.display = (index >= start && index < end) ? '' : 'none';
+		});
 
-        currentPage = page;
-        updatePaginationInfo();
-        updatePaginationControls();
-    }
+		currentPage = page;
 
-    // Event Listeners para botones de paginación
-    document.querySelector('.pagination__button--prev').addEventListener('click', () => {
-        if (currentPage > 1) showPage(currentPage - 1);
-    });
+		// Actualizar botones activos
+		pageButtons.forEach((button, index) => {
+			button.classList.toggle('pagination__button--active', index + 1 === page);
+		});
 
-    document.querySelector('.pagination__button--next').addEventListener('click', () => {
-        if (currentPage < totalPages) showPage(currentPage + 1);
-    });
+		// Actualizar botones prev/next
+		if (prevBtn) prevBtn.disabled = page === 1;
+		if (nextBtn) nextBtn.disabled = page === totalPages;
+	}
 
-    document.querySelectorAll('.pagination__button:not(.pagination__button--prev):not(.pagination__button--next)').forEach((button, index) => {
-        button.addEventListener('click', () => showPage(index + 1));
-    });
+	// Event listeners para botones de paginación
+	if (prevBtn) {
+		prevBtn.addEventListener('click', () => {
+			if (currentPage > 1) showPage(currentPage - 1);
+		});
+	}
 
-    // Inicializar la primera página
-    showPage(1);
+	if (nextBtn) {
+		nextBtn.addEventListener('click', () => {
+			if (currentPage < totalPages) showPage(currentPage + 1);
+		});
+	}
+
+	pageButtons.forEach((button, index) => {
+		button.addEventListener('click', () => showPage(index + 1));
+	});
 }
 
 // Función para actualizar la paginación después de filtrar
 function updatePaginationAfterFilter() {
-    const visibleRows = document.querySelectorAll('.table__row:not([style*="display: none"])');
-    const totalItems = visibleRows.length;
-    
-    document.querySelector('.pagination__total-items').textContent = totalItems;
-    document.querySelector('.pagination__total-pages').textContent = Math.ceil(totalItems / 10);
-    
-    // Resetear a la primera página
-    const paginationEvent = new Event('paginationReset');
-    document.dispatchEvent(paginationEvent);
+	const visibleRows = document.querySelectorAll('.table__row:not([style*="display: none"])');
+	const totalItems = visibleRows.length;
+	const itemsPerPage = 6;
+	
+	document.querySelector('.pagination__total-items').textContent = totalItems;
+	document.querySelector('.pagination__total-pages').textContent = Math.ceil(totalItems / itemsPerPage);
+	
+	// Resetear a la primera página
+	const paginationEvent = new Event('paginationReset');
+	document.dispatchEvent(paginationEvent);
 }
 
 function setupReportGeneration() {
-    const reportModal = document.getElementById('reportModal');
-    const reportBtn = document.querySelector('.button--report');
-    const cancelReportBtn = document.getElementById('cancelReportBtn');
-    const generateReportBtn = document.getElementById('generateReportBtn');
-    const closeReportModal = document.getElementById('closeReportModal');
+	const reportModal = document.getElementById('reportModal');
+	const reportBtn = document.querySelector('.button--report');
+	const cancelReportBtn = document.getElementById('cancelReportBtn');
+	const generateReportBtn = document.getElementById('generateReportBtn');
+	const closeReportModal = document.getElementById('closeReportModal');
 
-    // Mostrar modal
-    reportBtn?.addEventListener('click', () => {
-        reportModal.style.display = 'flex';
-    });
+	// Mostrar modal
+	reportBtn?.addEventListener('click', () => {
+		reportModal.style.display = 'flex';
+	});
 
-    // Cerrar modal
-    [cancelReportBtn, closeReportModal].forEach(btn => {
-        btn?.addEventListener('click', () => {
-            reportModal.style.display = 'none';
-        });
-    });
+	// Cerrar modal
+	[cancelReportBtn, closeReportModal].forEach(btn => {
+		btn?.addEventListener('click', () => {
+			reportModal.style.display = 'none';
+		});
+	});
 
-    // Generar reporte
-    document.getElementById('reportForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const includeInactive = document.getElementById('includeInactive').checked;
-        const includeDetails = document.getElementById('includeDetails').checked;
+	// Generar reporte
+	document.getElementById('reportForm')?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const includeInactive = document.getElementById('includeInactive').checked;
+		const includeDetails = document.getElementById('includeDetails').checked;
 
-        // Obtener datos de la tabla
-        const rows = Array.from(document.querySelectorAll('.table__row'));
-        let reportData = rows.filter(row => {
-            if (!includeInactive && row.querySelector('.badge--inactive')) {
-                return false;
-            }
-            return row.style.display !== 'none';
-        }).map(row => ({
-            id: row.querySelector('td:nth-child(2)').textContent,
-            nombre: row.querySelector('td:nth-child(3)').textContent,
-            responsable: row.querySelector('td:nth-child(4)').textContent,
-            cultivo: row.querySelector('td:nth-child(5)').textContent,
-            inversion: row.querySelector('td:nth-child(6)').textContent,
-            progreso: row.querySelector('.progress__text').textContent,
-            estado: row.querySelector('.badge--status').textContent.trim()
-        }));
+		// Obtener datos de la tabla
+		const rows = Array.from(document.querySelectorAll('.table__row'));
+		let reportData = rows.filter(row => {
+			if (!includeInactive && row.querySelector('.badge--inactive')) {
+				return false;
+			}
+			return row.style.display !== 'none';
+		}).map(row => ({
+			id: row.querySelector('td:nth-child(2)').textContent,
+			nombre: row.querySelector('td:nth-child(3)').textContent,
+			responsable: row.querySelector('td:nth-child(4)').textContent,
+			cultivo: row.querySelector('td:nth-child(5)').textContent,
+			inversion: row.querySelector('td:nth-child(6)').textContent,
+			progreso: row.querySelector('.progress__text').textContent,
+			estado: row.querySelector('.badge--status').textContent.trim()
+		}));
 
-        // Agregar BOM para UTF-8
-        const BOM = '\uFEFF';
-        
-        // Generar CSV con headers en español
-        let csv = BOM;
-        if (includeDetails) {
-            csv += 'Identificador,Nombre,Responsable,Cultivo,Inversión,Progreso,Estado\n';
-            reportData.forEach(item => {
-                csv += `"${item.id}","${item.nombre}","${item.responsable}","${item.cultivo}","${item.inversion}","${item.progreso}","${item.estado}"\n`;
-            });
-        } else {
-            csv += 'Identificador,Nombre,Estado\n';
-            reportData.forEach(item => {
-                csv += `"${item.id}","${item.nombre}","${item.estado}"\n`;
-            });
-        }
+		// Agregar BOM para UTF-8
+		const BOM = '\uFEFF';
+		
+		// Generar CSV con headers en español
+		let csv = BOM;
+		if (includeDetails) {
+			csv += 'Identificador,Nombre,Responsable,Cultivo,Inversión,Progreso,Estado\n';
+			reportData.forEach(item => {
+				csv += `"${item.id}","${item.nombre}","${item.responsable}","${item.cultivo}","${item.inversion}","${item.progreso}","${item.estado}"\n`;
+			});
+		} else {
+			csv += 'Identificador,Nombre,Estado\n';
+			reportData.forEach(item => {
+				csv += `"${item.id}","${item.nombre}","${item.estado}"\n`;
+			});
+		}
 
-        // Crear y descargar archivo con nombre en español
-        const fecha = new Date().toLocaleDateString('es-ES').replace(/\//g, '-');
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `reporte_producciones_${fecha}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        reportModal.style.display = 'none';
-    });
+		// Crear y descargar archivo con nombre en español
+		const fecha = new Date().toLocaleDateString('es-ES').replace(/\//g, '-');
+		const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+		const link = document.createElement('a');
+		const url = URL.createObjectURL(blob);
+		link.setAttribute('href', url);
+		link.setAttribute('download', `reporte_producciones_${fecha}.csv`);
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		URL.revokeObjectURL(url);
+		reportModal.style.display = 'none';
+	});
 
-    // Cerrar modal al hacer clic fuera
-    window.addEventListener('click', (e) => {
-        if (e.target === reportModal) {
-            reportModal.style.display = 'none';
-        }
-    });
+	// Cerrar modal al hacer clic fuera
+	window.addEventListener('click', (e) => {
+		if (e.target === reportModal) {
+			reportModal.style.display = 'none';
+		}
+	});
+}
+
+// Función para mostrar errores
+function mostrarError(mensaje) {
+	const toast = document.getElementById('toast');
+	if (!toast) {
+		console.error('Error:', mensaje);
+		return;
+	}
+
+	const toastTitle = document.getElementById('toastTitle');
+	const toastDescription = document.getElementById('toastDescription');
+	const toastIcon = document.getElementById('toastIcon');
+	
+	if (toastTitle) toastTitle.textContent = 'Error';
+	if (toastDescription) toastDescription.textContent = mensaje;
+	if (toastIcon) toastIcon.className = 'fas fa-exclamation-circle';
+	
+	toast.classList.remove('hidden');
+	
+	setTimeout(() => {
+		toast.classList.add('hidden');
+	}, 5000);
+}
+
+// Función para cargar producciones
+async function cargarProducciones() {
+	try {
+		const response = await fetch('http://localhost:5000/producciones');
+		const data = await response.json();
+		
+		if (!response.ok) {
+			throw new Error(data.error || 'Error al cargar producciones');
+		}
+		
+		actualizarTablaProducciones(data);
+	} catch (error) {
+		console.error('Error al cargar producciones:', error);
+		mostrarError('Error al cargar producciones: ' + error.message);
+		
+		// Mostrar mensaje en la tabla
+		const tbody = document.querySelector('.table__body');
+		if (tbody) {
+			tbody.innerHTML = `
+				<tr class="table__row">
+					<td colspan="9" class="table__cell table__cell--error">
+						<div class="error-message">
+							<span class="material-symbols-outlined">error</span>
+							<p>${error.message}</p>
+							<button class="button button--retry" onclick="cargarProducciones()">
+								<span class="material-symbols-outlined">refresh</span>
+								Reintentar
+							</button>
+						</div>
+					</td>
+				</tr>
+			`;
+		}
+	}
+}
+
+// Función para actualizar la tabla con los datos de las producciones
+function actualizarTablaProducciones(producciones) {
+	const tbody = document.querySelector('.table__body');
+	tbody.innerHTML = '';
+
+	producciones.forEach(produccion => {
+		const row = document.createElement('tr');
+		row.className = 'table__row';
+		
+		row.innerHTML = `
+			<td class="table__cell table__cell--checkbox">
+				<input type="checkbox" class="table__checkbox" />
+			</td>
+			<td class="table__cell">${produccion.identificador}</td>
+			<td class="table__cell">${produccion.nombre}</td>
+			<td class="table__cell">${produccion.responsable_nombre}</td>
+			<td class="table__cell">${produccion.cultivo_nombre}</td>
+			<td class="table__cell">$${produccion.inversion_total.toLocaleString()}</td>
+			<td class="table__cell">
+				<div class="progress progress--small">
+					<div class="progress__bar" style="width: ${produccion.progreso}%"></div>
+				</div>
+				<span class="progress__text">${produccion.progreso}%</span>
+			</td>
+			<td class="table__cell">
+				<span class="badge badge--status ${produccion.estado === 'Activo' ? 'badge--active' : 'badge--inactive'}">
+					<span class="material-symbols-outlined">${produccion.estado === 'Activo' ? 'check_circle' : 'cancel'}</span>
+					${produccion.estado}
+				</span>
+			</td>
+			<td class="table__cell table__cell--actions">
+				<button class="table__action-button table__action-button--view" onclick="verDetallesProduccion(${produccion.id})">
+					<span class="material-symbols-outlined">visibility</span>
+				</button>
+				<button class="table__action-button table__action-button--edit" onclick="editarProduccion(${produccion.id})">
+					<span class="material-symbols-outlined">edit</span>
+				</button>
+				<button class="table__action-button table__action-button--disable" onclick="cambiarEstadoProduccion(${produccion.id})">
+					<span class="material-symbols-outlined">power_settings_new</span>
+				</button>
+			</td>
+		`;
+		
+		tbody.appendChild(row);
+	});
+
+	// Inicializar la paginación después de cargar los datos
+	setupPagination();
 }

@@ -1,81 +1,38 @@
 import db from './../db/config.db.js';
 
 export function verProducciones(req, res) {
-    try {
-        console.log("object");
-        // Consulta con JOIN para obtener información relacionada
-        const query = `
-            SELECT p.*, 
-                u.nombre AS nombre_usuario,
-                c.nombre AS nombre_cultivo,
-                cc.nombre AS nombre_ciclo
-            FROM producciones p
-            LEFT JOIN usuarios u ON p.usuario_id = u.id
-            LEFT JOIN cultivos c ON p.cultivo_id = c.id
-            LEFT JOIN ciclo_cultivo cc ON p.ciclo_id = cc.id
-            ORDER BY p.fecha_creacion DESC
-        `;
+    const query = `
+        SELECT 
+            p.id,
+            p.identificador,
+            p.nombre,
+            p.estado,
+            p.fecha_creacion,
+            p.inversion_total,
+            p.meta_ganancias,
+            u.nombre as responsable_nombre,
+            c.nombre as cultivo_nombre
+        FROM producciones p
+        LEFT JOIN usuarios u ON p.usuario_id = u.id
+        LEFT JOIN cultivos c ON p.cultivo_id = c.id
+        ORDER BY p.fecha_creacion DESC
+    `;
 
-        db.query(query, (err, results) => {
-            if (err) {
-                console.error('Error al obtener producciones:', err);
-                return res.status(500).json({ error: 'Error al obtener producciones: ' + err.message });
-            }
-            
-            // Procesar los resultados para obtener información de insumos y sensores
-            const produccionesPromises = results.map(produccion => {
-                return new Promise((resolve) => {
-                    // Si hay IDs de insumos, obtenerlos
-                    if (produccion.insumos_ids) {
-                        const insumoIds = produccion.insumos_ids.split(',');
-                        const insumoQuery = `SELECT id, nombre, tipo, valor_unitario FROM insumos WHERE id IN (?)`;
-                        
-                        db.query(insumoQuery, [insumoIds], (err, insumosResults) => {
-                            if (!err && insumosResults) {
-                                produccion.insumos = insumosResults;
-                            } else {
-                                produccion.insumos = [];
-                            }
-                            
-                            // Si hay IDs de sensores, obtenerlos
-                            if (produccion.sensores_ids) {
-                                const sensorIds = produccion.sensores_ids.split(',');
-                                const sensorQuery = `SELECT id, nombre_sensor, tipo_sensor FROM sensores WHERE id IN (?)`;
-                                
-                                db.query(sensorQuery, [sensorIds], (err, sensoresResults) => {
-                                    if (!err && sensoresResults) {
-                                        produccion.sensores = sensoresResults;
-                                    } else {
-                                        produccion.sensores = [];
-                                    }
-                                    resolve(produccion);
-                                });
-                            } else {
-                                produccion.sensores = [];
-                                resolve(produccion);
-                            }
-                        });
-                    } else {
-                        produccion.insumos = [];
-                        produccion.sensores = [];
-                        resolve(produccion);
-                    }
-                });
-            });
-            
-            Promise.all(produccionesPromises)
-                .then(produccionesCompletas => {
-                    res.status(200).json(produccionesCompletas);
-                })
-                .catch(error => {
-                    console.error('Error al procesar producciones:', error);
-                    res.status(500).json({ error: 'Error al procesar producciones: ' + error.message });
-                });
-        });
-    } catch (error) {
-        console.error('Error en ver Producciones:', error);
-        res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
-    }
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error al obtener producciones:', err);
+            return res.status(500).json({ error: 'Error al obtener producciones: ' + err.message });
+        }
+
+        // Transformar los resultados para mantener el formato esperado
+        const producciones = results.map(produccion => ({
+            ...produccion,
+            estado: produccion.estado === 'habilitado' ? 'Activo' : 'Inactivo',
+            progreso: produccion.progreso || 0
+        }));
+
+        res.json(producciones);
+    });
 }
 
 export function crearProduccion(req, res) {
