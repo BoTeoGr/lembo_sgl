@@ -1159,6 +1159,37 @@
 									</div>
 								</div>
 							</div>
+							<!-- Modal de Reporte -->
+							<div id="reportModal" class="modal">
+								<div class="modal__content">
+									<div class="modal__header">
+										<h2 class="modal__title">Generar Reporte de Producciones</h2>
+										<button class="modal__close" id="closeReportModal">
+											<span class="material-symbols-outlined">close</span>
+										</button>
+									</div>
+									<div class="modal__body">
+										<form id="reportForm" class="form">
+											<div class="form__group">
+												<label class="form__label">
+													<input type="checkbox" id="includeInactive" class="form__checkbox">
+													Incluir producciones inactivas
+												</label>
+											</div>
+											<div class="form__group">
+												<label class="form__label">
+													<input type="checkbox" id="includeDetails" class="form__checkbox" checked>
+													Incluir detalles completos
+												</label>
+											</div>
+											<div class="form__actions form__actions--report">
+												<button type="button" class="button button--secondary" id="cancelReportBtn">Cancelar</button>
+												<button type="submit" class="button button--primary" id="generateReportBtn">Generar</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
 							<div class="pagination">
 								<div class="pagination__info">
 									Página <span class="pagination__current-page">1</span> de

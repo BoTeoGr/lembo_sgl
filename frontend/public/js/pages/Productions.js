@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	setupTabs();
 	setupFilters();
 	setupPagination();
+	setupReportGeneration();
 });
 
 // Manejo del botón para mostrar/ocultar cards
@@ -1092,4 +1093,85 @@ function updatePaginationAfterFilter() {
     // Resetear a la primera página
     const paginationEvent = new Event('paginationReset');
     document.dispatchEvent(paginationEvent);
+}
+
+function setupReportGeneration() {
+    const reportModal = document.getElementById('reportModal');
+    const reportBtn = document.querySelector('.button--report');
+    const cancelReportBtn = document.getElementById('cancelReportBtn');
+    const generateReportBtn = document.getElementById('generateReportBtn');
+    const closeReportModal = document.getElementById('closeReportModal');
+
+    // Mostrar modal
+    reportBtn?.addEventListener('click', () => {
+        reportModal.style.display = 'flex';
+    });
+
+    // Cerrar modal
+    [cancelReportBtn, closeReportModal].forEach(btn => {
+        btn?.addEventListener('click', () => {
+            reportModal.style.display = 'none';
+        });
+    });
+
+    // Generar reporte
+    document.getElementById('reportForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const includeInactive = document.getElementById('includeInactive').checked;
+        const includeDetails = document.getElementById('includeDetails').checked;
+
+        // Obtener datos de la tabla
+        const rows = Array.from(document.querySelectorAll('.table__row'));
+        let reportData = rows.filter(row => {
+            if (!includeInactive && row.querySelector('.badge--inactive')) {
+                return false;
+            }
+            return row.style.display !== 'none';
+        }).map(row => ({
+            id: row.querySelector('td:nth-child(2)').textContent,
+            nombre: row.querySelector('td:nth-child(3)').textContent,
+            responsable: row.querySelector('td:nth-child(4)').textContent,
+            cultivo: row.querySelector('td:nth-child(5)').textContent,
+            inversion: row.querySelector('td:nth-child(6)').textContent,
+            progreso: row.querySelector('.progress__text').textContent,
+            estado: row.querySelector('.badge--status').textContent.trim()
+        }));
+
+        // Agregar BOM para UTF-8
+        const BOM = '\uFEFF';
+        
+        // Generar CSV con headers en español
+        let csv = BOM;
+        if (includeDetails) {
+            csv += 'Identificador,Nombre,Responsable,Cultivo,Inversión,Progreso,Estado\n';
+            reportData.forEach(item => {
+                csv += `"${item.id}","${item.nombre}","${item.responsable}","${item.cultivo}","${item.inversion}","${item.progreso}","${item.estado}"\n`;
+            });
+        } else {
+            csv += 'Identificador,Nombre,Estado\n';
+            reportData.forEach(item => {
+                csv += `"${item.id}","${item.nombre}","${item.estado}"\n`;
+            });
+        }
+
+        // Crear y descargar archivo con nombre en español
+        const fecha = new Date().toLocaleDateString('es-ES').replace(/\//g, '-');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `reporte_producciones_${fecha}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        reportModal.style.display = 'none';
+    });
+
+    // Cerrar modal al hacer clic fuera
+    window.addEventListener('click', (e) => {
+        if (e.target === reportModal) {
+            reportModal.style.display = 'none';
+        }
+    });
 }

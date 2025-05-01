@@ -3427,3 +3427,11 @@ header {
     color: var(--green-950);
     margin: 0;
 }
+
+.form__actions--report{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
