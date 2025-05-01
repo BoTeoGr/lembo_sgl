@@ -129,6 +129,9 @@ const modalCropCycleData = {
 // Guardar el array global de insumos al cargar el formulario
 let allSuppliesGlobal = [];
 
+// Inicializar el Set para almacenar los sensores seleccionados
+const selectedSensors = new Set();
+
 // Inicialización del formulario
 document.addEventListener("DOMContentLoaded", async () => {
   await initializeForm();
@@ -277,11 +280,119 @@ function setupEventListeners() {
   }
 }
 
+// Función para actualizar la lista de sensores seleccionados en la interfaz
+function updateSelectedSensorsList() {
+    const selectedSensorsContainer = document.getElementById('selectedSensors');
+    selectedSensorsContainer.innerHTML = '';
+    
+    selectedSensors.forEach(sensorId => {
+        const sensorSelect = document.getElementById('sensor');
+        const selectedOption = Array.from(sensorSelect.options).find(option => option.value === sensorId);
+        
+        if (selectedOption) {
+            const sensorCard = document.createElement('div');
+            sensorCard.className = 'item-card';
+            sensorCard.dataset.sensorId = sensorId;
+            sensorCard.innerHTML = `
+                <button type="button" class="remove-item" onclick="removeSelectedItem(this, 'sensor')">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="item-info">
+                    <span class="item-name">${selectedOption.text}</span>
+                </div>
+            `;
+            selectedSensorsContainer.appendChild(sensorCard);
+        }
+    });
+}
+
+// Función para agregar un sensor seleccionado
+function addSelectedSensor() {
+    const sensorSelect = document.getElementById('sensor');
+    const selectedSensorId = sensorSelect.value;
+    
+    if (!selectedSensorId) {
+        showToast('Error', 'Por favor seleccione un sensor', 'error');
+        return;
+    }
+    
+    if (selectedSensors.has(selectedSensorId)) {
+        showToast('Error', 'Este sensor ya ha sido seleccionado', 'error');
+        return;
+    }
+    
+    // Verificar límite máximo de 3 sensores
+    if (selectedSensors.size >= 3) {
+        showToast('Error', 'Solo se pueden seleccionar máximo 3 sensores', 'error');
+        return;
+    }
+    
+    selectedSensors.add(selectedSensorId);
+    updateSelectedSensorsList();
+    updateCreateButtonState();
+}
+
+// Función para eliminar un sensor seleccionado
+function removeSelectedItem(button, type) {
+    if (type === 'sensor') {
+        const card = button.closest('.item-card');
+        const sensorId = card.dataset.sensorId;
+        selectedSensors.delete(sensorId);
+        card.remove();
+        updateCreateButtonState();
+    }
+}
+
+// Función para actualizar el estado del botón de creación
+function updateCreateButtonState() {
+    const createBtn = document.getElementById('createBtn');
+    createBtn.disabled = selectedSensors.size > 3;
+}
+
+// Función para validar el nombre de producción
+function validarNombreProduccion(nombre) {
+    // Validar longitud
+    if (nombre.length < 3 || nombre.length > 100) {
+        return {
+            valido: false,
+            mensaje: 'El nombre debe tener entre 3 y 100 caracteres'
+        };
+    }
+
+    // Validar que no sean solo números o caracteres especiales
+    if (!/[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(nombre)) {
+        return {
+            valido: false,
+            mensaje: 'El nombre debe contener al menos una letra'
+        };
+    }
+
+    // Validar caracteres permitidos
+    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\-]+$/.test(nombre)) {
+        return {
+            valido: false,
+            mensaje: 'El nombre solo puede contener letras, números, espacios y guiones'
+        };
+    }
+
+    return {
+        valido: true,
+        mensaje: ''
+    };
+}
+
 // Función para validar el formulario
 function validateForm() {
+    // Validar nombre de producción
+    const nombreProduccion = document.getElementById('productionName').value.trim();
+    const validacionNombre = validarNombreProduccion(nombreProduccion);
+    if (!validacionNombre.valido) {
+        showToast('Error', validacionNombre.mensaje, 'error');
+        return false;
+    }
+
     // Validar campos requeridos básicos
     const requiredFields = [
-        'productionName',
         'productionType',
         'location',
         'description',
@@ -296,11 +407,11 @@ function validateForm() {
         return element && element.value.trim() !== "";
     });
 
-    // Verificar sensores e insumos
-    const hasSufficientSensors = productionData.sensores_ids.length >= 3;
+    // Verificar máximo de sensores
+    const hasValidSensors = selectedSensors.size <= 3;
 
-    // El formulario es válido solo si todos los campos están completos
-    const isValid = basicFieldsValid && hasSufficientSensors;
+    // El formulario es válido solo si todos los campos están completos y no se excede el máximo de sensores
+    const isValid = basicFieldsValid && hasValidSensors;
 
     // Habilitar/deshabilitar el botón de crear
     const createBtn = document.getElementById("createBtn");
@@ -310,48 +421,6 @@ function validateForm() {
 }
 
 // Funciones para manejar la selección de sensores e insumos
-function addSelectedSensor() {
-    const sensorSelect = document.getElementById("sensor");
-    const selectedSensor = sensorSelect.options[sensorSelect.selectedIndex];
-    
-    if (!selectedSensor.value) {
-        showToast("Error", "Por favor seleccione un sensor", "error");
-        return;
-    }
-
-    if (productionData.sensores_ids.includes(selectedSensor.value)) {
-        showToast("Error", "Este sensor ya ha sido agregado", "error");
-        return;
-    }
-
-    productionData.sensores_ids.push(selectedSensor.value);
-    
-    const selectedSensors = document.getElementById("selectedSensors");
-    const sensorCard = document.createElement("div");
-    sensorCard.className = "item-card";
-    sensorCard.dataset.sensorId = selectedSensor.value;
-    sensorCard.innerHTML = `
-        <button type="button" class="remove-item" onclick="removeSelectedItem(this, 'sensor')">
-            <i class="fas fa-times"></i>
-        </button>
-        <div class="item-info">
-            <span class="item-name">${selectedSensor.text}</span>
-        </div>
-    `;
-    
-    selectedSensors.appendChild(sensorCard);
-
-    // Mostrar mensaje si aún no se alcanza el mínimo de sensores
-    if (productionData.sensores_ids.length > 3) {
-        showToast("Sensores", `Maximo 3 sensores`, "warning");
-    }
-
-    validateForm();
-
-    // Deshabilitar el botón si ya se seleccionaron 3 sensores
-    document.getElementById("addSensor").disabled = productionData.sensores_ids.length >= 3;
-}
-
 function addSelectedSupply() {
     const supplySelect = document.getElementById("supply");
     const selectedSupply = supplySelect.options[supplySelect.selectedIndex];
@@ -396,36 +465,18 @@ function addSelectedSupply() {
     updateAvailableSuppliesSelect();
 }
 
-function removeSelectedItem(button, type) {
-    const card = button.closest('.item-card');
-    const itemId = type === 'sensor' ? card.dataset.sensorId : card.dataset.supplyId;
-    if (type === 'sensor') {
-        productionData.sensores_ids = productionData.sensores_ids.filter(id => id !== itemId);
-        document.getElementById("addSensor").disabled = productionData.sensores_ids.length >= 3;
-        if (productionData.sensores_ids.length < 3) {
-            showToast("Sensores", `Necesitas agregar ${3 - productionData.sensores_ids.length} sensor(es) más`, "warning");
-        }
-    } else {
-        productionData.insumos_ids = productionData.insumos_ids.filter(id => id !== itemId);
-        updateAvailableSuppliesSelect();
-    }
-    card.remove();
-    validateForm();
-}
-
 // Función para crear la producción
 async function createProduction(e) {
     e.preventDefault();
     
     if (!validateForm()) {
-        showToast("Error", "Por favor complete todos los campos requeridos", "error");
         return;
     }
 
     try {
         // Preparar los datos de la producción
         const productionWithImage = {
-            nombre: document.getElementById('productionName').value,
+            nombre: document.getElementById('productionName').value.trim(),
             tipo: document.getElementById('productionType').value,
             imagen: 'imagen.png', // Usar imagen por defecto
             ubicacion: document.getElementById('location').value,
@@ -434,9 +485,8 @@ async function createProduction(e) {
             cultivo_id: parseInt(document.getElementById('crop').value) || 0,
             ciclo_id: parseInt(document.getElementById('cropCycle').value) || 0,
             usuario_id: parseInt(document.getElementById('responsible').value) || 0,
-            // Convertir arrays a strings separados por comas
             insumos_ids: (productionData.insumos_ids || []).join(','),
-            sensores_ids: (productionData.sensores_ids || []).join(','),
+            sensores_ids: Array.from(selectedSensors).join(','),
             inversion_total: parseFloat(document.getElementById('totalInvestment').value) || 0,
             meta_ganancias: parseFloat(document.getElementById('estimatedProfit').value) || 0,
             personal_ids: [parseInt(document.getElementById('responsible').value)].join(',')
@@ -455,14 +505,6 @@ async function createProduction(e) {
         });
 
         const responseData = await response.json();
-        
-        // Log detallado de la respuesta
-        console.log('Respuesta completa del servidor:', {
-            status: response.status,
-            statusText: response.statusText,
-            ok: response.ok,
-            responseData: JSON.stringify(responseData, null, 2)
-        });
         
         if (!response.ok) {
             let errorMessage;
@@ -484,13 +526,7 @@ async function createProduction(e) {
         }, 2000);
 
     } catch (error) {
-        // Log detallado del error
-        console.error("Error detallado al crear la producción:", {
-            errorMessage: error.message,
-            errorObject: error,
-            errorString: JSON.stringify(error, Object.getOwnPropertyNames(error))
-        });
-        
+        console.error("Error detallado al crear la producción:", error);
         showToast("Error", error.message || "No se pudo crear la producción", "error");
     }
 }

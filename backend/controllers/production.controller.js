@@ -108,123 +108,150 @@ export function crearProduccion(req, res) {
             return res.status(400).json({ error: 'Los campos nombre, tipo, imagen, ubicacion, descripcion, usuario_id y personal_ids son obligatorios' });
         }
 
-        // Validar que el estado sea válido si se proporciona
-        const estadoFinal = estado || 'habilitado';
-        if (estadoFinal !== "habilitado" && estadoFinal !== "deshabilitado") {
-            return res.status(400).json({ error: "Estado no válido" });
+        // Validar longitud del nombre
+        if (nombre.length < 3 || nombre.length > 100) {
+            return res.status(400).json({ error: 'El nombre debe tener entre 3 y 100 caracteres' });
         }
 
-        // Bloquear el envío si el estado es "deshabilitado"
-        if (estadoFinal === "deshabilitado") {
-            return res.status(400).json({ error: "No se puede crear una producción con el estado 'deshabilitado'" });
+        // Validar que el nombre contenga al menos una letra
+        if (!/[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(nombre)) {
+            return res.status(400).json({ error: 'El nombre debe contener al menos una letra' });
         }
 
-        // Función para generar el identificador
-        const generarIdentificador = () => {
-            return new Promise((resolve, reject) => {
-                const fecha = new Date();
-                const dia = String(fecha.getDate()).padStart(2, '0');
-                const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-                const año = fecha.getFullYear();
-                const fechaFormateada = `${dia}${mes}${año}`;
+        // Validar caracteres permitidos en el nombre
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\-]+$/.test(nombre)) {
+            return res.status(400).json({ error: 'El nombre solo puede contener letras, números, espacios y guiones' });
+        }
 
-                // Obtener el último número de secuencia para el año actual
-                const query = `
-                    SELECT MAX(CAST(SUBSTRING_INDEX(identificador, '-', -1) AS UNSIGNED)) as ultimo_numero
-                    FROM producciones
-                    WHERE identificador LIKE CONCAT('PROD-', ?, '-%')
-                `;
-
-                db.query(query, [fechaFormateada], (err, results) => {
-                    if (err) {
-                        reject(err);
-                        return;
-                    }
-
-                    let siguienteNumero = 1;
-                    if (results[0].ultimo_numero !== null) {
-                        siguienteNumero = results[0].ultimo_numero + 1;
-                    }
-
-                    const identificador = `PROD-${fechaFormateada}-${String(siguienteNumero).padStart(4, '0')}`;
-                    resolve(identificador);
-                });
-            });
-        };
-
-        // Validar que el usuario exista
-        db.query('SELECT id FROM usuarios WHERE id = ?', [usuario_id], (err, results) => {
+        // Verificar que el nombre sea único
+        db.query('SELECT id FROM producciones WHERE nombre = ?', [nombre], (err, results) => {
             if (err) {
-                console.error('Error al verificar usuario:', err);
-                return res.status(500).json({ error: 'Error al verificar el usuario: ' + err.message });
+                console.error('Error al verificar nombre único:', err);
+                return res.status(500).json({ error: 'Error al verificar nombre único: ' + err.message });
             }
-            if (results.length === 0) {
-                return res.status(400).json({ error: 'El usuario especificado no existe' });
+            
+            if (results.length > 0) {
+                return res.status(400).json({ error: 'Ya existe una producción con ese nombre' });
             }
 
-            // Generar el identificador
-            generarIdentificador()
-                .then(identificador => {
-                    // Consulta para insertar una nueva producción
-                    const insertQuery = `
-                        INSERT INTO producciones (
-                            identificador,
-                            nombre, 
-                            tipo, 
-                            imagen, 
-                            ubicacion, 
-                            descripcion, 
-                            usuario_id, 
-                            estado, 
-                            fecha_creacion,
-                            cultivo_id,
-                            ciclo_id,
-                            insumos_ids,
-                            sensores_ids,
-                            inversion_total,
-                            meta_ganancias,
-                            personal_ids
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            // Validar que el estado sea válido si se proporciona
+            const estadoFinal = estado || 'habilitado';
+            if (estadoFinal !== "habilitado" && estadoFinal !== "deshabilitado") {
+                return res.status(400).json({ error: "Estado no válido" });
+            }
+
+            // Bloquear el envío si el estado es "deshabilitado"
+            if (estadoFinal === "deshabilitado") {
+                return res.status(400).json({ error: "No se puede crear una producción con el estado 'deshabilitado'" });
+            }
+
+            // Función para generar el identificador
+            const generarIdentificador = () => {
+                return new Promise((resolve, reject) => {
+                    const fecha = new Date();
+                    const dia = String(fecha.getDate()).padStart(2, '0');
+                    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+                    const año = fecha.getFullYear();
+                    const fechaFormateada = `${dia}${mes}${año}`;
+
+                    // Obtener el último número de secuencia para el año actual
+                    const query = `
+                        SELECT MAX(CAST(SUBSTRING_INDEX(identificador, '-', -1) AS UNSIGNED)) as ultimo_numero
+                        FROM producciones
+                        WHERE identificador LIKE CONCAT('PROD-', ?, '-%')
                     `;
 
-                    db.query(
-                        insertQuery,
-                        [
-                            identificador,
-                            nombre, 
-                            tipo, 
-                            imagen, 
-                            ubicacion, 
-                            descripcion, 
-                            usuario_id, 
-                            estadoFinal, 
-                            new Date(),
-                            cultivo_id || null,
-                            ciclo_id || null,
-                            insumos_ids || null,
-                            sensores_ids || null,
-                            inversion_total || null,
-                            meta_ganancias || null,
-                            personal_ids
-                        ],
-                        (err, results) => {
-                            if (err) {
-                                console.error('Error al insertar producción:', err);
-                                return res.status(500).json({ error: 'Error al insertar la producción: ' + err.message });
-                            }
-                            
-                            res.status(201).json({ 
-                                message: 'Producción creada correctamente', 
-                                produccionId: results.insertId,
-                                identificador: identificador
-                            });
+                    db.query(query, [fechaFormateada], (err, results) => {
+                        if (err) {
+                            reject(err);
+                            return;
                         }
-                    );
-                })
-                .catch(error => {
-                    console.error('Error al generar identificador:', error);
-                    return res.status(500).json({ error: 'Error al generar el identificador: ' + error.message });
+
+                        let siguienteNumero = 1;
+                        if (results[0].ultimo_numero !== null) {
+                            siguienteNumero = results[0].ultimo_numero + 1;
+                        }
+
+                        const identificador = `PROD-${fechaFormateada}-${String(siguienteNumero).padStart(4, '0')}`;
+                        resolve(identificador);
+                    });
                 });
+            };
+
+            // Validar que el usuario exista
+            db.query('SELECT id FROM usuarios WHERE id = ?', [usuario_id], (err, results) => {
+                if (err) {
+                    console.error('Error al verificar usuario:', err);
+                    return res.status(500).json({ error: 'Error al verificar el usuario: ' + err.message });
+                }
+                if (results.length === 0) {
+                    return res.status(400).json({ error: 'El usuario especificado no existe' });
+                }
+
+                // Generar el identificador
+                generarIdentificador()
+                    .then(identificador => {
+                        // Consulta para insertar una nueva producción
+                        const insertQuery = `
+                            INSERT INTO producciones (
+                                identificador,
+                                nombre, 
+                                tipo, 
+                                imagen, 
+                                ubicacion, 
+                                descripcion, 
+                                usuario_id, 
+                                estado, 
+                                fecha_creacion,
+                                cultivo_id,
+                                ciclo_id,
+                                insumos_ids,
+                                sensores_ids,
+                                inversion_total,
+                                meta_ganancias,
+                                personal_ids
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        `;
+
+                        db.query(
+                            insertQuery,
+                            [
+                                identificador,
+                                nombre, 
+                                tipo, 
+                                imagen, 
+                                ubicacion, 
+                                descripcion, 
+                                usuario_id, 
+                                estadoFinal, 
+                                new Date(),
+                                cultivo_id || null,
+                                ciclo_id || null,
+                                insumos_ids || null,
+                                sensores_ids || null,
+                                inversion_total || null,
+                                meta_ganancias || null,
+                                personal_ids
+                            ],
+                            (err, results) => {
+                                if (err) {
+                                    console.error('Error al insertar producción:', err);
+                                    return res.status(500).json({ error: 'Error al insertar la producción: ' + err.message });
+                                }
+                                
+                                res.status(201).json({ 
+                                    message: 'Producción creada correctamente', 
+                                    produccionId: results.insertId,
+                                    identificador: identificador
+                                });
+                            }
+                        );
+                    })
+                    .catch(error => {
+                        console.error('Error al generar identificador:', error);
+                        return res.status(500).json({ error: 'Error al generar el identificador: ' + error.message });
+                    });
+            });
         });
     } catch (err) {
         console.error('Error en el servidor:', err);
