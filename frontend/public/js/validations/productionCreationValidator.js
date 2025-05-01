@@ -342,8 +342,8 @@ function addSelectedSensor() {
     selectedSensors.appendChild(sensorCard);
 
     // Mostrar mensaje si aún no se alcanza el mínimo de sensores
-    if (productionData.sensores_ids.length < 3) {
-        showToast("Sensores", `Necesitas agregar ${3 - productionData.sensores_ids.length} sensor(es) más`, "warning");
+    if (productionData.sensores_ids.length > 3) {
+        showToast("Sensores", `Maximo 3 sensores`, "warning");
     }
 
     validateForm();
@@ -415,84 +415,84 @@ function removeSelectedItem(button, type) {
 
 // Función para crear la producción
 async function createProduction(e) {
-  e.preventDefault();
-  
-  if (!validateForm()) {
-    showToast("Error", "Por favor complete todos los campos requeridos", "error");
-    return;
-  }
-
-  try {
-    // Preparar los datos de la producción
-    const productionWithImage = {
-      nombre: document.getElementById('productionName').value,
-      tipo: document.getElementById('productionType').value,
-      imagen: 'imagen.png', // Usar imagen por defecto
-      ubicacion: document.getElementById('location').value,
-      descripcion: document.getElementById('description').value,
-      estado: "habilitado",
-      cultivo_id: parseInt(document.getElementById('crop').value) || 0,
-      ciclo_id: parseInt(document.getElementById('cropCycle').value) || 0,
-      usuario_id: parseInt(document.getElementById('responsible').value) || 0,
-      // Convertir arrays a strings separados por comas
-      insumos_ids: (productionData.insumos_ids || []).join(','),
-      sensores_ids: (productionData.sensores_ids || []).join(','),
-      inversion_total: parseFloat(document.getElementById('totalInvestment').value) || 0,
-      meta_ganancias: parseFloat(document.getElementById('estimatedProfit').value) || 0,
-      personal_ids: [parseInt(document.getElementById('responsible').value)].join(',')
-    };
-
-    // Log de datos a enviar
-    console.log('Datos a enviar:', productionWithImage);
-
-    // Enviar la producción al servidor
-    const response = await fetch(`${API_URL}/producciones`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(productionWithImage)
-    });
-
-    const responseData = await response.json();
+    e.preventDefault();
     
-    // Log detallado de la respuesta
-    console.log('Respuesta completa del servidor:', {
-      status: response.status,
-      statusText: response.statusText,
-      ok: response.ok,
-      responseData: JSON.stringify(responseData, null, 2)
-    });
-    
-    if (!response.ok) {
-      let errorMessage;
-      
-      if (typeof responseData === 'string') {
-        errorMessage = responseData;
-      } else if (responseData && typeof responseData === 'object') {
-        errorMessage = responseData.error || responseData.message || JSON.stringify(responseData);
-      } else {
-        errorMessage = "Error desconocido al crear la producción";
-      }
-      
-      throw new Error(errorMessage);
+    if (!validateForm()) {
+        showToast("Error", "Por favor complete todos los campos requeridos", "error");
+        return;
     }
 
-    showToast("Éxito", "Producción creada correctamente", "success");
-    setTimeout(() => {
-      window.location.href = "listar-producciones.html";
-    }, 2000);
+    try {
+        // Preparar los datos de la producción
+        const productionWithImage = {
+            nombre: document.getElementById('productionName').value,
+            tipo: document.getElementById('productionType').value,
+            imagen: 'imagen.png', // Usar imagen por defecto
+            ubicacion: document.getElementById('location').value,
+            descripcion: document.getElementById('description').value,
+            estado: "habilitado",
+            cultivo_id: parseInt(document.getElementById('crop').value) || 0,
+            ciclo_id: parseInt(document.getElementById('cropCycle').value) || 0,
+            usuario_id: parseInt(document.getElementById('responsible').value) || 0,
+            // Convertir arrays a strings separados por comas
+            insumos_ids: (productionData.insumos_ids || []).join(','),
+            sensores_ids: (productionData.sensores_ids || []).join(','),
+            inversion_total: parseFloat(document.getElementById('totalInvestment').value) || 0,
+            meta_ganancias: parseFloat(document.getElementById('estimatedProfit').value) || 0,
+            personal_ids: [parseInt(document.getElementById('responsible').value)].join(',')
+        };
 
-  } catch (error) {
-    // Log detallado del error
-    console.error("Error detallado al crear la producción:", {
-      errorMessage: error.message,
-      errorObject: error,
-      errorString: JSON.stringify(error, Object.getOwnPropertyNames(error))
-    });
-    
-    showToast("Error", error.message || "No se pudo crear la producción", "error");
-  }
+        // Log de datos a enviar
+        console.log('Datos a enviar:', productionWithImage);
+
+        // Enviar la producción al servidor
+        const response = await fetch(`${API_URL}/producciones`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(productionWithImage)
+        });
+
+        const responseData = await response.json();
+        
+        // Log detallado de la respuesta
+        console.log('Respuesta completa del servidor:', {
+            status: response.status,
+            statusText: response.statusText,
+            ok: response.ok,
+            responseData: JSON.stringify(responseData, null, 2)
+        });
+        
+        if (!response.ok) {
+            let errorMessage;
+            
+            if (typeof responseData === 'string') {
+                errorMessage = responseData;
+            } else if (responseData && typeof responseData === 'object') {
+                errorMessage = responseData.error || responseData.message || JSON.stringify(responseData);
+            } else {
+                errorMessage = "Error desconocido al crear la producción";
+            }
+            
+            throw new Error(errorMessage);
+        }
+
+        showToast("Éxito", `Producción creada correctamente con identificador: ${responseData.identificador}`, "success");
+        setTimeout(() => {
+            window.location.href = "listar-producciones.html";
+        }, 2000);
+
+    } catch (error) {
+        // Log detallado del error
+        console.error("Error detallado al crear la producción:", {
+            errorMessage: error.message,
+            errorObject: error,
+            errorString: JSON.stringify(error, Object.getOwnPropertyNames(error))
+        });
+        
+        showToast("Error", error.message || "No se pudo crear la producción", "error");
+    }
 }
 
 // Función para mostrar notificaciones

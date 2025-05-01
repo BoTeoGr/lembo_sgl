@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS insumos (
 -- Tabla de Producciones
 CREATE TABLE IF NOT EXISTS producciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    identificador VARCHAR(20) UNIQUE NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     tipo VARCHAR(50) NOT NULL,
     imagen VARCHAR(255) NOT NULL,
@@ -249,15 +250,15 @@ INSERT INTO insumos (nombre, tipo, imagen, unidad_medida, valor_unitario, cantid
 ('Plástico Mulch', 'Material', 'plastico_mulch.jpg', 'metro', 1.20, 1000, 1200.00, 'Plástico agrícola para cobertura de suelos y control de malezas.', 1);
 
 -- Insertar datos de ejemplo en la tabla producciones
-INSERT INTO producciones (id, nombre, tipo, imagen, ubicacion, descripcion, usuario_id, estado, fecha_creacion, cultivo_id, ciclo_id, insumos_ids, sensores_ids, personal_ids, inversion_total, meta_ganancias) VALUES
-(1, 'Producción de Tomates 2025', 'Orgánica', 'tomate_produccion.jpg', 'Invernadero 1', 'Producción de tomates orgánicos', 1, 'habilitado', NOW(), 1, 1, '1,3', '1,5', '2,3', 5000000.00, 7500000.00),
-(2, 'Producción de Maíz Verano', 'Tradicional', 'maiz_produccion.jpg', 'Campo 3', 'Producción de maíz para temporada de verano', 3, 'habilitado', NOW(), 3, 2, '1,4,6', '2,7', '4,5,6', 3500000.00, 5250000.00),
-(3, 'Producción de Fresas', 'Hidropónica', 'fresa_produccion.jpg', 'Invernadero 2', 'Producción de fresas en sistema hidropónico', 8, 'habilitado', NOW(), 8, 8, '2,5,7', '3,8', '7', 8000000.00, 12000000.00),
-(4, 'Producción de Café Premium', 'Orgánica', 'cafe_produccion.jpg', 'Plantación 1', 'Producción de café de alta calidad', 5, 'habilitado', NOW(), 5, 5, '6,7', '4,5', '8,9', 12000000.00, 18000000.00),
-(5, 'Producción de Zanahoria Premium', 'Orgánica', 'zanahoria_premium.jpg', 'Parcela 2', 'Producción de zanahorias seleccionadas para exportación a Europa.', 2, 'habilitado', NOW(), 9, 13, '8,9', '9,11', '10', 4500000.00, 6750000.00),
-(6, 'Producción de Banano Cavendish', 'Tradicional', 'banano_cavendish.jpg', 'Finca El Paraíso', 'Cosecha de banano Cavendish con riego tecnificado y control fitosanitario.', 3, 'habilitado', NOW(), 10, 14, '10,11', '10,12', '11,12', 9000000.00, 13500000.00),
-(7, 'Producción de Cacao Fino', 'Orgánica', 'cacao_fino.jpg', 'Finca Las Delicias', 'Producción de cacao para chocolatería artesanal y exportación.', 4, 'habilitado', NOW(), 11, 15, '12,13', '13,14', '13', 7000000.00, 10500000.00),
-(8, 'Producción de Aguacate Hass', 'Tradicional', 'aguacate_hass.jpg', 'Huerta Central', 'Producción de aguacate Hass con manejo integrado de plagas.', 1, 'habilitado', NOW(), 12, 16, '14,15', '15,16', '14,15', 10000000.00, 15000000.00);
+INSERT INTO producciones (id, identificador, nombre, tipo, imagen, ubicacion, descripcion, usuario_id, estado, fecha_creacion, cultivo_id, ciclo_id, insumos_ids, sensores_ids, personal_ids, inversion_total, meta_ganancias) VALUES
+(1, 'PROD-09042025-0001', 'Producción de Tomates 2025', 'Orgánica', 'tomate_produccion.jpg', 'Invernadero 1', 'Producción de tomates orgánicos', 1, 'habilitado', NOW(), 1, 1, '1,3', '1,5', '2,3', 5000000.00, 7500000.00),
+(2, 'PROD-09042025-0002', 'Producción de Maíz Verano', 'Tradicional', 'maiz_produccion.jpg', 'Campo 3', 'Producción de maíz para temporada de verano', 3, 'habilitado', NOW(), 3, 2, '1,4,6', '2,7', '4,5,6', 3500000.00, 5250000.00),
+(3, 'PROD-09042025-0003', 'Producción de Fresas', 'Hidropónica', 'fresa_produccion.jpg', 'Invernadero 2', 'Producción de fresas en sistema hidropónico', 8, 'habilitado', NOW(), 8, 8, '2,5,7', '3,8', '7', 8000000.00, 12000000.00),
+(4, 'PROD-09042025-0004', 'Producción de Café Premium', 'Orgánica', 'cafe_produccion.jpg', 'Plantación 1', 'Producción de café de alta calidad', 5, 'habilitado', NOW(), 5, 5, '6,7', '4,5', '8,9', 12000000.00, 18000000.00),
+(5, 'PROD-09042025-0005', 'Producción de Zanahoria Premium', 'Orgánica', 'zanahoria_premium.jpg', 'Parcela 2', 'Producción de zanahorias seleccionadas para exportación a Europa.', 2, 'habilitado', NOW(), 9, 13, '8,9', '9,11', '10', 4500000.00, 6750000.00),
+(6, 'PROD-09042025-0006', 'Producción de Banano Cavendish', 'Tradicional', 'banano_cavendish.jpg', 'Finca El Paraíso', 'Cosecha de banano Cavendish con riego tecnificado y control fitosanitario.', 3, 'habilitado', NOW(), 10, 14, '10,11', '10,12', '11,12', 9000000.00, 13500000.00),
+(7, 'PROD-09042025-0007', 'Producción de Cacao Fino', 'Orgánica', 'cacao_fino.jpg', 'Finca Las Delicias', 'Producción de cacao para chocolatería artesanal y exportación.', 4, 'habilitado', NOW(), 11, 15, '12,13', '13,14', '13', 7000000.00, 10500000.00),
+(8, 'PROD-09042025-0008', 'Producción de Aguacate Hass', 'Tradicional', 'aguacate_hass.jpg', 'Huerta Central', 'Producción de aguacate Hass con manejo integrado de plagas.', 1, 'habilitado', NOW(), 12, 16, '14,15', '15,16', '14,15', 10000000.00, 15000000.00);
 
 -- Ejemplo de asignación de personal a producciones (IDs de usuario ficticios)
 INSERT INTO produccion_personal (produccion_id, usuario_id) VALUES

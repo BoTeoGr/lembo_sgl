@@ -119,6 +119,39 @@ export function crearProduccion(req, res) {
             return res.status(400).json({ error: "No se puede crear una producción con el estado 'deshabilitado'" });
         }
 
+        // Función para generar el identificador
+        const generarIdentificador = () => {
+            return new Promise((resolve, reject) => {
+                const fecha = new Date();
+                const dia = String(fecha.getDate()).padStart(2, '0');
+                const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+                const año = fecha.getFullYear();
+                const fechaFormateada = `${dia}${mes}${año}`;
+
+                // Obtener el último número de secuencia para el año actual
+                const query = `
+                    SELECT MAX(CAST(SUBSTRING_INDEX(identificador, '-', -1) AS UNSIGNED)) as ultimo_numero
+                    FROM producciones
+                    WHERE identificador LIKE CONCAT('PROD-', ?, '-%')
+                `;
+
+                db.query(query, [fechaFormateada], (err, results) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+
+                    let siguienteNumero = 1;
+                    if (results[0].ultimo_numero !== null) {
+                        siguienteNumero = results[0].ultimo_numero + 1;
+                    }
+
+                    const identificador = `PROD-${fechaFormateada}-${String(siguienteNumero).padStart(4, '0')}`;
+                    resolve(identificador);
+                });
+            });
+        };
+
         // Validar que el usuario exista
         db.query('SELECT id FROM usuarios WHERE id = ?', [usuario_id], (err, results) => {
             if (err) {
@@ -129,94 +162,13 @@ export function crearProduccion(req, res) {
                 return res.status(400).json({ error: 'El usuario especificado no existe' });
             }
 
-            // Validar que el cultivo exista si se proporciona
-            const validarCultivo = new Promise((resolve, reject) => {
-                if (cultivo_id) {
-                    db.query('SELECT id FROM cultivos WHERE id = ?', [cultivo_id], (err, results) => {
-                        if (err) {
-                            console.error('Error al verificar cultivo:', err);
-                            reject('Error al verificar el cultivo: ' + err.message);
-                        } else if (results.length === 0) {
-                            reject('El cultivo especificado no existe');
-                        } else {
-                            resolve();
-                        }
-                    });
-                } else {
-                    resolve();
-                }
-            });
-
-            // Validar que el ciclo exista si se proporciona
-            const validarCiclo = new Promise((resolve, reject) => {
-                if (ciclo_id) {
-                    db.query('SELECT id FROM ciclo_cultivo WHERE id = ?', [ciclo_id], (err, results) => {
-                        if (err) {
-                            console.error('Error al verificar ciclo:', err);
-                            reject('Error al verificar el ciclo: ' + err.message);
-                        } else if (results.length === 0) {
-                            reject('El ciclo especificado no existe');
-                        } else {
-                            resolve();
-                        }
-                    });
-                } else {
-                    resolve();
-                }
-            });
-
-            // Validar que los insumos existan si se proporcionan
-            const validarInsumos = new Promise((resolve, reject) => {
-                if (insumos_ids && insumos_ids.length > 0) {
-                    const idsArray = insumos_ids.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
-                    if (idsArray.length === 0) {
-                        reject('Lista de insumos inválida');
-                        return;
-                    }
-                    db.query('SELECT id FROM insumos WHERE id IN (?)', [idsArray], (err, results) => {
-                        if (err) {
-                            console.error('Error al verificar insumos:', err);
-                            reject('Error al verificar los insumos: ' + err.message);
-                        } else if (results.length !== idsArray.length) {
-                            reject('Uno o más insumos especificados no existen');
-                        } else {
-                            resolve();
-                        }
-                    });
-                } else {
-                    resolve();
-                }
-            });
-
-            // Validar que los sensores existan si se proporcionan
-            const validarSensores = new Promise((resolve, reject) => {
-                if (sensores_ids && sensores_ids.length > 0) {
-                    const idsArray = sensores_ids.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
-                    if (idsArray.length === 0) {
-                        reject('Lista de sensores inválida');
-                        return;
-                    }
-                    db.query('SELECT id FROM sensores WHERE id IN (?)', [idsArray], (err, results) => {
-                        if (err) {
-                            console.error('Error al verificar sensores:', err);
-                            reject('Error al verificar los sensores: ' + err.message);
-                        } else if (results.length !== idsArray.length) {
-                            reject('Uno o más sensores especificados no existen');
-                        } else {
-                            resolve();
-                        }
-                    });
-                } else {
-                    resolve();
-                }
-            });
-
-            // Ejecutar todas las validaciones
-            Promise.all([validarCultivo, validarCiclo, validarInsumos, validarSensores])
-                .then(() => {
+            // Generar el identificador
+            generarIdentificador()
+                .then(identificador => {
                     // Consulta para insertar una nueva producción
                     const insertQuery = `
                         INSERT INTO producciones (
+                            identificador,
                             nombre, 
                             tipo, 
                             imagen, 
@@ -232,12 +184,13 @@ export function crearProduccion(req, res) {
                             inversion_total,
                             meta_ganancias,
                             personal_ids
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     `;
 
                     db.query(
                         insertQuery,
                         [
+                            identificador,
                             nombre, 
                             tipo, 
                             imagen, 
@@ -262,14 +215,15 @@ export function crearProduccion(req, res) {
                             
                             res.status(201).json({ 
                                 message: 'Producción creada correctamente', 
-                                produccionId: results.insertId
+                                produccionId: results.insertId,
+                                identificador: identificador
                             });
                         }
                     );
                 })
                 .catch(error => {
-                    console.error('Error en validaciones:', error);
-                    return res.status(400).json({ error: error });
+                    console.error('Error al generar identificador:', error);
+                    return res.status(500).json({ error: 'Error al generar el identificador: ' + error.message });
                 });
         });
     } catch (err) {
