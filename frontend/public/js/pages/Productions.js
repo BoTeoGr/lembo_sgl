@@ -1274,21 +1274,91 @@ function actualizarTablaProducciones(producciones) {
 				</span>
 			</td>
 			<td class="table__cell table__cell--actions">
-				<button class="table__action-button table__action-button--view" onclick="verDetallesProduccion(${produccion.id})">
+				<button class="table__action-button table__action-button--view" data-id="${produccion.id}">
 					<span class="material-symbols-outlined">visibility</span>
 				</button>
-				<button class="table__action-button table__action-button--edit" onclick="editarProduccion(${produccion.id})">
+				<button class="table__action-button table__action-button--edit" data-id="${produccion.id}">
 					<span class="material-symbols-outlined">edit</span>
 				</button>
-				<button class="table__action-button table__action-button--disable" onclick="cambiarEstadoProduccion(${produccion.id})">
+				<button class="table__action-button table__action-button--disable" data-id="${produccion.id}">
 					<span class="material-symbols-outlined">power_settings_new</span>
 				</button>
 			</td>
 		`;
+
+		// Agregar event listeners a los botones
+		const viewBtn = row.querySelector('.table__action-button--view');
+		const editBtn = row.querySelector('.table__action-button--edit');
+		const disableBtn = row.querySelector('.table__action-button--disable');
+
+		viewBtn.addEventListener('click', () => verDetallesProduccion(produccion.id));
+		editBtn.addEventListener('click', () => editarProduccion(produccion.id));
+		disableBtn.addEventListener('click', () => cambiarEstadoProduccion(produccion.id));
 		
 		tbody.appendChild(row);
 	});
 
 	// Inicializar la paginación después de cargar los datos
 	setupPagination();
+}
+
+// Funciones para manejar acciones de producción
+async function verDetallesProduccion(id) {
+	try {
+		const response = await fetch(`http://localhost:5000/producciones/${id}`);
+		const produccion = await response.json();
+		
+		if (!response.ok) {
+			throw new Error(produccion.error || 'Error al cargar detalles de la producción');
+		}
+
+		// Mostrar modal de detalles
+		const modal = document.getElementById('modalVisualizarCultivo');
+		if (modal) {
+			document.getElementById('cultivoId').textContent = produccion.identificador;
+			document.getElementById('cultivoNombre').textContent = produccion.nombre;
+			document.getElementById('cultivoResponsable').textContent = produccion.responsable_nombre;
+			document.getElementById('cultivoInversion').textContent = `$${produccion.inversion_total.toLocaleString()}`;
+			document.getElementById('cultivoProgreso').textContent = `${produccion.progreso}%`;
+			document.getElementById('cultivoEstado').textContent = produccion.estado;
+			document.getElementById('cultivoFechaInicio').textContent = new Date(produccion.fecha_inicio).toLocaleDateString();
+			document.getElementById('cultivoFechaFin').textContent = new Date(produccion.fecha_fin).toLocaleDateString();
+
+			modal.style.display = 'flex';
+		}
+	} catch (error) {
+		console.error('Error al cargar detalles:', error);
+		mostrarError('Error al cargar detalles de la producción: ' + error.message);
+	}
+}
+
+async function editarProduccion(id) {
+	window.location.href = `actualizar-produccion.html?id=${id}`;
+}
+
+async function cambiarEstadoProduccion(id) {
+	try {
+		const row = document.querySelector(`button[data-id="${id}"]`).closest('tr');
+		const currentStatus = row.querySelector('.badge--status').textContent.trim();
+		const newStatus = currentStatus === 'Activo' ? 'Inactivo' : 'Activo';
+
+		const response = await fetch(`http://localhost:5000/producciones/${id}/estado`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ estado: newStatus })
+		});
+
+		if (!response.ok) {
+			const data = await response.json();
+			throw new Error(data.error || 'Error al cambiar el estado');
+		}
+
+		// Recargar los datos
+		cargarProducciones();
+	} catch (error) {
+		console.error('Error al cambiar estado:', error);
+		mostrarError('Error al cambiar el estado de la producción: ' + error.message);
+	}
 }
