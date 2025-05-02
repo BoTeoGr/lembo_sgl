@@ -1304,32 +1304,130 @@ function actualizarTablaProducciones(producciones) {
 
 // Funciones para manejar acciones de producción
 async function verDetallesProduccion(id) {
-	try {
-		const response = await fetch(`http://localhost:5000/producciones/${id}`);
-		const produccion = await response.json();
-		
-		if (!response.ok) {
-			throw new Error(produccion.error || 'Error al cargar detalles de la producción');
-		}
+    try {
+        const response = await fetch(`http://localhost:5000/producciones/${id}`);
+        const produccion = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(produccion.error || 'Error al cargar detalles de la producción');
+        }
 
-		// Mostrar modal de detalles
-		const modal = document.getElementById('modalVisualizarCultivo');
-		if (modal) {
-			document.getElementById('cultivoId').textContent = produccion.identificador;
-			document.getElementById('cultivoNombre').textContent = produccion.nombre;
-			document.getElementById('cultivoResponsable').textContent = produccion.responsable_nombre;
-			document.getElementById('cultivoInversion').textContent = `$${produccion.inversion_total.toLocaleString()}`;
-			document.getElementById('cultivoProgreso').textContent = `${produccion.progreso}%`;
-			document.getElementById('cultivoEstado').textContent = produccion.estado;
-			document.getElementById('cultivoFechaInicio').textContent = new Date(produccion.fecha_inicio).toLocaleDateString();
-			document.getElementById('cultivoFechaFin').textContent = new Date(produccion.fecha_fin).toLocaleDateString();
+        // Mostrar modal de detalles
+        const modal = document.getElementById('modalVisualizarCultivo');
+        if (modal) {
+            // Actualizar datos básicos
+            document.getElementById('cultivoId').textContent = produccion.identificador;
+            document.getElementById('cultivoNombre').textContent = produccion.nombre;
+            document.getElementById('cultivoResponsable').textContent = produccion.responsable_nombre;
+            document.getElementById('cultivoInversion').textContent = `$${produccion.inversion_total.toLocaleString()}`;
+            document.getElementById('cultivoProgreso').textContent = `${produccion.progreso}%`;
+            document.getElementById('cultivoEstado').textContent = produccion.estado;
+            document.getElementById('cultivoFechaInicio').textContent = new Date(produccion.fecha_inicio).toLocaleDateString();
+            document.getElementById('cultivoFechaFin').textContent = new Date(produccion.fecha_fin).toLocaleDateString();
 
-			modal.style.display = 'flex';
-		}
-	} catch (error) {
-		console.error('Error al cargar detalles:', error);
-		mostrarError('Error al cargar detalles de la producción: ' + error.message);
-	}
+            // Datos de ejemplo para las gráficas
+            const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun"];
+            const datosInversion = [1200000, 1500000, 1800000, 2100000, 2400000, 2700000];
+            const datosHumedad = [65, 68, 62, 70, 68, 72];
+            const datosTemperatura = [22, 23, 25, 24, 24, 26];
+
+            // Crear gráfica de inversión
+            const ctxInversion = document.getElementById('inversionChart').getContext('2d');
+            new Chart(ctxInversion, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: [{
+                        label: 'Inversión Mensual',
+                        data: datosInversion,
+                        borderColor: '#39a900',
+                        backgroundColor: 'rgba(57, 169, 0, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `$${context.parsed.y.toLocaleString()}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: (value) => `$${value.toLocaleString()}`
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Crear gráfica de humedad
+            const ctxHumedad = document.getElementById('humedadChart').getContext('2d');
+            new Chart(ctxHumedad, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: [{
+                        label: 'Humedad (%)',
+                        data: datosHumedad,
+                        borderColor: '#50e5f9',
+                        backgroundColor: 'rgba(80, 229, 249, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Crear gráfica de temperatura
+            const ctxTemperatura = document.getElementById('temperaturaChart').getContext('2d');
+            new Chart(ctxTemperatura, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: [{
+                        label: 'Temperatura (°C)',
+                        data: datosTemperatura,
+                        borderColor: '#93d074',
+                        backgroundColor: 'rgba(147, 208, 116, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            modal.style.display = 'flex';
+        }
+    } catch (error) {
+        console.error('Error al cargar detalles:', error);
+        mostrarError('Error al cargar detalles de la producción: ' + error.message);
+    }
 }
 
 async function editarProduccion(id) {
