@@ -4,7 +4,7 @@ import {VerSensores, crearSensor, actualizarEstadoSensor, actualizarSensor, obte
 import {crearInsumo,VerInsumos,actualizarEstadoInsumo, actualizarInsumo, obtenerInsumoPorId} from '../controllers/insumo.controller.js'
 import {crearCultivo,VerCultivos,actualizarEstadoCultivo, actualizarCultivo, obtenerCultivoPorId} from '../controllers/cultivo.controller.js'
 import {VerCiclosCultivo, crearCicloCultivo, actualizarEstadoCicloCultivo, obtenerCicloCultivoPorId, actualizarCicloCultivo} from '../controllers/ciclo-cultivo.controller.js'
-import {actualizarProduccion,crearProduccion,eliminarProduccion,obtenerProduccionPorId,verProducciones,actualizarEstadoProduccion} from '../controllers/production.controller.js'
+import {actualizarProduccion,crearProduccion,eliminarProduccion,obtenerProduccionPorId,verProducciones,actualizarEstadoProduccion, obtenerProduccionesPorInsumo, obtenerProduccionesPorCultivo, obtenerProduccionesPorUsuario, obtenerProduccionesPorSensor, actualizarEstadosProduccionHabilitado, deshabilitarProducciones} from '../controllers/production.controller.js'
 
 const router = express.Router()
 
@@ -45,5 +45,10 @@ router.get('/producciones/:id', obtenerProduccionPorId);
 router.put('/producciones/:id', actualizarProduccion);
 router.put('/producciones/:id/estado', actualizarEstadoProduccion);
 router.delete('/producciones/:id', eliminarProduccion);
-
+router.get('/producciones/por-usuario/:id', obtenerProduccionesPorUsuario);
+router.get('/producciones/por-cultivo/:id', obtenerProduccionesPorCultivo);
+router.get('/producciones/por-insumo/:id', obtenerProduccionesPorInsumo);
+router.get('/producciones/por-sensor/:id', obtenerProduccionesPorSensor);
+router.post('/producciones/habilitar-multiples', actualizarEstadosProduccionHabilitado);
+router.post('/producciones/deshabilitar-multiples', deshabilitarProducciones);
 export default router

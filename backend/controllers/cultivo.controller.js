@@ -77,8 +77,36 @@ export function crearCultivo(req, res) {
         const { cultiveName, cultiveType, cultiveImage, cultiveLocation, cultiveDescription, usuario_id, cultiveSize, estado } = req.body;
 
         // Validar que todos los campos requeridos estén presentes
-        if (!cultiveName || !cultiveType || !cultiveImage || !cultiveLocation || !cultiveDescription || !usuario_id || !cultiveSize || !estado) {
-            return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+        if (!cultiveName) {
+            return res.status(400).json({ error: 'El nombre del cultivo es obligatorio' });
+        }
+        
+        if (!cultiveType) {
+            return res.status(400).json({ error: 'El tipo de cultivo es obligatorio' });
+        }
+        
+        if (!cultiveImage) {
+            return res.status(400).json({ error: 'La imagen del cultivo es obligatoria' });
+        }
+        
+        if (!cultiveLocation) {
+            return res.status(400).json({ error: 'La ubicación del cultivo es obligatoria' });
+        }
+        
+        if (!cultiveDescription) {
+            return res.status(400).json({ error: 'La descripción del cultivo es obligatoria' });
+        }
+        
+        if (!usuario_id) {
+            return res.status(400).json({ error: 'El ID del usuario es obligatorio' });
+        }
+        
+        if (!cultiveSize) {
+            return res.status(400).json({ error: 'El tamaño del cultivo es obligatorio' });
+        }
+        
+        if (!estado) {
+            return res.status(400).json({ error: 'El estado del cultivo es obligatorio' });
         }
 
         // Validar que cultiveSize sea un número válido y esté dentro del rango permitido

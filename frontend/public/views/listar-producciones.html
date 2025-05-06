@@ -444,11 +444,12 @@
 									<!-- Los datos se cargarán dinámicamente desde la base de datos -->
 								</tbody>
 							</table>
-							<!-- Modal Visualizar Cultivo -->
+							
+							<!-- Modal Detalles de Producción (Nuevo) -->
 							<div id="modalVisualizarCultivo" class="modal">
 								<div class="modal__content">
 									<div class="modal__header">
-										<h2 class="modal__title">Detalles del Cultivo</h2>
+										<h2 class="modal__title">Detalles De La Producción</h2>
 										<button class="modal__close" id="closeModalVisualizarCultivo">
 											<span class="material-symbols-outlined">close</span>
 										</button>
@@ -458,9 +459,8 @@
 											<div class="cultivo-header">
 												<div class="cultivo-title">
 													<h3 id="cultivoNombre"></h3>
-													<span id="cultivoEstado" class="badge badge--status badge--active">
-														<span class="material-symbols-outlined">check_circle</span>
-														Activo
+													<span id="cultivoEstado" class="badge badge--status">
+														<span class="material-symbols-outlined"></span>
 													</span>
 												</div>
 												<div class="cultivo-id">
@@ -471,23 +471,51 @@
 											<div class="cultivo-progress">
 												<div class="progress-header">
 													<h4>Progreso del Ciclo</h4>
-													<span id="cultivoProgreso" class="progress-percentage">45%</span>
+													<span id="cultivoProgreso" class="progress-percentage"></span>
 												</div>
 												<div class="progress progress--large">
-													<div class="progress__bar" style="width: 45%"></div>
+													<div class="progress__bar" style="width: 0%"></div>
 												</div>
 												<div class="progress-dates">
-													<span>Inicio:
-														<span id="cultivoFechaInicio">15/03/2025</span></span>
-													<span>Fin estimado:
-														<span id="cultivoFechaFin">30/07/2025</span></span>
+													<span>Inicio: <span id="cultivoFechaInicio"></span></span>
+													<span>Fin estimado: <span id="cultivoFechaFin"></span></span>
 												</div>
 											</div>
 
 											<div class="cultivo-grid">
-												<div class="cultivo-section cultivo-section--full">
+												<!-- Información básica -->
+												<div class="cultivo-section">
 													<div class="section-header">
-															<h4>Responsable del Cultivo</h4>
+														<h4>Información Básica</h4>
+													</div>
+													<div class="info-content">
+														<div class="info-item">
+															<span class="info-label">Tipo:</span>
+															<span id="cultivoTipo" class="info-value"></span>
+														</div>
+														<div class="info-item">
+															<span class="info-label">Ubicación:</span>
+															<span id="cultivoUbicacion" class="info-value"></span>
+														</div>
+														<div class="info-item">
+															<span class="info-label">Cultivo:</span>
+															<span id="nombreCultivo" class="info-value"></span>
+														</div>
+														<div class="info-item">
+															<span class="info-label">Ciclo:</span>
+															<span id="nombreCiclo" class="info-value"></span>
+														</div>
+														<div class="info-item">
+															<span class="info-label">Descripción:</span>
+															<span id="cultivoDescripcion" class="info-value"></span>
+														</div>
+													</div>
+												</div>
+
+												<!-- Responsable -->
+												<div class="cultivo-section">
+													<div class="section-header">
+														<h4>Responsable</h4>
 													</div>
 													<div class="responsable-content">
 														<div class="responsable-main">
@@ -495,43 +523,14 @@
 																<span class="material-symbols-outlined">person</span>
 															</div>
 															<div class="responsable-info">
-																<span id="cultivoResponsable"
-																	class="responsable-name"></span>
-																<span id="cultivoRol" class="responsable-role"></span>
-															</div>
-														</div>
-														<div class="responsable-details">
-															<div class="detail-item">
-																<span class="material-symbols-outlined">mail</span>
-																<span id="cultivoEmail">responsable@ejemplo.com</span>
-															</div>
-															<div class="detail-item">
-																<span class="material-symbols-outlined">phone</span>
-																<span>+1 234 567 890</span>
-															</div>
-															<div class="detail-item">
-																<span class="material-symbols-outlined">schedule</span>
-																<span>Horario: 8:00 - 17:00</span>
-															</div>
-														</div>
-														<div class="responsable-stats">
-															<div class="stat-item">
-																<span class="stat-value">15</span>
-																<span class="stat-label">Cultivos activos</span>
-															</div>
-															<div class="stat-item">
-																<span class="stat-value">98%</span>
-																<span class="stat-label">Tasa de éxito</span>
-															</div>
-															<div class="stat-item">
-																<span class="stat-value">5 años</span>
-																<span class="stat-label">Experiencia</span>
+																<span id="cultivoResponsable" class="responsable-name"></span>
 															</div>
 														</div>
 													</div>
 												</div>
 
-												<div class="cultivo-section cultivo-section--full">
+												<!-- Inversión -->
+												<div class="cultivo-section">
 													<div class="section-header">
 														<h4>Inversión y Rendimiento</h4>
 													</div>
@@ -543,251 +542,48 @@
 																</div>
 																<div class="stat-info">
 																	<span class="stat-label">Inversión Total</span>
-																	<span id="cultivoInversion"
-																		class="stat-value"></span>
+																	<span id="cultivoInversion" class="stat-value"></span>
 																</div>
 															</div>
 															<div class="inversion-stat-card">
 																<div class="stat-icon">
-																	<span
-																		class="material-symbols-outlined">trending_up</span>
+																	<span class="material-symbols-outlined">trending_up</span>
+																</div>
+																<div class="stat-info">
+																	<span class="stat-label">Meta de Ganancia</span>
+																	<span id="cultivoMetaGanancia" class="stat-value"></span>
+																</div>
+															</div>
+															<div class="inversion-stat-card">
+																<div class="stat-icon">
+																	<span class="material-symbols-outlined">calculate</span>
 																</div>
 																<div class="stat-info">
 																	<span class="stat-label">ROI Esperado</span>
-																	<span id="cultivoROI" class="stat-value">25%</span>
-																</div>
-															</div>
-															<div class="inversion-stat-card">
-																<div class="stat-icon">
-																	<span
-																		class="material-symbols-outlined">schedule</span>
-																</div>
-																<div class="stat-info">
-																	<span class="stat-label">Tiempo Restante</span>
-																	<span class="stat-value">45 días</span>
-																</div>
-															</div>
-															<div class="inversion-stat-card">
-																<div class="stat-icon">
-																	<span
-																		class="material-symbols-outlined">monitoring</span>
-																</div>
-																<div class="stat-info">
-																	<span class="stat-label">Rendimiento</span>
-																	<span class="stat-value">Alto</span>
-																</div>
-															</div>
-														</div>
-														<div class="inversion-chart-section">
-															<div class="chart-header">
-																<h5>Evolución de la Inversión</h5>
-																<div class="chart-controls">
-																	<button class="chart-control active">
-																		1M
-																	</button>
-																	<button class="chart-control">3M</button>
-																	<button class="chart-control">6M</button>
-																	<button class="chart-control">1A</button>
-																</div>
-															</div>
-															<div class="inversion-chart-container">
-																<canvas id="inversionChart"></canvas>
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div class="cultivo-section cultivo-section--full">
-													<div class="insumos-header">
-														<h4>Últimos Insumos Utilizados</h4>
-													</div>
-													<div class="insumos-grid">
-														<div class="insumo-card">
-															<div class="insumo-header">
-																<span class="material-symbols-outlined">yard</span>
-																<div class="insumo-header-text">
-																	<h5>Fertilizante NPK</h5>
-																	<span class="insumo-subtitle">Fertilizante
-																		balanceado</span>
-																</div>
-															</div>
-															<div class="insumo-content">
-																<div class="insumo-stat">
-																	<span class="insumo-label">Última aplicación</span>
-																	<span class="insumo-value">15/04/2025</span>
-																</div>
-																<div class="insumo-stat">
-																	<span class="insumo-label">Cantidad aplicada</span>
-																	<span class="insumo-value">250 kg</span>
-																</div>
-																<div class="insumo-applicator">
-																	<div class="applicator-avatar">
-																		<span
-																			class="material-symbols-outlined">person</span>
-																	</div>
-																	<div class="applicator-info">
-																		<span class="applicator-name">Carlos
-																			Gómez</span>
-																		<span class="applicator-role">Técnico
-																			agrícola</span>
-																	</div>
-																</div>
-																<div class="insumo-progress">
-																	<div class="insumo-progress-header">
-																		<span class="insumo-label">Stock restante</span>
-																		<span class="insumo-stock">70%</span>
-																	</div>
-																	<div class="progress progress--small">
-																		<div class="progress__bar" style="width: 70%">
-																		</div>
-																	</div>
-																	<span class="stock-detail">1,750 kg
-																		disponibles</span>
-																</div>
-																<div class="insumo-next">
-																	<span class="material-symbols-outlined">event</span>
-																	Próxima aplicación: 15/05/2025
-																</div>
-															</div>
-														</div>
-
-														<div class="insumo-card">
-															<div class="insumo-header">
-																<span
-																	class="material-symbols-outlined">water_drop</span>
-																<div class="insumo-header-text">
-																	<h5>Riego</h5>
-																	<span class="insumo-subtitle">Sistema
-																		automatizado</span>
-																</div>
-															</div>
-															<div class="insumo-content">
-																<div class="insumo-stat">
-																	<span class="insumo-label">Último riego</span>
-																	<span class="insumo-value">Hoy, 08:00</span>
-																</div>
-																<div class="insumo-stat">
-																	<span class="insumo-label">Cantidad</span>
-																	<span class="insumo-value">2000 L</span>
-																</div>
-																<div class="insumo-applicator">
-																	<div class="applicator-avatar">
-																		<span
-																			class="material-symbols-outlined">smart_toy</span>
-																	</div>
-																	<div class="applicator-info">
-																		<span class="applicator-name">Sistema
-																			Automático</span>
-																		<span class="applicator-role">Riego
-																			programado</span>
-																	</div>
-																</div>
-																<div class="insumo-efficiency">
-																	<span class="insumo-label">Eficiencia del
-																		sistema</span>
-																	<div
-																		class="efficiency-indicator efficiency-indicator--good">
-																		<span
-																			class="material-symbols-outlined">check_circle</span>
-																		Óptimo
-																	</div>
-																	<span class="efficiency-detail">98% de
-																		efectividad</span>
-																</div>
-																<div class="insumo-next">
-																	<span
-																		class="material-symbols-outlined">schedule</span>
-																	Próximo riego: Hoy, 16:00
-																</div>
-															</div>
-														</div>
-
-														<div class="insumo-card">
-															<div class="insumo-header">
-																<span
-																	class="material-symbols-outlined">pest_control</span>
-																<div class="insumo-header-text">
-																	<h5>Insecticida Orgánico</h5>
-																	<span class="insumo-subtitle">Control natural de
-																		plagas</span>
-																</div>
-															</div>
-															<div class="insumo-content">
-																<div class="insumo-stat">
-																	<span class="insumo-label">Última aplicación</span>
-																	<span class="insumo-value">12/04/2025</span>
-																</div>
-																<div class="insumo-stat">
-																	<span class="insumo-label">Cantidad</span>
-																	<span class="insumo-value">15 L</span>
-																</div>
-																<div class="insumo-applicator">
-																	<div class="applicator-avatar">
-																		<span
-																			class="material-symbols-outlined">person</span>
-																	</div>
-																	<div class="applicator-info">
-																		<span class="applicator-name">María
-																			Rodríguez</span>
-																		<span class="applicator-role">Especialista en
-																			control biológico</span>
-																	</div>
-																</div>
-																<div class="insumo-progress">
-																	<div class="insumo-progress-header">
-																		<span class="insumo-label">Stock restante</span>
-																		<span
-																			class="insumo-stock insumo-stock--warning">45%</span>
-																	</div>
-																	<div class="progress progress--small">
-																		<div class="progress__bar progress__bar--warning"
-																			style="width: 45%"></div>
-																	</div>
-																	<div class="stock-warning">
-																		<span
-																			class="material-symbols-outlined">warning</span>
-																		Stock bajo: 45L restantes
-																	</div>
-																</div>
-																<div class="insumo-next">
-																	<span class="material-symbols-outlined">event</span>
-																	Próxima aplicación: 26/04/2025
+																	<span id="cultivoROI" class="stat-value"></span>
 																</div>
 															</div>
 														</div>
 													</div>
 												</div>
 
-												<div class="cultivo-section cultivo-section--full">
-													<h4>Datos de Sensores</h4>
-													<div class="sensors-grid">
-														<div class="sensor-card">
-															<div class="sensor-header">
-																<span
-																	class="material-symbols-outlined">humidity_percentage</span>
-																<h5>Humedad</h5>
-															</div>
-															<div class="sensor-value">
-																<span id="cultivoHumedad">68</span>%
-															</div>
-															<div class="sensor-chart">
-																<canvas id="humedadChart"></canvas>
-															</div>
-														</div>
+												<!-- Insumos -->
+												<div class="cultivo-section">
+													<div class="section-header">
+														<h4>Insumos Utilizados</h4>
+													</div>
+													<div class="insumos-content">
+														<ul id="listaInsumos" class="insumos-list"></ul>
+													</div>
+												</div>
 
-														<div class="sensor-card">
-															<div class="sensor-header">
-																<span
-																	class="material-symbols-outlined">device_thermostat</span>
-																<h5>Temperatura</h5>
-															</div>
-															<div class="sensor-value">
-																<span id="cultivoTemperatura">24</span>°C
-															</div>
-															<div class="sensor-chart">
-																<canvas id="temperaturaChart"></canvas>
-															</div>
-														</div>
+												<!-- Sensores -->
+												<div class="cultivo-section">
+													<div class="section-header">
+														<h4>Sensores Asignados</h4>
+													</div>
+													<div class="sensores-content">
+														<ul id="listaSensores" class="sensores-list"></ul>
 													</div>
 												</div>
 											</div>
@@ -795,6 +591,7 @@
 									</div>
 								</div>
 							</div>
+
 							<!-- Modal de Reporte -->
 							<div id="reportModal" class="modal">
 								<div class="modal__content">
@@ -853,66 +650,7 @@
 							<h2>Cultivos</h2>
 						</div>
 						<div class="list-group">
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">Maíz</h3>
-									<span class="badge badge--green">3 producciones</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Cultivo de maíz híbrido para producción comercial.
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Maíz Temporada 2023</li>
-											<li>Maíz Temporada 2022</li>
-											<li>Prueba Maíz Híbrido</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">Tomate</h3>
-									<span class="badge badge--green">1 producción</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Tomate de invernadero variedad Cherry y Roma.
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Tomate Invernadero</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">Trigo</h3>
-									<span class="badge badge--green">1 producción</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Cultivo de trigo para producción de harina.
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Trigo Temporada 2022</li>
-										</ul>
-									</div>
-								</div>
-							</div>
+							<!-- Los datos se cargarán dinámicamente -->
 						</div>
 					</div>
 					<div class="tab-content" id="sensores">
@@ -920,70 +658,7 @@
 							<h2>Sensores</h2>
 						</div>
 						<div class="list-group">
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">Sensor de Humedad</h3>
-									<span class="badge badge--green">5 instalados</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Mide el nivel de humedad del suelo.
-									</div>
-									<div class="sensor">
-										<div class="sensor__current">
-											<div class="sensor__value">68%</div>
-											<div class="sensor__label">
-												Humedad actual (promedio)
-											</div>
-										</div>
-										<div class="progress">
-											<div class="progress__bar progress__bar--humidity" style="width: 68%"></div>
-										</div>
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Maíz Temporada 2023 (2 sensores)</li>
-											<li>Tomate Invernadero (2 sensores)</li>
-											<li>Trigo Temporada 2022 (1 sensor)</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">Sensor de Temperatura</h3>
-									<span class="badge badge--green">3 instalados</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Mide la temperatura ambiente.
-									</div>
-									<div class="sensor">
-										<div class="sensor__current">
-											<div class="sensor__value">24°C</div>
-											<div class="sensor__label">
-												Temperatura actual (promedio)
-											</div>
-										</div>
-										<div class="progress">
-											<div class="progress__bar progress__bar--temperature" style="width: 60%">
-											</div>
-										</div>
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Maíz Temporada 2023 (1 sensor)</li>
-											<li>Tomate Invernadero (2 sensores)</li>
-										</ul>
-									</div>
-								</div>
-							</div>
+							<!-- Los datos se cargarán dinámicamente -->
 						</div>
 					</div>
 
@@ -992,67 +667,7 @@
 							<h2>Insumos</h2>
 						</div>
 						<div class="list-group">
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">Fertilizante NPK</h3>
-									<span class="badge badge--green">Stock: 2500 kg</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Fertilizante balanceado con Nitrógeno, Fósforo y Potasio.
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Maíz Temporada 2023 (500 kg)</li>
-											<li>Tomate Invernadero (250 kg)</li>
-											<li>Trigo Temporada 2022 (400 kg)</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">Insecticida Orgánico</h3>
-									<span class="badge badge--green">Stock: 120 l</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Insecticida de origen natural para control de plagas.
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Maíz Temporada 2023 (30 l)</li>
-											<li>Tomate Invernadero (50 l)</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">Semillas de Maíz Híbrido</h3>
-									<span class="badge badge--green">Stock: 150 kg</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Semillas de maíz de alto rendimiento.
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Maíz Temporada 2023 (75 kg)</li>
-											<li>Prueba Maíz Híbrido (25 kg)</li>
-										</ul>
-									</div>
-								</div>
-							</div>
+							<!-- Los datos se cargarán dinámicamente -->
 						</div>
 					</div>
 
@@ -1061,86 +676,7 @@
 							<h2>Responsables</h2>
 						</div>
 						<div class="list-group">
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">Juan Pérez</h3>
-									<span class="badge badge--green">Supervisor</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Supervisor principal de las producciones agrícolas.
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Maíz Temporada 2023</li>
-											<li>Tomate Invernadero</li>
-											<li>Trigo Temporada 2022</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">María Rodríguez</h3>
-									<span class="badge badge--green">Técnico</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Técnico especializado en cultivos de invernadero.
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Tomate Invernadero</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">Carlos Gómez</h3>
-									<span class="badge badge--green">Agrónomo</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Agrónomo especializado en cultivos extensivos.
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Maíz Temporada 2023</li>
-											<li>Trigo Temporada 2022</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<div class="list-group__item">
-								<div class="list-group__header">
-									<h3 class="list-group__title">Laura Martínez</h3>
-									<span class="badge badge--green">Técnico</span>
-								</div>
-								<div class="list-group__content">
-									<div class="list-group__description">
-										Técnico especializado en manejo de sensores.
-									</div>
-									<div class="list-group__associated">
-										<div class="list-group__label">
-											Producciones asociadas:
-										</div>
-										<ul class="list-group__items">
-											<li>Maíz Temporada 2023</li>
-											<li>Tomate Invernadero</li>
-										</ul>
-									</div>
-								</div>
-							</div>
+							<!-- Los datos se cargarán dinámicamente -->
 						</div>
 					</div>
 				</div>

@@ -60,11 +60,8 @@ export function VerUsuarios(req, res) {
 
 export function crearUsuario(req, res){
     try{
-        const { userTypeId, userName, userId, userTel, userEmail, userConfirmEmail, userRol, estado} = req.body;
-
-        if (userEmail !== userConfirmEmail) {
-            return res.status(400).json({ error: 'Los correos no coinciden' });
-        }
+        const { userTypeId, userName, userId, userTel, userEmail, userRol, estado} = req.body;
+        console.log(req.body)
 
         // Validar que el estado sea válido
         if (estado !== "habilitado" && estado !== "deshabilitado") {
@@ -73,7 +70,7 @@ export function crearUsuario(req, res){
 
         // Bloquear el envío si el estado es "deshabilitado"
         if (estado === "deshabilitado") {
-            return res.status(400).json({ error: "No se puede crear un sensor con el estado 'deshabilitado'" });
+            return res.status(400).json({ error: "No se puede crear un usuario con el estado 'deshabilitado'" });
         }
 
         db.query(`INSERT INTO usuarios (tipo_documento, numero_documento, nombre, telefono, correo, rol, estado, fecha_creacion)  

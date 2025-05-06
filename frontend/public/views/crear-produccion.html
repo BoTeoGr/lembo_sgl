@@ -1,4 +1,4 @@
-                    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -24,6 +24,7 @@
                     <div class="form__group">
                         <label for="productionName" class="form__label"><i class="fas fa-tag"></i> Nombre de la producción</label>
                         <input type="text" id="productionName" name="productionName" class="form__input" required>
+                        <small class="form__helper-text">Mínimo 3 caracteres</small>
                     </div>
                     <div class="form__group">
                         <label for="productionType" class="form__label"><i class="fas fa-list"></i> Tipo</label>
@@ -112,7 +113,7 @@
                     </div>
                 </div>
                 <div class="form__section">
-                    <h3 class="form__section-title"><i class="fas fa-box-open"></i> Insumos</h3>
+                    <h3 class="form__section-title"><i class="fas fa-box-open"></i> Insumos (Máximo 1 por tipo)</h3>
                     <div class="form__row">
                         <div class="form__group">
                             <div class="supply-selection">
@@ -121,7 +122,7 @@
                                 </select>
                                 <div class="button-group">
                                     <button type="button" id="addSupply" class="button--add">
-                                        <i class="fas fa-plus"></i> Agregar a la lista
+                                        <i class="fas fa-plus"></i> Seleccionar insumo
                                     </button>
                                     <button type="button" id="createSupplyBtn" class="button--create">
                                         <i class="fas fa-plus-circle"></i> Nuevo Insumo
@@ -129,73 +130,55 @@
                                 </div>
                             </div>
                             <div id="selectedSupplies" class="selected-items"></div>
+                            <small class="form__helper-text">Seleccione al menos un insumo para la producción. Solo se permite un insumo de cada tipo.</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form__section">
+                    <h3 class="form__section-title"><i class="fas fa-calendar-alt"></i> Fechas de Producción</h3>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="startDate" class="form__label"><i class="fas fa-calendar-plus"></i> Fecha de Inicio</label>
+                            <input type="date" id="startDate" name="startDate" class="form__input" required>
+                            <small id="startDateHelperText" class="form__helper-text">Fecha en que inicia o inició la producción</small>
+                        </div>
+                        <div class="form__group">
+                            <label for="endDate" class="form__label"><i class="fas fa-calendar-check"></i> Fecha de Fin</label>
+                            <input type="date" id="endDate" name="endDate" class="form__input" required>
+                            <small id="endDateHelperText" class="form__helper-text">Fecha estimada de finalización (posterior a la fecha de inicio)</small>
                         </div>
                     </div>
                 </div>
 
-                <!-- Formulario de uso de insumos -->
-                <div id="supplyUsageForm" class="form__section hidden">
-                    <h3 class="form__section-title"><i class="fas fa-clipboard-list"></i> Registro de Uso de Insumo</h3>
-                    <div class="form__row">
-                        <div class="form__group">
-                            <h4>Información del Insumo</h4>
-                            <div class="supply-info">
-                                <p><strong>Nombre:</strong> <span id="supplyName"></span></p>
-                                <p><strong>Cantidad Disponible:</strong> <span id="availableQuantity"></span></p>
-                                <p><strong>Valor Unitario:</strong> <span id="unitValue"></span></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label for="supplyUsageDate" class="form__label"><i class="fas fa-calendar"></i> Fecha de uso</label>
-                            <input type="date" id="supplyUsageDate" name="supplyUsageDate" class="form__input">
-                        </div>
-                        <div class="form__group">
-                            <label for="supplyUsageQuantity" class="form__label"><i class="fas fa-weight"></i> Cantidad a usar</label>
-                            <input type="number" id="supplyUsageQuantity" name="supplyUsageQuantity" class="form__input">
-                        </div>
-                    </div>
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label for="supplyUsageResponsible" class="form__label"><i class="fas fa-user"></i> Responsable</label>
-                            <select id="supplyUsageResponsible" name="supplyUsageResponsible" class="form__select"></select>
-                        </div>
-                        <div class="form__group">
-                            <label class="form__label"><i class="fas fa-calculator"></i> Valor Total</label>
-                            <p id="totalValue" class="form__value">$0.00</p>
-                        </div>
-                    </div>
-                    <div class="form__group form__group--full-width">
-                        <label for="supplyUsageObservations" class="form__label"><i class="fas fa-comment"></i> Observaciones</label>
-                        <textarea id="supplyUsageObservations" name="supplyUsageObservations" class="form__textarea" rows="3"></textarea>
-                    </div>
-                    <div class="form__button-container">
-                        <button type="button" id="addSupplyUsage" class="button button--submit">
-                            <i class="fas fa-save"></i> Registrar Uso
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Sección de inversión y meta -->
                 <div class="form__section">
                     <h3 class="form__section-title"><i class="fas fa-chart-line"></i> Inversión y Meta</h3>
                     <div class="form__row">
                         <div class="form__group">
-                            <label for="totalInvestment" class="form__label"><i class="fas fa-dollar-sign"></i> Inversión Total en Insumos</label>
-                            <input type="number" id="totalInvestment" class="form__input" readonly>
+                            <label for="totalInvestment" class="form__label"><i class="fas fa-dollar-sign"></i> Inversión Total</label>
+                            <input type="number" id="totalInvestment" name="totalInvestment" class="form__input" step="0.01" min="0" readonly required>
+                            <small id="investmentHelperText" class="form__helper-text">Calculado automáticamente en base a los insumos seleccionados</small>
                         </div>
                         <div class="form__group">
-                            <label for="estimatedProfit" class="form__label"><i class="fas fa-chart-line"></i> Meta de Ganancias Estimada</label>
-                            <input type="number" id="estimatedProfit" class="form__input" readonly>
+                            <label for="estimatedProfit" class="form__label"><i class="fas fa-chart-line"></i> Meta de Ganancias</label>
+                            <div class="form__input-with-button">
+                                <input type="number" id="estimatedProfit" name="estimatedProfit" class="form__input" step="0.01" min="0" required>
+                                <button type="button" id="suggestProfitBtn" class="button button--small">
+                                    <i class="fas fa-magic"></i> Sugerir
+                                </button>
+                            </div>
+                            <small id="profitHelperText" class="form__helper-text">La meta de ganancias debe ser mayor o igual a la inversión</small>
                         </div>
                     </div>
                 </div>
 
                 <div class="form__button-container">
-                    <button type="submit" id="createBtn" class="button button--submit" disabled>
+                    <button type="button" id="createBtn" class="button button--submit">
                         <i class="fas fa-save"></i> Crear Producción
                     </button>
+                    <div id="loadingIndicator" class="loading-indicator hidden">
+                        <i class="fas fa-spinner fa-spin"></i> Creando producción...
+                    </div>
                 </div>
             </form>
         </div>
@@ -483,7 +466,13 @@
                         </div>
                         <div class="form__group">
                             <label for="modal-tipo-cultivo" class="form__label">Tipo de cultivo</label>
-                            <input type="text" id="modal-tipo-cultivo" class="form__input form__input--cultive-type" placeholder="Tipo de cultivo" required />
+                            <select id="modal-tipo-cultivo" class="form__input form__input--cultive-type" required>
+                                <option value="Fruta">Fruta</option>
+                                <option value="Verdura">Verdura</option>
+                                <option value="Cereal">Cereal</option>
+                                <option value="Tubérculo">Tubérculo</option>
+                                <option value="Bebida">Bebida</option>
+                            </select>
                         </div>
                     </div>
 
@@ -594,6 +583,77 @@
 
     <!-- Scripts -->
     <script src="../js/validations/productionCreationValidator.js" type="module"></script>
-    <script src="../js/validations/supplyUsageValidator.js" type="module"></script>
+    
+    <style>
+    .loading-indicator {
+        margin-top: 10px;
+        color: #2196F3;
+        font-weight: 500;
+    }
+    
+    .hidden {
+        display: none;
+    }
+    
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        z-index: 9999;
+        min-width: 300px;
+        max-width: 400px;
+    }
+    
+    .toast--success .toast-icon {
+        color: var(--green-700);
+    }
+    
+    .toast--error .toast-icon {
+        color: #e53935;
+    }
+    
+    .toast-content {
+        display: flex;
+        padding: 16px;
+        align-items: flex-start;
+    }
+    
+    .toast-icon {
+        font-size: 24px;
+        margin-right: 12px;
+    }
+    
+    .toast-message {
+        flex: 1;
+    }
+    
+    .toast-title {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 4px;
+        font-size: 16px;
+    }
+    
+    .toast-description {
+        font-size: 14px;
+        color: #666;
+    }
+    
+    .toast-progress {
+        height: 4px;
+        background-color: var(--green-500);
+        width: 0%;
+        animation: progress 3s linear;
+    }
+    
+    @keyframes progress {
+        0% { width: 0%; }
+        100% { width: 100%; }
+    }
+    </style>
 </body>
 </html>

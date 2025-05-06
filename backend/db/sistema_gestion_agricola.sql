@@ -1,282 +1,246 @@
--- Crear la base de datos
-CREATE DATABASE IF NOT EXISTS sistema_gestion_agricola;
-USE sistema_gestion_agricola;
-CREATE TABLE IF NOT EXISTS usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    tipo_documento ENUM('ti', 'cc', 'ppt', 'ce', 'pep' ) NOT NULL,
-    numero_documento VARCHAR(20) NOT NULL UNIQUE,
-    nombre VARCHAR(100) NOT NULL,
-    telefono VARCHAR(15) NOT NULL,
-    correo VARCHAR(100) NOT NULL UNIQUE,
-    rol ENUM('superadmin', 'admin', 'apoyo', 'visitante') NOT NULL,
-    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+--
+-- Host: localhost    Database: sistema_gestion_agricola
+-- ------------------------------------------------------
+-- Server version	9.3.0
 
--- Tabla de Cultivos
-CREATE TABLE IF NOT EXISTS cultivos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    tipo VARCHAR(50) NOT NULL,
-    imagen VARCHAR(255),
-    ubicacion VARCHAR(100) NOT NULL,
-    descripcion TEXT NOT NULL,
-    usuario_id INT,
-    tamano VARCHAR(50) NOT NULL,
-    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
-);
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Tabla de Ciclos de Cultivo
-CREATE TABLE IF NOT EXISTS ciclo_cultivo (
-    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    descripcion TEXT NOT NULL,
-    periodo_inicio DATE NOT NULL,
-    periodo_final DATE NOT NULL,
-    novedades TEXT,
-    usuario_id INT,
-    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
-);
+--
+-- Table structure for table `ciclo_cultivo`
+--
 
--- Tabla de Sensores
-CREATE TABLE IF NOT EXISTS sensores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    tipo_sensor ENUM('Sensor de contacto', 'Sensor de distancia', 'Sensores de luz') NOT NULL,
-    nombre_sensor VARCHAR(100) NOT NULL,
-    unidad_medida ENUM('Temperatura', 'Distancia', 'Presión') NOT NULL,
-    imagen VARCHAR(255),
-    descripcion TEXT NOT NULL,
-    tiempo_escaneo ENUM('Sensores lentos', 'Sensores de velocidad media', 'Sensores rápidos') NOT NULL,
-    usuario_id INT,
-    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
-);
+DROP TABLE IF EXISTS `ciclo_cultivo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ciclo_cultivo` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` text NOT NULL,
+  `periodo_inicio` date NOT NULL,
+  `periodo_final` date NOT NULL,
+  `novedades` text,
+  `usuario_id` int DEFAULT NULL,
+  `estado` enum('habilitado','deshabilitado') NOT NULL DEFAULT 'habilitado',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `usuario_id` (`usuario_id`),
+  CONSTRAINT `ciclo_cultivo_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- Tabla de Insumos
-CREATE TABLE IF NOT EXISTS insumos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    tipo VARCHAR(50) NOT NULL,
-    imagen VARCHAR(255),
-    unidad_medida ENUM('peso', 'volumen', 'superficie', 'concentración', 'litro', 'kilo', 'metro', 'gramo', 'mililitro', 'unidad', 'bolsa') NOT NULL,
-    valor_unitario DECIMAL(10, 2) NOT NULL,
-    cantidad INT NOT NULL,
-    valor_total DECIMAL(10, 2) NOT NULL,
-    descripcion TEXT NOT NULL,
-    usuario_id INT,
-    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
-);
+--
+-- Dumping data for table `ciclo_cultivo`
+--
 
--- Tabla de Producciones
-CREATE TABLE IF NOT EXISTS producciones (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    identificador VARCHAR(20) UNIQUE NOT NULL,
-    nombre VARCHAR(100) NOT NULL,
-    tipo VARCHAR(50) NOT NULL,
-    imagen VARCHAR(255) NOT NULL,
-    ubicacion VARCHAR(100) NOT NULL,
-    descripcion TEXT NOT NULL,
-    usuario_id INT,
-    estado ENUM('habilitado', 'deshabilitado') NOT NULL DEFAULT 'habilitado',
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    cultivo_id INT,
-    ciclo_id INT,
-    insumos_ids TEXT,
-    sensores_ids TEXT,
-    personal_ids TEXT,
-    inversion_total	decimal(10,2),
-    meta_ganancias	decimal(10,2),
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL,
-    FOREIGN KEY (cultivo_id) REFERENCES cultivos(id) ON DELETE SET NULL,
-    FOREIGN KEY (ciclo_id) REFERENCES ciclo_cultivo(id) ON DELETE SET NULL
-);
+LOCK TABLES `ciclo_cultivo` WRITE;
+/*!40000 ALTER TABLE `ciclo_cultivo` DISABLE KEYS */;
+INSERT INTO `ciclo_cultivo` VALUES (1,'Ciclo Primavera','Ciclo de cultivo para primavera','2025-03-01','2025-06-30','Ninguna',1,'habilitado','2025-04-22 17:40:51'),(2,'Ciclo Verano','Ciclo de cultivo para verano','2025-07-01','2025-09-30','Ninguna',2,'habilitado','2025-04-22 17:40:51'),(3,'Ciclo Otoño','Ciclo de cultivo para otoño','2025-10-01','2025-12-31','Ninguna',3,'habilitado','2025-04-22 17:40:51'),(4,'Ciclo Invierno','Ciclo de cultivo para invierno','2026-01-01','2026-03-31','Ninguna',4,'habilitado','2025-04-22 17:40:51'),(5,'Ciclo Anual','Ciclo de cultivo durante todo el año','2025-01-01','2025-12-31','Requiere monitoreo constante',5,'habilitado','2025-04-22 17:40:51'),(6,'Ciclo Semestral','Ciclo de cultivo para el primer semestre','2025-01-01','2025-06-30','Ninguna',6,'habilitado','2025-04-22 17:40:51'),(7,'Ciclo Bianual','Ciclo de cultivo cada dos años','2025-01-01','2026-12-31','Requiere planificación',7,'habilitado','2025-04-22 17:40:51'),(8,'Ciclo Mensual','Ciclo de cultivo mensual','2025-03-01','2025-03-31','Alta rotación',8,'habilitado','2025-04-22 17:40:51'),(9,'nose','cual','2025-05-04','2025-05-29','sdadad',1,'habilitado','2025-05-05 20:54:23'),(10,'coco','no eñor','2025-05-05','2025-05-30','sdadwds',1,'habilitado','2025-05-05 20:56:25');
+/*!40000 ALTER TABLE `ciclo_cultivo` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- Tabla de relación Producción-Insumos
-CREATE TABLE IF NOT EXISTS produccion_insumos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    produccion_id INT NOT NULL,
-    insumo_id INT NOT NULL,
-    cantidad DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (produccion_id) REFERENCES producciones(id) ON DELETE CASCADE,
-    FOREIGN KEY (insumo_id) REFERENCES insumos(id) ON DELETE CASCADE
-);
+--
+-- Table structure for table `cultivos`
+--
 
--- Tabla de relación Producción-Sensores
-CREATE TABLE IF NOT EXISTS produccion_sensores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    produccion_id INT NOT NULL,
-    sensor_id INT NOT NULL,
-    FOREIGN KEY (produccion_id) REFERENCES producciones(id) ON DELETE CASCADE,
-    FOREIGN KEY (sensor_id) REFERENCES sensores(id) ON DELETE CASCADE
-);
+DROP TABLE IF EXISTS `cultivos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cultivos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `tipo` varchar(50) NOT NULL,
+  `imagen` varchar(255) DEFAULT NULL,
+  `ubicacion` varchar(100) NOT NULL,
+  `descripcion` text NOT NULL,
+  `usuario_id` int DEFAULT NULL,
+  `tamano` varchar(50) NOT NULL,
+  `estado` enum('habilitado','deshabilitado') NOT NULL DEFAULT 'habilitado',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `usuario_id` (`usuario_id`),
+  CONSTRAINT `cultivos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- Tabla de relación Producción-Personal
-CREATE TABLE IF NOT EXISTS produccion_personal (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    produccion_id INT NOT NULL,
-    usuario_id INT NOT NULL,
-    FOREIGN KEY (produccion_id) REFERENCES producciones(id) ON DELETE CASCADE,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-);
+--
+-- Dumping data for table `cultivos`
+--
 
--- Tabla de Lecturas de Sensores por Producción
-CREATE TABLE IF NOT EXISTS lecturas_sensores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    produccion_id INT NOT NULL,
-    sensor_id INT NOT NULL,
-    fecha_lectura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    valor DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (produccion_id) REFERENCES producciones(id) ON DELETE CASCADE,
-    FOREIGN KEY (sensor_id) REFERENCES sensores(id) ON DELETE CASCADE
-);
+LOCK TABLES `cultivos` WRITE;
+/*!40000 ALTER TABLE `cultivos` DISABLE KEYS */;
+INSERT INTO `cultivos` VALUES (1,'Tomate','Fruta','tomate.jpg','Invernadero 1','Cultivo de tomates',1,'200','habilitado','2025-04-22 17:40:51'),(2,'Lechuga','Verdura','lechuga.jpg','Campo 2','Cultivo de lechugas',2,'100','habilitado','2025-04-22 17:40:51'),(3,'Maíz','Cereal','maiz.jpg','Campo 3','Cultivo de maíz',3,'150','habilitado','2025-04-22 17:40:51'),(4,'Papa','Tubérculo','papa.jpg','Campo 4','Cultivo de papas',4,'250','habilitado','2025-04-22 17:40:51'),(5,'Café','Bebida','cafe.jpg','Plantación 1','Cultivo de café',5,'300','habilitado','2025-04-22 17:40:51'),(6,'Trigo','Cereal','trigo.jpg','Campo 5','Cultivo de trigo',6,'200','habilitado','2025-04-22 17:40:51'),(7,'Cebolla','Verdura','cebolla.jpg','Campo 6','Cultivo de cebollas',7,'120','habilitado','2025-04-22 17:40:51'),(8,'Fresa','Fruta','fresa.jpg','Invernadero 2','Cultivo de fresas',8,'50','habilitado','2025-04-22 17:40:51'),(9,'curcuma','Verdura','cultivo-default.jpg','ninguna','ninguna',1,'21','habilitado','2025-05-05 20:11:02');
+/*!40000 ALTER TABLE `cultivos` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- Trigger para calcular automáticamente el valor total al insertar un insumo
-DELIMITER //
-CREATE TRIGGER before_insumo_insert
-BEFORE INSERT ON insumos
-FOR EACH ROW
-BEGIN
-    SET NEW.valor_total = NEW.valor_unitario * NEW.cantidad;
-END //
-DELIMITER ;
+--
+-- Table structure for table `insumos`
+--
 
--- Trigger para actualizar automáticamente el valor total al modificar un insumo
-DELIMITER //
-CREATE TRIGGER before_insumo_update
-BEFORE UPDATE ON insumos
-FOR EACH ROW
-BEGIN
-    SET NEW.valor_total = NEW.valor_unitario * NEW.cantidad;
-END //
-DELIMITER ;
+DROP TABLE IF EXISTS `insumos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `insumos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `tipo` varchar(50) NOT NULL,
+  `imagen` varchar(255) DEFAULT NULL,
+  `unidad_medida` enum('peso','volumen','superficie','concentración','litro','kilo') NOT NULL,
+  `valor_unitario` decimal(10,2) NOT NULL,
+  `cantidad` int NOT NULL,
+  `valor_total` decimal(10,2) NOT NULL,
+  `descripcion` text NOT NULL,
+  `usuario_id` int DEFAULT NULL,
+  `estado` enum('habilitado','deshabilitado') NOT NULL DEFAULT 'habilitado',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_usuario_id` (`usuario_id`),
+  CONSTRAINT `fk_usuario_id` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `insumos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- Índices básicos para mejorar el rendimiento
--- CREATE INDEX idx_cultivos_tipo ON cultivos(tipo);
--- CREATE INDEX idx_ciclo_cultivo_cultivo ON ciclo_cultivo(cultivo_id);
+--
+-- Dumping data for table `insumos`
+--
 
--- Usuarios reales de ejemplo para pruebas
-INSERT INTO usuarios (id, tipo_documento, numero_documento, nombre, telefono, correo, rol, estado) VALUES
-(1, 'cc', '100000001', 'Mateo Ramírez', '+57 300000001', 'mateo.ramirez@mail.com', 'admin', 'habilitado'),
-(2, 'cc', '100000002', 'Laura Gómez', '+57 300000002', 'laura.gomez@mail.com', 'apoyo', 'habilitado'),
-(3, 'cc', '100000003', 'Carlos Torres', '+57 300000003', 'carlos.torres@mail.com', 'apoyo', 'habilitado'),
-(4, 'cc', '100000004', 'Diana Salazar', '+57 300000004', 'diana.salazar@mail.com', 'apoyo', 'habilitado'),
-(5, 'cc', '100000005', 'Andrés Pérez', '+57 300000005', 'andres.perez@mail.com', 'apoyo', 'habilitado'),
-(6, 'cc', '100000006', 'Valentina Ruiz', '+57 300000006', 'valentina.ruiz@mail.com', 'apoyo', 'habilitado'),
-(7, 'cc', '100000007', 'Jorge Castillo', '+57 300000007', 'jorge.castillo@mail.com', 'apoyo', 'habilitado'),
-(8, 'cc', '100000008', 'Sofía Herrera', '+57 300000008', 'sofia.herrera@mail.com', 'apoyo', 'habilitado'),
-(9, 'cc', '100000009', 'Miguel López', '+57 300000009', 'miguel.lopez@mail.com', 'apoyo', 'habilitado'),
-(10, 'cc', '100000010', 'Paula Medina', '+57 300000010', 'paula.medina@mail.com', 'apoyo', 'habilitado'),
-(11, 'cc', '100000011', 'Camilo Vargas', '+57 300000011', 'camilo.vargas@mail.com', 'apoyo', 'habilitado'),
-(12, 'cc', '100000012', 'Mariana Ortiz', '+57 300000012', 'mariana.ortiz@mail.com', 'apoyo', 'habilitado'),
-(13, 'cc', '100000013', 'Ricardo Jiménez', '+57 300000013', 'ricardo.jimenez@mail.com', 'apoyo', 'habilitado'),
-(14, 'cc', '100000014', 'Natalia Castro', '+57 300000014', 'natalia.castro@mail.com', 'apoyo', 'habilitado'),
-(15, 'cc', '100000015', 'Esteban Silva', '+57 300000015', 'esteban.silva@mail.com', 'apoyo', 'habilitado');
+LOCK TABLES `insumos` WRITE;
+/*!40000 ALTER TABLE `insumos` DISABLE KEYS */;
+INSERT INTO `insumos` VALUES (1,'Fertilizante','Químico','fertilizante.jpg','kilo',10.00,95,950.00,'Fertilizante para cultivos',1,'habilitado','2025-04-22 17:40:51'),(2,'Pesticida','Químico','pesticida.jpg','litro',20.00,47,940.00,'Pesticida para cultivos',2,'habilitado','2025-04-22 17:40:51'),(3,'Herbicida','Químico','herbicida.jpg','litro',15.00,200,3000.00,'Herbicida para control de malezas',2,'habilitado','2025-04-22 17:40:51'),(4,'Semillas de Maíz','Semilla','semillas_maiz.jpg','kilo',50.00,25,1250.00,'Semillas de maíz híbrido',3,'habilitado','2025-04-22 17:40:51'),(5,'Insecticida','Químico','insecticida.jpg','litro',25.00,95,2375.00,'Insecticida para control de plagas',4,'habilitado','2025-04-22 17:40:51'),(6,'Abono Orgánico','Orgánico','abono_organico.jpg','kilo',8.00,500,4000.00,'Abono orgánico para mejorar la tierra',5,'habilitado','2025-04-22 17:40:51'),(7,'Riego por Goteo','Equipo','riego_goteo.jpg','kilo',200.00,10,2000.00,'Sistema de riego por goteo',6,'habilitado','2025-04-22 17:40:51'),(8,'cuan','noco','insumo-default.jpg','volumen',1234.00,20,24680.00,'nocosq',1,'habilitado','2025-05-05 21:19:09');
+/*!40000 ALTER TABLE `insumos` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- Insert data into cultivos table
-INSERT INTO cultivos (nombre, tipo, imagen, ubicacion, descripcion, usuario_id, tamano) VALUES
-('Tomate', 'Fruta', 'tomate.jpg', 'Invernadero 1', 'Cultivo de tomates tipo chonto para consumo nacional y exportación, con manejo integrado de plagas y riego por goteo.', 1,200),
-('Lechuga', 'Verdura', 'lechuga.jpg', 'Campo 2', 'Lechuga crespa cultivada bajo invernadero, con fertilización orgánica y control biológico de plagas.', 2,100),
-('Maíz', 'Cereal', 'maiz.jpg', 'Campo 3', 'Maíz amarillo híbrido de alto rendimiento, sembrado en rotación con soya y fertilización balanceada.', 3,150),
-('Papa', 'Tubérculo', 'papa.jpg', 'Campo 4', 'Papa criolla cultivada en suelos volcánicos, con monitoreo de humedad y manejo de enfermedades.', 4,250),
-('Café', 'Bebida', 'cafe.jpg', 'Plantación 1', 'Café arábica de altura, secado al sol y seleccionado manualmente para exportación premium.', 5,300),
-('Trigo', 'Cereal', 'trigo.jpg', 'Campo 5', 'Trigo blando para panificación, con siembra mecanizada y cosecha en época seca.', 6,200),
-('Cebolla', 'Verdura', 'cebolla.jpg', 'Campo 6', 'Cebolla cabezona blanca, producida con riego tecnificado y fertilización potásica.', 7,120),
-('Fresa', 'Fruta', 'fresa.jpg', 'Invernadero 2', 'Fresa variedad Albion, cultivada en sustrato con fertirriego y control de temperatura.', 8,50),
-('Zanahoria', 'Raíz', 'zanahoria.jpg', 'Parcela 2', 'Zanahoria Nantes, sembrada en camas elevadas para evitar encharcamiento y mejorar la aireación.', 2, 80),
-('Banano', 'Fruta', 'banano.jpg', 'Finca El Paraíso', 'Banano Cavendish bajo certificación Rainforest Alliance, con manejo sostenible y control fitosanitario.', 3, 300),
-('Cacao', 'Fruta', 'cacao.jpg', 'Finca Las Delicias', 'Cacao fino de aroma, fermentado en cajas de madera y secado al sol para chocolatería gourmet.', 4, 120),
-('Aguacate', 'Fruta', 'aguacate.jpg', 'Huerta Central', 'Aguacate Hass exportable, con monitoreo satelital de humedad y control biológico de plagas.', 1, 200);
+--
+-- Table structure for table `producciones`
+--
 
--- Insertar ciclos de cultivo con IDs específicos para relaciones de producciones
-INSERT INTO ciclo_cultivo (id, nombre, descripcion, periodo_inicio, periodo_final, novedades, usuario_id) VALUES
-(1, 'Ciclo Primavera', 'Ciclo de cultivo para primavera, enfocado en cultivos de hoja y raíces.', '2025-03-01', '2025-06-30', 'Se implementó riego por goteo y monitoreo de humedad con sensores de última generación.', 1),
-(2, 'Ciclo Verano', 'Ciclo de cultivo para verano, ideal para frutales y cereales.', '2025-07-01', '2025-09-30', 'Incremento de fertilización nitrogenada y control preventivo de plagas.', 2),
-(5, 'Ciclo Anual', 'Ciclo de cultivo durante todo el año para producción continua.', '2025-01-01', '2025-12-31', 'Implementación de agricultura de precisión y sensores de clima.', 5),
-(8, 'Ciclo Mensual', 'Ciclo de cultivo mensual para cultivos de alta rotación.', '2025-03-01', '2025-03-31', 'Rotación intensiva y control de plagas con trampas biológicas.', 8),
-(13, 'Ciclo Orgánico', 'Producción bajo certificación orgánica con mínimo uso de agroquímicos.', '2025-04-01', '2025-10-01', 'Rotación de cultivos, control biológico de plagas y fertilización natural.', 1),
-(14, 'Ciclo Primavera-Verano', 'Ciclo de alta producción aprovechando la mayor radiación solar y temperaturas cálidas.', '2026-03-01', '2026-08-31', 'Aumento en la frecuencia de riego, fertilización foliar y control de malezas.', 3),
-(15, 'Ciclo Experimental', 'Ensayo de nuevas variedades de maíz y técnicas de siembra directa, con monitoreo de variables climáticas.', '2025-05-15', '2025-11-15', 'Implementación de sensores innovadores, análisis de datos y validación de resultados.', 4),
-(16, 'Ciclo Otoño-Invierno', 'Ciclo de siembra y cosecha adaptado a bajas temperaturas y lluvias frecuentes.', '2025-09-01', '2026-02-28', 'Aplicación de fungicidas preventivos, monitoreo de humedad y uso de variedades resistentes.', 2);
+DROP TABLE IF EXISTS `producciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `producciones` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `tipo` varchar(50) NOT NULL,
+  `imagen` varchar(255) NOT NULL,
+  `ubicacion` varchar(100) NOT NULL,
+  `descripcion` text NOT NULL,
+  `usuario_id` int DEFAULT NULL,
+  `cantidad` decimal(10,2) NOT NULL,
+  `estado` enum('habilitado','deshabilitado') NOT NULL DEFAULT 'habilitado',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `cultivo_id` int DEFAULT NULL,
+  `ciclo_id` int DEFAULT NULL,
+  `insumos_ids` text,
+  `sensores_ids` text,
+  `fecha_de_inicio` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `inversion` decimal(10,2) DEFAULT NULL,
+  `meta_ganancia` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `usuario_id` (`usuario_id`),
+  KEY `cultivo_id` (`cultivo_id`),
+  KEY `ciclo_id` (`ciclo_id`),
+  CONSTRAINT `producciones_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `producciones_ibfk_2` FOREIGN KEY (`cultivo_id`) REFERENCES `cultivos` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `producciones_ibfk_3` FOREIGN KEY (`ciclo_id`) REFERENCES `ciclo_cultivo` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `chk_meta_ganancia` CHECK ((`meta_ganancia` >= `inversion`))
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- Insert data into ciclo_cultivo table
-INSERT INTO ciclo_cultivo (nombre, descripcion, periodo_inicio, periodo_final, novedades, usuario_id) VALUES
-('Ciclo Primavera', 'Ciclo de cultivo para primavera, enfocado en cultivos de hoja y raíces.', '2025-03-01', '2025-06-30', 'Se implementó riego por goteo y monitoreo de humedad con sensores de última generación.', 1),
-('Ciclo Verano', 'Ciclo de cultivo para verano, ideal para frutales y cereales.', '2025-07-01', '2025-09-30', 'Incremento de fertilización nitrogenada y control preventivo de plagas.', 2),
-('Ciclo Otoño', 'Ciclo de cultivo para otoño, con énfasis en tubérculos y hortalizas.', '2025-10-01', '2025-12-31', 'Se aplicaron fungicidas biológicos y se realizó rotación de cultivos.', 3),
-('Ciclo Invierno', 'Ciclo de cultivo para invierno, adaptado a bajas temperaturas y lluvias frecuentes.', '2026-01-01', '2026-03-31', 'Uso de cobertores plásticos y monitoreo de temperatura con sensores.', 4),
-('Ciclo Anual', 'Ciclo de cultivo durante todo el año para producción continua.', '2025-01-01', '2025-12-31', 'Implementación de agricultura de precisión y sensores de clima.', 5),
-('Ciclo Semestral', 'Ciclo de cultivo para el primer semestre, enfocado en cultivos de rápido crecimiento.', '2025-01-01', '2025-06-30', 'Optimización de riego y uso de fertilizantes orgánicos.', 6),
-('Ciclo Bianual', 'Ciclo de cultivo cada dos años, ideal para cultivos perennes.', '2025-01-01', '2026-12-31', 'Monitoreo satelital de parcelas y análisis de suelos avanzado.', 7),
-('Ciclo Mensual', 'Ciclo de cultivo mensual para cultivos de alta rotación.', '2025-03-01', '2025-03-31', 'Rotación intensiva y control de plagas con trampas biológicas.', 8),
-('Ciclo Otoño-Invierno', 'Ciclo de siembra y cosecha adaptado a bajas temperaturas y lluvias frecuentes.', '2025-09-01', '2026-02-28', 'Aplicación de fungicidas preventivos, monitoreo de humedad y uso de variedades resistentes.', 2),
-('Ciclo Primavera-Verano', 'Ciclo de alta producción aprovechando la mayor radiación solar y temperaturas cálidas.', '2026-03-01', '2026-08-31', 'Aumento en la frecuencia de riego, fertilización foliar y control de malezas.', 3),
-('Ciclo Experimental', 'Ensayo de nuevas variedades de maíz y técnicas de siembra directa, con monitoreo de variables climáticas.', '2025-05-15', '2025-11-15', 'Implementación de sensores innovadores, análisis de datos y validación de resultados.', 4),
-('Ciclo Orgánico', 'Producción bajo certificación orgánica con mínimo uso de agroquímicos.', '2025-04-01', '2025-10-01', 'Rotación de cultivos, control biológico de plagas y fertilización natural.', 1);
+--
+-- Dumping data for table `producciones`
+--
 
--- Insert data into sensores table
-INSERT INTO sensores (tipo_sensor, nombre_sensor, unidad_medida, imagen, descripcion, tiempo_escaneo, usuario_id) VALUES
-('Sensor de contacto', 'Sensor 1', 'Temperatura', 'sensor1.jpg', 'Sensor de temperatura de contacto', 'Sensores lentos', 1),
-('Sensor de distancia', 'Sensor 2', 'Distancia', 'sensor2.jpg', 'Sensor de distancia láser', 'Sensores rápidos', 2),
-('Sensores de luz', 'Sensor 3', 'Temperatura', 'sensor3.jpg', 'Sensor de intensidad lumínica', 'Sensores de velocidad media', 3),
-('Sensor de contacto', 'Sensor 4', 'Presión', 'sensor4.jpg', 'Sensor de presión atmosférica', 'Sensores rápidos', 4),
-('Sensor de contacto', 'Sensor 5', 'Presión', 'sensor5.jpg', 'Sensor de humedad del suelo', 'Sensores lentos', 5),
-('Sensor de contacto', 'Sensor 6', 'Temperatura', 'sensor6.jpg', 'Sensor de humedad ambiental', 'Sensores de velocidad media', 6),
-('Sensor de contacto', 'Sensor 7', 'Temperatura', 'sensor7.jpg', 'Sensor de temperatura infrarrojo', 'Sensores rápidos', 7),
-('Sensor de contacto', 'Sensor 8', 'Presión', 'sensor8.jpg', 'Sensor de pH del suelo', 'Sensores lentos', 8),
-('Sensor de distancia', 'Sensor Ultrasónico', 'Distancia', 'ultrasonico.jpg', 'Sensor ultrasónico para medición precisa del nivel de agua en tanques.', 'Sensores rápidos', 1),
-('Sensores de luz', 'Sensor de Radiación Solar', 'Temperatura', 'radiacion_solar.jpg', 'Sensor para monitoreo de radiación solar y temperatura ambiental.', 'Sensores de velocidad media', 2),
-('Sensor de contacto', 'Sensor de Humedad de Hoja', 'Presión', 'humedad_hoja.jpg', 'Sensor para detección de humedad superficial en hojas de cultivo.', 'Sensores lentos', 3),
-('Sensor de distancia', 'Sensor Láser', 'Distancia', 'laser.jpg', 'Sensor láser para medición de distancia entre plantas y monitoreo de crecimiento.', 'Sensores rápidos', 4);
+LOCK TABLES `producciones` WRITE;
+/*!40000 ALTER TABLE `producciones` DISABLE KEYS */;
+INSERT INTO `producciones` VALUES (1,'Producción de Tomates 2025','Orgánica','tomate_produccion.jpg','Invernadero 1','Producción de tomates orgánicos',1,500.00,'habilitado','2025-04-22 17:40:51',1,1,'1,3','1,5',NULL,NULL,NULL,NULL),(2,'Producción de Maíz Verano','Tradicional','maiz_produccion.jpg','Campo 3','Producción de maíz para temporada de verano',3,1200.00,'habilitado','2025-04-22 17:40:51',3,2,'1,4,6','2,7',NULL,NULL,NULL,NULL),(3,'Producción de Fresas','Hidropónica','fresa_produccion.jpg','Invernadero 2','Producción de fresas en sistema hidropónico',8,300.00,'habilitado','2025-04-22 17:40:51',8,8,'2,5,7','3,8',NULL,NULL,NULL,NULL),(4,'Producción de Café Premium','Orgánica','cafe_produccion.jpg','Plantación 1','Producción de café de alta calidad',5,800.00,'habilitado','2025-04-22 17:40:51',5,5,'6,7','4,5',NULL,NULL,NULL,NULL),(5,'jordan','Tradicional','Untitled.jpg','ninguna','ninguna',1,1.00,'habilitado','2025-05-05 18:09:47',2,2,'1,4,5','3',NULL,NULL,NULL,NULL),(6,'jordan','Tradicional','produccion-default.jpg','ninguna','ninguna',1,1.00,'habilitado','2025-05-05 20:49:29',2,3,'1,4','2,4,3',NULL,NULL,NULL,NULL),(7,'jordan','Tradicional','produccion-default.jpg','ninguna','ninguna',2,1.00,'habilitado','2025-05-05 23:34:55',2,2,'2,5','3,6',NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `producciones` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- Insert data into insumos table
-INSERT INTO insumos (nombre, tipo, imagen, unidad_medida, valor_unitario, cantidad, valor_total, descripcion, usuario_id) VALUES
-('Fertilizante', 'Químico', 'fertilizante.jpg', 'kilo', 10.00, 100, 1000.00, 'Fertilizante para cultivos', 1),
-('Pesticida', 'Químico', 'pesticida.jpg', 'litro', 20.00, 50, 1000.00, 'Pesticida para cultivos', 2),
-('Herbicida', 'Químico', 'herbicida.jpg', 'litro', 15.00, 200, 3000.00, 'Herbicida para control de malezas', 2),
-('Semillas de Maíz', 'Semilla', 'semillas_maiz.jpg', 'kilo', 50.00, 30, 1500.00, 'Semillas de maíz híbrido', 3),
-('Insecticida', 'Químico', 'insecticida.jpg', 'litro', 25.00, 100, 2500.00, 'Insecticida para control de plagas', 4),
-('Abono Orgánico', 'Orgánico', 'abono_organico.jpg', 'kilo', 8.00, 500, 4000.00, 'Abono orgánico para mejorar la tierra', 5),
-('Riego por Goteo', 'Equipo', 'riego_goteo.jpg', 'kilo', 200.00, 10, 2000.00, 'Sistema de riego por goteo', 6),
-('Cal agrícola', 'Mineral', 'cal_agricola.jpg', 'kilo', 5.00, 400, 2000.00, 'Cal agrícola para corrección de suelos ácidos y mejora de la fertilidad.', 2),
-('Fungicida', 'Químico', 'fungicida.jpg', 'litro', 30.00, 60, 1800.00, 'Fungicida sistémico para el control de enfermedades fúngicas en cultivos.', 3),
-('Compost', 'Orgánico', 'compost.jpg', 'kilo', 3.50, 700, 2450.00, 'Compost orgánico producido localmente para mejorar la estructura del suelo.', 4),
-('Plástico Mulch', 'Material', 'plastico_mulch.jpg', 'metro', 1.20, 1000, 1200.00, 'Plástico agrícola para cobertura de suelos y control de malezas.', 1);
+--
+-- Table structure for table `sensores`
+--
 
--- Insertar datos de ejemplo en la tabla producciones
-INSERT INTO producciones (id, identificador, nombre, tipo, imagen, ubicacion, descripcion, usuario_id, estado, fecha_creacion, cultivo_id, ciclo_id, insumos_ids, sensores_ids, personal_ids, inversion_total, meta_ganancias) VALUES
-(1, 'PROD-09042025-0001', 'Producción de Tomates 2025', 'Orgánica', 'tomate_produccion.jpg', 'Invernadero 1', 'Producción de tomates orgánicos', 1, 'habilitado', NOW(), 1, 1, '1,3', '1,5', '2,3', 5000000.00, 7500000.00),
-(2, 'PROD-09042025-0002', 'Producción de Maíz Verano', 'Tradicional', 'maiz_produccion.jpg', 'Campo 3', 'Producción de maíz para temporada de verano', 3, 'habilitado', NOW(), 3, 2, '1,4,6', '2,7', '4,5,6', 3500000.00, 5250000.00),
-(3, 'PROD-09042025-0003', 'Producción de Fresas', 'Hidropónica', 'fresa_produccion.jpg', 'Invernadero 2', 'Producción de fresas en sistema hidropónico', 8, 'habilitado', NOW(), 8, 8, '2,5,7', '3,8', '7', 8000000.00, 12000000.00),
-(4, 'PROD-09042025-0004', 'Producción de Café Premium', 'Orgánica', 'cafe_produccion.jpg', 'Plantación 1', 'Producción de café de alta calidad', 5, 'habilitado', NOW(), 5, 5, '6,7', '4,5', '8,9', 12000000.00, 18000000.00),
-(5, 'PROD-09042025-0005', 'Producción de Zanahoria Premium', 'Orgánica', 'zanahoria_premium.jpg', 'Parcela 2', 'Producción de zanahorias seleccionadas para exportación a Europa.', 2, 'habilitado', NOW(), 9, 13, '8,9', '9,11', '10', 4500000.00, 6750000.00),
-(6, 'PROD-09042025-0006', 'Producción de Banano Cavendish', 'Tradicional', 'banano_cavendish.jpg', 'Finca El Paraíso', 'Cosecha de banano Cavendish con riego tecnificado y control fitosanitario.', 3, 'habilitado', NOW(), 10, 14, '10,11', '10,12', '11,12', 9000000.00, 13500000.00),
-(7, 'PROD-09042025-0007', 'Producción de Cacao Fino', 'Orgánica', 'cacao_fino.jpg', 'Finca Las Delicias', 'Producción de cacao para chocolatería artesanal y exportación.', 4, 'habilitado', NOW(), 11, 15, '12,13', '13,14', '13', 7000000.00, 10500000.00),
-(8, 'PROD-09042025-0008', 'Producción de Aguacate Hass', 'Tradicional', 'aguacate_hass.jpg', 'Huerta Central', 'Producción de aguacate Hass con manejo integrado de plagas.', 1, 'habilitado', NOW(), 12, 16, '14,15', '15,16', '14,15', 10000000.00, 15000000.00);
+DROP TABLE IF EXISTS `sensores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sensores` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tipo_sensor` enum('Sensor de contacto','Sensor de distancia','Sensores de luz') NOT NULL,
+  `nombre_sensor` varchar(100) NOT NULL,
+  `unidad_medida` enum('Temperatura','Distancia','Presión') NOT NULL,
+  `imagen` varchar(255) DEFAULT NULL,
+  `descripcion` text NOT NULL,
+  `tiempo_escaneo` enum('Sensores lentos','Sensores de velocidad media','Sensores rápidos') NOT NULL,
+  `usuario_id` int DEFAULT NULL,
+  `estado` enum('habilitado','deshabilitado') NOT NULL DEFAULT 'habilitado',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_sensor_usuario_id` (`usuario_id`),
+  CONSTRAINT `fk_sensor_usuario_id` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `sensores_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- Ejemplo de asignación de personal a producciones (IDs de usuario ficticios)
-INSERT INTO produccion_personal (produccion_id, usuario_id) VALUES
-(1, 2), (1, 3), -- Producción 1: usuarios 2 y 3
-(2, 4), (2, 5), (2, 6), -- Producción 2: usuarios 4, 5 y 6
-(3, 7), -- Producción 3: usuario 7
-(4, 8), (4, 9), -- Producción 4: usuarios 8 y 9
-(5, 10), -- Producción 5: usuario 10
-(6, 11), (6, 12), -- Producción 6: usuarios 11 y 12
-(7, 13), -- Producción 7: usuario 13
-(8, 14), (8, 15); -- Producción 8: usuarios 14 y 15
+--
+-- Dumping data for table `sensores`
+--
 
-ALTER TABLE insumos
-ADD CONSTRAINT fk_usuario_id
-FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-ON DELETE SET NULL;
+LOCK TABLES `sensores` WRITE;
+/*!40000 ALTER TABLE `sensores` DISABLE KEYS */;
+INSERT INTO `sensores` VALUES (1,'Sensor de contacto','Sensor 1','Temperatura','sensor1.jpg','Sensor de temperatura de contacto','Sensores lentos',1,'habilitado','2025-04-22 17:40:51'),(2,'Sensor de distancia','Sensor 2','Distancia','sensor2.jpg','Sensor de distancia láser','Sensores rápidos',2,'habilitado','2025-04-22 17:40:51'),(3,'Sensores de luz','Sensor 3','Temperatura','sensor3.jpg','Sensor de intensidad lumínica','Sensores de velocidad media',3,'habilitado','2025-04-22 17:40:51'),(4,'Sensor de contacto','Sensor 4','Presión','sensor4.jpg','Sensor de presión atmosférica','Sensores rápidos',4,'habilitado','2025-04-22 17:40:51'),(5,'Sensor de contacto','Sensor 5','Presión','sensor5.jpg','Sensor de humedad del suelo','Sensores lentos',5,'habilitado','2025-04-22 17:40:51'),(6,'Sensor de contacto','Sensor 6','Temperatura','sensor6.jpg','Sensor de humedad ambiental','Sensores de velocidad media',6,'habilitado','2025-04-22 17:40:51'),(7,'Sensor de contacto','Sensor 7','Temperatura','sensor7.jpg','Sensor de temperatura infrarrojo','Sensores rápidos',7,'habilitado','2025-04-22 17:40:51'),(8,'Sensor de contacto','Sensor 8','Presión','sensor8.jpg','Sensor de pH del suelo','Sensores lentos',8,'habilitado','2025-04-22 17:40:51'),(9,'Sensor de contacto','cheche','Temperatura','sensor-default.jpg','ncsa','Sensores de velocidad media',1,'habilitado','2025-05-05 21:16:39');
+/*!40000 ALTER TABLE `sensores` ENABLE KEYS */;
+UNLOCK TABLES;
 
-ALTER TABLE sensores
-ADD CONSTRAINT fk_sensor_usuario_id
-FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-ON DELETE SET NULL;
+--
+-- Table structure for table `usuarios`
+--
+
+DROP TABLE IF EXISTS `usuarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuarios` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tipo_documento` enum('ti','cc','ppt','ce','pep') NOT NULL,
+  `numero_documento` varchar(20) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `telefono` varchar(15) NOT NULL,
+  `correo` varchar(100) NOT NULL,
+  `rol` enum('superadmin','admin','apoyo','visitante') NOT NULL,
+  `estado` enum('habilitado','deshabilitado') NOT NULL DEFAULT 'habilitado',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `numero_documento` (`numero_documento`),
+  UNIQUE KEY `correo` (`correo`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuarios`
+--
+
+LOCK TABLES `usuarios` WRITE;
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (1,'cc','1234567890','Juan Perez','555-1234','juan.perez@example.com','admin','habilitado','2025-04-22 17:40:51'),(2,'ti','0987654321','Maria Gomez','555-5678','maria.gomez@example.com','visitante','habilitado','2025-04-22 17:40:51'),(3,'cc','1122334455','Carlos Ramirez','555-9876','carlos.ramirez@example.com','superadmin','habilitado','2025-04-22 17:40:51'),(4,'ti','2233445566','Ana Torres','555-8765','ana.torres@example.com','apoyo','habilitado','2025-04-22 17:40:51'),(5,'ppt','3344556677','Luis Martinez','555-7654','luis.martinez@example.com','admin','habilitado','2025-04-22 17:40:51'),(6,'cc','4455667788','Elena Suarez','555-6543','elena.suarez@example.com','visitante','habilitado','2025-04-22 17:40:51'),(7,'ti','5566778899','Pedro Lopez','555-5432','pedro.lopez@example.com','apoyo','habilitado','2025-04-22 17:40:51'),(8,'ppt','6677889900','Sofia Castro','555-4321','sofia.castro@example.com','superadmin','habilitado','2025-04-22 17:40:51'),(9,'cc','1137059587','jordan valencia patiño','3011186124','jordanvalenciap@gmail.com','admin','habilitado','2025-05-05 21:13:46');
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-05-05 19:53:13
