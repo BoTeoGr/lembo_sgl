@@ -45,6 +45,7 @@ export function crearProduccion(req, res) {
           cultivo_id,
           ciclo_id,
           insumos_ids,
+          insumos_cantidades, // Nueva propiedad para las cantidades de insumos
           sensores_ids,
           fecha_de_inicio,  
           fecha_fin,        
@@ -73,6 +74,10 @@ export function crearProduccion(req, res) {
               return res.status(500).json({ error: "Error al iniciar la transacción." });
           }
 
+          // Guardar insumos_cantidades en una variable temporal para usarla después
+          // ya que no tenemos la columna en la base de datos
+          const cantidadesInsumos = insumos_cantidades;
+          
           // Insert producción (INCLUDING new fields)
           db.query(
               `
@@ -92,52 +97,152 @@ export function crearProduccion(req, res) {
                           if (rollbackErr) {
                               console.error("Error al hacer rollback:", rollbackErr);
                           }
-                          console.error("Error al crear la producción:", prodErr);
+                          console.error("Error al crear producción:", prodErr);
                           return res.status(500).json({ error: "Error al crear la producción." });
                       });
                   }
 
                   const produccionId = prodResults.insertId;
-
-                  // Update insumos (same logic as before)
+                  
+                  // Procesar las cantidades de insumos
+                  let cantidades = {};
+                  if (insumos_cantidades) {
+                      // Si es un string (JSON), convertirlo a objeto
+                      if (typeof insumos_cantidades === 'string') {
+                          try {
+                              cantidades = JSON.parse(insumos_cantidades);
+                          } catch (e) {
+                              console.error("Error al parsear insumos_cantidades:", e);
+                              cantidades = {};
+                          }
+                      } else if (typeof insumos_cantidades === 'object') {
+                          cantidades = insumos_cantidades;
+                      }
+                  }
+                  
+                  // Crear una tabla temporal para almacenar las cantidades de insumos
+                  db.query(
+                      `CREATE TABLE IF NOT EXISTS produccion_insumos (
+                          produccion_id INT NOT NULL,
+                          insumo_id INT NOT NULL,
+                          cantidad INT NOT NULL,
+                          PRIMARY KEY (produccion_id, insumo_id),
+                          FOREIGN KEY (produccion_id) REFERENCES producciones(id) ON DELETE CASCADE,
+                          FOREIGN KEY (insumo_id) REFERENCES insumos(id) ON DELETE CASCADE
+                      )`,
+                      (tableErr) => {
+                          if (tableErr) {
+                              console.error("Error al crear tabla temporal:", tableErr);
+                              // Continuar con el proceso aunque no se pueda crear la tabla
+                          }
+                          
+                          // Guardar las cantidades de insumos en la tabla temporal
+                          const insumoIdsArray = insumos_ids.split(",").map(Number);
+                          const insertPromises = insumoIdsArray.map(insumoId => {
+                              return new Promise((resolve, reject) => {
+                                  const cantidad = cantidades[insumoId] ? parseInt(cantidades[insumoId]) : 1;
+                                  db.query(
+                                      `INSERT INTO produccion_insumos (produccion_id, insumo_id, cantidad) VALUES (?, ?, ?)`,
+                                      [produccionId, insumoId, cantidad],
+                                      (insertErr) => {
+                                          if (insertErr) {
+                                              console.error(`Error al guardar cantidad para insumo ${insumoId}:`, insertErr);
+                                              // Continuar aunque haya error
+                                              resolve();
+                                          } else {
+                                              resolve();
+                                          }
+                                      }
+                                  );
+                              });
+                          });
+                          
+                          // Ejecutar todas las inserciones de cantidades
+                          Promise.all(insertPromises)
+                              .then(() => {
+                                  // Continuar con la actualización de los insumos
+                                  updateInsumos();
+                              })
+                              .catch(error => {
+                                  console.error("Error al guardar cantidades:", error);
+                                  // Continuar con la actualización de los insumos aunque haya error
+                                  updateInsumos();
+                              });
+                      }
+                  );
+                  
+                  // Update insumos con las cantidades especificadas por el usuario
                   const updateInsumos = () => {
                       const insumoIdsArray = insumos_ids.split(",").map(Number);
-                      const updates = insumoIdsArray.map(() => "cantidad = cantidad - 1");
-                      const query = `UPDATE insumos SET ${updates.join(", ")} WHERE id IN (?)`;
-
-                      db.query(query, [insumoIdsArray], (insumoErr, insumoResults) => {
-                          if (insumoErr) {
-                              return db.rollback(rollbackErr => {
-                                  if (rollbackErr) {
-                                      console.error("Error al hacer rollback:", rollbackErr);
-                                  }
-                                  console.error("Error al actualizar insumos:", insumoErr);
-                                  return res.status(500).json({ error: "Error al actualizar insumos." });
+                      let updatePromises = [];
+                      
+                      try {
+                          console.log("Cantidades de insumos:", cantidades);
+                          console.log("IDs de insumos:", insumoIdsArray);
+                          
+                          // Crear promesas para actualizar cada insumo
+                          updatePromises = insumoIdsArray.map(insumoId => {
+                              return new Promise((resolve, reject) => {
+                                  // Obtener la cantidad a restar (o 1 por defecto)
+                                  const cantidadARestar = cantidades[insumoId] ? parseInt(cantidades[insumoId]) : 1;
+                                  console.log(`Restando ${cantidadARestar} unidades del insumo ${insumoId}`);
+                                  
+                                  // Actualizar el insumo restando la cantidad especificada
+                                  const query = "UPDATE insumos SET cantidad = cantidad - ? WHERE id = ?";
+                                  db.query(query, [cantidadARestar, insumoId], (err, result) => {
+                                      if (err) {
+                                          console.error(`Error al actualizar insumo ${insumoId}:`, err);
+                                          reject(err);
+                                      } else {
+                                          console.log(`Insumo ${insumoId} actualizado correctamente`);
+                                          resolve(result);
+                                      }
+                                  });
                               });
-                          }
+                          });
+                          
+                          // Ejecutar todas las actualizaciones
+                          Promise.all(updatePromises)
+                              .then(() => {
+                                  // Commit transaction
+                                  db.commit(commitErr => {
+                                      if (commitErr) {
+                                          return db.rollback(rollbackErr => {
+                                              if (rollbackErr) {
+                                                  console.error("Error al hacer rollback:", rollbackErr);
+                                              }
+                                              console.error("Error al hacer commit:", commitErr);
+                                              return res.status(500).json({ error: "Error al finalizar la transacción." });
+                                          });
+                                      }
 
-                          // Commit transaction
-                          db.commit(commitErr => {
-                              if (commitErr) {
+                                      return res.status(201).json({ 
+                                          message: "Producción creada e insumos actualizados con éxito.",
+                                          produccion_id: produccionId 
+                                      });
+                                  });
+                              })
+                              .catch(error => {
                                   return db.rollback(rollbackErr => {
                                       if (rollbackErr) {
                                           console.error("Error al hacer rollback:", rollbackErr);
                                       }
-                                      console.error("Error al hacer commit:", commitErr);
-                                      return res.status(500).json({ error: "Error al finalizar la transacción." });
+                                      console.error("Error al actualizar insumos:", error);
+                                      return res.status(500).json({ error: "Error al actualizar insumos." });
                                   });
-                              }
-
-                              return res.status(201).json({ 
-                                  message: "Producción creada e insumos actualizados con éxito.",
-                                  produccion_id: produccionId 
                               });
+                      } catch (error) {
+                          console.error("Error en updateInsumos:", error);
+                          return db.rollback(rollbackErr => {
+                              if (rollbackErr) {
+                                  console.error("Error al hacer rollback:", rollbackErr);
+                              }
+                              return res.status(500).json({ error: "Error al procesar los insumos." });
                           });
-                      });
+                      }
                   };
 
                   updateInsumos();
-
               }
           );
       });
@@ -192,15 +297,44 @@ export function obtenerProduccionPorId(req, res) {
       const obtenerInsumos = new Promise((resolve) => {
         if (produccion.insumos_ids) {
           const insumoIds = produccion.insumos_ids.split(",");
-          const insumoQuery = `SELECT * FROM insumos WHERE id IN (?)`;
-
-          db.query(insumoQuery, [insumoIds], (err, insumosResults) => {
-            if (!err && insumosResults) {
-              produccion.insumos = insumosResults;
-            } else {
-              produccion.insumos = [];
+          
+          // Primero obtener las cantidades de insumos de la tabla produccion_insumos
+          const cantidadesQuery = `
+            SELECT insumo_id, cantidad 
+            FROM produccion_insumos 
+            WHERE produccion_id = ?
+          `;
+          
+          db.query(cantidadesQuery, [produccion.id], (cantidadesErr, cantidadesResults) => {
+            // Crear un objeto con las cantidades por insumo
+            let cantidadesInsumos = {};
+            
+            if (!cantidadesErr && cantidadesResults && cantidadesResults.length > 0) {
+              cantidadesResults.forEach(row => {
+                cantidadesInsumos[row.insumo_id] = row.cantidad;
+              });
             }
-            resolve();
+            
+            // Ahora obtener los detalles de los insumos
+            const insumoQuery = `SELECT * FROM insumos WHERE id IN (?)`;
+            
+            db.query(insumoQuery, [insumoIds], (err, insumosResults) => {
+              if (!err && insumosResults) {
+                // Agregar la cantidad usada a cada insumo
+                produccion.insumos = insumosResults.map(insumo => {
+                  // Obtener la cantidad usada del insumo en esta producción
+                  const cantidadUsada = cantidadesInsumos[insumo.id] ? parseInt(cantidadesInsumos[insumo.id]) : 1;
+                  
+                  return {
+                    ...insumo,
+                    cantidad_usada: cantidadUsada
+                  };
+                });
+              } else {
+                produccion.insumos = [];
+              }
+              resolve();
+            });
           });
         } else {
           produccion.insumos = [];

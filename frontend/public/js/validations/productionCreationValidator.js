@@ -39,6 +39,21 @@ const productionData = {
   meta_ganancia: 0,
 }
 
+// Variables para el modal de selección de cantidad de insumo
+let supplyQuantityModal;
+let closeSupplyQuantityModal;
+let supplyQuantityForm;
+let cancelSupplyBtn;
+let selectedSupplyData = {
+  id: null,
+  name: "",
+  type: "",
+  quantity: 0,
+  unit: "",
+  value: 0,
+  userQuantity: 0
+};
+
 // Variables para el modal de creación de usuario
 const createUserBtn = document.getElementById("createUserBtn")
 const createUserModal = document.getElementById("createUserModal")
@@ -335,6 +350,36 @@ function fillSelect(elementId, items, defaultText, nameField, idField = "id") {
 
 // Add these event listeners after the existing setupEventListeners function
 function setupEventListeners() {
+  // Inicializar las variables del modal de cantidad de insumo
+  supplyQuantityModal = document.getElementById("supplyQuantityModal");
+  closeSupplyQuantityModal = document.getElementById("closeSupplyQuantityModal");
+  supplyQuantityForm = document.getElementById("supplyQuantityForm");
+  cancelSupplyBtn = document.getElementById("cancelSupplyBtn");
+
+  // Configurar eventos para el modal de cantidad de insumo
+  if (supplyQuantityForm) {
+    supplyQuantityForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const quantityInput = document.getElementById("supplyQuantity");
+      const quantity = Number.parseInt(quantityInput.value);
+      if (addSupplyWithQuantity(quantity)) {
+        supplyQuantityModal.classList.add("hidden");
+      }
+    });
+  }
+
+  if (closeSupplyQuantityModal) {
+    closeSupplyQuantityModal.addEventListener("click", () => {
+      supplyQuantityModal.classList.add("hidden");
+    });
+  }
+
+  if (cancelSupplyBtn) {
+    cancelSupplyBtn.addEventListener("click", () => {
+      supplyQuantityModal.classList.add("hidden");
+    });
+  }
+
   const elements = {
     // Campos básicos
     productionName: document.getElementById("productionName"),
@@ -634,11 +679,17 @@ function calculateTotalInvestment() {
     })
     .filter(Boolean) // Filtrar valores nulos o undefined
 
-  // Calcular el total de inversión
+  // Calcular el total de inversión teniendo en cuenta las cantidades
   let totalInvestment = 0
   selectedSuppliesFull.forEach((supply) => {
-    if (supply && supply.valor_unitario && supply.cantidad) {
-      totalInvestment += Number.parseFloat(supply.valor_unitario) 
+    if (supply && supply.valor_unitario) {
+      // Obtener la cantidad especificada por el usuario o usar 1 por defecto
+      const cantidad = productionData.insumos_cantidades && productionData.insumos_cantidades[supply.id] 
+        ? Number.parseInt(productionData.insumos_cantidades[supply.id]) 
+        : 1;
+      
+      // Multiplicar el valor unitario por la cantidad
+      totalInvestment += Number.parseFloat(supply.valor_unitario) * cantidad;
     }
   })
 
@@ -650,13 +701,47 @@ function calculateTotalInvestment() {
     const suggestedProfit = totalInvestment * 1.3 // 30% más que la inversión
     estimatedProfitField.value = suggestedProfit.toFixed(2)
   }
-
+  
   // Validar la inversión y meta de ganancia
   validateInvestmentAndProfit()
 }
 
-// Modificar la función addSelectedSupply para llamar a calculateTotalInvestment
 function addSelectedSupply() {
+  // Asegurarse de que las variables del modal estén inicializadas
+  if (!supplyQuantityModal) {
+    supplyQuantityModal = document.getElementById("supplyQuantityModal");
+    closeSupplyQuantityModal = document.getElementById("closeSupplyQuantityModal");
+    supplyQuantityForm = document.getElementById("supplyQuantityForm");
+    cancelSupplyBtn = document.getElementById("cancelSupplyBtn");
+    
+    // Configurar eventos para el modal si no se han configurado antes
+    if (supplyQuantityForm && !supplyQuantityForm._hasSubmitListener) {
+      supplyQuantityForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const quantityInput = document.getElementById("supplyQuantity");
+        const quantity = Number.parseInt(quantityInput.value);
+        if (addSupplyWithQuantity(quantity)) {
+          supplyQuantityModal.classList.add("hidden");
+        }
+      });
+      supplyQuantityForm._hasSubmitListener = true;
+    }
+    
+    if (closeSupplyQuantityModal && !closeSupplyQuantityModal._hasClickListener) {
+      closeSupplyQuantityModal.addEventListener("click", () => {
+        supplyQuantityModal.classList.add("hidden");
+      });
+      closeSupplyQuantityModal._hasClickListener = true;
+    }
+    
+    if (cancelSupplyBtn && !cancelSupplyBtn._hasClickListener) {
+      cancelSupplyBtn.addEventListener("click", () => {
+        supplyQuantityModal.classList.add("hidden");
+      });
+      cancelSupplyBtn._hasClickListener = true;
+    }
+  }
+  
   const supplySelect = document.getElementById("supply")
   const selectedSupply = supplySelect.options[supplySelect.selectedIndex]
 
@@ -684,20 +769,83 @@ function addSelectedSupply() {
     return
   }
 
-  // Agregar el nuevo insumo a la lista
-  productionData.insumos_ids.push(selectedSupply.value)
+  // Guardar los datos del insumo seleccionado en el objeto temporal
+  selectedSupplyData = {
+    id: selectedSupply.value,
+    name: selectedSupply.text,
+    type: supplyData.tipo,
+    quantity: supplyData.cantidad,
+    unit: supplyData.unidad_medida,
+    value: supplyData.valor_unitario,
+    userQuantity: 1 // Valor por defecto
+  }
+
+  // Mostrar los datos del insumo en el modal
+  const supplyNameEl = document.getElementById("supplyName");
+  const supplyTypeEl = document.getElementById("supplyType");
+  const supplyAvailableEl = document.getElementById("supplyAvailable");
+  const supplyUnitEl = document.getElementById("supplyUnit");
+  
+  if (supplyNameEl) supplyNameEl.textContent = selectedSupplyData.name;
+  if (supplyTypeEl) supplyTypeEl.textContent = selectedSupplyData.type;
+  if (supplyAvailableEl) supplyAvailableEl.textContent = selectedSupplyData.quantity;
+  if (supplyUnitEl) supplyUnitEl.textContent = selectedSupplyData.unit;
+  
+  // Establecer el valor máximo para la cantidad a utilizar
+  const quantityInput = document.getElementById("supplyQuantity")
+  if (quantityInput) {
+    quantityInput.max = selectedSupplyData.quantity;
+    quantityInput.value = 1; // Valor por defecto
+  }
+  
+  // Mostrar el modal de selección de cantidad
+  if (supplyQuantityModal) {
+    supplyQuantityModal.classList.remove("hidden");
+    console.log("Modal de cantidad de insumo mostrado");
+  } else {
+    console.error("No se encontró el modal de cantidad de insumo");
+  }
+}
+
+// Función para agregar el insumo con la cantidad especificada
+function addSupplyWithQuantity(quantity) {
+  // Verificar que la cantidad sea válida
+  if (quantity <= 0 || quantity > selectedSupplyData.quantity) {
+    showToast("Error", "La cantidad debe ser mayor a 0 y menor o igual a la cantidad disponible", "error")
+    return false
+  }
+  
+  // Guardar la cantidad que el usuario va a utilizar
+  selectedSupplyData.userQuantity = quantity
+  
+  // Agregar el nuevo insumo a la lista con su cantidad
+  productionData.insumos_ids.push(selectedSupplyData.id)
+  
+  // Crear un objeto para almacenar la información de cantidad por insumo
+  if (!productionData.insumos_cantidades) {
+    productionData.insumos_cantidades = {}
+  }
+  
+  // Guardar la cantidad seleccionada para este insumo
+  productionData.insumos_cantidades[selectedSupplyData.id] = quantity
 
   const selectedSupplies = document.getElementById("selectedSupplies")
   const supplyCard = document.createElement("div")
   supplyCard.className = "item-card"
-  supplyCard.dataset.supplyId = selectedSupply.value
+  supplyCard.dataset.supplyId = selectedSupplyData.id
+  supplyCard.dataset.supplyQuantity = quantity
   supplyCard.innerHTML = `
       <button type="button" class="remove-item" onclick="removeSelectedItem(this, 'supply')">
           <i class="fas fa-times"></i>
       </button>
       <div class="item-info">
-          <span class="item-name">${selectedSupply.text}</span>
-          <span class="item-details">Valor: $${supplyData.valor_unitario}</span>
+          <span class="item-name">${selectedSupplyData.name}</span>
+          <span class="item-details">
+            <div>Tipo: ${selectedSupplyData.type}</div>
+            <div>Cantidad a usar: ${quantity} ${selectedSupplyData.unit}</div>
+            <div>Valor unitario: $${selectedSupplyData.value}</div>
+            <div>Valor total: $${(selectedSupplyData.value * quantity).toFixed(2)}</div>
+          </span>
       </div>
   `
 
@@ -705,7 +853,29 @@ function addSelectedSupply() {
 
   // Calcular la inversión total después de agregar un insumo
   calculateTotalInvestment()
+  
+  return true
 }
+
+// Agregar evento de submit al formulario de cantidad
+supplyQuantityForm.addEventListener("submit", (e) => {
+  e.preventDefault()
+  const quantityInput = document.getElementById("supplyQuantity")
+  const quantity = Number.parseInt(quantityInput.value)
+  if (addSupplyWithQuantity(quantity)) {
+    supplyQuantityModal.classList.add("hidden")
+  }
+})
+
+// Agregar evento para cerrar el modal de cantidad
+closeSupplyQuantityModal.addEventListener("click", () => {
+  supplyQuantityModal.classList.add("hidden")
+})
+
+// Agregar evento para el botón de cancelar
+cancelSupplyBtn.addEventListener("click", () => {
+  supplyQuantityModal.classList.add("hidden")
+})
 
 // Update the createProduction function to include the new fields
 async function createProduction(e) {
@@ -739,6 +909,8 @@ async function createProduction(e) {
       ciclo_id: parseInt(document.getElementById("cropCycle").value) || 0,
       usuario_id: responsibleId, // Usar el ID del responsable como usuario_id
       insumos_ids: (productionData.insumos_ids || []).join(","),
+      // Convertir el objeto de cantidades a string JSON para enviarlo al backend
+      insumos_cantidades: JSON.stringify(productionData.insumos_cantidades || {}),
       sensores_ids: Array.from(selectedSensors).join(","),
       fecha_de_inicio: startDate,
       fecha_fin: endDate,

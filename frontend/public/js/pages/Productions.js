@@ -1213,14 +1213,21 @@ document.addEventListener("DOMContentLoaded", () => {
 		  produccion.insumos.forEach(insumo => {
 			const listItem = document.createElement("li");
 			listItem.className = "insumo-item";
+			
+			// Calcular el valor total basado en la cantidad usada
+			const valorUnitario = parseFloat(insumo.valor_unitario || 0);
+			const cantidadUsada = insumo.cantidad_usada || 1;
+			const valorTotal = valorUnitario * cantidadUsada;
+			
 			listItem.innerHTML = `
 			  <div class="insumo-item__header">
 				<span class="insumo-item__name">${insumo.nombre}</span>
 				<span class="insumo-item__type">(${insumo.tipo})</span>
 			  </div>
 			  <div class="insumo-item__details">
-				<span class="insumo-item__value">Valor: $${parseFloat(insumo.valor_total).toFixed(2)}</span>
-				<span class="insumo-item__quantity">Cantidad: ${insumo.cantidad} ${insumo.unidad_medida}</span>
+				<span class="insumo-item__value">Valor unitario: $${valorUnitario.toFixed(2)}</span>
+				<span class="insumo-item__quantity">Cantidad utilizada: ${cantidadUsada} ${insumo.unidad_medida || 'unidades'}</span>
+				<span class="insumo-item__total">Valor total: $${valorTotal.toFixed(2)}</span>
 			  </div>
 			`;
 			listaInsumos.appendChild(listItem);

@@ -97,6 +97,49 @@
   gap: 0.8rem;
 }
 
+/* Estilos para el modal de cantidad de insumo */
+.supply-details {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f5f9f7;
+  border-radius: 8px;
+  border-left: 4px solid var(--green-700);
+}
+
+.supply-details__name {
+  color: var(--secondary-green);
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.supply-details__info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.supply-details__info p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.button--cancel {
+  background-color: #f5f5f5;
+  color: #666;
+  border: 1px solid #ddd;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.button--cancel:hover {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
 .button--add:hover,
 .button--add:focus {
   background-color: var(--green-600);
